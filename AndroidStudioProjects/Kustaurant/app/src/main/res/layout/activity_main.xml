@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
-
 
     <FrameLayout
         android:id="@+id/main_frm"
@@ -25,8 +25,11 @@
         android:backgroundTint="@color/main_menu_gray"
         app:itemBackground="@color/main_menu_gray"
         app:itemActiveIndicatorStyle="@null"
-        android:outlineSpotShadowColor="@color/main_menu_item_gray"
+        android:outlineSpotShadowColor="@color/black"
         app:itemIconSize="22dp"
+        app:itemPaddingTop="25dp"
+        app:itemIconTint="@drawable/menu_selector_color"
+        app:itemTextColor="@drawable/menu_selector_color"
         app:menu="@menu/main_menu_bottom"
         app:labelVisibilityMode="labeled"/>
 

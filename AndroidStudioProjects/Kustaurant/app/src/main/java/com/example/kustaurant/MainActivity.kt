@@ -1,20 +1,45 @@
 package com.example.kustaurant
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.kustaurant.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.mainNavigation.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.menu_home -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment()).commit()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.menu_random -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment()).commit()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.menu_rank -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment()).commit()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.menu_community -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, CommunityFragment()).commit()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.menu_mypage -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment()).commit()
+                    return@setOnItemSelectedListener true
+                }
+                else -> {
+                    return@setOnItemSelectedListener true
+                }
+            }
         }
+        binding.mainNavigation.selectedItemId = R.id.menu_home
     }
 }
