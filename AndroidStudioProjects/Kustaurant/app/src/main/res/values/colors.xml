@@ -5,4 +5,7 @@
     <color name="main_menu_gray">#EAEAEA</color>
     <color name="main_menu_item_gray">#AAAAAA</color>
     <color name="main_menu_item_green">#43AB38</color>
+    <color name="btn_gray">#E0E0E0</color>
+    <color name="text_gray">#666666</color>
+    <color name="category_gray">#F5F5F5</color>
 </resources>
