@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_home"
+        android:title="홈"
+        android:icon="@drawable/ic_home"
+        android:enabled="true"
+        android:checked="true"/>
+    <item android:id="@+id/menu_random"
+        android:title="뽑기"
+        android:icon="@drawable/ic_random"
+        android:enabled="true"/>
+    <item android:id="@+id/menu_rank"
+        android:title="티어"
+        android:icon="@drawable/ic_rank"
+        android:enabled="true"/>
+    <item android:id="@+id/menu_community"
+        android:title="커뮤니티"
+        android:icon="@drawable/ic_community"
+        android:enabled="true"/>
+    <item android:id="@+id/menu_mypage"
+        android:title="마이페이지"
+        android:icon="@drawable/ic_mypage"
+        android:enabled="true"/>
+</menu>
