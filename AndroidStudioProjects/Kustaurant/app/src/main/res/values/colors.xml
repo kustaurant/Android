@@ -8,4 +8,6 @@
     <color name="btn_gray">#E0E0E0</color>
     <color name="text_gray">#666666</color>
     <color name="category_gray">#F5F5F5</color>
+    <color name="top_black">#323232</color>
+    <color name="top_gray">#838383</color>
 </resources>
