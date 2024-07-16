@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        selectedColor = ContextCompat.getColor(requireContext(),R.color.main_menu_item_gray)
+        selectedColor = ContextCompat.getColor(requireContext(),R.color.cement_4)
         defaultColor = ContextCompat.getColor(requireContext(),R.color.btn_gray)
         setupButtons()
         loadImage(selectedIndex)
