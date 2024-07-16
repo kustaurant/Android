@@ -144,7 +144,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:text="더보기"
                     android:textSize="13sp"
-                    android:textColor="@color/text_gray"/>
+                    android:textColor="@color/cement_5"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
