@@ -35,9 +35,19 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         selectedColor = ContextCompat.getColor(requireContext(),R.color.cement_4)
-        defaultColor = ContextCompat.getColor(requireContext(),R.color.btn_gray)
+        defaultColor = ContextCompat.getColor(requireContext(),R.color.cement_3)
         setupButtons()
         loadImage(selectedIndex)
+        // 예시 이미지 삽입
+        Glide.with(this)
+            .load(imageUrls[1])
+            .into(binding.homeTOPCl1Imgurl)
+        Glide.with(this)
+            .load(imageUrls[1])
+            .into(binding.homeTOPCl2Imgurl)
+        Glide.with(this)
+            .load(imageUrls[2])
+            .into(binding.homeMECl1Imgurl)
 
         return binding.root
     }
