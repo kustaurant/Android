@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="main_menu_gray">#EAEAEA</color>
-    <color name="main_menu_item_gray">#AAAAAA</color>
-    <color name="main_menu_item_green">#43AB38</color>
-    <color name="btn_gray">#E0E0E0</color>
-    <color name="text_gray">#666666</color>
-    <color name="category_gray">#F5F5F5</color>
-    <color name="top_black">#323232</color>
+
+
+    <!-- 시그니처 -->
+    <color name="signature_1">#43AB38</color>
+    <color name="signature_2">#046B40</color>
+
+    <!-- 시멘트 -->
+    <color name="cement_1">#FFFFFF</color>
+    <color name="cement_2">#EAEAEA</color>
+    <color name="cement_3">#E0E0E0</color>
+    <color name="cement_4">#AAAAAA</color>
+    <color name="cement_5">#666666</color>
+    <color name="cement_6">#323232</color>
+
+    <!-- 티어 -->
+    <color name="tier_1">#0093FF</color>
+    <color name="tier_2">#01BAA6</color>
+    <color name="tier_3">#FFB900</color>
+    <color name="tier_4">#9BA5B0</color>
+
+    <!--홈 -->
     <color name="top_gray">#838383</color>
+    <color name="category_gray">#F5F5F5</color>
 </resources>

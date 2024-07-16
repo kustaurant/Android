@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/cement_1"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
+    <!--  GuideLine 생성-->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_start"
         android:layout_width="wrap_content"
@@ -62,6 +63,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!--  Dimensino Ratio 생성-->
     <ImageView
         android:id="@+id/home_ad_banner"
         android:layout_width="match_parent"
@@ -164,7 +166,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:text="더보기"
                     android:textSize="13sp"
-                    android:textColor="@color/text_gray"/>
+                    android:textColor="@color/cement_5"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -679,7 +681,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:text="더보기"
                     android:textSize="13sp"
-                    android:textColor="@color/text_gray"/>
+                    android:textColor="@color/cement_5"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -689,7 +691,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:text="가장 높은 평가를 받은 맛집을 알려드립니다"
                     android:textSize="13sp"
-                    android:textColor="@color/main_menu_item_gray"
+                    android:textColor="@color/cement_4"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -733,7 +735,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             android:text="일식"
                             android:textSize="12sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <TextView
                             android:id="@+id/home_TOP_divider"
@@ -743,7 +745,7 @@
                             app:layout_constraintTop_toTopOf="@id/home_TOP_cl1_cuisine"
                             android:text="  ㅣ  "
                             android:textSize="12sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <TextView
                             android:id="@+id/home_TOP_cl1_position"
@@ -753,7 +755,7 @@
                             app:layout_constraintTop_toTopOf="@id/home_TOP_cl1_cuisine"
                             android:text="중문 ~ 어대"
                             android:textSize="12sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <ImageView
                             android:layout_width="16dp"
@@ -781,7 +783,7 @@
                             app:layout_constraintStart_toStartOf="@id/home_TOP_cl1_cuisine"
                             android:text="호야초밥 참치 본점"
                             android:textSize="15sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <TextView
                             android:id="@+id/home_TOP_cl1_benefit_tv"
@@ -792,7 +794,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:text="제휴"
                             android:textSize="13sp"
-                            android:textColor="@color/main_menu_item_gray"/>
+                            android:textColor="@color/cement_4"/>
 
                         <TextView
                             android:id="@+id/home_TOP_cl1_benefit"
@@ -803,7 +805,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/home_TOP_cl1_benefit_tv"
                             android:text="어디대 학생증 제시시 ..."
                             android:textSize="13sp"
-                            android:textColor="@color/main_menu_item_gray"/>
+                            android:textColor="@color/cement_4"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -834,7 +836,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             android:text="일식"
                             android:textSize="12sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <TextView
                             android:id="@+id/home_TOP_cl2_divider"
@@ -844,7 +846,7 @@
                             app:layout_constraintTop_toTopOf="@id/home_TOP_cl2_cuisine"
                             android:text="  ㅣ  "
                             android:textSize="12sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <TextView
                             android:id="@+id/home_TOP_cl2_position"
@@ -854,7 +856,7 @@
                             app:layout_constraintTop_toTopOf="@id/home_TOP_cl2_cuisine"
                             android:text="중문 ~ 어대"
                             android:textSize="12sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <ImageView
                             android:layout_width="16dp"
@@ -882,7 +884,7 @@
                             app:layout_constraintStart_toStartOf="@id/home_TOP_cl2_cuisine"
                             android:text="호야초밥 참치 본점"
                             android:textSize="15sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <TextView
                             android:id="@+id/home_TOP_cl2_benefit_tv"
@@ -893,7 +895,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:text="제휴"
                             android:textSize="13sp"
-                            android:textColor="@color/main_menu_item_gray"/>
+                            android:textColor="@color/cement_4"/>
 
                         <TextView
                             android:id="@+id/home_TOP_cl2_benefit"
@@ -904,7 +906,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/home_TOP_cl2_benefit_tv"
                             android:text="어디대 학생증 제시시 ..."
                             android:textSize="13sp"
-                            android:textColor="@color/main_menu_item_gray"/>
+                            android:textColor="@color/cement_4"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -941,7 +943,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:text="더보기"
                     android:textSize="13sp"
-                    android:textColor="@color/text_gray"/>
+                    android:textColor="@color/cement_5"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -951,7 +953,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:text="즐겨찾기를 바탕으로 다른 맛집을 추천해 드립니다"
                     android:textSize="13sp"
-                    android:textColor="@color/main_menu_item_gray"
+                    android:textColor="@color/cement_4"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -994,7 +996,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             android:text="일식"
                             android:textSize="12sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <TextView
                             android:id="@+id/home_ME_cl1_divider"
@@ -1004,7 +1006,7 @@
                             app:layout_constraintTop_toTopOf="@id/home_ME_cl1_cuisine"
                             android:text="  ㅣ  "
                             android:textSize="12sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <TextView
                             android:id="@+id/home_ME_cl1_position"
@@ -1014,7 +1016,7 @@
                             app:layout_constraintTop_toTopOf="@id/home_ME_cl1_cuisine"
                             android:text="중문 ~ 어대"
                             android:textSize="12sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <ImageView
                             android:layout_width="16dp"
@@ -1042,7 +1044,7 @@
                             app:layout_constraintStart_toStartOf="@id/home_ME_cl1_cuisine"
                             android:text="호야초밥 참치 본점"
                             android:textSize="15sp"
-                            android:textColor="@color/top_black"/>
+                            android:textColor="@color/cement_6"/>
 
                         <TextView
                             android:id="@+id/home_ME_cl1_benefit_tv"
@@ -1053,7 +1055,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:text="제휴"
                             android:textSize="13sp"
-                            android:textColor="@color/main_menu_item_gray"/>
+                            android:textColor="@color/cement_4"/>
 
                         <TextView
                             android:id="@+id/home_ME_cl1_benefit"
@@ -1064,7 +1066,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/home_ME_cl1_benefit_tv"
                             android:text="어디대 학생증 제시시 ..."
                             android:textSize="13sp"
-                            android:textColor="@color/main_menu_item_gray"/>
+                            android:textColor="@color/cement_4"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
