@@ -32,5 +32,4 @@
         app:itemTextColor="@drawable/menu_selector_color"
         app:menu="@menu/main_menu_bottom"
         app:labelVisibilityMode="labeled"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

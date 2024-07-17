@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.menu_rank -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, TierFragment()).commit()
                     return@setOnItemSelectedListener true
                 }
                 R.id.menu_community -> {
