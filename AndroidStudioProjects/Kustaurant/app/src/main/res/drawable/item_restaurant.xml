@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:backgroundTint="#FFFFFF"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/restaurantImage"
+        android:layout_width="73dp"
+        android:layout_height="55dp"
+        android:scaleType="centerCrop"
+        android:paddingEnd="18dp"
+        android:src="@drawable/img_default_restaurant"
+        app:imageUrl="@{restaurant.restaurantImgUrl}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/restaurantTier"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_rank_1"
+        app:imageUrl="@{restaurant.restaurantTier}"
+        app:layout_constraintStart_toStartOf="@id/restaurantImage"
+        app:layout_constraintTop_toTopOf="@id/restaurantImage" />
+
+    <ImageView
+        android:id="@+id/evaluationImg"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:background="@drawable/rounded_background"
+        android:backgroundTint="#01BAA6"
+        android:padding="1dp"
+        android:layout_marginLeft="11dp"
+        android:src="@drawable/ic_check"
+        app:layout_constraintEnd_toStartOf="@id/favoriteImg"
+        app:layout_constraintStart_toEndOf="@id/restaurantName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/restaurantName" />
+
+    <ImageView
+        android:id="@+id/favoriteImg"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:background="@drawable/rounded_background"
+        android:backgroundTint="#FEAF1C"
+        android:padding="1dp"
+        android:src="@drawable/ic_favorite"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/evaluationImg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/evaluationImg" />
+
+    <TextView
+        android:id="@+id/restaurantCnt"
+        android:layout_width="28dp"
+        android:layout_height="match_parent"
+        android:marginLeft="18dp"
+        android:text="@{restaurant.restaurantCnt}"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toStartOf="@id/restaurantName"
+        app:layout_constraintStart_toEndOf="@id/restaurantImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/restaurantName"
+        tools:text="1"/>
+
+    <TextView
+        android:id="@+id/restaurantName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{restaurant.restaurantName}"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/evaluationImg"
+        app:layout_constraintStart_toEndOf="@id/restaurantCnt"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="식당 이름 입니다."
+        android:singleLine="true"
+        android:paddingEnd="18dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/evaluationImg" />
+
+    <TextView
+        android:id="@+id/restaurantDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{restaurant.restaurantDetails}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/restaurantCnt"
+        app:layout_constraintTop_toBottomOf="@id/restaurantName"
+        tools:text="일식 | 건입~중문" />
+</androidx.constraintlayout.widget.ConstraintLayout>
