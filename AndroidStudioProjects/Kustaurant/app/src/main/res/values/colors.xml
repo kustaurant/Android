@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="category_gray">#F5F5F5</color>
 
 
     <!-- 시그니처 -->
@@ -23,4 +21,8 @@
     <color name="tier_3">#FFB900</color>
     <color name="tier_4">#9BA5B0</color>
 
+
+    <!--홈 -->
+    <color name="top_gray">#838383</color>
+    <color name="category_gray">#F5F5F5</color>
 </resources>
