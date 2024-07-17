@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Kustaurant</string>
+
+
+    <!-- Tier Fragment 관련 -->
+    <string name="restaurant_img_info">식당 대표 이미지 입니다.</string>
+    <string name="restaurant_favorite_info">즐겨찾기 아이콘 입니다.</string>
+    <string name="restaurant_tier_info">식당 순위 아이콘 입니다.</string>
+    <string name="restaurant_evaluation_info">평가가 완료된 아이콘 입니다.</string>
+    <string name="tier_info"><u>티어란?</u></string>
+    <string name="category_btn_info">음식 카테고리 설정을 위한 아이콘 입니다.</string>
+    <string name="back_btn_info">뒤로 가기 버튼입니다.</string>
+    <string name="search_btn_info">검색하기 버튼입니다.</string>
+    <string name="alarm_btn_info">알람 버튼입니다.</string>
+    <string name="expand_reduction_fab_info">음식점 리스트를 작게/크게 볼 수 있는 버튼입니다.</string>
 </resources>

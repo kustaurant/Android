@@ -31,11 +31,11 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         selectedColor = ContextCompat.getColor(requireContext(),R.color.cement_4)
-        defaultColor = ContextCompat.getColor(requireContext(),R.color.btn_gray)
+        defaultColor = ContextCompat.getColor(requireContext(),R.color.cement_3)
         setupButtons()
         loadImage(selectedIndex)
 
