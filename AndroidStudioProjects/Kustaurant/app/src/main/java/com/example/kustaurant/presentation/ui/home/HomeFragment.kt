@@ -1,4 +1,4 @@
-package com.example.kustaurant
+package com.example.kustaurant.presentation.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.kustaurant.R
 import com.example.kustaurant.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -31,11 +32,11 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        selectedColor = ContextCompat.getColor(requireContext(),R.color.cement_4)
-        defaultColor = ContextCompat.getColor(requireContext(),R.color.cement_3)
+        selectedColor = ContextCompat.getColor(requireContext(), R.color.cement_4)
+        defaultColor = ContextCompat.getColor(requireContext(), R.color.cement_3)
         setupButtons()
         loadImage(selectedIndex)
         // 예시 이미지 삽입

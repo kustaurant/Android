@@ -3,6 +3,8 @@ package com.example.kustaurant
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.kustaurant.databinding.ActivityMainBinding
+import com.example.kustaurant.presentation.ui.home.HomeFragment
+import com.example.kustaurant.presentation.ui.tier.TierFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.menu_rank -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, TierFragment()).commit()
                     return@setOnItemSelectedListener true
                 }
                 R.id.menu_community -> {
