@@ -1,4 +1,4 @@
-package com.example.kustaurant
+package com.example.kustaurant.presentation.ui.tier
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ItemRestaurantBinding
 
 class TierListAdapter : ListAdapter<TierModel, TierListAdapter.ViewHolder>(diffUtil) {

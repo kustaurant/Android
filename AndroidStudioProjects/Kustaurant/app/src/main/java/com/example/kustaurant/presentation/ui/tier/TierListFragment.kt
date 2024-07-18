@@ -1,4 +1,4 @@
-package com.example.kustaurant
+package com.example.kustaurant.presentation.ui.tier
 
 import android.os.Bundle
 import android.view.LayoutInflater

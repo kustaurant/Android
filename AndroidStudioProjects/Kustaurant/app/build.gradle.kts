@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    //Naver 지도
+    implementation("com.naver.maps:map-sdk:3.17.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

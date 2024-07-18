@@ -1,4 +1,4 @@
-package com.example.kustaurant
+package com.example.kustaurant.presentation.ui.tier
 
 data class TierModel(
     val restaurantId: Int,
