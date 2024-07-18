@@ -1,4 +1,4 @@
-package com.example.kustaurant.presentation.ui.tier
+package com.example.kustaurant
 
 data class TierModel(
     val restaurantId: Int,
@@ -9,5 +9,6 @@ data class TierModel(
     var mainTier: Int,
     val partnershipInfo: String,
     var isFavorite : Boolean,
-    var isChecked : Boolean
+    var isChecked : Boolean,
+    var alliance : String,
 )
