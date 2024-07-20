@@ -6,14 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.FragmentHomeBinding
+import com.example.kustaurant.domain.model.HomeRestaurantItem
 
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     private var selectedColor: Int = 0
     private var defaultColor: Int = 0
+    lateinit var meRestaurantList: ArrayList<HomeRestaurantItem>
+    lateinit var topRestaurantList: ArrayList<HomeRestaurantItem>
+    lateinit var meRestaurantadapter: MeRestaurantAdapter
+    lateinit var topRestaurantadapter: TopRestaurantAdapter
 
     // 예시 이미지
     private val imageUrls = listOf(
@@ -39,16 +45,34 @@ class HomeFragment : Fragment() {
         defaultColor = ContextCompat.getColor(requireContext(), R.color.cement_3)
         setupButtons()
         loadImage(selectedIndex)
-        // 예시 이미지 삽입
-        Glide.with(this)
-            .load(imageUrls[1])
-            .into(binding.homeTOPCl1Imgurl)
-        Glide.with(this)
-            .load(imageUrls[1])
-            .into(binding.homeTOPCl2Imgurl)
-        Glide.with(this)
-            .load(imageUrls[2])
-            .into(binding.homeMECl1Imgurl)
+
+        // 데이터 초기화
+        meRestaurantList = arrayListOf(
+            // 예시 데이터 추가 (실제 데이터로 대체)
+            HomeRestaurantItem(702,"홍대돈부리 건대점","일식", "중문~어대","https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20210415_47%2F1618456948211vbkJA_JPEG%2FTiiF565NRTRcluKvBW6Wk6tt.jpg", 3,"컴공 10%할인"),
+            HomeRestaurantItem(631, "홍콩포차","술집", "중문~어대",  "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20151008_10%2F1444284591891DP13D_JPEG%2F166955514861358_0.jpeg", 1,"제휴사항 없음")
+        )
+        topRestaurantList = arrayListOf(
+            // 예시 데이터 추가 (실제 데이터로 대체)
+            HomeRestaurantItem(702,"홍대돈부리 건대점","일식", "중문~어대","https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20210415_47%2F1618456948211vbkJA_JPEG%2FTiiF565NRTRcluKvBW6Wk6tt.jpg", 3,"컴공 10%할인"),
+            HomeRestaurantItem(631, "홍콩포차","술집", "중문~어대",  "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20151008_10%2F1444284591891DP13D_JPEG%2F166955514861358_0.jpeg", 2,"제휴사항 없음"),
+            HomeRestaurantItem(288, "송화산시도삭면 2호점","중식", "건입~중문",  "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220208_158%2F1644299022190h3uCp_JPEG%2F%25B3%25BB%25BA%25CE.JPG", 1,"제휴사항 없음")
+        )
+
+        // 어댑터 초기화
+        meRestaurantadapter = MeRestaurantAdapter(meRestaurantList)
+        topRestaurantadapter = TopRestaurantAdapter(topRestaurantList)
+
+        binding.homeMERv.adapter = meRestaurantadapter
+        binding.homeMERv.layoutManager =  LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+        binding.homeTOPRv.adapter = topRestaurantadapter
+        binding.homeTOPRv.layoutManager =  LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+
+        // Horizontal Margin 적용
+        val size = resources.getDimensionPixelSize(R.dimen.MY_SIZE)
+        val deco = SpaceDecoration(size)
+        binding.homeMERv.addItemDecoration(deco)
+        binding.homeTOPRv.addItemDecoration(deco)
 
         return binding.root
     }
@@ -107,4 +131,5 @@ class HomeFragment : Fragment() {
         val density = resources.displayMetrics.density
         return (dp * density).toInt()
     }
+
 }
