@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ItemHomeRvBinding
-import com.example.kustaurant.domain.model.HomeRestaurantItem
 
 class TopRestaurantAdapter(var topRestaurantList: ArrayList<HomeRestaurantItem>): RecyclerView.Adapter<TopRestaurantAdapter.ViewHolder>(){
 

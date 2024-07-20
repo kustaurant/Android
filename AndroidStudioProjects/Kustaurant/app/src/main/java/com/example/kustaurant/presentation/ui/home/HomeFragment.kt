@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
+import androidx.viewpager2.widget.ViewPager2
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.FragmentHomeBinding
-import com.example.kustaurant.domain.model.HomeRestaurantItem
 
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
@@ -43,8 +42,8 @@ class HomeFragment : Fragment() {
 
         selectedColor = ContextCompat.getColor(requireContext(), R.color.cement_4)
         defaultColor = ContextCompat.getColor(requireContext(), R.color.cement_3)
+        setupViewPager()
         setupButtons()
-        loadImage(selectedIndex)
 
         // 데이터 초기화
         meRestaurantList = arrayListOf(
@@ -77,6 +76,18 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    private fun setupViewPager() {
+        val adapter = HomeAdBannerPagerAdapter(imageUrls)
+        binding.homeAdBanner.adapter = adapter
+
+        binding.homeAdBanner.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                updateButtonState(position)
+            }
+        })
+    }
+
     private fun setupButtons(){
         val buttons = listOf(
             binding.homeBtn1,
@@ -89,7 +100,6 @@ class HomeFragment : Fragment() {
         buttons.forEachIndexed { index, button ->
             button.setOnClickListener{
                 updateButtonState(index)
-                loadImage(index)
             }
         }
 
@@ -120,16 +130,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadImage(index: Int){
-        val imageUrl = imageUrls[index]
-        Glide.with(this)
-            .load(imageUrl)
-            .into(binding.homeAdBanner)
-    }
-
     private fun dpToPx(dp: Int): Int {
         val density = resources.displayMetrics.density
         return (dp * density).toInt()
     }
-
 }

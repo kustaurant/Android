@@ -1,4 +1,4 @@
-package com.example.kustaurant.domain.model
+package com.example.kustaurant.presentation.ui.home
 
 data class HomeRestaurantItem(
     val restaurantId: Int, // 아이디
