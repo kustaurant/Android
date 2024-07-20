@@ -1,99 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Start Guideline -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+    <data>
 
-    <!-- End Guideline -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
-
+        <variable
+            name="viewModel"
+            type="com.example.kustaurant.presentation.ui.tier.TierListViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/middle_bar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:flow_verticalAlign="baseline"
-        app:layout_constraintDimensionRatio="360:35"
-        app:layout_constraintEnd_toEndOf="@id/gl_end"
-        app:layout_constraintStart_toStartOf="@id/gl_start"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:context=".ui.TierFragment">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/btn_category"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/circle_background"
-            android:backgroundTint="@color/signature_1"
-            android:padding="4dp"
-            android:src="@drawable/ic_category"
-            app:layout_constraintBottom_toBottomOf="@id/middle_bar"
-            app:layout_constraintStart_toStartOf="@id/middle_bar"
-            android:contentDescription="@string/category_btn_info" />
-
-        <TextView
+        <!-- Start Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
-            app:layout_constraintEnd_toEndOf="@id/middle_bar"
-            app:layout_constraintTop_toTopOf="@id/middle_bar"
-            app:layout_constraintBottom_toBottomOf="@id/middle_bar"
-            android:text="@string/tier_info"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_tier"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/gl_end"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/gl_start"
-        app:layout_constraintTop_toBottomOf="@id/middle_bar"
-        app:layout_constraintVertical_bias="1.0"
-        tools:listitem="@layout/item_restaurant_expand" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp">
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <!-- End Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
 
-        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/middle_bar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:flow_verticalAlign="baseline"
+            app:layout_constraintDimensionRatio="360:35"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".ui.TierFragment">
+
+            <ImageView
+                android:id="@+id/btn_category"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@color/signature_1"
+                android:contentDescription="@string/category_btn_info"
+                android:padding="4dp"
+                android:src="@drawable/ic_category"
+                app:layout_constraintBottom_toBottomOf="@id/middle_bar"
+                app:layout_constraintStart_toStartOf="@id/middle_bar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tier_info"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/middle_bar"
+                app:layout_constraintEnd_toEndOf="@id/middle_bar"
+                app:layout_constraintTop_toTopOf="@id/middle_bar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_tier"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintTop_toBottomOf="@id/middle_bar"
+            tools:listitem="@layout/item_restaurant_expand" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_expand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:contentDescription="@string/expand_reduction_fab_info"
-            android:src="@drawable/ic_expand"
-            app:backgroundTint="@color/signature_1"
-            app:layout_anchor="@+id/linearLayout"
-            app:layout_anchorGravity="bottom|center" />
+            android:onClick="@{() -> viewModel.toggleExpand()}"
+            android:src="@{viewModel.isExpanded ? @drawable/ic_reduce : @drawable/ic_expand}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -2,7 +2,6 @@ package com.example.kustaurant.presentation.ui.tier
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.kustaurant.TierListFragment
 
 class TierPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
