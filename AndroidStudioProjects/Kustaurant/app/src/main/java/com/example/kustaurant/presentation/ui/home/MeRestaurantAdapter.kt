@@ -15,7 +15,7 @@ class MeRestaurantAdapter(var meRestaurantList: ArrayList<HomeRestaurantItem>): 
             binding.homePosition.text = restaurant.restaurantPosition
             binding.homeName.text = restaurant.restaurantName
             binding.homeBenefit.text = restaurant.partnershipInfo
-//            binding.homeMEStar.text = restaurant.star 별점
+            binding.homeStar.text = restaurant.restaurantScore.toString()
 
             val tierDrawable = when(restaurant.mainTier){
                 1-> R.drawable.ic_rank_1

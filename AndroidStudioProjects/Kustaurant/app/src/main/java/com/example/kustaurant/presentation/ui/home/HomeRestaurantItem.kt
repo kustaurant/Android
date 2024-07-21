@@ -7,5 +7,6 @@ data class HomeRestaurantItem(
     val restaurantPosition: String, // 위치
     val restaurantImgUrl: String, // 이미지
     val mainTier: Int, // 티어
-    val partnershipInfo: String // 제휴
+    val partnershipInfo: String, // 제휴
+    val restaurantScore: Double // 별점
 )
