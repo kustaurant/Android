@@ -7,10 +7,10 @@ import com.bumptech.glide.Glide
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ItemHomeRvBinding
 
-class TopRestaurantAdapter(var topRestaurantList: ArrayList<HomeRestaurantItem>): RecyclerView.Adapter<TopRestaurantAdapter.ViewHolder>(){
+class TopRestaurantAdapter(var topRestaurantList: ArrayList<RestaurantModel>): RecyclerView.Adapter<TopRestaurantAdapter.ViewHolder>(){
 
     inner class ViewHolder(val binding: ItemHomeRvBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(restaurant: HomeRestaurantItem){
+        fun bind(restaurant: RestaurantModel){
             binding.homeCuisine.text = restaurant.restaurantCuisine
             binding.homePosition.text = restaurant.restaurantPosition
             binding.homeName.text = restaurant.restaurantName

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tier_rv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -59,10 +60,9 @@
         android:contentDescription="@string/restaurant_favorite_info" />
 
     <TextView
-        android:id="@+id/restaurantId"
+        android:id="@+id/restaurantRank"
         android:layout_width="28dp"
         android:layout_height="match_parent"
-        android:text="@{restaurant.restaurantCnt}"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/restaurantName"
@@ -80,7 +80,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/evaluationImg"
-        app:layout_constraintStart_toEndOf="@id/restaurantId"
+        app:layout_constraintStart_toEndOf="@id/restaurantRank"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="식당 이름 입니다."
@@ -88,14 +88,28 @@
         app:layout_constraintBaseline_toBaselineOf="@id/evaluationImg" />
 
     <TextView
-        android:id="@+id/restaurantDetails"
-        android:layout_width="0dp"
+        android:id="@+id/restaurantCuisine"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@{restaurant.restaurantDetails}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/restaurantId"
         app:layout_constraintTop_toBottomOf="@id/restaurantName"
-        tools:text="일식 | 건입~중문" />
+        app:layout_constraintStart_toEndOf="@id/restaurantRank"
+        android:text="일식"/>
+
+    <TextView
+        android:id="@+id/home_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/restaurantCuisine"
+        app:layout_constraintTop_toTopOf="@id/restaurantCuisine"
+        android:text="  ㅣ  "/>
+
+    <TextView
+        android:id="@+id/restaurantPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/home_divider"
+        app:layout_constraintTop_toTopOf="@id/restaurantCuisine"
+        android:text="중문 ~ 어대"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
