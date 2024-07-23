@@ -9,5 +9,6 @@ data class TierModel(
     var mainTier: Int,
     val partnershipInfo: String,
     var isFavorite : Boolean,
-    var isChecked : Boolean
+    var isChecked : Boolean,
+    var alliance : String,
 )

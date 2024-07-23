@@ -1,4 +1,4 @@
-package com.example.kustaurant
+package com.example.kustaurant.presentation.ui.tier
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
