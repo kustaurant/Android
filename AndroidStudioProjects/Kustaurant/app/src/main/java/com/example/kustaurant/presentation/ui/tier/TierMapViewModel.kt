@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kustaurant.data.model.TierMapData
 import com.example.kustaurant.domain.usecase.GetTierMapDataUseCase
-import com.naver.maps.geometry.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,8 +30,3 @@ class TierMapViewModel @Inject constructor(
 }
 
 
-data class TierMapData(
-    val polygonCoords: List<LatLng>,
-    val solidLines: List<List<LatLng>>,
-    val dashedLines: List<List<LatLng>>
-)

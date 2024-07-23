@@ -1,7 +1,7 @@
 package com.example.kustaurant.domain.usecase
 
+import com.example.kustaurant.data.model.TierMapData
 import com.example.kustaurant.domain.repository.MapRepository
-import com.example.kustaurant.presentation.ui.tier.TierMapData
 import javax.inject.Inject
 
 class GetTierMapDataUseCase @Inject constructor(

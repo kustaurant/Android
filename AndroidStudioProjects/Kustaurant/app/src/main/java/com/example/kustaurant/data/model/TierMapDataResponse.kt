@@ -1,12 +1,9 @@
 package com.example.kustaurant.data.model
 
 data class TierMapDataResponse(
-    val polygonCoords: List<LatLngResponse>,
-    val solidLines: List<List<LatLngResponse>>,
-    val dashedLines: List<List<LatLngResponse>>
-)
-
-data class LatLngResponse(
-    val latitude: Double,
-    val longitude: Double
+    val solidPolygonCoordsList: List<List<LatLngResponse>>,
+    val dashedPolygonCoordsList: List<List<LatLngResponse>>,
+    val tieredRestaurants: List<RestaurantResponse>,
+    val nonTieredRestaurants: List<NonTieredRestaurantResponse>,
+    val minZoom: Int
 )

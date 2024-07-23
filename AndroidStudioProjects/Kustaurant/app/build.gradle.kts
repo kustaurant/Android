@@ -50,7 +50,7 @@ kapt {
 
 dependencies {
     //Naver 지도
-    implementation("com.naver.maps:map-sdk:3.17.0")
+    implementation(libs.naver.maps)
 
     //by viewModels() 사용
     implementation(libs.androidx.activity.ktx)
@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.okhttp.urlconnection)
+    implementation(libs.material)
+    implementation(libs.androidx.databinding.compiler)
     kapt(libs.hilt.android.compiler)
 
     //Retrofit

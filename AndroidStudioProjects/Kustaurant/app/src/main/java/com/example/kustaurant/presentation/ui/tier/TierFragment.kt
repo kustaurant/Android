@@ -39,5 +39,8 @@ class TierFragment : Fragment() {
                 else -> null
             }
         }.attach()
+
+
+        viewPager.isUserInputEnabled = false
     }
 }
