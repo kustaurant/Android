@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingVertical="6dp"
+    android:paddingHorizontal="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/all_radius_6_none">
+
+    <ImageView
+        android:id="@+id/iv_tier"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_example_tier_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:text="일식 1티어"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toEndOf="@id/iv_tier"
+        app:layout_constraintTop_toTopOf="@id/iv_tier"
+        app:layout_constraintBottom_toBottomOf="@id/iv_tier"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
