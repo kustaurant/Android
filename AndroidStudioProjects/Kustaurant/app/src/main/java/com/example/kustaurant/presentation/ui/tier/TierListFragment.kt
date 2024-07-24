@@ -5,16 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kustaurant.TierListAdapter
 import com.example.kustaurant.databinding.FragmentTierListBinding
-
+import dagger.hilt.android.AndroidEntryPoint
+@AndroidEntryPoint
 class TierListFragment : Fragment() {
 
     private lateinit var binding: FragmentTierListBinding
-    private val viewModel: TierListViewModel by viewModels()
+    private val viewModel: TierViewModel by activityViewModels()
     private lateinit var tierAdapter: TierListAdapter
 
     override fun onCreateView(
@@ -32,6 +33,7 @@ class TierListFragment : Fragment() {
         setupRecyclerView()
         observeViewModel()
         setupScrollListener()
+        setupCategoryButton()
     }
 
     private fun setupRecyclerView() {
@@ -66,4 +68,21 @@ class TierListFragment : Fragment() {
             }
         })
     }
+
+    private fun setupCategoryButton() {
+        binding.btnCategory.setOnClickListener {
+            val fragment = TierCategoryFragment().apply {
+                arguments = Bundle().apply {
+                    putInt("fromTabIndex", 0) // Assuming 0 is the index for the list tab
+                }
+            }
+            (requireParentFragment() as? TierFragment)?.let {
+                it.binding.viewPager.currentItem = 0 // Index of TierCategoryFragment in the ViewPager
+            }
+        }
+    }
+
+
 }
+
+

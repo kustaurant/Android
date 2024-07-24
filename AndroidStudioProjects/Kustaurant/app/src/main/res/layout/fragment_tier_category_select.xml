@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.kustaurant.presentation.ui.tier.TierViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/category_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="카테고리"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/type_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="종류"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/category_label" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/type_toggle_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/type_label">
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_ALL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="전체"
+                    android:textOn="전체" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_KO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="한식"
+                    android:textOn="한식" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_JA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="일식"
+                    android:textOn="일식" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_CH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="중식"
+                    android:textOn="중식" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_WE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="양식"
+                    android:textOn="양식" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_AS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="아시안"
+                    android:textOn="아시안" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_ME"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="고기"
+                    android:textOn="고기" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_CK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="치킨"
+                    android:textOn="치킨" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_SE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="해산물"
+                    android:textOn="해산물" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_HP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="햄버거/피자"
+                    android:textOn="햄버거/피자" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_BS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="분식"
+                    android:textOn="분식" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_PU"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="술집"
+                    android:textOn="술집" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_CA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="카페/디저트"
+                    android:textOn="카페/디저트" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_BA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="베이커리"
+                    android:textOn="베이커리" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_SA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="샐러드"
+                    android:textOn="샐러드" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_menu_JH"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="제휴업체"
+                    android:textOn="제휴업체" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <TextView
+                android:id="@+id/situation_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="상황"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/type_toggle_group" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/situation_toggle_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/situation_label">
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_ALL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="전체"
+                    android:textOn="전체" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_ONE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="1~2인"
+                    android:textOn="1~2인" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_TWO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="2~4인"
+                    android:textOn="2~4인" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_THREE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="5인 이상"
+                    android:textOn="5인 이상" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_FOUR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="단체 회식"
+                    android:textOn="단체 회식" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_FIVE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="배달"
+                    android:textOn="배달" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_SIX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="야식"
+                    android:textOn="야식" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_SEVEN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="친구 초대"
+                    android:textOn="친구 초대" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_EIGHT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="데이트"
+                    android:textOn="데이트" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_situation_NINE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="소개팅"
+                    android:textOn="소개팅" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+            >
+
+            <TextView
+                android:id="@+id/location_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="위치"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/situation_toggle_group" />
+
+            <TextView
+                android:id="@+id/location_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/location_info"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/situation_toggle_group" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/location_toggle_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/location_label">
+
+                <ToggleButton
+                    android:id="@+id/toggle_location_ALL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="전체"
+                    android:textOn="전체" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_location_L1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="건입~중문"
+                    android:textOn="건입~중문" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_location_L2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="중문~어대"
+                    android:textOn="중문~어대" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_location_L3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="후문"
+                    android:textOn="후문" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_location_L4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="정문"
+                    android:textOn="정문" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_location_L5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/btn_toggle_background"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/cement_4"
+                    android:textOff="구의역"
+                    android:textOn="구의역" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+            >
+
+            <Button
+                android:id="@+id/apply_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/circle_button"
+                android:backgroundTint="@color/cement_3"
+                android:text="적용하기"
+                android:textColor="@color/cement_4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/location_toggle_group" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

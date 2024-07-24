@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface MapApi {
     @GET("/api/v1/tier/map")
-    suspend fun getTierMapData(
+    suspend fun getTierCategoryData(
         @Query("cuisines") cuisines: String,
         @Query("situations") situations: String,
         @Query("locations") locations: String

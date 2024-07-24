@@ -21,7 +21,7 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (isExpanded) VIEW_TYPE_REDUCED else VIEW_TYPE_EXPANDED
+        return if (isExpanded) VIEW_TYPE_EXPANDED else VIEW_TYPE_REDUCED
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -54,7 +54,7 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
             binding.restaurantTextName.text = item.restaurantName
             binding.restaurantTextDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
 
-            if(item.restaurantImgUrl.isEmpty()) {
+            if (item.restaurantImgUrl.isEmpty()) {
                 Glide.with(binding.root)
                     .load(R.drawable.img_default_restaurant)
                     .into(binding.restaurantImage)
@@ -64,17 +64,17 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
                     .into(binding.restaurantImage)
             }
 
-            when(item.mainTier) {
+            when (item.mainTier) {
                 1 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_1)
                 2 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_2)
                 3 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_3)
-                else -> binding.restaurantTier.setImageDrawable(null)
+                4-> binding.restaurantTier.setImageResource(R.drawable.ic_rank_4)
+                else -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_all)
             }
 
             // Set visibility for favorite and evaluation icons
             binding.favoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
-            binding.evaluationImg.visibility = if (item.isChecked) View.VISIBLE else View.GONE
-
+            binding.evaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
         }
     }
 
@@ -84,7 +84,7 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
             binding.restaurantTextName.text = item.restaurantName
             binding.restaurantTextDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
 
-            if(item.restaurantImgUrl.isEmpty()) {
+            if (item.restaurantImgUrl.isEmpty()) {
                 Glide.with(binding.root)
                     .load(R.drawable.img_default_restaurant)
                     .into(binding.restaurantImage)
@@ -94,7 +94,7 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
                     .into(binding.restaurantImage)
             }
 
-            when(item.mainTier) {
+            when (item.mainTier) {
                 1 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_1)
                 2 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_2)
                 3 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_3)
@@ -102,15 +102,14 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
             }
 
             binding.favoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
-            binding.evaluationImg.visibility = if (item.isChecked) View.VISIBLE else View.GONE
+            binding.evaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
 
-            if(item.alliance.isEmpty()) {
-                binding.restaurantTextAlliance.text = item.alliance
+            binding.restaurantTextAlliance.text = if (item.partnershipInfo.isNotEmpty()) {
+                item.partnershipInfo
             } else {
-                binding.restaurantTextAlliance.text = "제휴 해당사항 없음"
+                "제휴 해당사항 없음"
             }
         }
-
     }
 
     companion object {

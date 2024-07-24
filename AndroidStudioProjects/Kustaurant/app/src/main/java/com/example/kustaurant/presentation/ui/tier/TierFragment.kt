@@ -5,28 +5,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
-import com.example.kustaurant.R
+import com.example.kustaurant.databinding.FragmentTierBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TierFragment : Fragment() {
+    private var _binding: FragmentTierBinding? = null
+    val binding get() = _binding!!
+
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_tier, container, false)
+    ): View {
+        _binding = FragmentTierBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewPager = view.findViewById(R.id.view_pager)
-        tabLayout = view.findViewById(R.id.tab_layout)
+        viewPager = binding.viewPager
+        tabLayout = binding.tabLayout
 
         // Set up the ViewPager with the sections adapter.
         val adapter = TierPagerAdapter(this)
@@ -40,7 +47,11 @@ class TierFragment : Fragment() {
             }
         }.attach()
 
-
         viewPager.isUserInputEnabled = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

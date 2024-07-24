@@ -1,7 +1,7 @@
 package com.example.kustaurant.data.di
 
-import com.example.kustaurant.data.repository.MapRepositoryImpl
-import com.example.kustaurant.domain.repository.MapRepository
+import com.example.kustaurant.data.repository.TierRepositoryImpl
+import com.example.kustaurant.domain.repository.TierRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,6 +15,6 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindMapRepository(
-        mapRepositoryImpl: MapRepositoryImpl
-    ): MapRepository
+        tierRepositoryImpl: TierRepositoryImpl
+    ): TierRepository
 }

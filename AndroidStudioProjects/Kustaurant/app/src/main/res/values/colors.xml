@@ -4,6 +4,10 @@
     <color name="white">#FFFFFFFF</color>
 
 
+    <!-- 지도 색 관련 -->
+    <color name="polygon">#3943AB38</color>
+    <color name="polygon_line">#43AB38</color>
+
     <!-- 시그니처 -->
     <color name="signature_1">#43AB38</color>
     <color name="signature_2">#046B40</color>

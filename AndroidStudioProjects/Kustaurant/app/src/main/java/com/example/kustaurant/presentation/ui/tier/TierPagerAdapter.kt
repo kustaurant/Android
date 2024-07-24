@@ -5,13 +5,16 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class TierPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = 2
+    override fun getItemCount(): Int {
+        return 3
+    }
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> TierListFragment()
             1 -> TierMapFragment()
-            else -> throw IllegalStateException("Unexpected position $position")
+            2 -> TierCategoryFragment()
+            else -> throw IllegalStateException("Invalid position: $position")
         }
     }
 }

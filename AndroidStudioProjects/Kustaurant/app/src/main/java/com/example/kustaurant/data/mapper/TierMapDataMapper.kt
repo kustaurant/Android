@@ -3,11 +3,11 @@ package com.example.kustaurant.data.mapper
 import android.util.Log
 import com.example.kustaurant.data.model.NonTieredRestaurantGroup
 import com.example.kustaurant.data.model.Restaurant
-import com.example.kustaurant.data.model.TierMapData
+import com.example.kustaurant.data.model.TierListData
 import com.example.kustaurant.data.model.TierMapDataResponse
 import com.naver.maps.geometry.LatLng
 
-fun TierMapDataResponse.toTierMapData(): TierMapData {
+fun TierMapDataResponse.toTierMapData(): TierListData {
     val polygonCoords = this.solidPolygonCoordsList.flatten().map { LatLng(it.x, it.y) }
     val solidLines = this.solidPolygonCoordsList.map { line ->
         if (line.isNotEmpty() && line.first() != line.last()) {
@@ -69,7 +69,7 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
     Log.d("TierMapDataMapper", "Non-Tiered Restaurants: $nonTieredRestaurants")
 
 
-    return TierMapData(
+    return TierListData(
         polygonCoords = polygonCoords,
         solidLines = solidLines,
         dashedLines = dashedLines,

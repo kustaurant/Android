@@ -41,6 +41,13 @@ android {
         jvmTarget = "17"
     }
 
+    packagingOptions {
+        resources {
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/NOTICE.md"
+        }
+    }
 }
 
 // Allow references to generated code
@@ -49,32 +56,34 @@ kapt {
 }
 
 dependencies {
-    //Naver 지도
+
+    implementation (libs.flexbox)
+
+    // Naver 지도
     implementation(libs.naver.maps)
 
-    //by viewModels() 사용
+    // by viewModels() 사용
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment.ktx)
 
-    //ViewModelProvider 사용
+    // ViewModelProvider 사용
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    //Hilt
+    // Hilt
     implementation(libs.hilt.android)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.okhttp.urlconnection)
-    implementation(libs.material)
     implementation(libs.androidx.databinding.compiler)
+    implementation(libs.google.material)
     kapt(libs.hilt.android.compiler)
 
-    //Retrofit
+    // Retrofit
     implementation(libs.retrofit)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.glide)

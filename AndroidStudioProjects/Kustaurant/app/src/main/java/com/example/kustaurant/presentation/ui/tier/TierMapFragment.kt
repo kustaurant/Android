@@ -1,5 +1,6 @@
 package com.example.kustaurant.presentation.ui.tier
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,13 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.kustaurant.R
 import com.example.kustaurant.data.model.NonTieredRestaurantGroup
 import com.example.kustaurant.data.model.Restaurant
-import com.example.kustaurant.data.model.TierMapData
+import com.example.kustaurant.data.model.TierListData
 import com.example.kustaurant.databinding.FragmentTierMapBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
@@ -25,12 +27,11 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PolygonOverlay
 import com.naver.maps.map.overlay.PolylineOverlay
 import dagger.hilt.android.AndroidEntryPoint
-
 @AndroidEntryPoint
 class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding: FragmentTierMapBinding
-    private val viewModel: TierMapViewModel by viewModels()
+    private val viewModel: TierViewModel by activityViewModels()
     private lateinit var naverMap: NaverMap
 
     // 오버레이 리스트
@@ -57,23 +58,41 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
+        setupCategoryButton()
+
         return binding.root
     }
+
+    private fun setupCategoryButton() {
+        binding.btnCategory.setOnClickListener {
+            val fragment = TierCategoryFragment().apply {
+                arguments = Bundle().apply {
+                    putInt("fromTabIndex", 1) // Assuming 1 is the index for the map tab
+                }
+            }
+            (requireParentFragment() as? TierFragment)?.let {
+                it.binding.viewPager.currentItem = 1 // Index of TierCategoryFragment in the ViewPager
+            }
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-
-        // 필요한 쿼리 파라미터를 전달하여 데이터 로드
-        val cuisines = "ALL"
-        val situations = "ALL"
-        val locations = "ALL"
-        viewModel.loadMapData(cuisines, situations, locations)
     }
 
     private fun observeViewModel() {
         viewModel.mapData.observe(viewLifecycleOwner) { mapData ->
-            updateMap(mapData)
+            // naverMap이 초기화된 후에 updateMap을 호출
+            if (::naverMap.isInitialized) {
+                updateMap(mapData)
+            } else {
+                binding.mapView.getMapAsync {
+                    naverMap = it
+                    updateMap(mapData)
+                }
+            }
         }
     }
 
@@ -93,7 +112,6 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 updateMarkersForZoom()
             }
         }
-
     }
 
     private fun handleMapClick(coord: LatLng) {
@@ -116,70 +134,65 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showRestaurantInfo(restaurant: Restaurant) {
         binding.apply {
             bottomSheet.findViewById<TextView>(R.id.restaurantName).text = restaurant.restaurantName
-            bottomSheet.findViewById<TextView>(R.id.restaurantCuisine).text = restaurant.restaurantCuisine
+            bottomSheet.findViewById<TextView>(R.id.restaurantDetails).text = restaurant.restaurantCuisine + " | " + restaurant.restaurantPosition
 
             Glide.with(requireContext())
                 .load(restaurant.restaurantImgUrl)
                 .placeholder(R.drawable.img_default_restaurant)
                 .into(bottomSheet.findViewById(R.id.restaurantImage))
 
-            val tierImageView = bottomSheet.findViewById<ImageView>(R.id.tierImage)
+            val tierImageView = bottomSheet.findViewById<ImageView>(R.id.restaurantTier)
             val tierImageResource = when (restaurant.mainTier) {
                 1 -> R.drawable.ic_rank_1
                 2 -> R.drawable.ic_rank_2
                 3 -> R.drawable.ic_rank_3
-                else -> R.drawable.ic_star
+                4 -> R.drawable.ic_rank_4
+                else -> R.drawable.ic_rank_all
             }
             tierImageView.setImageResource(tierImageResource)
+
+            // 파트너십 정보 설정
+            val partnershipInfo = if (restaurant.partnershipInfo.isEmpty()) {
+                R.string.restaurant_no_partnership_info
+            } else {
+                restaurant.partnershipInfo
+            }
+            bottomSheet.findViewById<TextView>(R.id.restaurantPartnershipInfo).text =
+                partnershipInfo.toString()
         }
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
+
+
 
     private fun updateMarkersForZoom() {
         viewModel.mapData.value?.let { mapData ->
             updateMap(mapData)
         }
     }
-    private fun updateMap(mapData: TierMapData) {
-        // 기존 오버레이 및 마커 제거
+
+    private fun updateMap(mapData: TierListData) {
         clearOverlaysAndMarkers()
 
-        // 폴리곤 오버레이 생성
-//        if (mapData.polygonCoords.isNotEmpty()) {
-//            val polygon = PolygonOverlay().apply {
-//                coords = mapData.polygonCoords
-//                color = 0x7F43AB38 // 반투명한 초록색
-//                outlineColor = 0xFF00FF00.toInt() // 초록색 테두리
-//                outlineWidth = 2 // 테두리 두께
-//                map = naverMap
-//            }
-//            polygonOverlays.add(polygon)
-//        } else {
-//            Log.d("TierMapFragment", "Polygon Coords are empty")
-//        }
-
-        // 실선 오버레이 및 내부 영역 생성
         mapData.solidLines.forEach { line ->
             if (line.isNotEmpty()) {
-                // PolylineOverlay 생성
                 val polyline = PolylineOverlay().apply {
-                    coords = line
-                    color = 0xFF00FF00.toInt()
+                    coords = line + line.first()
+                    color = ContextCompat.getColor(requireContext(), R.color.polygon)
                     width = 2
                     joinType = PolylineOverlay.LineJoin.Round
                     map = naverMap
                 }
                 polylineOverlays.add(polyline)
 
-                // PolygonOverlay 생성
                 val polygon = PolygonOverlay().apply {
                     coords = line
-                    color = 0x7F43AB38 // 반투명한 초록색
-                    outlineColor = 0xFF00FF00.toInt() // 초록색 테두리
-                    outlineWidth = 0 // 테두리 두께
+                    color = ContextCompat.getColor(requireContext(), R.color.polygon)
+                    outlineWidth = 0
                     map = naverMap
                 }
                 polygonOverlays.add(polygon)
@@ -188,13 +201,11 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-        // 점선 오버레이 및 내부 영역 생성
         mapData.dashedLines.forEach { line ->
             if (line.isNotEmpty()) {
-                // PolylineOverlay 생성
                 val polyline = PolylineOverlay().apply {
-                    coords = line
-                    color = 0xFF00FF00.toInt()
+                    coords = line + line.first()
+                    color = ContextCompat.getColor(requireContext(), R.color.polygon)
                     width = 2
                     joinType = PolylineOverlay.LineJoin.Round
                     map = naverMap
@@ -202,12 +213,10 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 polyline.setPattern(10, 5)
                 polylineOverlays.add(polyline)
 
-                // PolygonOverlay 생성
                 val polygon = PolygonOverlay().apply {
                     coords = line
-                    color = 0x7F43AB38 // 반투명한 초록색
-                    outlineColor = 0xFF00FF00.toInt() // 초록색 테두리
-                    outlineWidth = 0 // 테두리 두께
+                    color = ContextCompat.getColor(requireContext(), R.color.polygon_line)
+                    outlineWidth = 0
                     map = naverMap
                 }
                 polygonOverlays.add(polygon)
@@ -216,10 +225,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-        // 티어가 있는 레스토랑 마커 생성
         createMarkersForTieredRestaurants(mapData.tieredRestaurants)
-
-        // 티어가 없는 레스토랑 마커 생성 (줌 레벨에 따라 필터링)
         createMarkersForNonTieredRestaurants(mapData.nonTieredRestaurants)
     }
 
@@ -266,7 +272,8 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
             1 -> OverlayImage.fromResource(R.drawable.ic_rank_1)
             2 -> OverlayImage.fromResource(R.drawable.ic_rank_2)
             3 -> OverlayImage.fromResource(R.drawable.ic_rank_3)
-            else -> OverlayImage.fromResource(R.drawable.ic_star)
+            4 -> OverlayImage.fromResource(R.drawable.ic_rank_4)
+            else -> OverlayImage.fromResource(R.drawable.ic_no_rank_position)
         }
     }
 
