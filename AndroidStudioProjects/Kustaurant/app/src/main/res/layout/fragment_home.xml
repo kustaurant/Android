@@ -28,7 +28,6 @@
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="360:60"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/home_ad_banner"
         app:layout_constraintStart_toStartOf="@id/gl_start"
         app:layout_constraintEnd_toEndOf="@id/gl_end"
         android:paddingTop="5dp">
@@ -64,73 +63,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--  Dimensino Ratio 생성-->
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/home_ad_banner"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="360:170"
-        app:layout_constraintTop_toBottomOf="@id/home_topbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:scaleType="centerCrop"/>
-
-    <LinearLayout
-        android:id="@+id/home_btn_ll"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="360:35"
-        app:layout_constraintTop_toBottomOf="@id/home_ad_banner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/home_btn1"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:id="@+id/home_btn2"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:id="@+id/home_btn3"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:id="@+id/home_btn4"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:id="@+id/home_btn5"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/home_btn_ll"
+        app:layout_constraintTop_toBottomOf="@id/home_topbar"
         app:layout_constraintStart_toStartOf="@id/gl_start"
         app:layout_constraintEnd_toEndOf="@id/gl_end"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -139,12 +75,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--  Dimensino Ratio 생성-->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/home_ad_banner"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="360:137"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:scaleType="centerCrop"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_category_cl"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintDimensionRatio="360:45"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_ad_banner"
                 android:layout_marginTop="20dp">
 
                 <TextView
@@ -775,7 +722,8 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="28dp">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/home_ME_rv"
