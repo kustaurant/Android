@@ -11,7 +11,6 @@ import com.example.kustaurant.R
 import com.example.kustaurant.databinding.FragmentTierCategorySelectBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class TierCategoryFragment : Fragment() {
 
@@ -49,6 +48,7 @@ class TierCategoryFragment : Fragment() {
         // 초기 상태에서 적용하기 버튼 상태 업데이트
         updateApplyButtonState()
     }
+
     private fun setupToggleGroups() {
         setupToggleGroup(binding.typeToggleGroup)
         setupToggleGroup(binding.situationToggleGroup)
@@ -112,29 +112,23 @@ class TierCategoryFragment : Fragment() {
         binding.applyButton.isEnabled = hasChanges && isAnyGroupSelected
         if (binding.applyButton.isEnabled) {
             binding.applyButton.setBackgroundResource(R.drawable.btn_tier_category_apply_active)
+            binding.applyButton.setTextColor(resources.getColor(R.color.white))
         } else {
             binding.applyButton.setBackgroundResource(R.drawable.btn_tier_category_apply_inactive)
+            binding.applyButton.setTextColor(resources.getColor(R.color.cement_4))
         }
     }
+
 
     private fun applyFilters() {
         val selectedType = getSelectedTogglesText(binding.typeToggleGroup)
         val selectedSituation = getSelectedTogglesText(binding.situationToggleGroup)
         val selectedLocation = getSelectedTogglesText(binding.locationToggleGroup)
 
-
         viewModel.applyFilters(selectedType, selectedSituation, selectedLocation)
 
-        viewModel.loadTierList(
-            selectedType.joinToString(", "),
-            selectedSituation.joinToString(", "),
-            selectedLocation.joinToString(", ")
-        )
-
-        // Navigate back to the respective tab
-        (requireParentFragment() as? TierFragment)?.let {
-            it.binding.viewPager.currentItem = fromTabIndex
-        }
+        // 이 Fragment 제거
+        parentFragmentManager.beginTransaction().remove(this).commit()
     }
 
     private fun clearOtherToggles(toggleGroup: ViewGroup, selectedToggle: ToggleButton) {
@@ -170,3 +164,4 @@ class TierCategoryFragment : Fragment() {
         _binding = null
     }
 }
+

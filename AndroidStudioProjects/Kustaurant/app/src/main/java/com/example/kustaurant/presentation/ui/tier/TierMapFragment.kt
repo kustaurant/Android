@@ -58,24 +58,8 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-        setupCategoryButton()
-
         return binding.root
     }
-
-    private fun setupCategoryButton() {
-        binding.btnCategory.setOnClickListener {
-            val fragment = TierCategoryFragment().apply {
-                arguments = Bundle().apply {
-                    putInt("fromTabIndex", 1) // Assuming 1 is the index for the map tab
-                }
-            }
-            (requireParentFragment() as? TierFragment)?.let {
-                it.binding.viewPager.currentItem = 1 // Index of TierCategoryFragment in the ViewPager
-            }
-        }
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -182,7 +166,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
             if (line.isNotEmpty()) {
                 val polyline = PolylineOverlay().apply {
                     coords = line + line.first()
-                    color = ContextCompat.getColor(requireContext(), R.color.polygon)
+                    color = ContextCompat.getColor(requireContext(), R.color.polygon_line)
                     width = 2
                     joinType = PolylineOverlay.LineJoin.Round
                     map = naverMap
@@ -191,7 +175,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
                 val polygon = PolygonOverlay().apply {
                     coords = line
-                    color = ContextCompat.getColor(requireContext(), R.color.polygon)
+                    color = PolygonColors.POLYGON_COLOR_WITH_ALPHA
                     outlineWidth = 0
                     map = naverMap
                 }
@@ -205,7 +189,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
             if (line.isNotEmpty()) {
                 val polyline = PolylineOverlay().apply {
                     coords = line + line.first()
-                    color = ContextCompat.getColor(requireContext(), R.color.polygon)
+                    color = ContextCompat.getColor(requireContext(), R.color.polygon_line)
                     width = 2
                     joinType = PolylineOverlay.LineJoin.Round
                     map = naverMap
@@ -215,7 +199,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
                 val polygon = PolygonOverlay().apply {
                     coords = line
-                    color = ContextCompat.getColor(requireContext(), R.color.polygon_line)
+                    color = PolygonColors.POLYGON_COLOR_WITH_ALPHA
                     outlineWidth = 0
                     map = naverMap
                 }
@@ -305,5 +289,9 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
     override fun onLowMemory() {
         super.onLowMemory()
         binding.mapView.onLowMemory()
+    }
+
+    object PolygonColors {
+        const val POLYGON_COLOR_WITH_ALPHA = 0x7F43AB38
     }
 }

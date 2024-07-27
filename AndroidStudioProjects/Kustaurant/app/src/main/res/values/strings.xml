@@ -4,7 +4,7 @@
 
     <!-- Tier Fragment 관련 -->
     <string name="restaurant_img_info">식당 대표 이미지 입니다.</string>
-    <string name="restaurant_no_partnership_info">제휴 해당 사항 없음</string>
+    <string name="restaurant_no_partnership_info">제휴 해당사항 없음</string>
     <string name="restaurant_favorite_info">즐겨찾기 아이콘 입니다.</string>
     <string name="restaurant_tier_info">식당 순위 아이콘 입니다.</string>
     <string name="restaurant_evaluation_info">평가가 완료된 아이콘 입니다.</string>
@@ -15,4 +15,6 @@
     <string name="alarm_btn_info">알람 버튼입니다.</string>
     <string name="expand_reduction_fab_info">음식점 리스트를 작게/크게 볼 수 있는 버튼입니다.</string>
     <string name="location_info"><u>위치에 대한 설명이 필요하다면?</u></string>
+    <string name="fab_expand">크게 보기</string>
+    <string name="fab_reduce">작게 보기</string>
 </resources>

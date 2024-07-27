@@ -56,9 +56,6 @@ kapt {
 }
 
 dependencies {
-
-    implementation (libs.flexbox)
-
     // Naver 지도
     implementation(libs.naver.maps)
 
@@ -71,16 +68,20 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
-    implementation(libs.converter.gson)
-    implementation(libs.logging.interceptor)
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.urlconnection)
-    implementation(libs.androidx.databinding.compiler)
-    implementation(libs.google.material)
     kapt(libs.hilt.android.compiler)
 
     // Retrofit
     implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.urlconnection)
+
+    implementation(libs.androidx.databinding.compiler)
+
+    implementation(libs.google.material)
+
+    implementation (libs.flexbox)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -8,11 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.kustaurant.databinding.ItemRestaurantExpandBinding
 import com.example.kustaurant.databinding.ItemRestaurantReductionBinding
 
+
 class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<TierModel, RecyclerView.ViewHolder>(diffUtil) {
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setExpanded(expanded: Boolean) {
         if (isExpanded != expanded) {
             isExpanded = expanded
@@ -49,30 +53,28 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
     inner class ExpandedViewHolder(private val binding: ItemRestaurantExpandBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: TierModel) {
-            binding.restaurantId.text = item.restaurantId.toString()
-
             binding.restaurantTextName.text = item.restaurantName
             binding.restaurantTextDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
 
-            if (item.restaurantImgUrl.isEmpty()) {
-                Glide.with(binding.root)
-                    .load(R.drawable.img_default_restaurant)
-                    .into(binding.restaurantImage)
-            } else {
-                Glide.with(binding.root)
-                    .load(item.restaurantImgUrl)
-                    .into(binding.restaurantImage)
-            }
+            if(item.restaurantName.isBlank())
+                binding.restaurantPartnershipInfo.text = R.string.restaurant_no_partnership_info.toString()
+            else
+                binding.restaurantPartnershipInfo.text =  item.partnershipInfo
+
+            Glide.with(binding.root)
+                .load(if (item.restaurantImgUrl.isEmpty()) R.drawable.img_default_restaurant else item.restaurantImgUrl)
+                .override(55, 55)
+                .transform(CenterCrop(), RoundedCorners(10))
+                .into(binding.restaurantImage)
 
             when (item.mainTier) {
                 1 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_1)
                 2 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_2)
                 3 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_3)
-                4-> binding.restaurantTier.setImageResource(R.drawable.ic_rank_4)
+                4 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_4)
                 else -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_all)
             }
 
-            // Set visibility for favorite and evaluation icons
             binding.favoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
             binding.evaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
         }
@@ -81,34 +83,27 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
     inner class ReducedViewHolder(private val binding: ItemRestaurantReductionBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: TierModel) {
+            binding.restaurantId.text = (position + 1).toString()
             binding.restaurantTextName.text = item.restaurantName
             binding.restaurantTextDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
 
-            if (item.restaurantImgUrl.isEmpty()) {
-                Glide.with(binding.root)
-                    .load(R.drawable.img_default_restaurant)
-                    .into(binding.restaurantImage)
-            } else {
-                Glide.with(binding.root)
-                    .load(item.restaurantImgUrl)
-                    .into(binding.restaurantImage)
-            }
+            Glide.with(binding.root)
+                .load(if (item.restaurantImgUrl.isEmpty()) R.drawable.img_default_restaurant else item.restaurantImgUrl)
+                .override(74, 74)
+                .transform(CenterCrop(), RoundedCorners(10))
+                .into(binding.restaurantImage)
 
             when (item.mainTier) {
                 1 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_1)
                 2 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_2)
                 3 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_3)
-                else -> binding.restaurantTier.setImageDrawable(null)
+                4 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_4)
+                else -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_all)
             }
 
+            // Set visibility for favorite and evaluation icons
             binding.favoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
             binding.evaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
-
-            binding.restaurantTextAlliance.text = if (item.partnershipInfo.isNotEmpty()) {
-                item.partnershipInfo
-            } else {
-                "제휴 해당사항 없음"
-            }
         }
     }
 

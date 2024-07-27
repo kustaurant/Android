@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kustaurant.TierListAdapter
 import com.example.kustaurant.databinding.FragmentTierListBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 @AndroidEntryPoint
 class TierListFragment : Fragment() {
-
     private lateinit var binding: FragmentTierListBinding
     private val viewModel: TierViewModel by activityViewModels()
     private lateinit var tierAdapter: TierListAdapter
@@ -33,7 +33,6 @@ class TierListFragment : Fragment() {
         setupRecyclerView()
         observeViewModel()
         setupScrollListener()
-        setupCategoryButton()
     }
 
     private fun setupRecyclerView() {
@@ -55,34 +54,34 @@ class TierListFragment : Fragment() {
     }
 
     private fun setupScrollListener() {
+        var isHiding = false
         binding.recyclerviewTier.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0 && binding.fabExpand.isShown) {
+                if (dy > 0 && binding.fabExpand.isShown && !isHiding) {
                     // 아래로 스크롤: FAB 숨기기
-                    binding.fabExpand.hide()
+                    isHiding = true
+                    binding.fabExpand.animate()
+                        .scaleX(0f)
+                        .scaleY(0f)
+                        .setDuration(200)
+                        .withEndAction {
+                            binding.fabExpand.visibility = View.GONE
+                            isHiding = false
+                        }
+                        .start()
                 } else if (dy < 0 && !binding.fabExpand.isShown) {
                     // 위로 스크롤: FAB 보이기
-                    binding.fabExpand.show()
+                    binding.fabExpand.visibility = View.VISIBLE
+                    binding.fabExpand.scaleX = 0f
+                    binding.fabExpand.scaleY = 0f
+                    binding.fabExpand.animate()
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(200)
+                        .start()
                 }
             }
         })
     }
-
-    private fun setupCategoryButton() {
-        binding.btnCategory.setOnClickListener {
-            val fragment = TierCategoryFragment().apply {
-                arguments = Bundle().apply {
-                    putInt("fromTabIndex", 0) // Assuming 0 is the index for the list tab
-                }
-            }
-            (requireParentFragment() as? TierFragment)?.let {
-                it.binding.viewPager.currentItem = 0 // Index of TierCategoryFragment in the ViewPager
-            }
-        }
-    }
-
-
 }
-
-

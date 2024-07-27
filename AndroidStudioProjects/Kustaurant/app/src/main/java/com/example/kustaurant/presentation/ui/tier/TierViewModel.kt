@@ -15,6 +15,8 @@ import javax.inject.Inject
 class TierViewModel @Inject constructor(
     private val getTierListDataUseCase: GetTierListDataUseCase
 ) : ViewModel() {
+    private val _filterApplied = MutableLiveData<Boolean>()
+    val filterApplied: LiveData<Boolean> = _filterApplied
 
     private val _isExpanded = MutableLiveData<Boolean>(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
@@ -38,6 +40,10 @@ class TierViewModel @Inject constructor(
     private var _initialSelectedTypes = setOf("전체")
     private var _initialSelectedSituations = setOf("전체")
     private var _initialSelectedLocations = setOf("전체")
+
+    //티어 프래그먼트에서 보여줄 카테고리들
+    private val _selectedCategories = MutableLiveData<Set<String>>()
+    val selectedCategories: LiveData<Set<String>> = _selectedCategories
 
     init {
         loadTierList("전체", "전체", "전체")
@@ -101,6 +107,25 @@ class TierViewModel @Inject constructor(
             situations.joinToString(", "),
             locations.joinToString(", ")
         )
+
+        updateSelectedCategories()
+        _filterApplied.value = true
+    }
+    fun resetFilterApplied() {
+        _filterApplied.value = false
+    }
+
+    private fun updateSelectedCategories() {
+        val categories = mutableSetOf<String>()
+        if (_initialSelectedTypes != setOf("전체")) categories.addAll(_initialSelectedTypes)
+        if (_initialSelectedSituations != setOf("전체")) categories.addAll(_initialSelectedSituations)
+        if (_initialSelectedLocations != setOf("전체")) categories.addAll(_initialSelectedLocations)
+
+        if (categories.isEmpty()) {
+            categories.add("전체")
+        }
+
+        _selectedCategories.value = categories
     }
 
     fun hasFilterChanged(currentTypes: Set<String>, currentSituations: Set<String>, currentLocations: Set<String>): Boolean {
