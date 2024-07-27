@@ -5,31 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- Start Guideline -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
-
-    <!-- End Guideline -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/middle_bar"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:flow_verticalAlign="baseline"
-        app:layout_constraintDimensionRatio="360:35"
-        app:layout_constraintEnd_toEndOf="@id/gl_end"
-        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintDimensionRatio="360:55"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".ui.TierFragment">
 
@@ -41,18 +24,42 @@
             android:backgroundTint="@color/signature_1"
             android:padding="4dp"
             android:src="@drawable/ic_category"
+            app:layout_constraintTop_toTopOf="@id/middle_bar"
             app:layout_constraintBottom_toBottomOf="@id/middle_bar"
             app:layout_constraintStart_toStartOf="@id/middle_bar"
             android:contentDescription="@string/category_btn_info" />
-
-        <TextView
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tier_wide_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="11sp"
-            app:layout_constraintEnd_toEndOf="@id/middle_bar"
-            app:layout_constraintTop_toTopOf="@id/middle_bar"
-            app:layout_constraintBottom_toBottomOf="@id/middle_bar"
-            android:text="@string/tier_info"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_category"
+            app:layout_constraintBottom_toBottomOf="@id/btn_category"
+            >
+            
+            <TextView
+                android:id="@+id/tier_wide_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wide_btn_info"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="11sp"/>
+            
+            <ImageView
+                android:id="@+id/tier_wide_iv"
+                android:layout_width="9dp"
+                android:layout_height="9dp"
+                app:layout_constraintEnd_toStartOf="@id/tier_wide_tv"
+                app:layout_constraintTop_toTopOf="@id/tier_wide_tv"
+                app:layout_constraintBottom_toBottomOf="@id/tier_wide_tv"
+                android:layout_marginEnd="2dp"
+                android:src="@drawable/ic_wide_btn"/>
+
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -61,35 +68,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/middle_bar"
         app:layout_constraintVertical_bias="1.0" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_expand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_expand"
-                app:backgroundTint="@color/signature_1"
-                android:contentDescription="@string/expand_reduction_fab_info" />
-
-        </LinearLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

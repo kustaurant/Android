@@ -6,18 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kustaurant.R
-import com.example.kustaurant.databinding.ItemRestaurantBinding
+import com.example.kustaurant.databinding.ItemWideRestaurantBinding
 import com.example.kustaurant.presentation.ui.home.RestaurantModel
 
-class TierRestaurantAdapter(var tierRestaurantList: ArrayList<RestaurantModel>): RecyclerView.Adapter<TierRestaurantAdapter.ViewHolder>(){
+class WideTierRestaurantAdapter(var tierRestaurantList: ArrayList<RestaurantModel>): RecyclerView.Adapter<WideTierRestaurantAdapter.ViewHolder>(){
 
-    inner class ViewHolder(val binding: ItemRestaurantBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(val binding: ItemWideRestaurantBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(restaurant: RestaurantModel){
             binding.restaurantCuisine.text = restaurant.restaurantCuisine
             binding.restaurantPosition.text = restaurant.restaurantPosition
             binding.restaurantName.text = restaurant.restaurantName
-
-            binding.restaurantRank.text = (position+1).toString()
+            binding.restaurantPartnershipInfo.text = restaurant.partnershipInfo
 
             val tierDrawable = when(restaurant.mainTier){
                 1-> R.drawable.ic_rank_1
@@ -45,7 +44,7 @@ class TierRestaurantAdapter(var tierRestaurantList: ArrayList<RestaurantModel>):
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding = ItemRestaurantBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = ItemWideRestaurantBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
 

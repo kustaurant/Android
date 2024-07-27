@@ -26,7 +26,7 @@
         android:id="@+id/home_topbar"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="360:50"
+        app:layout_constraintDimensionRatio="360:60"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/home_ad_banner"
         app:layout_constraintStart_toStartOf="@id/gl_start"
@@ -52,6 +52,7 @@
             android:layout_marginTop="4dp"/>
 
         <ImageView
+            android:id="@+id/btn_search"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_search"
