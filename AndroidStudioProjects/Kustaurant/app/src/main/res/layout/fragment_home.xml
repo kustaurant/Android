@@ -86,6 +86,27 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:scaleType="centerCrop"/>
 
+            <LinearLayout
+                android:layout_width="43dp"
+                android:layout_height="23dp"
+                app:layout_constraintBottom_toBottomOf="@id/home_ad_banner"
+                app:layout_constraintEnd_toEndOf="@id/home_ad_banner"
+                android:gravity="center"
+                android:background="@drawable/home_ad_banner_number"
+                android:layout_marginEnd="11dp"
+                android:layout_marginBottom="7dp"
+                >
+
+                <TextView
+                    android:id="@+id/home_ad_banner_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1/5"
+                    android:textColor="@color/cement_4"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_category_cl"
                 android:layout_width="match_parent"

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -13,8 +12,6 @@ import com.example.kustaurant.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
-    private var selectedColor: Int = 0
-    private var defaultColor: Int = 0
     lateinit var meRestaurantList: ArrayList<RestaurantModel>
     lateinit var topRestaurantList: ArrayList<RestaurantModel>
     lateinit var meRestaurantadapter: MeRestaurantAdapter
@@ -39,9 +36,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
-
-        selectedColor = ContextCompat.getColor(requireContext(), R.color.cement_4)
-        defaultColor = ContextCompat.getColor(requireContext(), R.color.cement_3)
         setupViewPager()
 
         // 데이터 초기화
@@ -82,6 +76,9 @@ class HomeFragment : Fragment() {
         binding.homeAdBanner.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                val currentPageNumber = position + 1
+                val totalPageNumber = adapter.itemCount
+                binding.homeAdBannerNumber.text = "$currentPageNumber/$totalPageNumber"
             }
         })
     }
