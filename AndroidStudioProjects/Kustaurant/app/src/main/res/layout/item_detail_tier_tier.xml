@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="9dp"
+    android:paddingVertical="6dp"
+    android:paddingHorizontal="10dp"
+    android:backgroundTint="@color/signature_2"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/all_radius_6_none">
+
+    <ImageView
+        android:id="@+id/iv_tier"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_tier_end"
+        app:layout_constraintBottom_toBottomOf="@id/tv_tier_end"
+        app:layout_constraintDimensionRatio="29:27"
+        android:src="@drawable/img_category_korea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <TextView
+        android:id="@+id/tv_tier_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toEndOf="@id/iv_tier"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="17sp"
+        android:text="일식"
+        android:fontFamily="@font/pretendard_bold"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/tv_tier_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_bold"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_tier_name"
+        android:text="1"/>
+
+    <TextView
+        android:id="@+id/tv_tier_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="티어"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toEndOf="@id/tv_tier_number"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

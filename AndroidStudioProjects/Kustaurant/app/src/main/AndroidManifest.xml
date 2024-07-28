@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Kustaurant"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.ui.detail.EvaluateActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
 

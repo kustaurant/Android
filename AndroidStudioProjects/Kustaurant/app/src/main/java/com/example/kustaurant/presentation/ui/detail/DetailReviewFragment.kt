@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.kustaurant.R
+import com.example.kustaurant.databinding.FragmentDetailReviewBinding
 
 class DetailReviewFragment : Fragment() {
+    lateinit var binding : FragmentDetailReviewBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_review, container, false)
+        binding = FragmentDetailReviewBinding.inflate(layoutInflater)
+
+        return binding.root
     }
 }

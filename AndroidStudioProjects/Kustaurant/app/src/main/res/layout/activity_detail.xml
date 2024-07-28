@@ -36,6 +36,15 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.95"/>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:elevation="1dp"
+                    android:background="@drawable/gradient_white_to_black"
+                    app:layout_constraintDimensionRatio="360:94"
+                    app:layout_constraintBottom_toBottomOf="@id/cl_store"/>
+
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_store"
                     android:layout_width="match_parent"
@@ -47,7 +56,8 @@
                         android:id="@+id/iv_store"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/img_category_korea"/>
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img_detail_example"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -56,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-23dp"
-                    android:elevation="5dp"
+                    android:elevation="1dp"
                     android:paddingVertical="23dp"
                     android:background="@drawable/all_radius_13_white"
                     app:layout_constraintTop_toBottomOf="@id/cl_store">
@@ -92,6 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
+                        android:textColor="@color/cement_6"
                         android:fontFamily="@font/pretendard_bold"
                         android:paddingTop="7dp"
                         android:paddingBottom="10dp"
@@ -115,7 +126,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:paddingEnd="9dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_community"/>
+                            android:src="@drawable/ic_location"/>
 
                         <TextView
                             android:id="@+id/tv_store_location"
@@ -188,6 +199,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="23dp"
                         android:textSize="14sp"
+                        android:textColor="@color/cement_6"
+                        android:fontFamily="@font/pretendard_regular"
                         app:layout_constraintTop_toBottomOf="@id/view_center"
                         app:layout_constraintStart_toStartOf="@id/gl_info_start"
                         android:text="@string/detail_tier_info"/>
@@ -195,7 +208,9 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_tier"
                         android:layout_width="0dp"
-                        android:layout_height="27dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        bind:listitem="@layout/item_detail_tier_tier"
                         app:layout_constraintTop_toBottomOf="@id/tv_tier_info"
                         app:layout_constraintStart_toStartOf="@id/gl_info_start"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -207,6 +222,8 @@
                         android:text="@string/detail_alliance_info"
                         android:layout_marginTop="31dp"
                         android:textSize="14sp"
+                        android:textColor="@color/cement_6"
+                        android:fontFamily="@font/pretendard_regular"
                         app:layout_constraintTop_toBottomOf="@id/rv_tier"
                         app:layout_constraintStart_toStartOf="@id/gl_info_start"/>
 
@@ -227,14 +244,14 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/gl_info_start"
-                        app:layout_constraintEnd_toEndOf="@id/gl_info_end"
-                        android:layout_marginHorizontal="48dp">
+                        app:layout_constraintEnd_toEndOf="@id/gl_info_end">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_evaluate_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/view_evaluate_center"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -245,6 +262,7 @@
                                 android:textSize="12sp"
                                 app:layout_constraintTop_toTopOf="parent"
                                 android:text="@string/detail_evaluation_count"
+                                android:textColor="@color/cement_6"
                                 app:layout_constraintStart_toStartOf="@id/tv_evaluate_count"
                                 app:layout_constraintEnd_toEndOf="@id/tv_evaluate_count"
                                 app:layout_constraintBottom_toTopOf="@id/tv_evaluate_count"/>
@@ -254,6 +272,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="18sp"
+                                android:textColor="@color/cement_6"
+                                android:fontFamily="@font/pretendard_bold"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 android:text="100개"/>
@@ -261,12 +281,14 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
+                            android:id="@+id/view_evaluate_center"
                             android:layout_width="1dp"
                             android:layout_height="0dp"
                             android:background="@color/black"
                             app:layout_constraintTop_toTopOf="@id/cl_evaluate_count"
                             app:layout_constraintBottom_toBottomOf="@id/cl_evaluate_count"
-                            app:layout_constraintStart_toEndOf="@id/cl_evaluate_count"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginHorizontal="65dp"/>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -274,6 +296,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/view_evaluate_center"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent">
 
@@ -282,6 +305,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="12sp"
+                                android:textColor="@color/cement_6"
                                 app:layout_constraintTop_toTopOf="parent"
                                 android:text="@string/detail_evaluation_grade"
                                 app:layout_constraintStart_toStartOf="@id/tv_evaluate_grade"
@@ -293,6 +317,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="18sp"
+                                android:fontFamily="@font/pretendard_bold"
+                                android:textColor="@color/cement_6"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 android:text="1.9"/>
@@ -343,19 +369,56 @@
                 app:layout_constraintGuide_percent="0.95"/>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_evaluate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginVertical="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:backgroundTint="@color/signature_1"
                 android:background="@drawable/all_radius_50_cement4"
                 android:text="@string/detail_to_evaluate"
-                app:layout_constraintDimensionRatio="261:52"/>
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/pretendard_semibold"
+                app:layout_constraintWidth_percent="0.72"/>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_star"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintTop_toTopOf="@id/btn_evaluate"
+                app:layout_constraintWidth_percent="0.07"
+                app:layout_constraintDimensionRatio="1:1"
+                android:background="@drawable/all_radius_6_yellow">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/ic_star" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="10002명"
+                app:layout_constraintTop_toBottomOf="@id/cl_star"
+                app:layout_constraintStart_toStartOf="@id/cl_star"
+                app:layout_constraintEnd_toEndOf="@id/cl_star"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
