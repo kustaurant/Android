@@ -61,6 +61,7 @@
         android:id="@+id/restaurantTextName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_medium"
         android:layout_marginTop="4dp"
         android:singleLine="true"
         android:text="@{restaurant.restaurantName}"
@@ -78,6 +79,7 @@
         android:layout_height="wrap_content"
         android:text="@{restaurant.restaurantDetails}"
         android:textSize="12sp"
+        android:fontFamily="@font/pretendard_regular"
         app:layout_constraintEnd_toStartOf="@id/restaurantTier"
         app:layout_constraintStart_toEndOf="@id/restaurantImage"
         app:layout_constraintTop_toBottomOf="@id/restaurantTextName"
@@ -90,6 +92,7 @@
         android:text="@{restaurant.restaurantTextAlliance}"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/pretendard_regular"
         app:layout_constraintStart_toEndOf="@id/restaurantImage"
         app:layout_constraintTop_toBottomOf="@id/restaurantTextDetails"
         tools:text="제휴 해당 사항 없음"/>

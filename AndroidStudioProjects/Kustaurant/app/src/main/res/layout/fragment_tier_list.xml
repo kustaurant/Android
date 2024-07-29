@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kustaurant.presentation.ui.tier.TierViewModel" />
@@ -23,6 +24,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".ui.TierFragment">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fab_expand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_background"
+                android:onClick="@{() -> viewModel.toggleExpand()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/expand_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@{viewModel.isExpanded ? @drawable/ic_reduce : @drawable/ic_expand}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:contentDescription="@string/expand_reduction_fab_info" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.isExpanded ? @string/fab_reduce : @string/fab_expand}"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@id/expand_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -34,25 +68,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/middle_bar"
             tools:listitem="@layout/item_restaurant_reduction" />
-
-        <Button
-            android:id="@+id/fab_expand"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/circle_background"
-            android:text="@{viewModel.isExpanded ? @string/fab_reduce : @string/fab_expand}"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:backgroundTint="@color/signature_1"
-            android:onClick="@{() -> viewModel.toggleExpand()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:drawableStart="@{viewModel.isExpanded ? @drawable/ic_reduce : @drawable/ic_expand}"
-            android:drawablePadding="10dp"
-        android:baselineAlignBottom="true"
-        />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -81,6 +81,7 @@
         android:text="@{restaurant.restaurantName}"
         android:textColor="#000000"
         android:textSize="16sp"
+        android:fontFamily="@font/pretendard_medium"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/evaluationImg"
         app:layout_constraintStart_toEndOf="@id/restaurantId"
@@ -96,6 +97,8 @@
         android:layout_height="wrap_content"
         android:text="@{restaurant.restaurantDetails}"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="12sp"
+        android:fontFamily="@font/pretendard_regular"
         app:layout_constraintStart_toEndOf="@id/restaurantId"
         app:layout_constraintTop_toBottomOf="@id/restaurantTextName"
         tools:text="일식 | 건입~중문" />

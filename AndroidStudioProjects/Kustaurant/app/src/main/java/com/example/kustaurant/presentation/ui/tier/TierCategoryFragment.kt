@@ -1,6 +1,7 @@
 package com.example.kustaurant.presentation.ui.tier
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,11 @@ class TierCategoryFragment : Fragment() {
 
         // 초기 상태에서 적용하기 버튼 상태 업데이트
         updateApplyButtonState()
+
+        // location_info 텍스트뷰 클릭 리스너 설정
+        binding.locationInfo.setOnClickListener {
+            navigateToMapFragment()
+        }
     }
 
     private fun setupToggleGroups() {
@@ -59,6 +65,11 @@ class TierCategoryFragment : Fragment() {
         for (i in 0 until toggleGroup.childCount) {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
             toggleButton.setOnCheckedChangeListener { _, isChecked ->
+                if(isChecked)
+                    toggleButton.setTextColor(resources.getColor(R.color.signature_1))
+                else
+                    toggleButton.setTextColor(resources.getColor(R.color.cement_4))
+
                 if (isChecked && toggleButton.text.toString() == "전체") {
                     clearOtherToggles(toggleGroup, toggleButton)
                 } else if (isChecked && hasOtherTogglesSelected(toggleGroup)) {
@@ -158,6 +169,20 @@ class TierCategoryFragment : Fragment() {
         }
         return false
     }
+    private fun navigateToMapFragment() {
+        val tierFragment = parentFragment
+        if (tierFragment != null) {
+            Log.e("TierCategoryFragment", "parentFragment class: ${tierFragment::class.java.simpleName}")
+            if (tierFragment is TierFragment) {
+                tierFragment.navigateToTab(1)
+            } else {
+                Log.e("TierCategoryFragment", "parentFragment is NOT an instance of TierFragment")
+            }
+        } else {
+            Log.e("TierCategoryFragment", "parentFragment is null")
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

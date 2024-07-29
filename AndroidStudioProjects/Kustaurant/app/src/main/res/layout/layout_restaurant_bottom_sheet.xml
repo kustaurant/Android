@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="9dp"
-    android:padding="20dp"
-    android:background="@drawable/bottom_sheet_design">
+    android:background="@drawable/bottom_sheet_design"
+    android:padding="20dp">
 
     <ImageView
         android:id="@+id/restaurantImage"
@@ -27,9 +27,9 @@
         android:layout_height="33dp"
         android:contentDescription="@string/restaurant_tier_info"
         android:src="@drawable/ic_rank_1"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/restaurantDetails"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
@@ -62,6 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:fontFamily="@font/pretendard_medium"
         android:singleLine="true"
         android:text="@{restaurant.restaurantName}"
         android:textColor="#000000"
@@ -76,6 +77,7 @@
         android:id="@+id/restaurantDetails"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_regular"
         android:text="@{restaurant.restaurantDetails}"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@id/restaurantName"
@@ -87,23 +89,24 @@
         android:id="@+id/restaurantPartnershipInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_regular"
         android:text="@{restaurant.restaurantTextAlliance}"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@id/restaurantName"
         app:layout_constraintStart_toEndOf="@id/restaurantImage"
         app:layout_constraintTop_toBottomOf="@id/restaurantDetails"
-        tools:text="제휴 해당 사항 없음"/>
+        tools:text="제휴 해당 사항 없음" />
 
     <!-- Divider Line -->
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginTop="9dp"
         android:background="@color/cement_3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="9dp"
-        app:layout_constraintTop_toBottomOf="@id/restaurantImage"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/restaurantImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

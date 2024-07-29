@@ -7,6 +7,11 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+.idea/gradle.xml
+.idea/misc.xml
+AndroidStudioProjects/Kustaurant/.idea/gradle.xml
+AndroidStudioProjects/Kustaurant/.idea/misc.xml
+AndroidStudioProjects/Kustaurant/gradle/wrapper/gradle-wrapper.properties
 .DS_Store
 /build
 /captures

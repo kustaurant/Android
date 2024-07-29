@@ -25,6 +25,8 @@
     <color name="tier_3">#FFB900</color>
     <color name="tier_4">#9BA5B0</color>
 
+    <!-- 카테고리 -->
+    <color name="cate_selected">#DDF0DB</color>
 
     <!--홈 -->
     <color name="top_gray">#838383</color>

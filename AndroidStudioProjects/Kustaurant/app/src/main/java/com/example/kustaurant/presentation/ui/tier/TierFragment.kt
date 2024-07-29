@@ -1,5 +1,6 @@
 package com.example.kustaurant.presentation.ui.tier
 
+import android.content.Context
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -36,6 +37,7 @@ class TierFragment : Fragment() {
         setupViewPager()
         setupTabLayout()
         setupCategoryButton()
+        setupBackButton()
         observeViewModel()
 
         viewModel.filterApplied.observe(viewLifecycleOwner) { applied ->
@@ -44,6 +46,8 @@ class TierFragment : Fragment() {
                 viewModel.resetFilterApplied()
             }
         }
+
+        updateCategoryLinearLayout(setOf("전체"))
     }
 
     private fun setupViewPager() {
@@ -56,8 +60,8 @@ class TierFragment : Fragment() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 binding.viewPager.currentItem = tab.position
+                handleTabSelected(tab.position)
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
@@ -65,11 +69,28 @@ class TierFragment : Fragment() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
+                handleTabSelected(position)
             }
         })
 
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("티어표"))
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("지도"))
+    }
+
+    private fun handleTabSelected(position: Int) {
+        val layoutParams = binding.selectedCategoryLinearScrollView.layoutParams as ViewGroup.MarginLayoutParams
+
+        if (position == 1) { // 지도 탭
+            layoutParams.marginEnd = 0
+        } else { // 카테고리 탭
+            layoutParams.marginEnd = context?.let { 60.dpToPx(it) }!!
+        }
+
+        binding.selectedCategoryLinearScrollView.layoutParams = layoutParams
+    }
+
+    fun Int.dpToPx(context: Context): Int {
+        return (this * context.resources.displayMetrics.density).toInt()
     }
 
     private fun setupCategoryButton() {
@@ -82,27 +103,34 @@ class TierFragment : Fragment() {
                     putInt("fromTabIndex", currentTabIndex)
                 }
             }
+
+            binding.tabCategoryText.text = "카테고리"
+            binding.tabCategoryText.visibility = View.VISIBLE
+
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit()
         }
     }
+
     private fun updateCategoryLinearLayout(categories: Set<String>) {
         binding.selectedCategoryLinearLayout.removeAllViews()
 
         categories.forEach { category ->
             val textView = TextView(context).apply {
                 text = category
-                setPadding(16, 8, 16, 8)
-                background = ContextCompat.getDrawable(context, R.drawable.btn_tier_category_apply_active)
+                setPadding(16, 4, 16, 4) // paddingLeft, paddingTop, paddingRight, paddingBottom
+                background = ContextCompat.getDrawable(context, R.drawable.btn_tier_catetory_selected)
                 setTextColor(ContextCompat.getColor(context, R.color.signature_1))
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                minWidth = 0
+                minHeight = 0
                 layoutParams = ViewGroup.MarginLayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    setMargins(8, 0, 8, 0)
+                    setMargins(0, 0, 8, 0) // layout_marginEnd, layout_marginBottom
                 }
             }
             binding.selectedCategoryLinearLayout.addView(textView)
@@ -110,7 +138,9 @@ class TierFragment : Fragment() {
     }
 
 
+
     private fun showMainContent() {
+        binding.tabCategoryText.visibility = View.GONE
         binding.viewPager.visibility = View.VISIBLE
         binding.tabLayout.visibility = View.VISIBLE
         binding.middleBar.visibility = View.VISIBLE
@@ -129,6 +159,20 @@ class TierFragment : Fragment() {
         }
     }
 
+    private fun setupBackButton() {
+        binding.btnBack.setOnClickListener {
+            if (parentFragmentManager.backStackEntryCount > 0) {
+                showMainContent()
+                parentFragmentManager.popBackStack()
+            } else {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
+    }
+
+    fun navigateToTab(tabIndex: Int) {
+        binding.viewPager.currentItem = tabIndex
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
