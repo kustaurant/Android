@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_top_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.03"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            app:layout_constraintTop_toTopOf="@id/gl_top_bar"
+            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintEnd_toEndOf="@id/gl_end">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="평가하기"
+                android:textColor="@color/white"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textSize="17sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/cl_store"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/signature_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="360:188"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_store_info"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="-23dp"
+            android:elevation="5dp"
+            android:paddingVertical="23dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/all_radius_13_white"
+            app:layout_constraintTop_toBottomOf="@id/cl_store">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_info_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_info_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95"/>
+
+
+            <TextView
+                android:id="@+id/tv_store_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@id/gl_info_start"
+                android:text="일식 | 중문 ~ 어대"/>
+
+            <TextView
+                android:id="@+id/tv_store_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:fontFamily="@font/pretendard_bold"
+                android:paddingTop="7dp"
+                android:paddingBottom="10dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_store_category"
+                app:layout_constraintStart_toStartOf="@id/gl_info_start"
+                android:text="명량핫도그"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ll_store_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_store_name"
+                app:layout_constraintStart_toStartOf="@id/gl_info_start">
+
+                <ImageView
+                    android:id="@+id/iv_store_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:paddingEnd="9dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_location"/>
+
+                <TextView
+                    android:id="@+id/tv_store_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toEndOf="@id/iv_store_location"
+                    app:layout_constraintTop_toTopOf="@id/iv_store_location"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_store_location"
+                    android:layout_gravity="center_horizontal|top"
+                    android:text="수원시 영통구 광교호수공원로 45"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view_center"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:background="@color/cement_3"
+                android:layout_marginTop="23dp"
+                app:layout_constraintStart_toStartOf="@id/gl_info_start"
+                app:layout_constraintEnd_toEndOf="@id/gl_info_end"
+                app:layout_constraintBottom_toTopOf="@id/tv_tier_info"
+                app:layout_constraintTop_toBottomOf="@id/ll_store_location"/>
+
+            <TextView
+                android:id="@+id/tv_tier_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dp"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/view_center"
+                app:layout_constraintStart_toStartOf="@id/gl_info_start"
+                android:text="@string/evaluate_select_keyword"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_keyword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@id/gl_info_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_tier_info"/>
+
+            <View
+                android:id="@+id/view_bottom_center"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:background="@color/cement_3"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="@id/gl_info_start"
+                app:layout_constraintEnd_toEndOf="@id/gl_info_end"
+                app:layout_constraintTop_toBottomOf="@id/rv_keyword"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/evaluate_select_grade"
+                android:layout_marginTop="23dp"
+                app:layout_constraintTop_toBottomOf="@id/view_bottom_center"
+                app:layout_constraintStart_toStartOf="@id/gl_info_start"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

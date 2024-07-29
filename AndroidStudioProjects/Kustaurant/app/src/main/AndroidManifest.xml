@@ -15,7 +15,14 @@
         android:theme="@style/Theme.Kustaurant"
         tools:targetApi="31">
         <activity
+<<<<<<< HEAD
             android:name=".presentation.ui.detail.DetailActivity"
+=======
+            android:name=".presentation.ui.detail.EvaluateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+>>>>>>> 4a74d016262c23d577c655f2da7006fce96aed1d
             android:exported="false" />
 
         <meta-data

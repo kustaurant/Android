@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cl_keyword"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="7dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/all_radius_100">
+
+    <TextView
+        android:id="@+id/tv_keyword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/cement_4"
+        android:fontFamily="@font/pretendard_regular"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="16dp"
+        android:text="혼밥"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
