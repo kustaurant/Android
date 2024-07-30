@@ -1,40 +1,29 @@
 package com.example.kustaurant.presentation.ui.detail
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemClickListener
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kustaurant.R
-import com.example.kustaurant.databinding.ItemDetailMenuBinding
 import com.example.kustaurant.databinding.ItemEvaluateKeywordBinding
 
 class EvaluateKeyWordAdapter(private val keywords: ArrayList<String>) : RecyclerView.Adapter<EvaluateKeyWordAdapter.ViewHolder>() {
     private val selectedPositions: MutableList<Boolean> = MutableList(keywords.size) { false }
 
     inner class ViewHolder(val binding: ItemEvaluateKeywordBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.clKeyword.setBackgroundResource(R.drawable.button_keyword_selector)
+            binding.tvKeyword.setTextColor(ContextCompat.getColorStateList(binding.root.context, R.color.button_keyword_text))
+        }
+
         fun bind(position: Int) {
             val item = keywords[position]
-            val isSelected = selectedPositions[position]
-
             binding.tvKeyword.text = item
-            updateUI(isSelected, binding)
+            binding.clKeyword.isSelected = selectedPositions[position]
 
             binding.clKeyword.setOnClickListener {
                 selectedPositions[position] = !selectedPositions[position]
-                updateUI(selectedPositions[position], binding)
-            }
-        }
-
-        private fun updateUI(isSelected: Boolean, binding: ItemEvaluateKeywordBinding) {
-            if (isSelected) {
-                binding.clKeyword.setBackgroundColor(binding.root.context.getColor(R.color.tier_2))
-                binding.clKeyword.setBackgroundResource(R.drawable.all_radius_100)
-                binding.tvKeyword.setTextColor(binding.root.context.getColor(R.color.signature_1))
-            } else {
-                binding.clKeyword.setBackgroundResource(R.drawable.all_radius_100)
-                binding.tvKeyword.setTextColor(binding.root.context.getColor(R.color.cement_4))
+                binding.clKeyword.isSelected = selectedPositions[position]
             }
         }
     }

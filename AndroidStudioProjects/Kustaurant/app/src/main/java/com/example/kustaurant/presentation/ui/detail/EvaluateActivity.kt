@@ -1,6 +1,7 @@
 package com.example.kustaurant.presentation.ui.detail
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.widget.AdapterView.OnItemClickListener
@@ -63,11 +64,11 @@ class EvaluateActivity : AppCompatActivity() {
                     else -> "선택오류"
                 }
             if(rating == 0f){
+                binding.btnSubmit.setBackgroundResource(R.drawable.all_radius_50_cement3)
                 binding.btnSubmit.setTextColor(getColor(R.color.cement_4))
-                binding.btnSubmit.setBackgroundColor(getColor(R.color.cement_3))
             } else {
-                binding.btnSubmit.setTextColor(getColor(R.color.white))
-                binding.btnSubmit.setBackgroundColor(getColor(R.color.signature_1))
+                binding.btnSubmit.setBackgroundResource(R.drawable.all_radius_50_sig1)
+                binding.btnSubmit.setTextColor(Color.WHITE)
             }
         }
     }
