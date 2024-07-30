@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -13,8 +12,6 @@ import com.example.kustaurant.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
-    private var selectedColor: Int = 0
-    private var defaultColor: Int = 0
     lateinit var meRestaurantList: ArrayList<RestaurantModel>
     lateinit var topRestaurantList: ArrayList<RestaurantModel>
     lateinit var meRestaurantadapter: MeRestaurantAdapter
@@ -39,11 +36,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
-
-        selectedColor = ContextCompat.getColor(requireContext(), R.color.cement_4)
-        defaultColor = ContextCompat.getColor(requireContext(), R.color.cement_3)
         setupViewPager()
-        setupButtons()
 
         // 데이터 초기화
         meRestaurantList = arrayListOf(
@@ -83,55 +76,10 @@ class HomeFragment : Fragment() {
         binding.homeAdBanner.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                updateButtonState(position)
+                val currentPageNumber = position + 1
+                val totalPageNumber = adapter.itemCount
+                binding.homeAdBannerNumber.text = "$currentPageNumber/$totalPageNumber"
             }
         })
-    }
-
-    private fun setupButtons(){
-        val buttons = listOf(
-            binding.homeBtn1,
-            binding.homeBtn2,
-            binding.homeBtn3,
-            binding.homeBtn4,
-            binding.homeBtn5
-        )
-        
-        buttons.forEachIndexed { index, button ->
-            button.setOnClickListener{
-                updateButtonState(index)
-            }
-        }
-
-        updateButtonState(selectedIndex)
-    }
-
-    private fun updateButtonState(selectedIndex: Int){
-        val buttons = listOf(
-            binding.homeBtn1,
-            binding.homeBtn2,
-            binding.homeBtn3,
-            binding.homeBtn4,
-            binding.homeBtn5
-        )
-
-        buttons.forEachIndexed { index, button ->
-            if (index == selectedIndex){
-                button.layoutParams.width = dpToPx(16)
-                button.layoutParams.height = dpToPx(16)
-                button.isSelected = true
-                button.requestLayout()
-            }else{
-                button.layoutParams.width = dpToPx(12)
-                button.layoutParams.height = dpToPx(12)
-                button.isSelected = false
-                button.requestLayout()
-            }
-        }
-    }
-
-    private fun dpToPx(dp: Int): Int {
-        val density = resources.displayMetrics.density
-        return (dp * density).toInt()
     }
 }

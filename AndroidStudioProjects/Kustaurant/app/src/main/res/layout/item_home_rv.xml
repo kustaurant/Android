@@ -5,14 +5,15 @@
     android:layout_height="195dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/home_imgurl"
         android:layout_width="0dp"
         android:layout_height="128dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/RoundedImageView"/>
 
     <ImageView
         android:id="@+id/home_tier"
@@ -33,7 +34,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="일식"
         android:textSize="12sp"
-        android:textColor="@color/cement_6"/>
+        android:textColor="@color/cement_6"
+        android:layout_marginTop="8dp"/>
 
     <TextView
         android:id="@+id/home_divider"
@@ -90,7 +92,7 @@
         app:layout_constraintStart_toStartOf="@id/home_cuisine"
         app:layout_constraintTop_toBottomOf="@id/home_name"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="제휴 "
+        android:text="제휴 : "
         android:textSize="13sp"
         android:textColor="@color/cement_4"/>
 
