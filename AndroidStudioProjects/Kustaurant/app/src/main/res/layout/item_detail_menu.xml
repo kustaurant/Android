@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="13dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/si_menu"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_location"
+        app:layout_constraintWidth_percent="0.26"
+        app:layout_constraintDimensionRatio="94:77"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/cement_3"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/si_menu"
+        app:layout_constraintTop_toTopOf="@id/si_menu"
+        android:layout_marginStart="28dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/si_menu">
+
+        <TextView
+            android:id="@+id/tv_menu_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="B특호야"
+            android:layout_marginBottom="3dp"/>
+
+        <TextView
+            android:id="@+id/tv_menu_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="29,000원"
+            android:layout_marginTop="3dp"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
