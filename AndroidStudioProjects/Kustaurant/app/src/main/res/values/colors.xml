@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
 
+    <!-- 지도 색 관련 -->
+    <color name="polygon">#3943AB38</color>
+    <color name="polygon_line">#43AB38</color>
 
     <!-- 시그니처 -->
     <color name="signature_1">#43AB38</color>
@@ -21,6 +25,8 @@
     <color name="tier_3">#FFB900</color>
     <color name="tier_4">#9BA5B0</color>
 
+    <!-- 카테고리 -->
+    <color name="cate_selected">#DDF0DB</color>
 
     <!--홈 -->
     <color name="top_gray">#838383</color>
