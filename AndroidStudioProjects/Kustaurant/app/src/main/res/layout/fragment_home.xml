@@ -26,9 +26,8 @@
         android:id="@+id/home_topbar"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="360:50"
+        app:layout_constraintDimensionRatio="360:60"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/home_ad_banner"
         app:layout_constraintStart_toStartOf="@id/gl_start"
         app:layout_constraintEnd_toEndOf="@id/gl_end"
         android:paddingTop="5dp">
@@ -52,6 +51,7 @@
             android:layout_marginTop="4dp"/>
 
         <ImageView
+            android:id="@+id/btn_search"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_search"
@@ -63,73 +63,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--  Dimensino Ratio 생성-->
-    <ImageView
-        android:id="@+id/home_ad_banner"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="360:170"
-        app:layout_constraintTop_toBottomOf="@id/home_topbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:scaleType="centerCrop"/>
-
-    <LinearLayout
-        android:id="@+id/home_btn_ll"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="360:35"
-        app:layout_constraintTop_toBottomOf="@id/home_ad_banner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/home_btn1"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:id="@+id/home_btn2"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:id="@+id/home_btn3"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:id="@+id/home_btn4"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:id="@+id/home_btn5"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_button"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/home_btn_ll"
+        app:layout_constraintTop_toBottomOf="@id/home_topbar"
         app:layout_constraintStart_toStartOf="@id/gl_start"
         app:layout_constraintEnd_toEndOf="@id/gl_end"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -138,12 +75,44 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--  Dimensino Ratio 생성-->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/home_ad_banner"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="360:137"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:scaleType="centerCrop"/>
+
+            <LinearLayout
+                android:layout_width="43dp"
+                android:layout_height="23dp"
+                app:layout_constraintBottom_toBottomOf="@id/home_ad_banner"
+                app:layout_constraintEnd_toEndOf="@id/home_ad_banner"
+                android:gravity="center"
+                android:background="@drawable/home_ad_banner_number"
+                android:layout_marginEnd="11dp"
+                android:layout_marginBottom="7dp"
+                >
+
+                <TextView
+                    android:id="@+id/home_ad_banner_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1/5"
+                    android:textColor="@color/cement_4"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_category_cl"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintDimensionRatio="360:45"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_ad_banner"
                 android:layout_marginTop="20dp">
 
                 <TextView
@@ -695,225 +664,30 @@
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-            
-            <HorizontalScrollView
-                android:id="@+id/home_TOP"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/home_TOP_cl"
-                android:layout_marginTop="15dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
+                    android:id="@+id/home_TOP"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <!--                예시 데이터 : 나중에 viewmodel 설정 후 다시 -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/home_TOP_cl1"
-                        android:layout_width="190dp"
-                        android:layout_height="195dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent">
-
-                        <ImageView
-                            android:id="@+id/home_TOP_cl1_imgurl"
-                            android:layout_width="0dp"
-                            android:layout_height="128dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:scaleType="centerCrop"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl1_cuisine"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/home_TOP_cl1_imgurl"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:text="일식"
-                            android:textSize="12sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_divider"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/home_TOP_cl1_cuisine"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl1_cuisine"
-                            android:text="  ㅣ  "
-                            android:textSize="12sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl1_position"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/home_TOP_divider"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl1_cuisine"
-                            android:text="중문 ~ 어대"
-                            android:textSize="12sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            app:layout_constraintEnd_toStartOf="@id/home_TOP_cl1_star"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl1_star"
-                            app:layout_constraintBottom_toBottomOf="@id/home_TOP_cl1_star"
-                            android:src="@drawable/ic_star"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl1_star"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl1_cuisine"
-                            android:text="4.5"
-                            android:textSize="12sp"
-                            android:textColor="@color/top_gray"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl1_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/home_TOP_cl1_cuisine"
-                            app:layout_constraintStart_toStartOf="@id/home_TOP_cl1_cuisine"
-                            android:text="호야초밥 참치 본점"
-                            android:textSize="15sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl1_benefit_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="@id/home_TOP_cl1_cuisine"
-                            app:layout_constraintTop_toBottomOf="@id/home_TOP_cl1_name"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:text="제휴"
-                            android:textSize="13sp"
-                            android:textColor="@color/cement_4"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl1_benefit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/home_TOP_cl1_benefit_tv"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl1_benefit_tv"
-                            app:layout_constraintBottom_toBottomOf="@id/home_TOP_cl1_benefit_tv"
-                            android:text="어디대 학생증 제시시 ..."
-                            android:textSize="13sp"
-                            android:textColor="@color/cement_4"/>
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/home_TOP_cl"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/home_TOP_cl2"
-                        android:layout_width="190dp"
-                        android:layout_height="195dp"
-                        app:layout_constraintStart_toEndOf="@id/home_TOP_cl1"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="10dp">
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
 
-                        <ImageView
-                            android:id="@+id/home_TOP_cl2_imgurl"
-                            android:layout_width="0dp"
-                            android:layout_height="128dp"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/home_TOP_rv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:scaleType="centerCrop"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl2_cuisine"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/home_TOP_cl2_imgurl"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:text="일식"
-                            android:textSize="12sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl2_divider"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/home_TOP_cl2_cuisine"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl2_cuisine"
-                            android:text="  ㅣ  "
-                            android:textSize="12sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl2_position"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/home_TOP_cl2_divider"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl2_cuisine"
-                            android:text="중문 ~ 어대"
-                            android:textSize="12sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            app:layout_constraintEnd_toStartOf="@id/home_TOP_cl2_star"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl2_star"
-                            app:layout_constraintBottom_toBottomOf="@id/home_TOP_cl2_star"
-                            android:src="@drawable/ic_star"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl2_star"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl2_cuisine"
-                            android:text="4.5"
-                            android:textSize="12sp"
-                            android:textColor="@color/top_gray"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl2_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/home_TOP_cl2_cuisine"
-                            app:layout_constraintStart_toStartOf="@id/home_TOP_cl2_cuisine"
-                            android:text="호야초밥 참치 본점"
-                            android:textSize="15sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl2_benefit_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="@id/home_TOP_cl2_cuisine"
-                            app:layout_constraintTop_toBottomOf="@id/home_TOP_cl2_name"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:text="제휴"
-                            android:textSize="13sp"
-                            android:textColor="@color/cement_4"/>
-
-                        <TextView
-                            android:id="@+id/home_TOP_cl2_benefit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/home_TOP_cl2_benefit_tv"
-                            app:layout_constraintTop_toTopOf="@id/home_TOP_cl2_benefit_tv"
-                            app:layout_constraintBottom_toBottomOf="@id/home_TOP_cl2_benefit_tv"
-                            android:text="어디대 학생증 제시시 ..."
-                            android:textSize="13sp"
-                            android:textColor="@color/cement_4"/>
-
+                            app:layout_constraintTop_toTopOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </HorizontalScrollView>
+                </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_ME_cl"
@@ -958,122 +732,30 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/home_ME_cl"
-                android:layout_marginTop="15dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
+                    android:id="@+id/home_ME"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/home_ME_cl"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp">
 
-                    <!--                예시 데이터 : 나중에 viewmodel 설정 후 다시 -->
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/home_ME_cl1"
-                        android:layout_width="190dp"
-                        android:layout_height="195dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent">
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="28dp">
 
-                        <ImageView
-                            android:id="@+id/home_ME_cl1_imgurl"
-                            android:layout_width="0dp"
-                            android:layout_height="128dp"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/home_ME_rv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:scaleType="centerCrop"/>
-
-                        <TextView
-                            android:id="@+id/home_ME_cl1_cuisine"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/home_ME_cl1_imgurl"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:text="일식"
-                            android:textSize="12sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <TextView
-                            android:id="@+id/home_ME_cl1_divider"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/home_ME_cl1_cuisine"
-                            app:layout_constraintTop_toTopOf="@id/home_ME_cl1_cuisine"
-                            android:text="  ㅣ  "
-                            android:textSize="12sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <TextView
-                            android:id="@+id/home_ME_cl1_position"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/home_ME_cl1_divider"
-                            app:layout_constraintTop_toTopOf="@id/home_ME_cl1_cuisine"
-                            android:text="중문 ~ 어대"
-                            android:textSize="12sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            app:layout_constraintEnd_toStartOf="@id/home_ME_cl1_star"
-                            app:layout_constraintTop_toTopOf="@id/home_ME_cl1_star"
-                            app:layout_constraintBottom_toBottomOf="@id/home_ME_cl1_star"
-                            android:src="@drawable/ic_star"/>
-
-                        <TextView
-                            android:id="@+id/home_ME_cl1_star"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/home_ME_cl1_cuisine"
-                            android:text="4.5"
-                            android:textSize="12sp"
-                            android:textColor="@color/top_gray"/>
-
-                        <TextView
-                            android:id="@+id/home_ME_cl1_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/home_ME_cl1_cuisine"
-                            app:layout_constraintStart_toStartOf="@id/home_ME_cl1_cuisine"
-                            android:text="호야초밥 참치 본점"
-                            android:textSize="15sp"
-                            android:textColor="@color/cement_6"/>
-
-                        <TextView
-                            android:id="@+id/home_ME_cl1_benefit_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="@id/home_ME_cl1_cuisine"
-                            app:layout_constraintTop_toBottomOf="@id/home_ME_cl1_name"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:text="제휴"
-                            android:textSize="13sp"
-                            android:textColor="@color/cement_4"/>
-
-                        <TextView
-                            android:id="@+id/home_ME_cl1_benefit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/home_ME_cl1_benefit_tv"
-                            app:layout_constraintTop_toTopOf="@id/home_ME_cl1_benefit_tv"
-                            app:layout_constraintBottom_toBottomOf="@id/home_ME_cl1_benefit_tv"
-                            android:text="어디대 학생증 제시시 ..."
-                            android:textSize="13sp"
-                            android:textColor="@color/cement_4"/>
-
+                            app:layout_constraintTop_toTopOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </HorizontalScrollView>
+                </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

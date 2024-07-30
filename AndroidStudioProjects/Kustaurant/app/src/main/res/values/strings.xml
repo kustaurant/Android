@@ -3,6 +3,8 @@
 
 
     <!-- Tier Fragment 관련 -->
+    <string name="wide_btn_info"><u>크게 보기</u></string>
+    <string name="small_btn_info"><u>작게 보기</u></string>
     <string name="restaurant_img_info">식당 대표 이미지 입니다.</string>
     <string name="restaurant_no_partnership_info">제휴 해당사항 없음</string>
     <string name="restaurant_favorite_info">즐겨찾기 아이콘 입니다.</string>
