@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.kustaurant.databinding.ActivityMainBinding
 import com.example.kustaurant.presentation.ui.home.HomeFragment
 import com.example.kustaurant.presentation.ui.tier.TierFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 

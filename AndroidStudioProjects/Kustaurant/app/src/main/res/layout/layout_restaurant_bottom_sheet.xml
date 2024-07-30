@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="9dp"
+    android:background="@drawable/bottom_sheet_design"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/tier_iv_restaurant_img"
+        android:layout_width="98dp"
+        android:layout_height="74dp"
+        android:contentDescription="@string/restaurant_img_info"
+        android:paddingEnd="24dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_default_restaurant"
+        app:layout_constraintBottom_toTopOf="@+id/tier_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <ImageView
+        android:id="@+id/tier_iv_restaurant_tier_img"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:contentDescription="@string/restaurant_tier_info"
+        android:src="@drawable/ic_rank_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tier_tv_restaurant_details"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/tier_iv_restaurant_favorite_img"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:background="@drawable/square_round_background"
+        android:backgroundTint="#FEAF1C"
+        android:contentDescription="@string/restaurant_favorite_info"
+        android:padding="1dp"
+        android:src="@drawable/ic_favorite"
+        app:layout_constraintBottom_toBottomOf="@id/tier_iv_restaurant_img"
+        app:layout_constraintStart_toStartOf="@id/tier_iv_restaurant_img" />
+
+    <ImageView
+        android:id="@+id/tier_iv_restaurant_evaluation_img"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:background="@drawable/square_round_background"
+        android:backgroundTint="#01BAA6"
+        android:contentDescription="@string/restaurant_evaluation_info"
+        android:padding="1dp"
+        android:src="@drawable/ic_check"
+        app:layout_constraintBottom_toBottomOf="@id/tier_iv_restaurant_img"
+        app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_favorite_img" />
+
+
+    <TextView
+        android:id="@+id/tier_tv_restaurant_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:singleLine="true"
+        android:text="@{restaurant.restaurantName}"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/tier_iv_restaurant_tier_img"
+        app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_img"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="식당 이름 입니다." />
+
+    <TextView
+        android:id="@+id/tier_tv_restaurant_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_regular"
+        android:text="@{restaurant.restaurantDetails}"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/tier_tv_restaurant_name"
+        app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_img"
+        app:layout_constraintTop_toBottomOf="@id/tier_tv_restaurant_name"
+        tools:text="일식 | 건입~중문" />
+
+    <TextView
+        android:id="@+id/tier_tv_restaurant_partnership_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_regular"
+        android:text="@{restaurant.restaurantTextAlliance}"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/tier_tv_restaurant_name"
+        app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_img"
+        app:layout_constraintTop_toBottomOf="@id/tier_tv_restaurant_details"
+        tools:text="제휴 해당 사항 없음" />
+
+    <!-- Divider Line -->
+    <View
+        android:id="@+id/tier_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="9dp"
+        android:background="@color/cement_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tier_iv_restaurant_img" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
