@@ -25,9 +25,9 @@
     <!-- Top Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_bar"
-        android:layout_height="40dp"
         android:layout_width="0dp"
-        android:paddingTop="5dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="360:60"
         app:layout_constraintEnd_toEndOf="@id/gl_end"
         app:layout_constraintStart_toStartOf="@id/gl_start"
         app:layout_constraintTop_toTopOf="parent">
@@ -36,24 +36,32 @@
         <ImageView
             android:id="@+id/btn_back"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_width="wrap_content"
-            android:padding="8dp"
             android:src="@drawable/btn_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/back_btn_info" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/cement_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <!-- TabLayout for tabs -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_height="match_parent"
             android:layout_width="0dp"
-            app:layout_constraintEnd_toStartOf="@id/ic_search"
             app:layout_constraintStart_toEndOf="@id/btn_back"
+            app:layout_constraintEnd_toStartOf="@id/ic_search"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="15dp"
             app:tabGravity="fill"
             app:tabMode="fixed">
 
@@ -77,25 +85,26 @@
         <!-- Search Button -->
         <ImageView
             android:id="@+id/ic_search"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_width="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/ic_search"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ic_notification"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
             android:contentDescription="@string/search_btn_info" />
 
         <!-- Notification Button -->
         <ImageView
             android:id="@+id/ic_notification"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_bell_badge"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_alarm"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="4dp"
             android:contentDescription="@string/alarm_btn_info" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
