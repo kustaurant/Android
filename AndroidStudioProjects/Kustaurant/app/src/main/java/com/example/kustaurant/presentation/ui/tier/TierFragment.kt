@@ -52,33 +52,33 @@ class TierFragment : Fragment() {
 
     private fun setupViewPager() {
         pagerAdapter = TierPagerAdapter(this)
-        binding.viewPager.adapter = pagerAdapter
-        binding.viewPager.isUserInputEnabled = false // ViewPager2의 스크롤을 비활성화
+        binding.tierViewPager.adapter = pagerAdapter
+        binding.tierViewPager.isUserInputEnabled = false // ViewPager2의 스크롤을 비활성화
     }
 
     private fun setupTabLayout() {
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.tierTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                binding.viewPager.currentItem = tab.position
+                binding.tierViewPager.currentItem = tab.position
                 handleTabSelected(tab.position)
             }
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.tierViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
+                binding.tierTabLayout.selectTab(binding.tierTabLayout.getTabAt(position))
                 handleTabSelected(position)
             }
         })
 
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("티어표"))
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("지도"))
+        binding.tierTabLayout.addTab(binding.tierTabLayout.newTab().setText("티어표"))
+        binding.tierTabLayout.addTab(binding.tierTabLayout.newTab().setText("지도"))
     }
 
     private fun handleTabSelected(position: Int) {
-        val layoutParams = binding.selectedCategoryLinearScrollView.layoutParams as ViewGroup.MarginLayoutParams
+        val layoutParams = binding.tierSvSelectedCategory.layoutParams as ViewGroup.MarginLayoutParams
 
         if (position == 1) { // 지도 탭
             layoutParams.marginEnd = 0
@@ -86,7 +86,7 @@ class TierFragment : Fragment() {
             layoutParams.marginEnd = context?.let { 60.dpToPx(it) }!!
         }
 
-        binding.selectedCategoryLinearScrollView.layoutParams = layoutParams
+        binding.tierSvSelectedCategory.layoutParams = layoutParams
     }
 
     fun Int.dpToPx(context: Context): Int {
@@ -94,21 +94,21 @@ class TierFragment : Fragment() {
     }
 
     private fun setupCategoryButton() {
-        binding.btnCategory.setOnClickListener {
+        binding.tierIvCategoryBtn.setOnClickListener {
             hideMainContent()
 
-            val currentTabIndex = binding.viewPager.currentItem
+            val currentTabIndex = binding.tierViewPager.currentItem
             val fragment = TierCategoryFragment().apply {
                 arguments = Bundle().apply {
                     putInt("fromTabIndex", currentTabIndex)
                 }
             }
 
-            binding.tabCategoryText.text = "카테고리"
-            binding.tabCategoryText.visibility = View.VISIBLE
+            binding.tierTvCategoryText.text = "카테고리"
+            binding.tierTvCategoryText.visibility = View.VISIBLE
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.tier_fragment_container, fragment)
                 .addToBackStack(null)
                 .commit()
         }
@@ -140,17 +140,17 @@ class TierFragment : Fragment() {
 
 
     private fun showMainContent() {
-        binding.tabCategoryText.visibility = View.GONE
-        binding.viewPager.visibility = View.VISIBLE
-        binding.tabLayout.visibility = View.VISIBLE
-        binding.middleBar.visibility = View.VISIBLE
+        binding.tierTvCategoryText.visibility = View.GONE
+        binding.tierViewPager.visibility = View.VISIBLE
+        binding.tierTabLayout.visibility = View.VISIBLE
+        binding.tierClMiddleBar.visibility = View.VISIBLE
         pagerAdapter.refreshAllFragments()
     }
 
     private fun hideMainContent() {
-        binding.viewPager.visibility = View.GONE
-        binding.tabLayout.visibility = View.GONE
-        binding.middleBar.visibility = View.GONE
+        binding.tierViewPager.visibility = View.GONE
+        binding.tierTabLayout.visibility = View.GONE
+        binding.tierClMiddleBar.visibility = View.GONE
     }
 
     private fun observeViewModel() {
@@ -171,7 +171,7 @@ class TierFragment : Fragment() {
     }
 
     fun navigateToTab(tabIndex: Int) {
-        binding.viewPager.currentItem = tabIndex
+        binding.tierViewPager.currentItem = tabIndex
     }
 
     override fun onDestroyView() {

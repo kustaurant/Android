@@ -53,57 +53,57 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
     inner class ExpandedViewHolder(private val binding: ItemRestaurantExpandBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: TierModel) {
-            binding.restaurantTextName.text = item.restaurantName
-            binding.restaurantTextDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
+            binding.tierTvRestaurantName.text = item.restaurantName
+            binding.tierTvRestaurantDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
 
             if(item.restaurantName.isBlank())
-                binding.restaurantPartnershipInfo.text = R.string.restaurant_no_partnership_info.toString()
+                binding.tierTvRestaurantPartnershipInfo.text = R.string.restaurant_no_partnership_info.toString()
             else
-                binding.restaurantPartnershipInfo.text =  item.partnershipInfo
+                binding.tierTvRestaurantPartnershipInfo.text =  item.partnershipInfo
 
             Glide.with(binding.root)
                 .load(if (item.restaurantImgUrl.isEmpty()) R.drawable.img_default_restaurant else item.restaurantImgUrl)
                 .override(55, 55)
                 .transform(CenterCrop(), RoundedCorners(10))
-                .into(binding.restaurantImage)
+                .into(binding.tierIvRestaurantImg)
 
             when (item.mainTier) {
-                1 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_1)
-                2 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_2)
-                3 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_3)
-                4 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_4)
-                else -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_all)
+                1 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_1)
+                2 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_2)
+                3 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_3)
+                4 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_4)
+                else -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_all)
             }
 
-            binding.favoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
-            binding.evaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
+            binding.tierIvRestaurantFavoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
+            binding.tierIvRestaurantEvaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
         }
     }
 
     inner class ReducedViewHolder(private val binding: ItemRestaurantReductionBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: TierModel) {
-            binding.restaurantId.text = (position + 1).toString()
-            binding.restaurantTextName.text = item.restaurantName
-            binding.restaurantTextDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
+            binding.tierTvRestaurantId.text = (position + 1).toString()
+            binding.tierTvRestaurantName.text = item.restaurantName
+            binding.tierTvRestaurantDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
 
             Glide.with(binding.root)
                 .load(if (item.restaurantImgUrl.isEmpty()) R.drawable.img_default_restaurant else item.restaurantImgUrl)
                 .override(74, 74)
                 .transform(CenterCrop(), RoundedCorners(10))
-                .into(binding.restaurantImage)
+                .into(binding.tierIvRestaurantImg)
 
             when (item.mainTier) {
-                1 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_1)
-                2 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_2)
-                3 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_3)
-                4 -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_4)
-                else -> binding.restaurantTier.setImageResource(R.drawable.ic_rank_all)
+                1 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_1)
+                2 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_2)
+                3 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_3)
+                4 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_4)
+                else -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_all)
             }
 
             // Set visibility for favorite and evaluation icons
-            binding.favoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
-            binding.evaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
+            binding.tierIvRestaurantFavoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
+            binding.tierIvRestaurantEvaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
         }
     }
 

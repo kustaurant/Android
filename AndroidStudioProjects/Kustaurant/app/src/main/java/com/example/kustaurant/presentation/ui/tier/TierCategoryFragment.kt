@@ -35,30 +35,30 @@ class TierCategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToggleGroups()
         observeViewModel()
-        binding.applyButton.setOnClickListener {
+        binding.tierBtnApply.setOnClickListener {
             applyFilters()
         }
 
         fromTabIndex = arguments?.getInt("fromTabIndex") ?: 0
 
         // 현재 선택된 필터 값들을 적용
-        updateToggleGroupSelection(binding.typeToggleGroup, viewModel.selectedTypes.value ?: setOf())
-        updateToggleGroupSelection(binding.situationToggleGroup, viewModel.selectedSituations.value ?: setOf())
-        updateToggleGroupSelection(binding.locationToggleGroup, viewModel.selectedLocations.value ?: setOf())
+        updateToggleGroupSelection(binding.tierToggleTypeGroup, viewModel.selectedTypes.value ?: setOf())
+        updateToggleGroupSelection(binding.tierToggleSituationGroup, viewModel.selectedSituations.value ?: setOf())
+        updateToggleGroupSelection(binding.tierToggleLocationGroup, viewModel.selectedLocations.value ?: setOf())
 
         // 초기 상태에서 적용하기 버튼 상태 업데이트
         updateApplyButtonState()
 
         // location_info 텍스트뷰 클릭 리스너 설정
-        binding.locationInfo.setOnClickListener {
+        binding.tierLocationInfo.setOnClickListener {
             navigateToMapFragment()
         }
     }
 
     private fun setupToggleGroups() {
-        setupToggleGroup(binding.typeToggleGroup)
-        setupToggleGroup(binding.situationToggleGroup)
-        setupToggleGroup(binding.locationToggleGroup)
+        setupToggleGroup(binding.tierToggleTypeGroup)
+        setupToggleGroup(binding.tierToggleSituationGroup)
+        setupToggleGroup(binding.tierToggleLocationGroup)
     }
 
     private fun setupToggleGroup(toggleGroup: ViewGroup) {
@@ -82,15 +82,15 @@ class TierCategoryFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.selectedTypes.observe(viewLifecycleOwner) { selectedTypes ->
-            updateToggleGroupSelection(binding.typeToggleGroup, selectedTypes)
+            updateToggleGroupSelection(binding.tierToggleTypeGroup, selectedTypes)
         }
 
         viewModel.selectedSituations.observe(viewLifecycleOwner) { selectedSituations ->
-            updateToggleGroupSelection(binding.situationToggleGroup, selectedSituations)
+            updateToggleGroupSelection(binding.tierToggleSituationGroup, selectedSituations)
         }
 
         viewModel.selectedLocations.observe(viewLifecycleOwner) { selectedLocations ->
-            updateToggleGroupSelection(binding.locationToggleGroup, selectedLocations)
+            updateToggleGroupSelection(binding.tierToggleLocationGroup, selectedLocations)
         }
     }
 
@@ -113,28 +113,28 @@ class TierCategoryFragment : Fragment() {
     }
 
     private fun updateApplyButtonState() {
-        val selectedType = getSelectedTogglesText(binding.typeToggleGroup)
-        val selectedSituation = getSelectedTogglesText(binding.situationToggleGroup)
-        val selectedLocation = getSelectedTogglesText(binding.locationToggleGroup)
+        val selectedType = getSelectedTogglesText(binding.tierToggleTypeGroup)
+        val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
+        val selectedLocation = getSelectedTogglesText(binding.tierToggleLocationGroup)
 
         val hasChanges = viewModel.hasFilterChanged(selectedType, selectedSituation, selectedLocation)
         val isAnyGroupSelected = selectedType.isNotEmpty() && selectedSituation.isNotEmpty() && selectedLocation.isNotEmpty()
 
-        binding.applyButton.isEnabled = hasChanges && isAnyGroupSelected
-        if (binding.applyButton.isEnabled) {
-            binding.applyButton.setBackgroundResource(R.drawable.btn_tier_category_apply_active)
-            binding.applyButton.setTextColor(resources.getColor(R.color.white))
+        binding.tierBtnApply.isEnabled = hasChanges && isAnyGroupSelected
+        if (binding.tierBtnApply.isEnabled) {
+            binding.tierBtnApply.setBackgroundResource(R.drawable.btn_tier_category_apply_active)
+            binding.tierBtnApply.setTextColor(resources.getColor(R.color.white))
         } else {
-            binding.applyButton.setBackgroundResource(R.drawable.btn_tier_category_apply_inactive)
-            binding.applyButton.setTextColor(resources.getColor(R.color.cement_4))
+            binding.tierBtnApply.setBackgroundResource(R.drawable.btn_tier_category_apply_inactive)
+            binding.tierBtnApply.setTextColor(resources.getColor(R.color.cement_4))
         }
     }
 
 
     private fun applyFilters() {
-        val selectedType = getSelectedTogglesText(binding.typeToggleGroup)
-        val selectedSituation = getSelectedTogglesText(binding.situationToggleGroup)
-        val selectedLocation = getSelectedTogglesText(binding.locationToggleGroup)
+        val selectedType = getSelectedTogglesText(binding.tierToggleTypeGroup)
+        val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
+        val selectedLocation = getSelectedTogglesText(binding.tierToggleLocationGroup)
 
         viewModel.applyFilters(selectedType, selectedSituation, selectedLocation)
 
@@ -182,7 +182,6 @@ class TierCategoryFragment : Fragment() {
             Log.e("TierCategoryFragment", "parentFragment is null")
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

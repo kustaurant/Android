@@ -1,5 +1,6 @@
 package com.example.kustaurant.data.model
 
+import com.example.kustaurant.domain.model.Restaurant
 import com.naver.maps.geometry.LatLng
 
 data class TierListData(

@@ -35,7 +35,7 @@ class TierListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         tierAdapter = TierListAdapter()
-        binding.recyclerviewTier.apply {
+        binding.tierRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = tierAdapter
         }

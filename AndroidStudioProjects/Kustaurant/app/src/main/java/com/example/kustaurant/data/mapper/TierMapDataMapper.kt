@@ -2,7 +2,7 @@ package com.example.kustaurant.data.mapper
 
 import android.util.Log
 import com.example.kustaurant.data.model.NonTieredRestaurantGroup
-import com.example.kustaurant.data.model.Restaurant
+import com.example.kustaurant.domain.model.Restaurant
 import com.example.kustaurant.data.model.TierListData
 import com.example.kustaurant.data.model.TierMapDataResponse
 import com.naver.maps.geometry.LatLng

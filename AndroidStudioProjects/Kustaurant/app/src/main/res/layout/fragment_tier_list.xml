@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.example.kustaurant.presentation.ui.tier.TierViewModel" />
@@ -15,7 +14,7 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/middle_bar"
+            android:id="@+id/tier_block"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:flow_verticalAlign="baseline"
@@ -26,7 +25,7 @@
             tools:context=".ui.TierFragment">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fab_expand"
+                android:id="@+id/tier_cl_expand_reduce_toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/circle_background"
@@ -36,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/expand_icon"
+                    android:id="@+id/tier_iv_expand_reduce_toggle_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@{viewModel.isExpanded ? @drawable/ic_reduce : @drawable/ic_expand}"
@@ -51,7 +50,7 @@
                     android:text="@{viewModel.isExpanded ? @string/fab_reduce : @string/fab_expand}"
                     android:textColor="@color/black"
                     android:textSize="11sp"
-                    app:layout_constraintStart_toEndOf="@id/expand_icon"
+                    app:layout_constraintStart_toEndOf="@id/tier_iv_expand_reduce_toggle_icon"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -60,13 +59,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_tier"
+            android:id="@+id/tier_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/middle_bar"
+            app:layout_constraintTop_toBottomOf="@id/tier_block"
             tools:listitem="@layout/item_restaurant_reduction" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -15,7 +15,7 @@
 
         <!-- Start Guideline -->
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_start"
+            android:id="@+id/tier_gl_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -23,7 +23,7 @@
 
         <!-- End Guideline -->
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_end"
+            android:id="@+id/tier_gl_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -35,13 +35,13 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="360:55"
-            app:layout_constraintEnd_toEndOf="@id/gl_end"
-            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
+            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toTopOf="parent">
 
             <!-- TextView for Centered Text -->
             <TextView
-                android:id="@+id/tabCategoryText"
+                android:id="@+id/tier_tv_category_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_semibold"
@@ -73,11 +73,11 @@
 
             <!-- TabLayout for tabs -->
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
+                android:id="@+id/tier_tab_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:flow_horizontalAlign="center"
-                app:layout_constraintEnd_toStartOf="@id/ic_search"
+                app:layout_constraintEnd_toStartOf="@id/tier_iv_search"
                 app:layout_constraintStart_toEndOf="@id/btn_back"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabGravity="fill"
@@ -85,19 +85,19 @@
 
             <!-- Search Button -->
             <ImageView
-                android:id="@+id/ic_search"
+                android:id="@+id/tier_iv_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/search_btn_info"
                 android:src="@drawable/ic_search"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/ic_notification"
+                app:layout_constraintEnd_toStartOf="@id/tier_iv_notification"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Notification Button -->
             <ImageView
-                android:id="@+id/ic_notification"
+                android:id="@+id/tier_iv_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -112,42 +112,42 @@
 
         <!-- ViewPager2 for fragment switching -->
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
+            android:id="@+id/tier_view_pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toBottomOf="@id/top_bar"
             app:layout_constraintVertical_bias="0.0" />
 
         <!-- Container for fragment replacement -->
         <FrameLayout
-            android:id="@+id/fragment_container"
+            android:id="@+id/tier_fragment_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toBottomOf="@id/top_bar" />
 
 
         <!-- Middle Bar -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/middle_bar"
+            android:id="@+id/tier_cl_middle_bar"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:elevation="4dp"
             app:flow_verticalAlign="baseline"
             app:layout_constraintDimensionRatio="360:60"
-            app:layout_constraintEnd_toEndOf="@id/gl_end"
-            app:layout_constraintStart_toStartOf="@id/gl_start"
+            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
+            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toBottomOf="@id/top_bar">
 
             <ImageView
-                android:id="@+id/btn_category"
+                android:id="@+id/tier_iv_category_btn"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="21dp"
@@ -156,20 +156,20 @@
                 android:contentDescription="@string/category_btn_info"
                 android:padding="4dp"
                 android:src="@drawable/ic_category"
-                app:layout_constraintBottom_toBottomOf="@id/middle_bar"
-                app:layout_constraintStart_toStartOf="@id/middle_bar"
-                app:layout_constraintTop_toTopOf="@id/middle_bar" />
+                app:layout_constraintBottom_toBottomOf="@id/tier_cl_middle_bar"
+                app:layout_constraintStart_toStartOf="@id/tier_cl_middle_bar"
+                app:layout_constraintTop_toTopOf="@id/tier_cl_middle_bar" />
 
             <HorizontalScrollView
-                android:id="@+id/selectedCategory_linear_scrollView"
+                android:id="@+id/tier_sv_selectedCategory"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="60dp"
                 android:scrollbars="none"
-                app:layout_constraintBottom_toBottomOf="@id/middle_bar"
-                app:layout_constraintEnd_toEndOf="@id/middle_bar"
-                app:layout_constraintStart_toEndOf="@id/btn_category"
-                app:layout_constraintTop_toTopOf="@id/middle_bar">
+                app:layout_constraintBottom_toBottomOf="@id/tier_cl_middle_bar"
+                app:layout_constraintEnd_toEndOf="@id/tier_cl_middle_bar"
+                app:layout_constraintStart_toEndOf="@id/tier_iv_category_btn"
+                app:layout_constraintTop_toTopOf="@id/tier_cl_middle_bar">
 
                 <LinearLayout
                     android:id="@+id/selectedCategory_linear_layout"

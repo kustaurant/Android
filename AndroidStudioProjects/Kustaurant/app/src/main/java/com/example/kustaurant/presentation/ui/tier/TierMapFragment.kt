@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.kustaurant.R
 import com.example.kustaurant.data.model.NonTieredRestaurantGroup
-import com.example.kustaurant.data.model.Restaurant
+import com.example.kustaurant.domain.model.Restaurant
 import com.example.kustaurant.data.model.TierListData
 import com.example.kustaurant.databinding.FragmentTierMapBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -51,11 +51,11 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        binding.mapView.onCreate(savedInstanceState)
-        binding.mapView.getMapAsync(this)
+        binding.tierMapView.onCreate(savedInstanceState)
+        binding.tierMapView.getMapAsync(this)
 
         // BottomSheet 설정
-        val bottomSheet = binding.bottomSheet
+        val bottomSheet = binding.tierBottomSheet
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
@@ -73,7 +73,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
             if (::naverMap.isInitialized) {
                 updateMap(mapData)
             } else {
-                binding.mapView.getMapAsync {
+                binding.tierMapView.getMapAsync {
                     naverMap = it
                     updateMap(mapData)
                 }
@@ -122,15 +122,15 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
     @SuppressLint("SetTextI18n")
     private fun showRestaurantInfo(restaurant: Restaurant) {
         binding.apply {
-            bottomSheet.findViewById<TextView>(R.id.restaurantName).text = restaurant.restaurantName
-            bottomSheet.findViewById<TextView>(R.id.restaurantDetails).text = restaurant.restaurantCuisine + " | " + restaurant.restaurantPosition
+            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_name).text = restaurant.restaurantName
+            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_details).text = restaurant.restaurantCuisine + " | " + restaurant.restaurantPosition
 
             Glide.with(requireContext())
                 .load(restaurant.restaurantImgUrl)
                 .placeholder(R.drawable.img_default_restaurant)
-                .into(bottomSheet.findViewById(R.id.restaurantImage))
+                .into(tierBottomSheet.findViewById(R.id.tier_iv_restaurant_img))
 
-            val tierImageView = bottomSheet.findViewById<ImageView>(R.id.restaurantTier)
+            val tierImageView = tierBottomSheet.findViewById<ImageView>(R.id.tier_iv_restaurant_tier_img)
             val tierImageResource = when (restaurant.mainTier) {
                 1 -> R.drawable.ic_rank_1
                 2 -> R.drawable.ic_rank_2
@@ -146,7 +146,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
             } else {
                 restaurant.partnershipInfo
             }
-            bottomSheet.findViewById<TextView>(R.id.restaurantPartnershipInfo).text =
+            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_partnership_info).text =
                 partnershipInfo.toString()
         }
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -264,32 +264,32 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onStart() {
         super.onStart()
-        binding.mapView.onStart()
+        binding.tierMapView.onStart()
     }
 
     override fun onResume() {
         super.onResume()
-        binding.mapView.onResume()
+        binding.tierMapView.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        binding.mapView.onPause()
+        binding.tierMapView.onPause()
     }
 
     override fun onStop() {
         super.onStop()
-        binding.mapView.onStop()
+        binding.tierMapView.onStop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.mapView.onDestroy()
+        binding.tierMapView.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        binding.mapView.onLowMemory()
+        binding.tierMapView.onLowMemory()
     }
 
     object PolygonColors {

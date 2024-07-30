@@ -1,4 +1,4 @@
-package com.example.kustaurant.data.model
+package com.example.kustaurant.domain.model
 
 data class Restaurant(
     val restaurantId: Int,
