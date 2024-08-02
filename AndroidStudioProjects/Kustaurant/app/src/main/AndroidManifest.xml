@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Kustaurant"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.ui.detail.DetailActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.ui.detail.EvaluateActivity"
@@ -28,7 +28,7 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="dyfgbjtlqu" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.ui.detail.DetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

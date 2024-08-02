@@ -13,7 +13,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/detail_cl_top_bar"
+            android:elevation="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="360:55"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- TextView for Centered Text -->
+            <TextView
+                android:id="@+id/tier_tv_category_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+
+            <!-- Back Button -->
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/back_btn_info"
+                android:padding="8dp"
+                android:src="@drawable/btn_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Search Button -->
+            <ImageView
+                android:id="@+id/tier_iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/search_btn_info"
+                android:src="@drawable/ic_search"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tier_iv_notification"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Notification Button -->
+            <ImageView
+                android:id="@+id/tier_iv_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/alarm_btn_info"
+                android:src="@drawable/ic_bell_badge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ScrollView
+            android:id="@+id/sv_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
@@ -70,7 +138,6 @@
                     android:paddingVertical="23dp"
                     android:background="@drawable/all_radius_13_white"
                     app:layout_constraintTop_toBottomOf="@id/cl_store">
-                    <!--            app:layout_constraintDimensionRatio="360:445">-->
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/gl_info_start"
@@ -331,9 +398,12 @@
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tl_menu_review"
+                    android:elevation="1dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:paddingTop="10dp"
+                    android:background="@color/white"
                     app:layout_constraintTop_toBottomOf="@id/cl_store_info"/>
 
                 <androidx.viewpager2.widget.ViewPager2
