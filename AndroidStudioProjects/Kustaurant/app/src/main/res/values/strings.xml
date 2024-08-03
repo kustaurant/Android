@@ -26,7 +26,7 @@
     <string name="detail_menu">메뉴</string>
     <string name="detail_reviwe">리뷰</string>
     <string name="detail_to_evaluate">맛집 평가하기</string>
-    
+
     <!-- EvaluateActivity -->
     <string name="evaluate_select_alone">혼밥</string>
     <string name="evaluate_select_tow_four">2~4인</string>
@@ -51,4 +51,5 @@
     <string name="location_info"><u>위치에 대한 설명이 필요하다면?</u></string>
     <string name="fab_expand"><u>크게 보기</u></string>
     <string name="fab_reduce"><u>작게 보기</u></string>
+    <string name="onboarding_skip"><u>건너뛰기</u></string>
 </resources>

@@ -58,6 +58,7 @@
         android:textColor="@color/cement_6"/>
 
     <ImageView
+        android:id="@+id/home_iv_star"
         android:layout_width="16dp"
         android:layout_height="16dp"
         app:layout_constraintEnd_toStartOf="@id/home_star"
