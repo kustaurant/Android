@@ -124,14 +124,6 @@
         app:layout_constraintStart_toEndOf="@id/tv_hate"
         android:layout_marginStart="12dp"/>
 
-    <View
-        android:id="@+id/view_content"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/cement_3"
-        android:layout_marginTop="22dp"
-        app:layout_constraintTop_toBottomOf="@id/detail_rv_reply"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detail_rv_reply"
         android:layout_width="match_parent"
@@ -139,5 +131,11 @@
         tools:listitem="@layout/item_detail_review_reply"
         android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@id/iv_like"/>
+
+    <View
+        android:id="@+id/view_content"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintTop_toBottomOf="@id/detail_rv_reply"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

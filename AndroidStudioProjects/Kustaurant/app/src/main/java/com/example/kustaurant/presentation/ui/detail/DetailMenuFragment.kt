@@ -27,6 +27,17 @@ class DetailMenuFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setRecyclerViewHeight() // 최초 로딩시에도 높이 설정
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setRecyclerViewHeight() // 프래그먼트가 다시 보여질 때 마다 높이 재설정
+    }
+
+
     private fun initDummyData() {
         menuList.addAll(
             arrayListOf(
@@ -54,7 +65,6 @@ class DetailMenuFragment : Fragment() {
                 return false // 스크롤 비활성화
             }
         }
-        setRecyclerViewHeight()
     }
 
     private fun setRecyclerViewHeight() {
@@ -67,11 +77,16 @@ class DetailMenuFragment : Fragment() {
                     View.MeasureSpec.makeMeasureSpec(measuredWidth, View.MeasureSpec.EXACTLY),
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
                 )
-                totalHeight += childView.measuredHeight
+                totalHeight += childView.measuredHeight + 60
             }
             val params = binding.rvMenu.layoutParams
             params.height = totalHeight
             binding.rvMenu.layoutParams = params
+
+            // ViewPager 높이 조정을 위한 메소드 호출
+            if (activity is DetailActivity) {
+                (activity as DetailActivity).setViewPagerHeight(totalHeight)
+            }
         }
     }
 }

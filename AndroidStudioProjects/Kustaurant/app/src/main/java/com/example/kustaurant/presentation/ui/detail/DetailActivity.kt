@@ -27,6 +27,12 @@ class DetailActivity : AppCompatActivity() {
         initEvaluate()
     }
 
+    fun setViewPagerHeight(height: Int) {
+        val layoutParams = binding.vpMenuReview.layoutParams
+        layoutParams.height = height
+        binding.vpMenuReview.layoutParams = layoutParams
+    }
+
     private fun changeTopBar() {
         binding.svDetail.viewTreeObserver.addOnScrollChangedListener {
             val scrollY = binding.svDetail.scrollY

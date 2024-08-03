@@ -26,6 +26,7 @@
         app:layout_constraintStart_toStartOf="@id/gl_start"
         app:layout_constraintEnd_toEndOf="@id/gl_end"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_detail_menu"
         android:layout_height="wrap_content"/>
 
