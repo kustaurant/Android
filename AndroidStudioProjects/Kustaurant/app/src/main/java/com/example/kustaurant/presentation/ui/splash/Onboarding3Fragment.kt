@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.kustaurant.R
+import com.example.kustaurant.databinding.FragmentOnboarding3Binding
 
 class Onboarding3Fragment : Fragment() {
+    lateinit var binding: FragmentOnboarding3Binding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -16,7 +17,8 @@ class Onboarding3Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_onboarding3, container, false)
+        binding = FragmentOnboarding3Binding.inflate(layoutInflater)
+
+        return binding.root
     }
 }
