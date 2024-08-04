@@ -53,6 +53,9 @@
     <string name="onboarding_fragment3">건국대학교 <font color='#43AB38'>제휴식당</font>을 한눈에!\n티어별로 확인해 보세요</string>
     <string name="onboarding_fragment4">건대생의 메뉴추천,\n<font color='#43AB38'>쿠스토랑 뽑기</font>로 정해 보세요!</string>
 
+    <!-- naver login -->
+    <string name="naver_login_client_name">쿠스토랑</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="location_info"><u>위치에 대한 설명이 필요하다면?</u></string>

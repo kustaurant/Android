@@ -1,9 +1,14 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt.android)
     kotlin("kapt")
 }
+
+val properties = Properties()
+file("../local.properties").inputStream().use{ properties.load(it) }
 
 android {
     namespace = "com.example.kustaurant"
@@ -12,6 +17,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 
     defaultConfig {
@@ -22,6 +28,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"${properties["naver_client_id"]}\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${properties["naver_client_secret"]}\"")
     }
 
     buildTypes {
@@ -41,7 +50,7 @@ android {
         jvmTarget = "17"
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += "META-INF/LICENSE.md"
             excludes += "META-INF/LICENSE-notice.md"
@@ -68,6 +77,8 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.oauth)
+    implementation(libs.kotlinx.coroutines.android)
     kapt(libs.hilt.android.compiler)
 
     // Retrofit

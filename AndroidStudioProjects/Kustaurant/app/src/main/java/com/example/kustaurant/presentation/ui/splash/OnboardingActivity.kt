@@ -1,12 +1,21 @@
 package com.example.kustaurant.presentation.ui.splash
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.example.kustaurant.BuildConfig
+import com.example.kustaurant.MainActivity
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ActivityOnboardingBinding
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
 
 class OnboardingFragment1: Fragment(R.layout.fragment_onboarding1)
 class OnboardingFragment2: Fragment(R.layout.fragment_onboarding2)
@@ -52,6 +61,61 @@ class OnboardingActivity : AppCompatActivity() {
         binding.onboardingBtn4.setOnClickListener {
             binding.onboardingVp.currentItem = 3
         }
+
+
+        // naver 로그인
+        val naverClientId = BuildConfig.NAVER_CLIENT_ID
+        val naverClientSecret = BuildConfig.NAVER_CLIENT_SECRET
+        val naverClientName = getString(R.string.naver_login_client_name)
+        NaverIdLoginSDK.initialize(this,naverClientId, naverClientSecret, naverClientName)
+
+        binding.onboardingIvNaver.setOnClickListener{
+            startNaverLogin()
+        }
+    }
+
+    private fun startNaverLogin(){
+        var naverToken : String? = ""
+
+        val profileCallback = object : NidProfileCallback<NidProfileResponse> {
+            override fun onSuccess(response: NidProfileResponse) {
+                val userId = response.profile?.id
+                Toast.makeText(this@OnboardingActivity, "${userId}님 로그인 성공",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@OnboardingActivity, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Toast.makeText(this@OnboardingActivity,"errorcode: ${errorCode}\nerrorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode,message)
+            }
+        }
+
+        val oauthLoginCallback = object : OAuthLoginCallback {
+            override fun onSuccess() {
+                naverToken = NaverIdLoginSDK.getAccessToken()
+                NidOAuthLogin().callProfileApi(profileCallback)
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                Toast.makeText(this@OnboardingActivity, "errorCode: ${errorCode}\n" +
+                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+        }
+
+        NaverIdLoginSDK.authenticate(this,oauthLoginCallback)
     }
 
     private fun setupButtons() {
