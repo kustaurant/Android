@@ -59,6 +59,7 @@
         app:layout_constraintBottom_toTopOf="@id/my_cl_user_doing">
 
         <TextView
+            android:id="@+id/my_tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -69,6 +70,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="닉네임"/>
+
+        <ImageView
+            android:id="@+id/my_iv_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toEndOf="@id/my_tv_name"
+            app:layout_constraintTop_toTopOf="@id/my_tv_name"
+            app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

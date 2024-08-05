@@ -18,6 +18,7 @@ class MyPageFragment : Fragment() {
     ): View? {
         binding = FragmentMyPageBinding.inflate(layoutInflater)
 
+
         binding.myTvOwnerCertificate.setOnClickListener {
             initOwnerCertificate()
         }
