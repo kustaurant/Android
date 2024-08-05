@@ -12,11 +12,11 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // 스플래시 화면 5초 후 온보딩 액티비티로 전환
+        // 스플래시 화면 3초 후 온보딩 액티비티로 전환
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, OnboardingActivity::class.java)
             startActivity(intent)
             finish()
-        }, 5000) // 5초 동안 스플래시 화면을 보여줌
+        }, 3000) // 3초 동안 스플래시 화면을 보여줌
     }
 }

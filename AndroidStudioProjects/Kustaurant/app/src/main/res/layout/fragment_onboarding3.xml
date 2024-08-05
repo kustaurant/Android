@@ -6,6 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.ui.splash.Onboarding3Fragment">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/img_onboarding3"
+        app:layout_constraintBottom_toTopOf="@id/onboarding3_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="45dp"
+        android:scaleType="fitXY"/>
+
     <TextView
         android:id="@+id/onboarding3_tv"
         android:layout_width="wrap_content"

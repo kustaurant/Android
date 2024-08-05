@@ -62,6 +62,12 @@ class OnboardingActivity : AppCompatActivity() {
             binding.onboardingVp.currentItem = 3
         }
 
+        binding.onboardingTvSkip.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
 
         // naver 로그인
         val naverClientId = BuildConfig.NAVER_CLIENT_ID
@@ -72,6 +78,17 @@ class OnboardingActivity : AppCompatActivity() {
         binding.onboardingIvNaver.setOnClickListener{
             startNaverLogin()
         }
+
+        // kakao 로그인
+
+
+        binding.onboardingIvKakao.setOnClickListener {
+            startKakaoLogin()
+        }
+    }
+
+    private fun startKakaoLogin(){
+
     }
 
     private fun startNaverLogin(){
