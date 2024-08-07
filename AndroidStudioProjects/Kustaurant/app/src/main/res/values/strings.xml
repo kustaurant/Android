@@ -26,6 +26,8 @@
     <string name="detail_menu">메뉴</string>
     <string name="detail_reviwe">리뷰</string>
     <string name="detail_to_evaluate">맛집 평가하기</string>
+    <string name="detail_is_open">영업중</string>
+    <string name="detail_is_not_open">영업안함</string>
 
     <!-- EvaluateActivity -->
     <string name="evaluate_select_alone">혼밥</string>

@@ -1,7 +1,9 @@
 package com.example.kustaurant.presentation.ui.detail
 
 data class MenuData(
-    val menuImg : String,
-    val menuName : String,
-    val menuPrice : Int
+    val menuId : Int,
+    val menuName: String,
+    val menuPrice : String,
+    val naverType : String,
+    val menuImgUrl : String
 )

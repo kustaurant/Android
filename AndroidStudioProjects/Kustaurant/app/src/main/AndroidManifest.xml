@@ -37,7 +37,7 @@
             android:name=".presentation.ui.mypage.MyOpinionActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.detail.DetailActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.ui.detail.EvaluateActivity"
@@ -48,7 +48,7 @@
             android:value="dyfgbjtlqu" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.ui.detail.DetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

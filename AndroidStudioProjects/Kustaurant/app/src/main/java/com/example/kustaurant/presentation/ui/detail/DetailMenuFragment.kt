@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kustaurant.R
@@ -14,14 +15,17 @@ class DetailMenuFragment : Fragment() {
     lateinit var binding: FragmentDetailMenuBinding
     lateinit var menuAdapter: DetailMenuAdapter
     private var menuList: ArrayList<MenuData> = arrayListOf()
+    private val viewModel: DetailViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailMenuBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
-        initDummyData()
+        observeViewModel()
         initMenuRecyclerView()
 
         return binding.root
@@ -37,28 +41,14 @@ class DetailMenuFragment : Fragment() {
         setRecyclerViewHeight() // 프래그먼트가 다시 보여질 때 마다 높이 재설정
     }
 
-
-    private fun initDummyData() {
-        menuList.addAll(
-            arrayListOf(
-                MenuData("", "A특호야", 1000),
-                MenuData("", "B특호야", 2000),
-                MenuData("", "C특호야", 3000),
-                MenuData("", "D특호야", 4000),
-                MenuData("", "E특호야", 5000),
-                MenuData("", "F특호야", 6000),
-                MenuData("", "G특호야", 7000),
-                MenuData("", "H특호야", 8000),
-                MenuData("", "I특호야", 9000),
-                MenuData("", "J특호야", 10000),
-                MenuData("", "K특호야", 11000),
-                MenuData("", "L특호야", 12000)
-            )
-        )
+    private fun observeViewModel() {
+        viewModel.menuData.observe(viewLifecycleOwner){ menuData ->
+            menuAdapter.submitList(menuData)
+        }
     }
 
     private fun initMenuRecyclerView() {
-        menuAdapter = DetailMenuAdapter(requireContext(), menuList)
+        menuAdapter = DetailMenuAdapter(requireContext())
         binding.rvMenu.adapter = menuAdapter
         binding.rvMenu.layoutManager = object : LinearLayoutManager(requireContext()) {
             override fun canScrollVertically(): Boolean {
