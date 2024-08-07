@@ -111,37 +111,6 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
             // Set visibility for favorite and evaluation icons
             binding.tierIvRestaurantFavoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
             binding.tierIvRestaurantEvaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
-
-            // Adjust constraints if only one icon is visible
-            adjustIconConstraints(item.isFavorite, item.isEvaluated)
-        }
-
-        private fun adjustIconConstraints(isFavorite: Boolean, isEvaluated: Boolean) {
-            val evaluationParams = binding.tierIvRestaurantEvaluationImg.layoutParams as ConstraintLayout.LayoutParams
-            val favoriteParams = binding.tierIvRestaurantFavoriteImg.layoutParams as ConstraintLayout.LayoutParams
-
-            when {
-                isEvaluated && isFavorite -> {
-                    // Both icons are visible, use the chain
-                    evaluationParams.endToStart = binding.tierIvRestaurantFavoriteImg.id
-                    evaluationParams.endToEnd = ConstraintSet.UNSET
-                    favoriteParams.startToEnd = binding.tierIvRestaurantEvaluationImg.id
-                    favoriteParams.startToStart = ConstraintSet.UNSET
-                }
-                isEvaluated -> {
-                    // Only evaluation icon is visible
-                    evaluationParams.endToStart = ConstraintSet.UNSET
-                    evaluationParams.endToEnd = ConstraintSet.PARENT_ID
-                }
-                isFavorite -> {
-                    // Only favorite icon is visible
-                    favoriteParams.startToEnd = ConstraintSet.UNSET
-                    favoriteParams.startToStart = binding.tierTvRestaurantName.id
-                }
-            }
-
-            binding.tierIvRestaurantEvaluationImg.layoutParams = evaluationParams
-            binding.tierIvRestaurantFavoriteImg.layoutParams = favoriteParams
         }
     }
 

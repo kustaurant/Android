@@ -7,6 +7,7 @@ import com.example.kustaurant.data.model.TierMapData
 import com.example.kustaurant.data.model.TierMapDataResponse
 import com.naver.maps.geometry.LatLng
 
+
 fun TierMapDataResponse.toTierMapData(): TierMapData {
     val polygonCoords = this.solidPolygonCoordsList.flatten().map { LatLng(it.x, it.y) }
     val solidLines = this.solidPolygonCoordsList.map { line ->
@@ -24,29 +25,29 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
         }
     }
 
-    val favoriteTierRestaurants = this.favoriteTierRestaurants.map {
+    val favoriteTierRestaurants = this.favoriteTierRestaurants?.map {
         TierRestaurant(
             restaurantId = it.restaurantId,
-            restaurantRanking = it.restaurantRanking.toIntOrNull() ?: 0,
-            restaurantName = it.restaurantName,
-            restaurantCuisine = it.restaurantCuisine ,
-            restaurantPosition = it.restaurantPosition ,
-            restaurantImgUrl = it.restaurantImgUrl,
+            restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
+            restaurantName = it.restaurantName ?: "Unknown",
+            restaurantCuisine = it.restaurantCuisine ?: "Unknown",
+            restaurantPosition = it.restaurantPosition ?: "Unknown",
+            restaurantImgUrl = it.restaurantImgUrl ?: "",
             mainTier = it.mainTier,
             isEvaluated = it.isEvaluated,
             isFavorite = it.isFavorite,
             x = it.x.toDoubleOrNull() ?: 0.0,
             y = it.y.toDoubleOrNull() ?: 0.0,
-            partnershipInfo = it.partnershipInfo,
+            partnershipInfo = it.partnershipInfo ?: "",
             restaurantScore = it.restaurantScore.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
         )
-    }
+    } ?: emptyList()
 
 
     val tieredTierRestaurants = this.tieredRestaurants.map {
         TierRestaurant(
             restaurantId = it.restaurantId,
-            restaurantRanking = it.restaurantRanking.toIntOrNull() ?: 0,
+            restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
             restaurantName = it.restaurantName,
             restaurantCuisine = it.restaurantCuisine,
             restaurantPosition = it.restaurantPosition,
@@ -67,7 +68,7 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
             tierRestaurants = group.restaurants.map {
                 TierRestaurant(
                     restaurantId = it.restaurantId,
-                    restaurantRanking = it.restaurantRanking.toIntOrNull() ?: 0,
+                    restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
                     restaurantName = it.restaurantName,
                     restaurantCuisine = it.restaurantCuisine,
                     restaurantPosition = it.restaurantPosition,

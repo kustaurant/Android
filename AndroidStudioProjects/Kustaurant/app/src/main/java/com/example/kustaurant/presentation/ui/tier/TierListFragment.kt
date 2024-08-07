@@ -23,12 +23,21 @@ class TierListFragment : Fragment() {
         binding = FragmentTierListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        setupRecyclerView()
+
+        binding.tierSrl.setOnRefreshListener {
+            viewModel.checkAndLoadBackendData(0)
+            binding.tierRecyclerView.scrollToPosition(0)
+            binding.tierSrl.isRefreshing = false
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+
         observeViewModel()
     }
 
@@ -48,6 +57,7 @@ class TierListFragment : Fragment() {
         viewModel.isExpanded.observe(viewLifecycleOwner) { isExpanded ->
             tierAdapter.setExpanded(isExpanded)
         }
+
     }
 
     override fun onResume() {

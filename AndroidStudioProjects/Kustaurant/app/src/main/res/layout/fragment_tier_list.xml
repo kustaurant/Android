@@ -9,6 +9,12 @@
             type="com.example.kustaurant.presentation.ui.tier.TierViewModel" />
     </data>
 
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/tier_srl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -47,7 +53,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.isExpanded ? @string/tier_toggle_item_reduce : @string/tier_toggle_item_expand}"
+                    android:text="@{viewModel.isExpanded ? @string/fab_reduce : @string/fab_expand}"
                     android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintStart_toEndOf="@id/tier_iv_expand_reduce_toggle_icon"
@@ -68,4 +74,6 @@
             app:layout_constraintTop_toBottomOf="@id/tier_block"
             tools:listitem="@layout/item_restaurant_reduction" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

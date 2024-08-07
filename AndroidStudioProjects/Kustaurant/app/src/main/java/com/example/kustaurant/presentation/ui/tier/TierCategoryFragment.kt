@@ -42,7 +42,7 @@ class TierCategoryFragment : Fragment() {
         fromTabIndex = arguments?.getInt("fromTabIndex") ?: 0
 
         // 현재 선택된 필터 값들을 적용
-        updateToggleGroupSelection(binding.tierToggleTypeGroup, viewModel.selectedTypes.value ?: setOf())
+        updateToggleGroupSelection(binding.tierToggleTypeGroup, viewModel.selectedMenus.value ?: setOf())
         updateToggleGroupSelection(binding.tierToggleSituationGroup, viewModel.selectedSituations.value ?: setOf())
         updateToggleGroupSelection(binding.tierToggleLocationGroup, viewModel.selectedLocations.value ?: setOf())
 
@@ -81,8 +81,8 @@ class TierCategoryFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.selectedTypes.observe(viewLifecycleOwner) { selectedTypes ->
-            updateToggleGroupSelection(binding.tierToggleTypeGroup, selectedTypes)
+        viewModel.selectedMenus.observe(viewLifecycleOwner) { selectedMenus ->
+            updateToggleGroupSelection(binding.tierToggleTypeGroup, selectedMenus)
         }
 
         viewModel.selectedSituations.observe(viewLifecycleOwner) { selectedSituations ->

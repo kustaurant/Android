@@ -33,17 +33,18 @@
         android:id="@+id/tier_iv_restaurant_evaluation_img"
         android:layout_width="19dp"
         android:layout_height="19dp"
+        android:layout_marginEnd="22dp"
         android:background="@drawable/square_round_background"
         android:backgroundTint="#01BAA6"
+        app:layout_goneMarginEnd="22dp"
         android:contentDescription="@string/restaurant_evaluation_info"
         android:padding="1dp"
         android:src="@drawable/ic_check"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tier_tv_restaurant_Name"
-        app:layout_constraintEnd_toStartOf="@id/tier_iv_restaurant_favorite_img"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/tier_tv_restaurant_Name"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/tier_iv_restaurant_favorite_img"
@@ -57,9 +58,9 @@
         android:src="@drawable/ic_favorite"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tier_tv_restaurant_Name"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_evaluation_img"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tier_tv_restaurant_Id"
@@ -76,7 +77,7 @@
 
     <TextView
         android:id="@+id/tier_tv_restaurant_Name"
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_medium"
         android:singleLine="true"
@@ -86,7 +87,6 @@
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@id/tier_iv_restaurant_evaluation_img"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tier_iv_restaurant_evaluation_img"
         app:layout_constraintStart_toEndOf="@id/tier_tv_restaurant_Id"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="식당 이름 입니다." />

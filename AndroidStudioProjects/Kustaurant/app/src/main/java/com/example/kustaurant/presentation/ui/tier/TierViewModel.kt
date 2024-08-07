@@ -12,6 +12,7 @@ import com.example.kustaurant.presentation.util.CategoryIdMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class TierViewModel @Inject constructor(
     private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
@@ -29,8 +30,8 @@ class TierViewModel @Inject constructor(
     private val _mapData = MutableLiveData<TierMapData>()
     val mapData: LiveData<TierMapData> = _mapData
 
-    private val _selectedTypes = MutableLiveData<Set<String>>(setOf("전체"))
-    val selectedTypes: LiveData<Set<String>> = _selectedTypes
+    private val _selectedMenus = MutableLiveData<Set<String>>(setOf("전체"))
+    val selectedMenus: LiveData<Set<String>> = _selectedMenus
 
     private val _selectedSituations = MutableLiveData<Set<String>>(setOf("전체"))
     val selectedSituations: LiveData<Set<String>> = _selectedSituations
@@ -82,7 +83,7 @@ class TierViewModel @Inject constructor(
     }
 
 
-    private fun loadRestaurantMap(menus:  Set<String>, situations:  Set<String>, locations:  Set<String>) {
+    private fun loadRestaurantMap(menus: Set<String>, situations: Set<String>, locations: Set<String>) {
         viewModelScope.launch {
             val tierMapData = getTierRestaurantMapUseCase(
                 CategoryIdMapper.mapMenus(menus),
@@ -95,7 +96,7 @@ class TierViewModel @Inject constructor(
     }
 
     private fun setSelectedTypes(types: Set<String>) {
-        _selectedTypes.value = types
+        _selectedMenus.value = types
     }
 
     private fun setSelectedSituations(situations: Set<String>) {
@@ -112,7 +113,7 @@ class TierViewModel @Inject constructor(
 
     fun getLoadRestaurantMap() {
         loadRestaurantMap(
-            selectedTypes.value ?: emptySet(),
+            selectedMenus.value ?: emptySet(),
             selectedSituations.value ?: emptySet(),
             selectedLocations.value ?: emptySet()
         )
@@ -125,7 +126,7 @@ class TierViewModel @Inject constructor(
 
         setIsSelectedCategoriesChanged(true)
 
-        val selectedTypesValue = selectedTypes.value ?: emptySet()
+        val selectedTypesValue = selectedMenus.value ?: emptySet()
         val selectedSelectedSituations = selectedSituations.value ?: emptySet()
         val selectedSelectedLocations = selectedLocations.value ?: emptySet()
 
@@ -152,7 +153,7 @@ class TierViewModel @Inject constructor(
     }
 
     fun checkAndLoadBackendData(tabIndex : Int) {
-        val selectedTypesValue = selectedTypes.value ?: emptySet()
+        val selectedTypesValue = selectedMenus.value ?: emptySet()
         val selectedSelectedSituations = selectedSituations.value ?: emptySet()
         val selectedSelectedLocations = selectedLocations.value ?: emptySet()
 
@@ -177,12 +178,12 @@ class TierViewModel @Inject constructor(
     }
 
     private fun updateSelectedCategories() {
-        val selectedTypesValue = selectedTypes.value ?: emptySet()
+        val selectedTypesValue = selectedMenus.value ?: emptySet()
         val selectedSelectedSituations = selectedSituations.value ?: emptySet()
         val selectedSelectedLocations = selectedLocations.value ?: emptySet()
         val categories = mutableSetOf<String>()
 
-        if (selectedTypes.value != setOf("전체")) categories.addAll(selectedTypesValue)
+        if (selectedMenus.value != setOf("전체")) categories.addAll(selectedTypesValue)
         if (selectedSituations.value != setOf("전체")) categories.addAll(selectedSelectedSituations)
         if (selectedLocations.value != setOf("전체")) categories.addAll(selectedSelectedLocations)
 
@@ -193,7 +194,7 @@ class TierViewModel @Inject constructor(
     }
 
     fun hasFilterChanged(currentTypes: Set<String>, currentSituations: Set<String>, currentLocations: Set<String>): Boolean {
-        return (currentTypes != selectedTypes.value ||
+        return (currentTypes != selectedMenus.value ||
                 currentSituations != selectedSituations.value ||
                 currentLocations != selectedLocations.value)
     }

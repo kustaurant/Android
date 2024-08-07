@@ -50,6 +50,7 @@
         android:layout_height="19dp"
         android:background="@drawable/square_round_background"
         android:backgroundTint="#01BAA6"
+        app:layout_goneMarginStart="19dp"
         android:contentDescription="@string/restaurant_evaluation_info"
         android:padding="1dp"
         android:src="@drawable/ic_check"
