@@ -1,5 +1,6 @@
 package com.example.kustaurant.data.di
 
+import com.example.kustaurant.data.remote.DetailApi
 import com.example.kustaurant.data.remote.KustaurantApi
 import dagger.Module
 import dagger.Provides
@@ -44,5 +45,11 @@ object NetworkModule {
     @Singleton
     fun provideMapApi(retrofit: Retrofit): KustaurantApi {
         return retrofit.create(KustaurantApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDetailApi(retrofit: Retrofit): DetailApi {
+        return retrofit.create(DetailApi::class.java)
     }
 }

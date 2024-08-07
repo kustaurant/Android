@@ -2,7 +2,7 @@
     <string name="app_name">Kustaurant</string>
 
 
-    <!-- TierFragment -->
+    <!-- Tier Fragment 관련 -->
     <string name="wide_btn_info"><u>크게 보기</u></string>
     <string name="small_btn_info"><u>작게 보기</u></string>
     <string name="restaurant_img_info">식당 대표 이미지 입니다.</string>
@@ -16,14 +16,6 @@
     <string name="search_btn_info">검색하기 버튼입니다.</string>
     <string name="alarm_btn_info">알람 버튼입니다.</string>
     <string name="expand_reduction_fab_info">음식점 리스트를 작게/크게 볼 수 있는 버튼입니다.</string>
-    <string name="tier_toggle_item_expand"><u>크게 보기</u></string>
-    <string name="tier_toggle_item_reduce"><u>작게 보기</u></string>
-    <string name="tier_location_info"><u>위치에 대한 설명이 필요하다면?</u></string>
-
-    <!-- DrawFragment -->
-    <string name="draw_selected_restaurant_img_info">랜덤으로 뽑힌 음식점 이미지입니다.</string>
-    <string name="draw_random_top_info">랜덤 맛집 뽑기</string>
-    <string name="draw_random_detail_info">건국대 주변 맛집을 랜덤으로 뽑아보아요!</string>
 
     <!-- DetailActivity  -->
     <string name="detail_to_naver">네이버 지도로 이동하기</string>
@@ -34,6 +26,9 @@
     <string name="detail_menu">메뉴</string>
     <string name="detail_reviwe">리뷰</string>
     <string name="detail_to_evaluate">맛집 평가하기</string>
+    <string name="detail_is_open">영업중</string>
+    <string name="detail_is_not_open">영업안함</string>
+
 
     <!-- EvaluateActivity -->
     <string name="evaluate_select_alone">혼밥</string>

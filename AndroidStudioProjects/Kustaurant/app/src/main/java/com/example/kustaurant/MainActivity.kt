@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.kustaurant.databinding.ActivityMainBinding
 import com.example.kustaurant.presentation.ui.draw.DrawFragment
 import com.example.kustaurant.presentation.ui.home.HomeFragment
+import com.example.kustaurant.presentation.ui.mypage.MyPageFragment
 import com.example.kustaurant.presentation.ui.tier.TierFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.menu_mypage -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, MyPageFragment()).commit()
                     return@setOnItemSelectedListener true
                 }
                 else -> {
