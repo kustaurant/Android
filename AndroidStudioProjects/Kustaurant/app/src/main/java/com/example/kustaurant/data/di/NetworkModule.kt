@@ -1,6 +1,6 @@
 package com.example.kustaurant.data.di
 
-import com.example.kustaurant.data.remote.MapApi
+import com.example.kustaurant.data.remote.KustaurantApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,7 +34,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://3.35.154.191:9090/")
+            .baseUrl("http://3.35.154.191:8080/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -42,7 +42,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMapApi(retrofit: Retrofit): MapApi {
-        return retrofit.create(MapApi::class.java)
+    fun provideMapApi(retrofit: Retrofit): KustaurantApi {
+        return retrofit.create(KustaurantApi::class.java)
     }
 }

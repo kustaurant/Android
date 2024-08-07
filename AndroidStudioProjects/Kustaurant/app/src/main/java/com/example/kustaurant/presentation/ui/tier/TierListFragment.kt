@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kustaurant.TierListAdapter
 import com.example.kustaurant.databinding.FragmentTierListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,12 +41,17 @@ class TierListFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.tierList.observe(viewLifecycleOwner) { tierList ->
+        viewModel.tierRestaurantList.observe(viewLifecycleOwner) { tierList ->
             tierAdapter.submitList(tierList)
         }
 
         viewModel.isExpanded.observe(viewLifecycleOwner) { isExpanded ->
             tierAdapter.setExpanded(isExpanded)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkAndLoadBackendData(0)
     }
 }

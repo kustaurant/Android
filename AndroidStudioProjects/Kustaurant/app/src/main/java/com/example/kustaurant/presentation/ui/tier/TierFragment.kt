@@ -33,7 +33,6 @@ class TierFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupViewPager()
         setupTabLayout()
         setupCategoryButton()
@@ -46,7 +45,6 @@ class TierFragment : Fragment() {
                 viewModel.resetFilterApplied()
             }
         }
-
         updateCategoryLinearLayout(setOf("전체"))
     }
 

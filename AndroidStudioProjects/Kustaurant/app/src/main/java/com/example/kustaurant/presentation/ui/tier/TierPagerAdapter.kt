@@ -11,7 +11,9 @@ class TierPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> TierListFragment()
+            0 -> {
+                TierListFragment()
+            }
             1 -> TierMapFragment()
             else -> throw IllegalStateException("Unexpected position: $position")
         }

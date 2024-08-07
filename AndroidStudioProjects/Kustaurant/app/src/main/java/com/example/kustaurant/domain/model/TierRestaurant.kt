@@ -1,8 +1,8 @@
-package com.example.kustaurant.data.model
+package com.example.kustaurant.domain.model
 
-data class RestaurantResponse(
+data class TierRestaurant(
     val restaurantId: Int,
-    val restaurantRanking: String,
+    val restaurantRanking: Int,
     val restaurantName: String,
     val restaurantCuisine: String,
     val restaurantPosition: String,
@@ -10,8 +10,8 @@ data class RestaurantResponse(
     val mainTier: Int,
     val isEvaluated: Boolean,
     val isFavorite: Boolean,
-    val x: String,
-    val y: String,
+    val x: Double,
+    val y: Double,
     val partnershipInfo: String,
-    val restaurantScore: String
+    val restaurantScore: Double
 )

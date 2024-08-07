@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.isExpanded ? @string/fab_reduce : @string/fab_expand}"
+                    android:text="@{viewModel.isExpanded ? @string/tier_toggle_item_reduce : @string/tier_toggle_item_expand}"
                     android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintStart_toEndOf="@id/tier_iv_expand_reduce_toggle_icon"
