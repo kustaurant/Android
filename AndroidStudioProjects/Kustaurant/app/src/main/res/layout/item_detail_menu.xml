@@ -13,6 +13,7 @@
         app:layout_constraintWidth_percent="0.26"
         app:layout_constraintDimensionRatio="94:77"
         app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
         app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/cement_3"/>
