@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ToggleButton
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.kustaurant.R
@@ -14,7 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TierCategoryFragment : Fragment() {
-
     private var _binding: FragmentTierCategorySelectBinding? = null
     private val binding get() = _binding!!
 
@@ -42,7 +42,7 @@ class TierCategoryFragment : Fragment() {
         fromTabIndex = arguments?.getInt("fromTabIndex") ?: 0
 
         // 현재 선택된 필터 값들을 적용
-        updateToggleGroupSelection(binding.tierToggleTypeGroup, viewModel.selectedTypes.value ?: setOf())
+        updateToggleGroupSelection(binding.tierToggleTypeGroup, viewModel.selectedMenus.value ?: setOf())
         updateToggleGroupSelection(binding.tierToggleSituationGroup, viewModel.selectedSituations.value ?: setOf())
         updateToggleGroupSelection(binding.tierToggleLocationGroup, viewModel.selectedLocations.value ?: setOf())
 
@@ -66,9 +66,9 @@ class TierCategoryFragment : Fragment() {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
             toggleButton.setOnCheckedChangeListener { _, isChecked ->
                 if(isChecked)
-                    toggleButton.setTextColor(resources.getColor(R.color.signature_1))
+                    toggleButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
                 else
-                    toggleButton.setTextColor(resources.getColor(R.color.cement_4))
+                    toggleButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.cement_4))
 
                 if (isChecked && toggleButton.text.toString() == "전체") {
                     clearOtherToggles(toggleGroup, toggleButton)
@@ -81,8 +81,8 @@ class TierCategoryFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.selectedTypes.observe(viewLifecycleOwner) { selectedTypes ->
-            updateToggleGroupSelection(binding.tierToggleTypeGroup, selectedTypes)
+        viewModel.selectedMenus.observe(viewLifecycleOwner) { selectedMenus ->
+            updateToggleGroupSelection(binding.tierToggleTypeGroup, selectedMenus)
         }
 
         viewModel.selectedSituations.observe(viewLifecycleOwner) { selectedSituations ->
@@ -123,10 +123,10 @@ class TierCategoryFragment : Fragment() {
         binding.tierBtnApply.isEnabled = hasChanges && isAnyGroupSelected
         if (binding.tierBtnApply.isEnabled) {
             binding.tierBtnApply.setBackgroundResource(R.drawable.btn_tier_category_apply_active)
-            binding.tierBtnApply.setTextColor(resources.getColor(R.color.white))
+            binding.tierBtnApply.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         } else {
             binding.tierBtnApply.setBackgroundResource(R.drawable.btn_tier_category_apply_inactive)
-            binding.tierBtnApply.setTextColor(resources.getColor(R.color.cement_4))
+            binding.tierBtnApply.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
         }
     }
 
@@ -136,7 +136,7 @@ class TierCategoryFragment : Fragment() {
         val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
         val selectedLocation = getSelectedTogglesText(binding.tierToggleLocationGroup)
 
-        viewModel.applyFilters(selectedType, selectedSituation, selectedLocation)
+        viewModel.applyFilters(selectedType, selectedSituation, selectedLocation, fromTabIndex)
 
         // 이 Fragment 제거
         parentFragmentManager.beginTransaction().remove(this).commit()
@@ -169,6 +169,7 @@ class TierCategoryFragment : Fragment() {
         }
         return false
     }
+
     private fun navigateToMapFragment() {
         val tierFragment = parentFragment
         if (tierFragment != null) {

@@ -14,8 +14,8 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.kustaurant.R
 import com.example.kustaurant.data.model.NonTieredRestaurantGroup
-import com.example.kustaurant.domain.model.Restaurant
-import com.example.kustaurant.data.model.TierListData
+import com.example.kustaurant.domain.model.TierRestaurant
+import com.example.kustaurant.data.model.TierMapData
 import com.example.kustaurant.databinding.FragmentTierMapBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
@@ -53,6 +53,8 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
         binding.tierMapView.onCreate(savedInstanceState)
         binding.tierMapView.getMapAsync(this)
+
+        viewModel.getLoadRestaurantMap()
 
         // BottomSheet 설정
         val bottomSheet = binding.tierBottomSheet
@@ -99,6 +101,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+
     private fun handleMapClick(coord: LatLng) {
         val restaurant = findRestaurantAtCoord(coord)
 
@@ -109,9 +112,9 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun findRestaurantAtCoord(coord: LatLng): Restaurant? {
-        val allRestaurants = (viewModel.mapData.value?.tieredRestaurants ?: emptyList()) +
-                (viewModel.mapData.value?.nonTieredRestaurants?.flatMap { it.restaurants } ?: emptyList())
+    private fun findRestaurantAtCoord(coord: LatLng): TierRestaurant? {
+        val allRestaurants = (viewModel.mapData.value?.tieredTierRestaurants ?: emptyList()) +
+                (viewModel.mapData.value?.nonTieredRestaurants?.flatMap { it.tierRestaurants } ?: emptyList())
 
         return allRestaurants.find { restaurant ->
             val restaurantCoord = LatLng(restaurant.y, restaurant.x)
@@ -120,18 +123,18 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showRestaurantInfo(restaurant: Restaurant) {
+    private fun showRestaurantInfo(tierRestaurant: TierRestaurant) {
         binding.apply {
-            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_name).text = restaurant.restaurantName
-            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_details).text = restaurant.restaurantCuisine + " | " + restaurant.restaurantPosition
+            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_name).text = tierRestaurant.restaurantName
+            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_details).text = tierRestaurant.restaurantCuisine + " | " + tierRestaurant.restaurantPosition
 
             Glide.with(requireContext())
-                .load(restaurant.restaurantImgUrl)
+                .load(tierRestaurant.restaurantImgUrl)
                 .placeholder(R.drawable.img_default_restaurant)
                 .into(tierBottomSheet.findViewById(R.id.tier_iv_restaurant_img))
 
             val tierImageView = tierBottomSheet.findViewById<ImageView>(R.id.tier_iv_restaurant_tier_img)
-            val tierImageResource = when (restaurant.mainTier) {
+            val tierImageResource = when (tierRestaurant.mainTier) {
                 1 -> R.drawable.ic_rank_1
                 2 -> R.drawable.ic_rank_2
                 3 -> R.drawable.ic_rank_3
@@ -141,10 +144,10 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
             tierImageView.setImageResource(tierImageResource)
 
             // 파트너십 정보 설정
-            val partnershipInfo = if (restaurant.partnershipInfo.isEmpty()) {
+            val partnershipInfo = if (tierRestaurant.partnershipInfo.isEmpty()) {
                 R.string.restaurant_no_partnership_info
             } else {
-                restaurant.partnershipInfo
+                tierRestaurant.partnershipInfo
             }
             tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_partnership_info).text =
                 partnershipInfo.toString()
@@ -152,15 +155,13 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-
-
     private fun updateMarkersForZoom() {
         viewModel.mapData.value?.let { mapData ->
             updateMap(mapData)
         }
     }
 
-    private fun updateMap(mapData: TierListData) {
+    private fun updateMap(mapData: TierMapData) {
         clearOverlaysAndMarkers()
 
         mapData.solidLines.forEach { line ->
@@ -210,7 +211,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-        createMarkersForTieredRestaurants(mapData.tieredRestaurants)
+        createMarkersForTieredRestaurants(mapData.tieredTierRestaurants)
         createMarkersForNonTieredRestaurants(mapData.nonTieredRestaurants)
     }
 
@@ -223,29 +224,29 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         restaurantMarkers.clear()
     }
 
-    private fun createMarkersForTieredRestaurants(tieredRestaurants: List<Restaurant>) {
-        tieredRestaurants.forEach { restaurant ->
+    private fun createMarkersForTieredRestaurants(tieredTierRestaurants: List<TierRestaurant>) {
+        tieredTierRestaurants.forEach { restaurant ->
             createRestaurantMarker(restaurant)
         }
     }
 
     private fun createMarkersForNonTieredRestaurants(nonTieredRestaurants: List<NonTieredRestaurantGroup>) {
         nonTieredRestaurants.filter { it.zoom <= currentZoom }.forEach { group ->
-            group.restaurants.forEach { restaurant ->
+            group.tierRestaurants.forEach { restaurant ->
                 createRestaurantMarker(restaurant)
             }
         }
     }
 
-    private fun createRestaurantMarker(restaurant: Restaurant) {
+    private fun createRestaurantMarker(tierRestaurant: TierRestaurant) {
         val marker = Marker().apply {
-            position = LatLng(restaurant.y, restaurant.x)
-            captionText = restaurant.restaurantName
-            icon = getMarkerIcon(restaurant.mainTier)
+            position = LatLng(tierRestaurant.y, tierRestaurant.x)
+            captionText = tierRestaurant.restaurantName
+            icon = getMarkerIcon(tierRestaurant.mainTier)
             map = naverMap
 
             setOnClickListener {
-                showRestaurantInfo(restaurant)
+                showRestaurantInfo(tierRestaurant)
                 true
             }
         }
@@ -269,6 +270,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
+        viewModel.checkAndLoadBackendData(1)
         binding.tierMapView.onResume()
     }
 

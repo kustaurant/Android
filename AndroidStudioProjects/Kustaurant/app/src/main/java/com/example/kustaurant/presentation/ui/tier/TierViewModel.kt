@@ -1,19 +1,22 @@
 package com.example.kustaurant.presentation.ui.tier
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kustaurant.TierModel
-import com.example.kustaurant.data.model.TierListData
-import com.example.kustaurant.domain.usecase.GetTierListDataUseCase
+import com.example.kustaurant.data.model.TierMapData
+import com.example.kustaurant.domain.model.TierRestaurant
+import com.example.kustaurant.domain.usecase.tier.GetTierRestaurantListUseCase
+import com.example.kustaurant.domain.usecase.tier.GetTierRestaurantMapUseCase
+import com.example.kustaurant.presentation.util.CategoryIdMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class TierViewModel @Inject constructor(
-    private val getTierListDataUseCase: GetTierListDataUseCase
+    private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
+    private val getTierRestaurantMapUseCase: GetTierRestaurantMapUseCase
 ) : ViewModel() {
     private val _filterApplied = MutableLiveData<Boolean>()
     val filterApplied: LiveData<Boolean> = _filterApplied
@@ -21,15 +24,14 @@ class TierViewModel @Inject constructor(
     private val _isExpanded = MutableLiveData<Boolean>(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
 
-    private val _tierList = MutableLiveData<List<TierModel>>()
-    val tierList: LiveData<List<TierModel>> = _tierList
+    private val _tierRestaurantList = MutableLiveData<List<TierRestaurant>>()
+    val tierRestaurantList: LiveData<List<TierRestaurant>> = _tierRestaurantList
 
-    private val _mapData = MutableLiveData<TierListData>()
-    val mapData: LiveData<TierListData> = _mapData
+    private val _mapData = MutableLiveData<TierMapData>()
+    val mapData: LiveData<TierMapData> = _mapData
 
-    // LiveData for storing selected filters
-    private val _selectedTypes = MutableLiveData<Set<String>>(setOf("전체"))
-    val selectedTypes: LiveData<Set<String>> = _selectedTypes
+    private val _selectedMenus = MutableLiveData<Set<String>>(setOf("전체"))
+    val selectedMenus: LiveData<Set<String>> = _selectedMenus
 
     private val _selectedSituations = MutableLiveData<Set<String>>(setOf("전체"))
     val selectedSituations: LiveData<Set<String>> = _selectedSituations
@@ -37,34 +39,33 @@ class TierViewModel @Inject constructor(
     private val _selectedLocations = MutableLiveData<Set<String>>(setOf("전체"))
     val selectedLocations: LiveData<Set<String>> = _selectedLocations
 
-    private var _initialSelectedTypes = setOf("전체")
-    private var _initialSelectedSituations = setOf("전체")
-    private var _initialSelectedLocations = setOf("전체")
-
     //티어 프래그먼트에서 보여줄 카테고리들
     private val _selectedCategories = MutableLiveData<Set<String>>()
     val selectedCategories: LiveData<Set<String>> = _selectedCategories
 
+    //사용자 입력 카테고리가 변경됐는지 여부
+    private val _isSelectedCategoriesChanged = MutableLiveData<Boolean>(false)
+
     init {
-        loadTierList("전체", "전체", "전체")
+        loadRestaurantList(setOf("ALL"), setOf("ALL"), setOf("ALL"))
     }
 
     fun toggleExpand() {
         _isExpanded.value = _isExpanded.value?.not()
     }
 
-    fun loadTierList(cuisines: String, situations: String, locations: String) {
-
+    private fun loadRestaurantList(menus:  Set<String>, situations:  Set<String>, locations:  Set<String>) {
         viewModelScope.launch {
-            val encodedCuisines = Uri.encode(cuisines)
-            val encodedSituations = Uri.encode(situations)
-            val encodedLocations = Uri.encode(locations)
-            val tierListData = getTierListDataUseCase(encodedCuisines, encodedSituations, encodedLocations)
-            _mapData.value = tierListData
-            _tierList.value = tierListData.tieredRestaurants.map {
-                TierModel(
+            val tierListData = getTierRestaurantListUseCase(
+                CategoryIdMapper.mapMenus(menus),
+                CategoryIdMapper.mapSituations(situations),
+                CategoryIdMapper.mapLocations(locations)
+            )
+
+            _tierRestaurantList.value = tierListData.map {
+                TierRestaurant(
                     restaurantId = it.restaurantId,
-                    restaurantRanking = it.restaurantRanking,
+                    restaurantRanking = it.restaurantRanking.toIntOrNull() ?: 0,
                     restaurantName = it.restaurantName,
                     restaurantCuisine = it.restaurantCuisine,
                     restaurantPosition = it.restaurantPosition,
@@ -72,41 +73,77 @@ class TierViewModel @Inject constructor(
                     mainTier = it.mainTier,
                     partnershipInfo = it.partnershipInfo,
                     isFavorite = it.isFavorite,
-                    x = it.x,
-                    y = it.y,
+                    x = it.x.toDouble(),
+                    y = it.y.toDouble(),
                     isEvaluated = it.isEvaluated,
+                    restaurantScore = it.restaurantScore.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
                 )
             }
         }
     }
 
-    fun setSelectedTypes(types: Set<String>) {
-        _selectedTypes.value = types
+
+    private fun loadRestaurantMap(menus: Set<String>, situations: Set<String>, locations: Set<String>) {
+        viewModelScope.launch {
+            val tierMapData = getTierRestaurantMapUseCase(
+                CategoryIdMapper.mapMenus(menus),
+                CategoryIdMapper.mapSituations(situations),
+                CategoryIdMapper.mapLocations(locations)
+            )
+
+            _mapData.value = tierMapData
+        }
     }
 
-    fun setSelectedSituations(situations: Set<String>) {
+    private fun setSelectedTypes(types: Set<String>) {
+        _selectedMenus.value = types
+    }
+
+    private fun setSelectedSituations(situations: Set<String>) {
         _selectedSituations.value = situations
     }
 
-    fun setSelectedLocations(locations: Set<String>) {
+    private fun setSelectedLocations(locations: Set<String>) {
         _selectedLocations.value = locations
     }
 
-    fun applyFilters(types: Set<String>, situations: Set<String>, locations: Set<String>) {
-        setSelectedTypes(types)
+    private fun setIsSelectedCategoriesChanged(flag : Boolean) {
+        _isSelectedCategoriesChanged.value = flag
+    }
+
+    fun getLoadRestaurantMap() {
+        loadRestaurantMap(
+            selectedMenus.value ?: emptySet(),
+            selectedSituations.value ?: emptySet(),
+            selectedLocations.value ?: emptySet()
+        )
+    }
+
+    fun applyFilters(menus: Set<String>, situations: Set<String>, locations: Set<String>, tabIndex : Int) {
+        setSelectedTypes(menus)
         setSelectedSituations(situations)
         setSelectedLocations(locations)
 
-        // 현재 선택된 값들을 새로운 "초기" 값으로 설정
-        _initialSelectedTypes = types
-        _initialSelectedSituations = situations
-        _initialSelectedLocations = locations
+        setIsSelectedCategoriesChanged(true)
 
-        loadTierList(
-            types.joinToString(", "),
-            situations.joinToString(", "),
-            locations.joinToString(", ")
-        )
+        val selectedTypesValue = selectedMenus.value ?: emptySet()
+        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
+        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
+
+        if(tabIndex == 0){
+            loadRestaurantList(
+                selectedTypesValue,
+                selectedSelectedSituations,
+                selectedSelectedLocations
+            )
+        }
+        else if(tabIndex == 1) {
+            loadRestaurantMap(
+                selectedTypesValue,
+                selectedSelectedSituations,
+                selectedSelectedLocations
+            )
+        }
 
         updateSelectedCategories()
         _filterApplied.value = true
@@ -115,23 +152,51 @@ class TierViewModel @Inject constructor(
         _filterApplied.value = false
     }
 
+    fun checkAndLoadBackendData(tabIndex : Int) {
+        val selectedTypesValue = selectedMenus.value ?: emptySet()
+        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
+        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
+
+        if(_isSelectedCategoriesChanged.value == true){
+            setIsSelectedCategoriesChanged(false)
+
+            if(tabIndex == 0){
+                loadRestaurantList(
+                    selectedTypesValue,
+                    selectedSelectedSituations,
+                    selectedSelectedLocations
+                )
+            }
+            else if(tabIndex == 1) {
+                loadRestaurantMap(
+                    selectedTypesValue,
+                    selectedSelectedSituations,
+                    selectedSelectedLocations
+                )
+            }
+        }
+    }
+
     private fun updateSelectedCategories() {
+        val selectedTypesValue = selectedMenus.value ?: emptySet()
+        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
+        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
         val categories = mutableSetOf<String>()
-        if (_initialSelectedTypes != setOf("전체")) categories.addAll(_initialSelectedTypes)
-        if (_initialSelectedSituations != setOf("전체")) categories.addAll(_initialSelectedSituations)
-        if (_initialSelectedLocations != setOf("전체")) categories.addAll(_initialSelectedLocations)
+
+        if (selectedMenus.value != setOf("전체")) categories.addAll(selectedTypesValue)
+        if (selectedSituations.value != setOf("전체")) categories.addAll(selectedSelectedSituations)
+        if (selectedLocations.value != setOf("전체")) categories.addAll(selectedSelectedLocations)
 
         if (categories.isEmpty()) {
             categories.add("전체")
         }
-
         _selectedCategories.value = categories
     }
 
     fun hasFilterChanged(currentTypes: Set<String>, currentSituations: Set<String>, currentLocations: Set<String>): Boolean {
-        return (currentTypes != _initialSelectedTypes ||
-                currentSituations != _initialSelectedSituations ||
-                currentLocations != _initialSelectedLocations)
+        return (currentTypes != selectedMenus.value ||
+                currentSituations != selectedSituations.value ||
+                currentLocations != selectedLocations.value)
     }
 }
 
