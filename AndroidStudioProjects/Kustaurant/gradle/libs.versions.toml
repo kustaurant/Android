@@ -24,6 +24,8 @@ okhttpUrlconnection = "5.0.0-alpha.14"
 naverMaps = "3.17.0"
 databindingCompiler = "8.5.1"
 materialVersion = "1.13.0-alpha01"
+oauth = "5.9.1"
+kotlinxCoroutinesAndroid = "1.9.0-RC"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,6 +51,8 @@ okhttp-urlconnection = { group = "com.squareup.okhttp3", name = "okhttp-urlconne
 naver-maps = { group = "com.naver.maps", name = "map-sdk", version.ref = "naverMaps" }
 androidx-databinding-compiler = { group = "androidx.databinding", name = "databinding-compiler", version.ref = "databindingCompiler" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
+oauth = { group = "com.navercorp.nid", name = "oauth", version.ref = "oauth" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
