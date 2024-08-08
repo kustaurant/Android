@@ -2,12 +2,13 @@ package com.example.kustaurant.data.mapper
 
 import android.util.Log
 import com.example.kustaurant.data.model.NonTieredRestaurantGroup
-import com.example.kustaurant.domain.model.Restaurant
-import com.example.kustaurant.data.model.TierListData
+import com.example.kustaurant.domain.model.TierRestaurant
+import com.example.kustaurant.data.model.TierMapData
 import com.example.kustaurant.data.model.TierMapDataResponse
 import com.naver.maps.geometry.LatLng
 
-fun TierMapDataResponse.toTierMapData(): TierListData {
+
+fun TierMapDataResponse.toTierMapData(): TierMapData {
     val polygonCoords = this.solidPolygonCoordsList.flatten().map { LatLng(it.x, it.y) }
     val solidLines = this.solidPolygonCoordsList.map { line ->
         if (line.isNotEmpty() && line.first() != line.last()) {
@@ -24,10 +25,29 @@ fun TierMapDataResponse.toTierMapData(): TierListData {
         }
     }
 
-    val tieredRestaurants = this.tieredRestaurants.map {
-        Restaurant(
+    val favoriteTierRestaurants = this.favoriteTierRestaurants?.map {
+        TierRestaurant(
             restaurantId = it.restaurantId,
-            restaurantRanking = it.restaurantRanking,
+            restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
+            restaurantName = it.restaurantName ?: "Unknown",
+            restaurantCuisine = it.restaurantCuisine ?: "Unknown",
+            restaurantPosition = it.restaurantPosition ?: "Unknown",
+            restaurantImgUrl = it.restaurantImgUrl ?: "",
+            mainTier = it.mainTier,
+            isEvaluated = it.isEvaluated,
+            isFavorite = it.isFavorite,
+            x = it.x.toDoubleOrNull() ?: 0.0,
+            y = it.y.toDoubleOrNull() ?: 0.0,
+            partnershipInfo = it.partnershipInfo ?: "",
+            restaurantScore = it.restaurantScore.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
+        )
+    } ?: emptyList()
+
+
+    val tieredTierRestaurants = this.tieredRestaurants.map {
+        TierRestaurant(
+            restaurantId = it.restaurantId,
+            restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
             restaurantName = it.restaurantName,
             restaurantCuisine = it.restaurantCuisine,
             restaurantPosition = it.restaurantPosition,
@@ -37,17 +57,18 @@ fun TierMapDataResponse.toTierMapData(): TierListData {
             isFavorite = it.isFavorite,
             x = it.x.toDouble(),
             y = it.y.toDouble(),
-            partnershipInfo = it.partnershipInfo
+            partnershipInfo = it.partnershipInfo,
+            restaurantScore = it.restaurantScore.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
         )
     }
 
     val nonTieredRestaurants = this.nonTieredRestaurants.map { group ->
         NonTieredRestaurantGroup(
             zoom = group.zoom,
-            restaurants = group.restaurants.map {
-                Restaurant(
+            tierRestaurants = group.restaurants.map {
+                TierRestaurant(
                     restaurantId = it.restaurantId,
-                    restaurantRanking = it.restaurantRanking,
+                    restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
                     restaurantName = it.restaurantName,
                     restaurantCuisine = it.restaurantCuisine,
                     restaurantPosition = it.restaurantPosition,
@@ -57,7 +78,8 @@ fun TierMapDataResponse.toTierMapData(): TierListData {
                     isFavorite = it.isFavorite,
                     x = it.x.toDouble(),
                     y = it.y.toDouble(),
-                    partnershipInfo = it.partnershipInfo
+                    partnershipInfo = it.partnershipInfo,
+                    restaurantScore = it.restaurantScore.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
                 )
             }
         )
@@ -65,15 +87,15 @@ fun TierMapDataResponse.toTierMapData(): TierListData {
     Log.d("TierMapDataMapper", "Polygon Coords: $polygonCoords")
     Log.d("TierMapDataMapper", "Solid Lines: $solidLines")
     Log.d("TierMapDataMapper", "Dashed Lines: $dashedLines")
-    Log.d("TierMapDataMapper", "Tiered Restaurants: $tieredRestaurants")
+    Log.d("TierMapDataMapper", "Tiered Restaurants: $tieredTierRestaurants")
     Log.d("TierMapDataMapper", "Non-Tiered Restaurants: $nonTieredRestaurants")
 
-
-    return TierListData(
+    return TierMapData(
         polygonCoords = polygonCoords,
         solidLines = solidLines,
         dashedLines = dashedLines,
-        tieredRestaurants = tieredRestaurants,
+        favoriteTierRestaurants = favoriteTierRestaurants,
+        tieredTierRestaurants = tieredTierRestaurants,
         nonTieredRestaurants = nonTieredRestaurants,
         minZoom = this.minZoom
     )

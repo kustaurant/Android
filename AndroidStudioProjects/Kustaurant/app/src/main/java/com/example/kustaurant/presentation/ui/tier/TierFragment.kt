@@ -33,7 +33,6 @@ class TierFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupViewPager()
         setupTabLayout()
         setupCategoryButton()
@@ -46,7 +45,6 @@ class TierFragment : Fragment() {
                 viewModel.resetFilterApplied()
             }
         }
-
         updateCategoryLinearLayout(setOf("전체"))
     }
 
@@ -130,14 +128,15 @@ class TierFragment : Fragment() {
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    setMargins(0, 0, 8, 0) // layout_marginEnd, layout_marginBottom
+                    val marginEndPx = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 7f, resources.displayMetrics
+                    ).toInt()
+                    marginEnd = marginEndPx
                 }
             }
             binding.selectedCategoryLinearLayout.addView(textView)
         }
     }
-
-
 
     private fun showMainContent() {
         binding.tierTvCategoryText.visibility = View.GONE

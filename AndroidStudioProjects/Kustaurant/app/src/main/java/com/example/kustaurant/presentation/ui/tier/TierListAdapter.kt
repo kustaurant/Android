@@ -1,20 +1,26 @@
-package com.example.kustaurant
+package com.example.kustaurant.presentation.ui.tier
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ItemRestaurantExpandBinding
 import com.example.kustaurant.databinding.ItemRestaurantReductionBinding
+import com.example.kustaurant.domain.model.TierRestaurant
 
 
-class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<TierModel, RecyclerView.ViewHolder>(diffUtil) {
+class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<TierRestaurant, RecyclerView.ViewHolder>(
+    diffUtil
+) {
 
     @SuppressLint("NotifyDataSetChanged")
     fun setExpanded(expanded: Boolean) {
@@ -52,7 +58,7 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
 
     inner class ExpandedViewHolder(private val binding: ItemRestaurantExpandBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(item: TierModel) {
+        fun bind(item: TierRestaurant) {
             binding.tierTvRestaurantName.text = item.restaurantName
             binding.tierTvRestaurantDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
 
@@ -80,9 +86,10 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
         }
     }
 
+
     inner class ReducedViewHolder(private val binding: ItemRestaurantReductionBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(item: TierModel) {
+        fun bind(item: TierRestaurant) {
             binding.tierTvRestaurantId.text = (position + 1).toString()
             binding.tierTvRestaurantName.text = item.restaurantName
             binding.tierTvRestaurantDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
@@ -107,16 +114,17 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
         }
     }
 
+
     companion object {
         private const val VIEW_TYPE_EXPANDED = 0
         private const val VIEW_TYPE_REDUCED = 1
 
-        val diffUtil = object : DiffUtil.ItemCallback<TierModel>() {
-            override fun areItemsTheSame(oldItem: TierModel, newItem: TierModel): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<TierRestaurant>() {
+            override fun areItemsTheSame(oldItem: TierRestaurant, newItem: TierRestaurant): Boolean {
                 return oldItem.restaurantId == newItem.restaurantId
             }
 
-            override fun areContentsTheSame(oldItem: TierModel, newItem: TierModel): Boolean {
+            override fun areContentsTheSame(oldItem: TierRestaurant, newItem: TierRestaurant): Boolean {
                 return oldItem == newItem
             }
         }
