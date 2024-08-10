@@ -2,6 +2,7 @@ package com.example.kustaurant.presentation.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -11,6 +12,12 @@ import com.example.kustaurant.BuildConfig
 import com.example.kustaurant.MainActivity
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ActivityOnboardingBinding
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.user.UserApi
+import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -80,15 +87,24 @@ class OnboardingActivity : AppCompatActivity() {
         }
 
         // kakao 로그인
-
+        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
 
         binding.onboardingIvKakao.setOnClickListener {
-            startKakaoLogin()
+            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                if (error != null) {
+                    Log.e("kakao", "로그인 실패", error)
+                }
+                else if (token != null) {
+                    Log.i("kakao", "로그인 성공 ${token.accessToken}")
+                    UserApiClient.instance.me { user, error ->
+                        Toast.makeText(this,"${user?.id}",Toast.LENGTH_LONG).show()
+                    }
+                    val intent = Intent(this@OnboardingActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
         }
-    }
-
-    private fun startKakaoLogin(){
-
     }
 
     private fun startNaverLogin(){
