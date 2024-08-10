@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="MY_SIZE">10dp</dimen>
+    <dimen name="MY_EDGE_MARGIN">20dp</dimen>
 </resources>

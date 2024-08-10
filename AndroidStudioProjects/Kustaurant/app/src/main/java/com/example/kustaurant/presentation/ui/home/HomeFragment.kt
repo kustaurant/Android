@@ -62,7 +62,8 @@ class HomeFragment : Fragment() {
 
         // Horizontal Margin 적용
         val size = resources.getDimensionPixelSize(R.dimen.MY_SIZE)
-        val deco = SpaceDecoration(size)
+        val m_size = resources.getDimensionPixelSize(R.dimen.MY_EDGE_MARGIN)
+        val deco = SpaceDecoration(size, m_size)
         binding.homeMERv.addItemDecoration(deco)
         binding.homeTOPRv.addItemDecoration(deco)
 
