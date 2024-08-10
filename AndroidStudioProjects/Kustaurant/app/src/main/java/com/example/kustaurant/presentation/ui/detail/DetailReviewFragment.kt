@@ -1,5 +1,8 @@
 package com.example.kustaurant.presentation.ui.detail
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kustaurant.MainActivity
 import com.example.kustaurant.R
+import com.example.kustaurant.databinding.DialogReviewBinding
 import com.example.kustaurant.databinding.FragmentDetailReviewBinding
 
 class DetailReviewFragment : Fragment() {
@@ -16,7 +20,6 @@ class DetailReviewFragment : Fragment() {
     lateinit var reviewAdapter: DetailReviewAdapter
     private var reviewList : ArrayList<ReviewData> = arrayListOf()
     private var replyList : ArrayList<ReviewReplyData> = arrayListOf()
-    private var scrollPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +63,7 @@ class DetailReviewFragment : Fragment() {
         reviewAdapter = DetailReviewAdapter(reviewList){
             updateRecyclerViewHeight()
         }
+        binding.detailRvReview.addItemDecoration(ItemDecoration(spacing = 16.dpToPx(requireContext()), endSpacing = 32.dpToPx(requireContext())))
         binding.detailRvReview.adapter = reviewAdapter
         val layoutManager = object : LinearLayoutManager(context) {
             override fun canScrollVertically(): Boolean = false // 스크롤 비활성화
@@ -68,6 +72,30 @@ class DetailReviewFragment : Fragment() {
         binding.detailRvReview.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             updateRecyclerViewHeight()
         }
+
+        reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
+            override fun onItemClicked(data: ReviewData, position : Int, type : Int) {
+                when (type) {
+                    1 -> {  // Report
+                        context?.let {
+                            val intent = Intent(it, ReportActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                    2 -> {  // Delete
+                        if (position < reviewList.size) {
+                            reviewList.removeAt(position)
+                            reviewAdapter.notifyItemRemoved(position)
+                            reviewAdapter.notifyItemRangeChanged(position, reviewList.size - position)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    private fun Int.dpToPx(context: Context): Int {
+        return (this * context.resources.displayMetrics.density).toInt()
     }
 
     // 각 tab마다 height 재구성

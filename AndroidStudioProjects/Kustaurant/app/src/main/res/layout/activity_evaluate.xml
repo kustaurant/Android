@@ -196,7 +196,7 @@
                 android:id="@+id/rb_evaluate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:max="5"
+                android:numStars="5"
                 android:rating="0"
                 android:stepSize="0.5"
                 android:isIndicator="false"

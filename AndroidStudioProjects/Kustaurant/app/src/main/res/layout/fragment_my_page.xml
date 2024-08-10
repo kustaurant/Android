@@ -181,6 +181,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/my_cl_user_doing"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.Guideline
@@ -197,57 +198,12 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95"/>
 
-        <View
-            android:id="@+id/my_view_owner_certificate"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintBottom_toTopOf="@id/my_tv_owner_certificate"/>
-
-        <TextView
-            android:id="@+id/my_tv_owner_certificate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintBottom_toTopOf="@id/my_view_fix_alliance_top"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="점주 인증하기"/>
-
-        <View
-            android:id="@+id/my_view_fix_alliance_top"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintBottom_toTopOf="@id/my_tv_fix_alliance"/>
-
-        <TextView
-            android:id="@+id/my_tv_fix_alliance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintBottom_toTopOf="@id/my_view_save_top"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="제휴 정보 수정하기"/>
-
-        <View
-            android:id="@+id/my_view_save_top"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintBottom_toTopOf="@id/my_tv_save"/>
-
         <TextView
             android:id="@+id/my_tv_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintBottom_toTopOf="@id/my_view_community_comment_top"
+            app:layout_constraintTop_toTopOf="parent"
             android:fontFamily="@font/pretendard_regular"
             android:textSize="15sp"
             android:textColor="@color/black"
@@ -259,14 +215,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/cement_3"
-            app:layout_constraintBottom_toTopOf="@id/my_tv_community_comment"/>
+            app:layout_constraintTop_toBottomOf="@id/my_tv_save"/>
 
         <TextView
             android:id="@+id/my_tv_community_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintBottom_toTopOf="@id/my_view_community_scrap_top"
+            app:layout_constraintTop_toBottomOf="@id/my_view_community_comment_top"
             android:fontFamily="@font/pretendard_regular"
             android:textSize="15sp"
             android:textColor="@color/black"
@@ -278,14 +234,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/cement_3"
-            app:layout_constraintBottom_toTopOf="@id/my_tv_community_scrap"/>
+            app:layout_constraintTop_toBottomOf="@id/my_tv_community_comment"/>
 
         <TextView
             android:id="@+id/my_tv_community_scrap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintBottom_toTopOf="@id/my_view_opinion_top"
+            app:layout_constraintTop_toBottomOf="@id/my_view_community_scrap_top"
             android:fontFamily="@font/pretendard_regular"
             android:textSize="15sp"
             android:textColor="@color/black"
@@ -297,19 +253,57 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/cement_3"
-            app:layout_constraintBottom_toTopOf="@id/my_tv_opinion"/>
+            app:layout_constraintTop_toBottomOf="@id/my_tv_community_scrap"/>
 
         <TextView
             android:id="@+id/my_tv_opinion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/my_view_opinion_top"
             android:fontFamily="@font/pretendard_regular"
             android:textSize="15sp"
             android:textColor="@color/black"
             android:paddingVertical="14dp"
             android:text="의견 보내기"/>
+
+        <View
+            android:id="@+id/my_view_owner_certificate"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cement_3"
+            app:layout_constraintTop_toBottomOf="@id/my_tv_opinion"/>
+
+        <TextView
+            android:id="@+id/my_tv_owner_certificate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+            app:layout_constraintTop_toBottomOf="@id/my_view_owner_certificate"
+            android:fontFamily="@font/pretendard_regular"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:paddingVertical="14dp"
+            android:text="점주 인증하기"/>
+
+        <View
+            android:id="@+id/my_view_fix_alliance_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cement_3"
+            app:layout_constraintTop_toBottomOf="@id/my_tv_owner_certificate"/>
+
+        <TextView
+            android:id="@+id/my_tv_fix_alliance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+            app:layout_constraintTop_toBottomOf="@id/my_view_fix_alliance_top"
+            android:fontFamily="@font/pretendard_regular"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:paddingVertical="14dp"
+            android:text="제휴 정보 수정하기"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
