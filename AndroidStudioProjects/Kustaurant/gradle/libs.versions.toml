@@ -26,6 +26,7 @@ databindingCompiler = "8.5.1"
 materialVersion = "1.13.0-alpha01"
 oauth = "5.9.1"
 kotlinxCoroutinesAndroid = "1.9.0-RC"
+oauthJdk8 = "5.9.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +54,7 @@ androidx-databinding-compiler = { group = "androidx.databinding", name = "databi
 google-material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 oauth = { group = "com.navercorp.nid", name = "oauth", version.ref = "oauth" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+oauth-jdk8 = { group = "com.navercorp.nid", name = "oauth-jdk8", version.ref = "oauthJdk8" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
