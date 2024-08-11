@@ -2,37 +2,64 @@ package com.example.kustaurant.presentation.ui.detail
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ItemDetailTierKeywordBinding
 import com.example.kustaurant.databinding.ItemDetailTierTierBinding
 
-class DetailTierInfoAdapter(val context : Context, private val tierData : ArrayList<TierInfoData>)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class DetailTierInfoAdapter(val context : Context, private val tierData : TierInfoData) : ListAdapter<TierInfoData, RecyclerView.ViewHolder>(diffUtil){
 
     companion object {
         const val VIEW_TYPE_TIER = 0
         const val VIEW_TYPE_KEYWORD = 1
+
+        private val diffUtil = object : DiffUtil.ItemCallback<TierInfoData>() {
+            override fun areItemsTheSame(oldItem: TierInfoData, newItem: TierInfoData): Boolean =
+                oldItem.tierNumber == newItem.tierNumber
+
+            override fun areContentsTheSame(oldItem: TierInfoData, newItem: TierInfoData): Boolean =
+                oldItem == newItem
+        }
     }
 
+
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            VIEW_TYPE_TIER
-        } else
+        return if (tierData.tierNumber == -1) {
             VIEW_TYPE_KEYWORD
+        } else {
+            if (position == 0) VIEW_TYPE_TIER else VIEW_TYPE_KEYWORD
+        }
     }
 
     inner class TierViewHolder(val binding : ItemDetailTierTierBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : TierInfoData){
-            binding.ivTier.setImageResource(item.tierImage)
-            binding.tvTierName.text = item.tierName
-            binding.tvTierNumber.text = item.tierNumber.toString()
+            if(item.tierNumber == -1){
+                binding.clTierBackground.visibility = View.GONE
+            } else{
+                when(item.tierNumber){
+                    1 -> binding.clTierBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tier_1))
+                    2 -> binding.clTierBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tier_2))
+                    3 -> binding.clTierBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tier_3))
+                    4 -> binding.clTierBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tier_4))
+                }
+                Glide.with(context)
+                    .load(item.tierImage)
+                    .into(binding.ivTier)
+                binding.tvTierName.text = item.tierName
+                binding.tvTierNumber.text = item.tierNumber.toString()
+            }
         }
     }
 
     inner class KeyWordViewHolder(val binding : ItemDetailTierKeywordBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : TierInfoData){
-            binding.tvTier.text = item.tierName
+        fun bind(item: String){
+            binding.tvTier.text = item
         }
     }
         override fun onCreateViewHolder(
@@ -47,11 +74,20 @@ class DetailTierInfoAdapter(val context : Context, private val tierData : ArrayL
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            when (holder){
-                is TierViewHolder -> holder.bind(tierData[position])
-                is KeyWordViewHolder -> holder.bind(tierData[position])
+            if (tierData.tierNumber == -1) {
+                (holder as KeyWordViewHolder).bind(tierData.situationList[position])
+            } else {
+                if (holder is TierViewHolder && position == 0) {
+                    holder.bind(tierData)
+                } else if (holder is KeyWordViewHolder) {
+                    holder.bind(tierData.situationList[position - 1])
+                }
             }
         }
 
-        override fun getItemCount(): Int = tierData.size
+        override fun getItemCount(): Int {
+            return if (tierData.tierNumber == -1)
+                tierData.situationList.size
+            else 1 + tierData.situationList.size
+        }
 }
