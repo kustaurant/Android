@@ -67,7 +67,7 @@ class DetailMenuFragment : Fragment() {
                     View.MeasureSpec.makeMeasureSpec(measuredWidth, View.MeasureSpec.EXACTLY),
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
                 )
-                totalHeight += childView.measuredHeight + 60
+                totalHeight += childView.measuredHeight + 40
             }
             val params = binding.rvMenu.layoutParams
             params.height = totalHeight
