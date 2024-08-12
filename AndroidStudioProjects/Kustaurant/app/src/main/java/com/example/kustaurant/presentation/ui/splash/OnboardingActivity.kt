@@ -12,11 +12,7 @@ import com.example.kustaurant.BuildConfig
 import com.example.kustaurant.MainActivity
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ActivityOnboardingBinding
-import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.user.UserApi
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -36,6 +32,20 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // SharedPreferences를 사용하여 최초 접속 여부 확인
+        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        val isFirstLaunch = preferences.getBoolean("is_first_launch", true)
+
+        // 온보딩을 이미 본 경우
+        if (!isFirstLaunch) {
+            val intent = Intent(this, StartActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+        saveOnboardingCompleted()
+
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -105,6 +115,13 @@ class OnboardingActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun saveOnboardingCompleted() {
+        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.putBoolean("is_first_launch", false) // 온보딩 완료로 설정
+        editor.apply()
     }
 
     private fun startNaverLogin(){
