@@ -1,6 +1,7 @@
 package com.example.kustaurant.data.di
 
 import com.example.kustaurant.data.remote.DetailApi
+import com.example.kustaurant.data.remote.HomeApi
 import com.example.kustaurant.data.remote.KustaurantApi
 import dagger.Module
 import dagger.Provides
@@ -10,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -51,5 +53,11 @@ object NetworkModule {
     @Singleton
     fun provideDetailApi(retrofit: Retrofit): DetailApi {
         return retrofit.create(DetailApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHomeApi(retrofit: Retrofit): HomeApi{
+        return retrofit.create(HomeApi::class.java)
     }
 }
