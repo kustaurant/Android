@@ -26,6 +26,9 @@ class DetailActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        val restaurantId = intent.getIntExtra("restaurantId", 0)
+        viewModel.loadDetailData(restaurantId)
+
         initTabView()
         initTierRecyclerView()
         initNaverLink()

@@ -1,5 +1,6 @@
 package com.example.kustaurant.presentation.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.kustaurant.R
 import com.example.kustaurant.data.model.HomeResponse
 import com.example.kustaurant.databinding.FragmentHomeBinding
+import com.example.kustaurant.presentation.ui.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,6 +59,22 @@ class HomeFragment : Fragment() {
         val deco = SpaceDecoration(size, m_size)
         binding.homeMERv.addItemDecoration(deco)
         binding.homeTOPRv.addItemDecoration(deco)
+
+        meRestaurantadapter.setOnItemClickListener(object : MeRestaurantAdapter.OnItemClickListener{
+            override fun onItemClicked(data: RestaurantModel) {
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra("restaurantId", data.restaurantId)
+                startActivity(intent)
+            }
+        })
+
+        topRestaurantadapter.setOnItemClickListener(object : TopRestaurantAdapter.OnItemClickListener{
+            override fun onItemClicked(data: RestaurantModel) {
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra("restaurantId", data.restaurantId)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun updateUI(response: HomeResponse) {

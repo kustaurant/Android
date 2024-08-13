@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.DiffUtil
@@ -18,9 +19,16 @@ import com.example.kustaurant.databinding.ItemRestaurantReductionBinding
 import com.example.kustaurant.domain.model.TierRestaurant
 
 
-class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<TierRestaurant, RecyclerView.ViewHolder>(
-    diffUtil
-) {
+class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<TierRestaurant, RecyclerView.ViewHolder>(diffUtil) {
+    lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener{
+        fun onItemClicked(data : TierRestaurant)
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+        itemClickListener = onItemClickListener
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun setExpanded(expanded: Boolean) {
@@ -83,6 +91,10 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
 
             binding.tierIvRestaurantFavoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
             binding.tierIvRestaurantEvaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
+
+            binding.tierClRestaurant.setOnClickListener {
+                itemClickListener.onItemClicked(item)
+            }
         }
     }
 
@@ -111,6 +123,10 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
             // Set visibility for favorite and evaluation icons
             binding.tierIvRestaurantFavoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
             binding.tierIvRestaurantEvaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
+
+            binding.tierClRestaurant.setOnClickListener {
+                itemClickListener.onItemClicked(item)
+            }
         }
     }
 

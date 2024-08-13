@@ -27,11 +27,8 @@ class DetailViewModel @Inject constructor(
     private val _tierData = MutableLiveData<TierInfoData>()
     val tierData: LiveData<TierInfoData> = _tierData
 
-    init {
-        loadDetailData(1)
-    }
 
-    private fun loadDetailData(restaurantId : Int) {
+    fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
             val getDetailData = getDetailDataUseCase(restaurantId)
             _detailData.value = getDetailData

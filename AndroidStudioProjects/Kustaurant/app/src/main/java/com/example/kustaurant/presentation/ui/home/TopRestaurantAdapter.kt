@@ -8,8 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ItemHomeRvBinding
+import com.example.kustaurant.domain.model.TierRestaurant
 
 class TopRestaurantAdapter(var topRestaurantList: ArrayList<RestaurantModel>): RecyclerView.Adapter<TopRestaurantAdapter.ViewHolder>(){
+
+    lateinit var itemClickListener: OnItemClickListener
+
+    interface OnItemClickListener{
+        fun onItemClicked(data : RestaurantModel)
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+        itemClickListener = onItemClickListener
+    }
 
     inner class ViewHolder(val binding: ItemHomeRvBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(restaurant: RestaurantModel){
@@ -39,7 +50,7 @@ class TopRestaurantAdapter(var topRestaurantList: ArrayList<RestaurantModel>): R
             binding.homeTier.setImageResource(tierDrawable)
 
             binding.homeRV.setOnClickListener{ // recyclerview를 클릭했을 때
-
+                itemClickListener.onItemClicked(restaurant)
             }
         }
     }
