@@ -4,7 +4,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,14 +28,22 @@ class DetailActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val restaurantId = intent.getIntExtra("restaurantId", 0)
+        val restaurantId = intent.getIntExtra("restaurantId", 1)
+        Log.d("restaurantId", restaurantId.toString())
         viewModel.loadDetailData(restaurantId)
 
+        initBack()
         initTabView()
         initTierRecyclerView()
         initNaverLink()
         changeTopBar()
         initEvaluate()
+    }
+
+    private fun initBack() {
+        binding.btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun initNaverLink() {
@@ -52,16 +62,6 @@ class DetailActivity : AppCompatActivity() {
     private fun changeTopBar() {
         binding.svDetail.viewTreeObserver.addOnScrollChangedListener {
             val scrollY = binding.svDetail.scrollY
-            val topBarHeight = binding.detailClTopBar.height
-            val tabLayoutPosition = binding.tlMenuReview.top - scrollY
-
-            // 탭 sticky header
-            if (tabLayoutPosition <= topBarHeight) {
-                binding.tlMenuReview.translationY = (topBarHeight - tabLayoutPosition).toFloat()
-            } else {
-                binding.tlMenuReview.translationY = 0f
-            }
-
             // 상단 바 색 변환
             if (scrollY >= binding.clStoreInfo.top - binding.detailClTopBar.height) {
                 binding.detailClTopBar.setBackgroundColor(Color.WHITE)

@@ -80,10 +80,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ScrollView
+        <com.amar.library.ui.StickyScrollView
             android:id="@+id/sv_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:stickyHeader="@id/cl_sticky"
+            app:stickyFooter="@id/vp_menu_review"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -109,7 +111,7 @@
                     android:layout_height="0dp"
                     android:elevation="1dp"
                     android:background="@drawable/gradient_white_to_black"
-                    app:layout_constraintDimensionRatio="360:100"
+                    app:layout_constraintDimensionRatio="360:90"
                     app:layout_constraintBottom_toBottomOf="@id/cl_store"/>
 
 
@@ -118,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintDimensionRatio="360:200">
+                    app:layout_constraintDimensionRatio="360:180">
 
                     <ImageView
                         android:id="@+id/iv_store"
@@ -137,7 +139,8 @@
                     android:elevation="1dp"
                     android:paddingVertical="23dp"
                     android:background="@drawable/all_radius_13_white"
-                    app:layout_constraintTop_toBottomOf="@id/cl_store">
+                    app:layout_constraintTop_toBottomOf="@id/cl_store"
+                    app:layout_constraintBottom_toTopOf="@id/cl_sticky">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/gl_info_start"
@@ -293,7 +296,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        bind:listitem="@layout/item_detail_tier_tier"
                         app:layout_constraintTop_toBottomOf="@id/tv_tier_info"
                         app:layout_constraintStart_toStartOf="@id/gl_info_start"/>
 
@@ -347,8 +349,8 @@
                                 android:text="@string/detail_evaluation_count"
                                 android:fontFamily="@font/pretendard_regular"
                                 android:textColor="@color/cement_6"
-                                app:layout_constraintStart_toStartOf="@id/tv_evaluate_count"
-                                app:layout_constraintEnd_toEndOf="@id/tv_evaluate_count"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/tv_evaluate_count"/>
 
                             <TextView
@@ -358,7 +360,8 @@
                                 android:textSize="18sp"
                                 android:textColor="@color/cement_6"
                                 android:fontFamily="@font/pretendard_bold"
-                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintStart_toStartOf="@id/tv_count_title"
+                                app:layout_constraintEnd_toEndOf="@id/tv_count_title"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 android:text="@{String.valueOf(viewModel.detailData.evaluationCount)}"/>
 
@@ -414,31 +417,56 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tl_menu_review"
-                    android:elevation="1dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_sticky"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:paddingTop="10dp"
-                    android:background="@color/white"
-                    app:layout_constraintTop_toBottomOf="@id/cl_store_info"/>
+                    app:layout_constraintTop_toBottomOf="@id/cl_store_info"
+                    app:layout_constraintBottom_toTopOf="@id/vp_menu_review">
+
+                    <View
+                        android:id="@+id/view_sticky"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/tl_menu_review"
+                        app:layout_constraintDimensionRatio="360:55"/>
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tl_menu_review"
+                        android:elevation="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:background="@color/white"
+                        app:layout_constraintTop_toBottomOf="@id/view_sticky"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_menu_review"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tl_menu_review"/>
+                    app:layout_constraintTop_toBottomOf="@id/cl_sticky"/>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="360:83"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/vp_menu_review"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </ScrollView>
+        </com.amar.library.ui.StickyScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_bottom_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="360:83"
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="@color/cement_1">
 
@@ -477,7 +505,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
                 app:layout_constraintBottom_toTopOf="@id/tv_star"
                 app:layout_constraintWidth_percent="0.07"
@@ -505,10 +532,7 @@
                 app:layout_constraintStart_toStartOf="@id/cl_star"
                 app:layout_constraintEnd_toEndOf="@id/cl_star"/>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

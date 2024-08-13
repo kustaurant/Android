@@ -1,5 +1,7 @@
 package com.example.kustaurant.data.model
 
+import java.io.Serializable
+
 data class DetailDataResponse (
     val restaurantId : Int,
     val restaurantImgUrl : String,

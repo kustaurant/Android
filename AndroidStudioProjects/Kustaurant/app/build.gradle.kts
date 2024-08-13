@@ -73,7 +73,10 @@ kapt {
 }
 
 dependencies {
-    // Naver 지도
+    // sticky scollview
+    implementation(libs.sticky.scroll.view)
+
+            // Naver 지도
     implementation(libs.naver.maps)
 
     // by viewModels() 사용
@@ -116,4 +119,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0")
     implementation("androidx.activity:activity-ktx:1.5.0")
+
 }
