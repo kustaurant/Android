@@ -1,9 +1,14 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt.android)
     kotlin("kapt")
 }
+
+val properties = Properties()
+file("../local.properties").inputStream().use{ properties.load(it) }
 
 android {
     namespace = "com.example.kustaurant"
@@ -12,6 +17,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 
     defaultConfig {
@@ -22,6 +28,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // 네이버 로그인
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"${properties["naver_client_id"]}\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${properties["naver_client_secret"]}\"")
+
+        // 카카오 로그인
+        buildConfigField("String", "KAKAO_NATIVE_KEY", "\"${properties["kakao_native_key"]}\"")
+        buildConfigField("String", "KAKAO_REST_API_KEY", "\"${properties["kakao_rest_api_key"]}\"")
+
+        manifestPlaceholders["KAKAO_NATIVE_KEY"] = properties["kakao_manifest_native_key"].toString()
     }
 
     buildTypes {
@@ -33,6 +49,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -41,7 +58,7 @@ android {
         jvmTarget = "17"
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += "META-INF/LICENSE.md"
             excludes += "META-INF/LICENSE-notice.md"
@@ -68,6 +85,9 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.oauth) // 네이버 로그인
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.v2.user) // 카카오 로그인
     kapt(libs.hilt.android.compiler)
 
     // Retrofit

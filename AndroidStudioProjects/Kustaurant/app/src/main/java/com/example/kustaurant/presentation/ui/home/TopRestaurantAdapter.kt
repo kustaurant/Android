@@ -1,7 +1,9 @@
 package com.example.kustaurant.presentation.ui.home
 
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.kustaurant.R
@@ -16,6 +18,11 @@ class TopRestaurantAdapter(var topRestaurantList: ArrayList<RestaurantModel>): R
             binding.homeName.text = restaurant.restaurantName
             binding.homeBenefit.text = restaurant.partnershipInfo
             binding.homeStar.text = restaurant.restaurantScore.toString()
+
+            binding.homeIvStar.setColorFilter(
+                ContextCompat.getColor(binding.root.context, R.color.tier_3),
+                PorterDuff.Mode.SRC_IN
+            )
 
             val tierDrawable = when(restaurant.mainTier){
                 1-> R.drawable.ic_rank_1

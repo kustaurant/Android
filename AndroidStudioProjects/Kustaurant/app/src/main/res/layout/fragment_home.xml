@@ -67,13 +67,28 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/home_topbar"
-        app:layout_constraintStart_toStartOf="@id/gl_start"
-        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <!--  GuideLine 생성-->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_start2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_end2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95"/>
 
             <!--  Dimensino Ratio 생성-->
             <androidx.viewpager2.widget.ViewPager2
@@ -109,10 +124,12 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_category_cl"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintDimensionRatio="360:45"
                 app:layout_constraintTop_toBottomOf="@id/home_ad_banner"
+                app:layout_constraintStart_toStartOf="@id/gl_start2"
+                app:layout_constraintEnd_toEndOf="@id/gl_end2"
                 android:layout_marginTop="20dp">
 
                 <TextView
@@ -141,12 +158,12 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_select_category_cl"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintDimensionRatio="360:375"
                 app:layout_constraintTop_toBottomOf="@id/home_category_cl"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/gl_start2"
+                app:layout_constraintEnd_toEndOf="@id/gl_end2"
                 android:layout_marginTop="7dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -167,7 +184,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
 
@@ -195,7 +212,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/home_btn_all"
                         app:layout_constraintEnd_toStartOf="@id/home_btn_japan"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -222,7 +239,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/home_btn_korea"
                         app:layout_constraintEnd_toStartOf="@id/home_btn_china"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -248,7 +265,7 @@
                         android:gravity="center"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -285,7 +302,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
 
@@ -313,7 +330,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/home_btn_western"
                         app:layout_constraintEnd_toStartOf="@id/home_btn_meat"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -340,7 +357,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/home_btn_asian"
                         app:layout_constraintEnd_toStartOf="@id/home_btn_seafood"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -366,7 +383,7 @@
                         android:gravity="center"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -403,7 +420,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
 
@@ -431,7 +448,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/home_btn_chicken"
                         app:layout_constraintEnd_toStartOf="@id/home_btn_tteokbokki"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -458,7 +475,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/home_btn_hamburger_pizza"
                         app:layout_constraintEnd_toStartOf="@id/home_btn_beer"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -484,7 +501,7 @@
                         android:gravity="center"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -520,7 +537,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
 
@@ -548,7 +565,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/home_btn_cafe"
                         app:layout_constraintEnd_toStartOf="@id/home_btn_salad"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -575,7 +592,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/home_btn_bakery"
                         app:layout_constraintEnd_toStartOf="@id/home_btn_benefit"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -601,7 +618,7 @@
                         android:gravity="center"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:background="@drawable/btn_category"
+                        android:background="@drawable/all_radius_15_none"
                         android:clickable="true"
                         >
                         <ImageView
@@ -624,10 +641,12 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_TOP_cl"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintDimensionRatio="360:50"
                 app:layout_constraintTop_toBottomOf="@id/home_select_category_cl"
+                app:layout_constraintStart_toStartOf="@id/gl_start2"
+                app:layout_constraintEnd_toEndOf="@id/gl_end2"
                 android:layout_marginTop="53dp">
 
                 <TextView
@@ -691,10 +710,12 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_ME_cl"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintDimensionRatio="360:50"
                 app:layout_constraintTop_toBottomOf="@id/home_TOP"
+                app:layout_constraintStart_toStartOf="@id/gl_start2"
+                app:layout_constraintEnd_toEndOf="@id/gl_end2"
                 android:layout_marginTop="53dp">
 
                 <TextView

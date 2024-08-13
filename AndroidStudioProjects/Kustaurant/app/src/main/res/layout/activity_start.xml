@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.splash.StartActivity">
+
+    <!--  GuideLine 생성-->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95"/>
+
+    <ImageView
+        android:id="@+id/start_vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/img_start_bg"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    
+    <ImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/img_kustaurant_greenlogo"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/start_iv_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="21dp"/>
+    
+    <ImageView
+        android:id="@+id/start_iv_logo"
+        android:layout_width="202dp"
+        android:layout_height="47dp"
+        android:src="@drawable/img_kustaurant_text_green"
+        app:layout_constraintBottom_toTopOf="@id/start_tv_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="14dp"/>
+
+    <TextView
+        android:id="@+id/start_tv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/signature_1"
+        android:text="건대생을 위한 맛집 리스트"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/start_tv_login"
+        android:layout_marginBottom="30dp"/>
+
+    <TextView
+        android:id="@+id/start_tv_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/onboarding_skip"
+        android:textColor="@color/cement_4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        android:layout_marginBottom="20dp"/>
+
+    <ImageView
+        android:id="@+id/start_iv_kakao"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:src="@drawable/img_kakao_logo"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintBottom_toTopOf="@id/start_tv_skip"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="80dp"/>
+
+    <ImageView
+        android:id="@+id/start_iv_naver"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:src="@drawable/img_naver_logo"
+        app:layout_constraintStart_toEndOf="@id/start_iv_kakao"
+        app:layout_constraintTop_toTopOf="@id/start_iv_kakao"
+        android:layout_marginStart="20dp"/>
+
+    <View
+        android:id="@+id/start_divider1"
+        android:layout_width="107dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toTopOf="@id/start_iv_kakao"
+        app:layout_constraintEnd_toStartOf="@id/start_tv_login"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        android:background="@color/cement_5"
+        android:layout_marginBottom="25dp"/>
+
+    <TextView
+        android:id="@+id/start_tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="간편 로그인"
+        android:textColor="@color/cement_5"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintTop_toTopOf="@id/start_divider1"
+        app:layout_constraintBottom_toBottomOf="@id/start_divider1"/>
+
+    <View
+        android:id="@+id/start_divider2"
+        android:layout_width="107dp"
+        android:layout_height="2dp"
+        app:layout_constraintTop_toTopOf="@id/start_divider1"
+        app:layout_constraintStart_toEndOf="@id/start_tv_login"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        android:background="@color/cement_5"
+        android:layout_marginBottom="25dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
