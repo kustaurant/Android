@@ -2,6 +2,7 @@ package com.example.kustaurant.presentation.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -11,6 +12,8 @@ import com.example.kustaurant.BuildConfig
 import com.example.kustaurant.MainActivity
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ActivityOnboardingBinding
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -29,6 +32,20 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // SharedPreferences를 사용하여 최초 접속 여부 확인
+        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        val isFirstLaunch = preferences.getBoolean("is_first_launch", true)
+
+        // 온보딩을 이미 본 경우
+        if (!isFirstLaunch) {
+            val intent = Intent(this, StartActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+        saveOnboardingCompleted()
+
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -80,15 +97,31 @@ class OnboardingActivity : AppCompatActivity() {
         }
 
         // kakao 로그인
-
+        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
 
         binding.onboardingIvKakao.setOnClickListener {
-            startKakaoLogin()
+            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                if (error != null) {
+                    Log.e("kakao", "로그인 실패", error)
+                }
+                else if (token != null) {
+                    Log.i("kakao", "로그인 성공 ${token.accessToken}")
+                    UserApiClient.instance.me { user, error ->
+                        Toast.makeText(this,"${user?.id}",Toast.LENGTH_LONG).show()
+                    }
+                    val intent = Intent(this@OnboardingActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
         }
     }
 
-    private fun startKakaoLogin(){
-
+    private fun saveOnboardingCompleted() {
+        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.putBoolean("is_first_launch", false) // 온보딩 완료로 설정
+        editor.apply()
     }
 
     private fun startNaverLogin(){
