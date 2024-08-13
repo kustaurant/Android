@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,9 +41,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun setViewPagerHeight(height: Int) {
-        val layoutParams = binding.vpMenuReview.layoutParams
-        layoutParams.height = height
-        binding.vpMenuReview.layoutParams = layoutParams
+        binding.vpMenuReview.layoutParams = (binding.vpMenuReview.layoutParams as ViewGroup.LayoutParams).apply {
+            this.height = height
+        }
     }
 
     private fun changeTopBar() {

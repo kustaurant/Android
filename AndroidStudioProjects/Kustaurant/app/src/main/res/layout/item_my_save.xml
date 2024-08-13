@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="11dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/save_cv_img"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintWidth_percent="0.145"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/save_iv_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_default_restaurant"
+            android:contentDescription="@string/restaurant_img_info"/>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <ImageView
+        android:id="@+id/sae_iv_restaurant_tier_img"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_rank_1"
+        android:elevation="2dp"
+        app:layout_constraintStart_toStartOf="@id/save_cv_img"
+        app:layout_constraintTop_toTopOf="@id/save_cv_img"
+        android:contentDescription="@string/restaurant_tier_info" />
+
+    <TextView
+        android:id="@+id/save_tv_restaurant_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{restaurant.restaurantName}"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:textStyle="bold"
+        android:layout_marginStart="18dp"
+        app:layout_constraintStart_toEndOf="@id/save_cv_img"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="식당 이름 입니다."
+        android:singleLine="true"/>
+
+    <TextView
+        android:id="@+id/save_tv_restaurant_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{restaurant.restaurantDetails}"
+        android:textSize="12sp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/pretendard_regular"
+        app:layout_constraintStart_toStartOf="@id/save_tv_restaurant_name"
+        app:layout_constraintTop_toBottomOf="@id/save_tv_restaurant_name"
+        tools:text="일식" />
+
+    <View
+        android:id="@+id/save_view_center"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="6dp"
+        android:background="@color/cement_4"
+        android:fontFamily="@font/pretendard_regular"
+        app:layout_constraintStart_toEndOf="@id/save_tv_restaurant_type"
+        app:layout_constraintEnd_toStartOf="@id/save_tv_restaurant_position"
+        app:layout_constraintTop_toTopOf="@id/save_tv_restaurant_type"
+        app:layout_constraintBottom_toBottomOf="@id/save_tv_restaurant_type"/>
+
+    <TextView
+        android:id="@+id/save_tv_restaurant_position"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{restaurant.restaurantDetails}"
+        android:layout_marginStart="6dp"
+        android:textSize="12sp"
+        android:fontFamily="@font/pretendard_regular"
+        app:layout_constraintStart_toEndOf="@id/save_view_center"
+        app:layout_constraintTop_toTopOf="@id/save_tv_restaurant_type"
+        app:layout_constraintBottom_toBottomOf="@id/save_tv_restaurant_type"
+        tools:text="일식" />
+
+
+    <!-- Divider Line -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/cement_3"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="-3dp"
+        app:layout_constraintStart_toStartOf="@id/save_tv_restaurant_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/save_cv_img"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

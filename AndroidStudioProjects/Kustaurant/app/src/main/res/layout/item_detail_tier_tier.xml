@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cl_tier_background"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="9dp"
@@ -37,6 +38,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_bold"
         android:textColor="@color/white"
+        android:layout_marginStart="4dp"
         android:textSize="17sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_tier_name"
@@ -50,7 +52,6 @@
         android:textColor="@color/white"
         android:fontFamily="@font/pretendard_bold"
         android:text="티어"
-        android:layout_marginStart="4dp"
         app:layout_constraintStart_toEndOf="@id/tv_tier_number"
         app:layout_constraintTop_toTopOf="parent"/>
 
