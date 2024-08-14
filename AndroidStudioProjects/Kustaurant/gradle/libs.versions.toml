@@ -28,6 +28,7 @@ oauth = "5.9.1"
 kotlinxCoroutinesAndroid = "1.9.0-RC"
 oauthJdk8 = "5.9.1"
 v2User = "2.10.0"
+stickyScrollView = "1.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -57,6 +58,8 @@ oauth = { group = "com.navercorp.nid", name = "oauth", version.ref = "oauth" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 oauth-jdk8 = { group = "com.navercorp.nid", name = "oauth-jdk8", version.ref = "oauthJdk8" }
 v2-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "v2User" }
+sticky-scroll-view = { module = "com.github.amarjain07:StickyScrollView", version.ref = "stickyScrollView" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

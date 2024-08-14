@@ -11,7 +11,7 @@ val properties = Properties()
 file("../local.properties").inputStream().use{ properties.load(it) }
 
 android {
-    namespace = "com.example.kustaurant"
+    namespace = "com.kust.kustaurant"
     compileSdk = 34
 
     buildFeatures {
@@ -21,7 +21,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.kustaurant"
+        applicationId = "com.kust.kustaurant"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -73,7 +73,10 @@ kapt {
 }
 
 dependencies {
-    // Naver 지도
+    // sticky scollview
+    implementation(libs.sticky.scroll.view)
+
+            // Naver 지도
     implementation(libs.naver.maps)
 
     // by viewModels() 사용
@@ -116,4 +119,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0")
     implementation("androidx.activity:activity-ktx:1.5.0")
+
 }
