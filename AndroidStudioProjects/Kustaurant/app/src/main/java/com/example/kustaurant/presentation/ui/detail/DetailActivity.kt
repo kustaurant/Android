@@ -37,7 +37,7 @@ class DetailActivity : AppCompatActivity() {
         initTierRecyclerView()
         initNaverLink()
         changeTopBar()
-        initEvaluate()
+        initEvaluate(restaurantId)
     }
 
     private fun initBack() {
@@ -72,9 +72,10 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    private fun initEvaluate() {
+    private fun initEvaluate(restaurantId : Int) {
         binding.btnEvaluate.setOnClickListener {
             val intent = Intent(this, EvaluateActivity::class.java)
+            intent.putExtra("restaurantId",restaurantId)
             startActivity(intent)
         }
     }

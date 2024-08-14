@@ -56,7 +56,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.ui.detail.DetailActivity"
+            android:name=".presentation.ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -92,7 +92,7 @@
             android:value="dyfgbjtlqu" />
 
         <activity
-            android:name=".presentation.ui.splash.SplashActivity"
+            android:name=".presentation.ui.detail.DetailActivity"
             android:exported="true" />
     </application>
 

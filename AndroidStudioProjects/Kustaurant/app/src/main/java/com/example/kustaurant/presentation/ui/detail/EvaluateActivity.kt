@@ -5,28 +5,39 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.RatingBar
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kustaurant.R
 import com.example.kustaurant.databinding.ActivityEvaluateBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EvaluateActivity : AppCompatActivity() {
     lateinit var binding: ActivityEvaluateBinding
     private lateinit var keyWordAdapter: EvaluateKeyWordAdapter
     private var keyWordList: ArrayList<String> = arrayListOf()
     private lateinit var ratingBar: RatingBar
+    private val viewModel: DetailViewModel by viewModels()
     private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
     private val REQ_GALLERY = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEvaluateBinding.inflate(layoutInflater)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        val restaurantId = intent.getIntExtra("restaurantId", 1)
+        Log.d("restaurantId", restaurantId.toString())
+        viewModel.loadEvaluateData(restaurantId)
 
         initKeyWord()
         initRecyclerView()

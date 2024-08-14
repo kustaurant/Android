@@ -39,4 +39,11 @@ class DetailViewModel @Inject constructor(
                 getDetailData.mainTier, getDetailData.situationList)
         }
     }
+
+    fun loadEvaluateData(restaurantId: Int){
+        viewModelScope.launch {
+            val getDetailData = getDetailDataUseCase(restaurantId)
+            _detailData.value = getDetailData
+        }
+    }
 }
