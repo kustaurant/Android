@@ -143,17 +143,6 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/home_category_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="더보기"
-                    android:textSize="13sp"
-                    android:textColor="@color/cement_5"/>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -661,17 +650,6 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/home_TOP_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/home_TOP_tv"
-                    app:layout_constraintBottom_toBottomOf="@id/home_TOP_tv"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="더보기"
-                    android:textSize="13sp"
-                    android:textColor="@color/cement_5"/>
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/home_TOP_tv"
@@ -728,17 +706,6 @@
                     android:textSize="20sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/home_ME_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/home_ME_tv"
-                    app:layout_constraintBottom_toBottomOf="@id/home_ME_tv"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="더보기"
-                    android:textSize="13sp"
-                    android:textColor="@color/cement_5"/>
 
                 <TextView
                     android:layout_width="wrap_content"
