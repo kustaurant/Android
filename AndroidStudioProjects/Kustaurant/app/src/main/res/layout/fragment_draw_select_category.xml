@@ -142,187 +142,6 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <HorizontalScrollView
-            android:id="@+id/draw_sv_select_situation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:scrollbars="none"
-            app:layout_constraintDimensionRatio="360:35"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/draw_sv_select_type"
-            tools:layout_height="35dp">
-
-            <LinearLayout
-                android:id="@+id/tier_toggle_situation_group"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_ALL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="전체"
-                    android:textOn="전체" />
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_ONE"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="혼밥"
-                    android:textOn="혼밥" />
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_TWO"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="2~4인"
-                    android:textOn="2~4인" />
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_THREE"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="5인 이상"
-                    android:textOn="5인 이상" />
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_FOUR"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="단체 회식"
-                    android:textOn="단체 회식" />
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_FIVE"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="배달"
-                    android:textOn="배달" />
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_SIX"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="야식"
-                    android:textOn="야식" />
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_SEVEN"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="친구 초대"
-                    android:textOn="친구 초대" />
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_EIGHT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="데이트"
-                    android:textOn="데이트" />
-
-                <ToggleButton
-                    android:id="@+id/tier_toggle_situation_NINE"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="소개팅"
-                    android:textOn="소개팅" />
-
-            </LinearLayout>
-        </HorizontalScrollView>
 
         <!-- Start Guideline -->
         <androidx.constraintlayout.widget.Guideline
@@ -343,13 +162,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/draw_cl_menu_group"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
             app:layout_constraintDimensionRatio="360:375"
             app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
-            app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="@id/draw_gl_start"
-            app:layout_constraintTop_toBottomOf="@id/draw_sv_select_situation">
+            app:layout_constraintTop_toBottomOf="@id/draw_sv_select_type">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_category_cl1"
@@ -714,6 +532,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_category_cl3"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <LinearLayout

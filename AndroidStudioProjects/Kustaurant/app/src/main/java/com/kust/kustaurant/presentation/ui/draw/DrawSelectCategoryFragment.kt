@@ -58,10 +58,10 @@ class DrawSelectCategoryFragment : Fragment() {
         observeViewModel()
 
         binding.drawBtnDrawRandomRestaurants.setOnClickListener {
-            val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
+            //val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
             val selectedLocation = getSelectedTogglesText(binding.tierToggleLocationGroup)
 
-            viewModel.applyFilters(selectedMenus, selectedSituation, selectedLocation)
+            viewModel.applyFilters(selectedMenus,selectedLocation)
 
             parentFragmentManager.beginTransaction()
                 .replace(R.id.draw_fragment_container, DrawSelectResultFragment())
@@ -72,7 +72,7 @@ class DrawSelectCategoryFragment : Fragment() {
 
     private fun setupToggleGroups() {
         setupToggleGroup(binding.tierToggleLocationGroup)
-        setupToggleGroup(binding.tierToggleSituationGroup)
+        //setupToggleGroup(binding.tierToggleSituationGroup)
         initMenuClickListeners()
     }
 
@@ -82,9 +82,6 @@ class DrawSelectCategoryFragment : Fragment() {
         }
         viewModel.selectedLocations.observe(viewLifecycleOwner) { selectedTypes ->
             updateToggleGroupSelection(binding.tierToggleLocationGroup, selectedTypes)
-        }
-        viewModel.selectedSituations.observe(viewLifecycleOwner) { selectedTypes ->
-            updateToggleGroupSelection(binding.tierToggleSituationGroup, selectedTypes)
         }
     }
 
