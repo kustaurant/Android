@@ -33,6 +33,7 @@
         android:paddingTop="5dp">
 
         <ImageView
+            android:id="@+id/home_iv_logo"
             android:layout_width="126dp"
             android:layout_height="33dp"
             android:src="@drawable/img_logo"
@@ -42,24 +43,22 @@
 
         <ImageView
             android:id="@+id/btn_alarm"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_bell_badge"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="4dp"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
             android:id="@+id/btn_search"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_search"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_alarm"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="16dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -34,7 +34,7 @@
             android:id="@+id/top_bar"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="360:55"
+            app:layout_constraintDimensionRatio="360:60"
             app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
             app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toTopOf="parent">
@@ -62,7 +62,6 @@
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/back_btn_info"
                 android:padding="8dp"
@@ -81,7 +80,9 @@
                 app:layout_constraintStart_toEndOf="@id/btn_back"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabGravity="fill"
-                app:tabMode="fixed" />
+                app:tabMode="fixed"
+                android:layout_marginStart="65dp"
+                android:layout_marginEnd="10dp"/>
 
             <!-- Search Button -->
             <ImageView
@@ -100,7 +101,6 @@
                 android:id="@+id/tier_iv_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:contentDescription="@string/alarm_btn_info"
                 android:src="@drawable/ic_bell_badge"
                 app:layout_constraintBottom_toBottomOf="parent"
