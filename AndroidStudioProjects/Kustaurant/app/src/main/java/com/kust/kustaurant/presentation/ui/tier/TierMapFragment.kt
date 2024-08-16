@@ -101,7 +101,6 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-
     private fun handleMapClick(coord: LatLng) {
         val restaurant = findRestaurantAtCoord(coord)
 
@@ -127,6 +126,8 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         binding.apply {
             tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_name).text = tierRestaurant.restaurantName
             tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_details).text = tierRestaurant.restaurantCuisine + " | " + tierRestaurant.restaurantPosition
+            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_partnership_info).text =
+                (tierRestaurant.partnershipInfo.ifEmpty { R.string.restaurant_no_partnership_info }).toString()
 
             Glide.with(requireContext())
                 .load(tierRestaurant.restaurantImgUrl)
@@ -142,15 +143,6 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 else -> R.drawable.ic_rank_all
             }
             tierImageView.setImageResource(tierImageResource)
-
-            // 파트너십 정보 설정
-            val partnershipInfo = if (tierRestaurant.partnershipInfo.isEmpty()) {
-                R.string.restaurant_no_partnership_info
-            } else {
-                tierRestaurant.partnershipInfo
-            }
-            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_partnership_info).text =
-                partnershipInfo.toString()
         }
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
@@ -163,7 +155,6 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateMap(mapData: TierMapData) {
         clearOverlaysAndMarkers()
-
         mapData.solidLines.forEach { line ->
             if (line.isNotEmpty()) {
                 val polyline = PolylineOverlay().apply {
@@ -210,7 +201,6 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 Log.d("TierMapFragment", "Dashed Line is empty")
             }
         }
-
         createMarkersForTieredRestaurants(mapData.tieredTierRestaurants)
         createMarkersForNonTieredRestaurants(mapData.nonTieredRestaurants)
     }
@@ -241,9 +231,17 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
     private fun createRestaurantMarker(tierRestaurant: TierRestaurant) {
         val marker = Marker().apply {
             position = LatLng(tierRestaurant.y, tierRestaurant.x)
-            captionText = tierRestaurant.restaurantName
+            //captionText = tierRestaurant.restaurantName
             icon = getMarkerIcon(tierRestaurant.mainTier)
             map = naverMap
+
+            zIndex = when (tierRestaurant.mainTier) {
+                1 -> 4
+                2 -> 3
+                3 -> 2
+                4 -> 1
+                else -> 0
+            }
 
             setOnClickListener {
                 showRestaurantInfo(tierRestaurant)

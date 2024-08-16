@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tier_cl_restaurant"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="9dp"
+    android:layout_marginBottom="9dp">
+
+    <TextView
+        android:id="@+id/community_tv_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/all_radius_2_none"
+        android:backgroundTint="@color/cement_2"
+        android:fontFamily="@font/pretendard_medium"
+        android:paddingStart="4dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="3dp"
+        android:text=""
+        android:textColor="@color/cement_7"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="자유게시판" />
+
+    <TextView
+        android:id="@+id/community_tv_board_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_medium"
+        android:maxWidth="226dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="@{restaurant.restaurantName}"
+        android:textColor="@color/community_board_title"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/community_iv_board_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/community_tv_category"
+        tools:text="호야초밥 요즘 맛 변한 거 같다.." />
+
+
+    <TextView
+        android:id="@+id/community_tv_board_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_medium"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="@{restaurant.restaurantName}"
+        android:textColor="@color/community_board_title"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@id/community_iv_board_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/community_tv_board_title"
+        tools:text="원래는 맛있었는데 요즘 가면 전이랑 다른.." />
+
+    <LinearLayout
+        android:id="@+id/community_ll_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/community_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/community_tv_board_content">
+
+        <ImageView
+            android:id="@+id/community_iv_user_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_baby_cow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:text=""
+            android:textColor="@color/cement_7"
+            android:textSize="11sp"
+            tools:text="닉네임" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="7dp"
+            android:src="@drawable/ic_community_divider" />
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/cement_7"
+            android:textSize="11sp"
+            tools:text="1일전" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="7dp"
+            android:src="@drawable/ic_community_divider" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:src="@drawable/ic_like" />
+
+
+        <TextView
+            android:id="@+id/community_tv_board_like_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/signature_1"
+            android:textSize="11sp"
+            tools:text="123" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:src="@drawable/ic_chat" />
+
+
+        <TextView
+            android:id="@+id/community_tv_board_chat_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/cement_4"
+            android:textSize="11sp"
+            tools:text="123" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/community_iv_board_img"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        android:background="@drawable/square_round_background"
+        android:clipToOutline="true"
+        android:contentDescription="@string/restaurant_img_info"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_default_restaurant"
+        app:layout_constraintBottom_toTopOf="@+id/community_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <!-- Divider Line -->
+    <View
+        android:id="@+id/community_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="13dp"
+        android:background="@color/cement_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/community_ll_details" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

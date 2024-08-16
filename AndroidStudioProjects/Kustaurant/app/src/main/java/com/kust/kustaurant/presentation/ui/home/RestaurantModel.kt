@@ -8,7 +8,7 @@ data class RestaurantModel(
     val restaurantImgUrl: String, // 이미지
     val mainTier: Int, // 티어
     val partnershipInfo: String, // 제휴
-    val restaurantScore: Double, // 별점
+    val restaurantScore: Double?, // 별점
     var isFavorite : Boolean, // 즐겨찾기
     var isChecked : Boolean // 평가여부
 )
