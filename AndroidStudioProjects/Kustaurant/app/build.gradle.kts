@@ -11,7 +11,7 @@ val properties = Properties()
 file("../local.properties").inputStream().use{ properties.load(it) }
 
 android {
-    namespace = "com.example.kustaurant"
+    namespace = "com.kust.kustaurant"
     compileSdk = 34
 
     buildFeatures {
@@ -21,7 +21,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.kustaurant"
+        applicationId = "com.kust.kustaurant"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

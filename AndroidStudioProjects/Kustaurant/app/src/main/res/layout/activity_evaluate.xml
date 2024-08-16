@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kustaurant.presentation.ui.detail.DetailViewModel"/>
+            type="com.kust.kustaurant.presentation.ui.detail.DetailViewModel"/>
     </data>
 
     <ScrollView

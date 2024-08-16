@@ -18,6 +18,7 @@
     <color name="cement_4">#AAAAAA</color>
     <color name="cement_5">#666666</color>
     <color name="cement_6">#323232</color>
+    <color name="cement_7">#7C7C7C</color>
 
     <!-- 티어 -->
     <color name="tier_1">#0093FF</color>
@@ -27,6 +28,10 @@
 
     <!-- 카테고리 -->
     <color name="cate_selected">#DDF0DB</color>
+
+    <!-- 커뮤니티 -->
+    <color name="community_board_title">#353535</color>
+
 
     <!--홈 -->
     <color name="top_gray">#838383</color>

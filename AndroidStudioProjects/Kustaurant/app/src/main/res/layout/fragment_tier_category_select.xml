@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kustaurant.presentation.ui.tier.TierViewModel" />
+            type="com.kust.kustaurant.presentation.ui.tier.TierViewModel" />
     </data>
 
     <ScrollView
@@ -20,10 +20,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:text="종류"
+                android:text="음식"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tier_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@string/tier_info"
+                android:textColor="#666666"
+                android:clickable="true"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.flexbox.FlexboxLayout
