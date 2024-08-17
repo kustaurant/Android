@@ -23,59 +23,50 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- TextView for Centered Text -->
-            <TextView
-                android:id="@+id/tier_tv_category_text"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_top_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_semibold"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05"/>
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_top_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95"/>
 
-            <!-- Back Button -->
             <ImageView
-                android:id="@+id/btn_back"
+                android:id="@+id/detail_iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:contentDescription="@string/back_btn_info"
-                android:padding="8dp"
-                android:src="@drawable/btn_back"
+                android:paddingVertical="11dp"
+                android:src="@drawable/ic_back_white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/gl_top_start"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Search Button -->
             <ImageView
-                android:id="@+id/tier_iv_search"
+                android:id="@+id/detail_iv_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/search_btn_info"
-                android:src="@drawable/ic_search"
+                android:src="@drawable/ic_search_white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tier_iv_notification"
+                app:layout_constraintEnd_toStartOf="@id/detail_iv_alarm"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Notification Button -->
             <ImageView
-                android:id="@+id/tier_iv_notification"
+                android:id="@+id/detail_iv_alarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:contentDescription="@string/alarm_btn_info"
-                android:src="@drawable/ic_bell_badge"
+                android:src="@drawable/ic_alarm_white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/gl_top_end"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -195,7 +186,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            android:paddingEnd="9dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_location"/>
 
@@ -204,6 +194,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
+                            android:layout_marginStart="4dp"
                             app:layout_constraintStart_toEndOf="@id/iv_store_location"
                             app:layout_constraintTop_toTopOf="@id/iv_store_location"
                             app:layout_constraintBottom_toBottomOf="@id/iv_store_location"
@@ -224,7 +215,6 @@
                             android:id="@+id/iv_store_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingEnd="6dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -232,24 +222,12 @@
                             android:src="@drawable/ic_clock"/>
 
                         <TextView
-                            android:id="@+id/tv_store_is_open"
+                            android:id="@+id/tv_store_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintStart_toEndOf="@id/iv_store_time"
                             app:layout_constraintTop_toTopOf="@id/iv_store_time"
                             app:layout_constraintBottom_toBottomOf="@id/iv_store_time"
-                            android:textSize="15sp"
-                            android:fontFamily="@font/pretendard_medium"
-                            android:layout_gravity="center_horizontal|top"
-                            android:text="@{viewModel.detailData.isOpen ? @string/detail_is_open : @string/detail_is_not_open}"/>
-
-                        <TextView
-                            android:id="@+id/tv_store_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toEndOf="@id/tv_store_is_open"
-                            app:layout_constraintTop_toTopOf="@id/tv_store_is_open"
-                            app:layout_constraintBottom_toBottomOf="@id/tv_store_is_open"
                             android:textSize="15sp"
                             android:layout_marginStart="4dp"
                             android:layout_gravity="center_horizontal|top"

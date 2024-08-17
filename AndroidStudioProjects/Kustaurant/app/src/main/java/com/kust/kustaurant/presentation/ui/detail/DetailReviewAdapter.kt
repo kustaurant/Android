@@ -1,5 +1,7 @@
 package com.kust.kustaurant.presentation.ui.detail
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,11 +9,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
 import com.kust.kustaurant.presentation.ui.tier.TierListAdapter.Companion.diffUtil
 
-class DetailReviewAdapter(private val updateHeight: () -> Unit): ListAdapter<CommentDataResponse, DetailReviewAdapter.ViewHolder>(diffUtil) {
+class DetailReviewAdapter(private val context: Context, private val updateHeight: () -> Unit): ListAdapter<CommentDataResponse, DetailReviewAdapter.ViewHolder>(diffUtil) {
 
     private lateinit var itemClickListener : OnItemClickListener
 
@@ -43,6 +46,14 @@ class DetailReviewAdapter(private val updateHeight: () -> Unit): ListAdapter<Com
             binding.tvReview.text = item.commentBody
             binding.tvLike.text = item.commentLikeCount.toString()
             binding.tvHate.text = item.commentDislikeCount.toString()
+            Log.d("img", item.commentIconImgUrl)
+            Glide.with(context)
+                .load(item.commentIconImgUrl)
+                .into(binding.ivUserImage)
+
+            val gradeAdapter = DetailGradeAdapter(item.commentScore)
+            binding.rvGrade.adapter = gradeAdapter
+            binding.rvGrade.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
 
             val replyAdapter = DetailRelyAdapter(item.commentReplies)
             binding.detailRvReply.adapter = replyAdapter

@@ -31,7 +31,10 @@ class DetailReviewFragment : Fragment() {
         binding.viewModel = viewModel
 
         if (arguments != null) {
+//            "애드앤드 테스트 아이디 741"
             restaurantId = requireArguments().getInt("restaurantId", 0);
+            Log.d("restaurantId", restaurantId.toString())
+
             viewModel.loadCommentData(restaurantId, popularity)
         }
 
@@ -45,18 +48,19 @@ class DetailReviewFragment : Fragment() {
         viewModel.reviewData.observe(viewLifecycleOwner){ commentData ->
             reviewAdapter.submitList(commentData)
             Log.d("commentData", commentData.toString())
-            updateRecyclerViewHeight()
+            setRecyclerViewHeight()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        binding.root.requestLayout()
+        setRecyclerViewHeight() // 프래그먼트가 다시 보여질 때 마다 높이 재설정
+
     }
 
     private fun initRecyclerView() {
-        reviewAdapter = DetailReviewAdapter(){
-            updateRecyclerViewHeight()
+        reviewAdapter = DetailReviewAdapter(requireContext()){
+            setRecyclerViewHeight()
         }
 
         binding.detailRvReview.addItemDecoration(ItemDecoration(spacing = 16.dpToPx(requireContext()), endSpacing = 32.dpToPx(requireContext())))
@@ -66,7 +70,7 @@ class DetailReviewFragment : Fragment() {
         }
         binding.detailRvReview.layoutManager = layoutManager
         binding.detailRvReview.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            updateRecyclerViewHeight()
+            setRecyclerViewHeight()
         }
 
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
@@ -95,7 +99,7 @@ class DetailReviewFragment : Fragment() {
     }
 
     // 각 tab마다 height 재구성
-    private fun updateRecyclerViewHeight() {
+    private fun setRecyclerViewHeight() {
         var totalHeight = 0
         for (i in 0 until reviewAdapter.itemCount) {
             val holder = reviewAdapter.createViewHolder(binding.detailRvReview, reviewAdapter.getItemViewType(i))
@@ -104,7 +108,7 @@ class DetailReviewFragment : Fragment() {
                 View.MeasureSpec.makeMeasureSpec(binding.detailRvReview.width, View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
             )
-            totalHeight += holder.itemView.measuredHeight + 40
+            totalHeight += holder.itemView.measuredHeight
         }
         val params = binding.detailRvReview.layoutParams
         params.height = totalHeight

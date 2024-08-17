@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kust.kustaurant.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import com.kust.kustaurant.R
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -27,7 +28,7 @@ class DetailActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val restaurantId = intent.getIntExtra("restaurantId", 1)
+        val restaurantId = intent.getIntExtra("restaurantId", 346)
         Log.d("restaurantId", restaurantId.toString())
         viewModel.loadDetailData(restaurantId)
 
@@ -45,7 +46,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.btnBack.setOnClickListener {
+        binding.detailIvBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
@@ -69,8 +70,14 @@ class DetailActivity : AppCompatActivity() {
             // 상단 바 색 변환
             if (scrollY >= binding.clStoreInfo.top - binding.detailClTopBar.height) {
                 binding.detailClTopBar.setBackgroundColor(Color.WHITE)
+                binding.detailIvBack.setImageResource(R.drawable.btn_back)
+                binding.detailIvAlarm.setImageResource(R.drawable.ic_alarm)
+                binding.detailIvSearch.setImageResource(R.drawable.ic_search)
             } else {
                 binding.detailClTopBar.setBackgroundColor(Color.TRANSPARENT)
+                binding.detailIvBack.setImageResource(R.drawable.ic_back_white)
+                binding.detailIvAlarm.setImageResource(R.drawable.ic_alarm_white)
+                binding.detailIvSearch.setImageResource(R.drawable.ic_search_white)
             }
         }
     }

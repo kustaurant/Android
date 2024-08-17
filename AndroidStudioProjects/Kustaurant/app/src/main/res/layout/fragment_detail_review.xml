@@ -28,31 +28,57 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95"/>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/detail_btn_popular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="인기순"
+            android:paddingVertical="4dp"
+            android:paddingHorizontal="16dp"
             android:background="@drawable/button_keyword_selector"
             app:layout_constraintStart_toStartOf="@id/gl_start"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="18dp"
-            android:layout_marginEnd="7dp"/>
+            android:layout_marginEnd="7dp">
 
-        <androidx.appcompat.widget.AppCompatButton
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인기순"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/pretendard_regular"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/detail_btn_recent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="최신순"
+            android:paddingVertical="4dp"
+            android:paddingHorizontal="16dp"
             android:layout_marginStart="4dp"
             android:background="@drawable/button_keyword_selector"
             app:layout_constraintStart_toEndOf="@id/detail_btn_popular"
-            app:layout_constraintTop_toTopOf="@id/detail_btn_popular"/>
+            app:layout_constraintTop_toTopOf="@id/detail_btn_popular">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="최신순"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/pretendard_regular"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/detail_rv_review"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
             tools:listitem="@layout/item_detail_review"
             app:layout_constraintStart_toStartOf="@id/gl_start"
             app:layout_constraintEnd_toEndOf="@id/gl_end"

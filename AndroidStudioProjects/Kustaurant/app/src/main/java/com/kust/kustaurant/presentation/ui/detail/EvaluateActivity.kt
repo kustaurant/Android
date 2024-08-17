@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityEvaluateBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,12 +40,20 @@ class EvaluateActivity : AppCompatActivity() {
         Log.d("restaurantId", restaurantId.toString())
         viewModel.loadEvaluateData(restaurantId)
 
+        initBack()
         initKeyWord()
         initRecyclerView()
         initPhotoPicker()
         initPlusPhoto()
         initRatingBar()
         setContentView(binding.root)
+    }
+
+    private fun initBack() {
+        binding.evaluateIvBack.setOnClickListener {
+            onBackPressed()
+            // dispatcher로 수정해야합니다
+        }
     }
 
     private fun initPhotoPicker() {
@@ -113,6 +122,6 @@ class EvaluateActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         keyWordAdapter = EvaluateKeyWordAdapter(keyWordList)
         binding.rvKeyword.adapter = keyWordAdapter
-        binding.rvKeyword.layoutManager = GridLayoutManager(this, 4)
+        binding.rvKeyword.layoutManager = FlexboxLayoutManager(this)
     }
 }
