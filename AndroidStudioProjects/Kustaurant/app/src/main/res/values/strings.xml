@@ -18,6 +18,9 @@
     <string name="fab_expand"><u>크게 보기</u></string>
     <string name="fab_reduce"><u>작게 보기</u></string>
     <string name="tier_location_info"><u>위치에 대한 설명이 필요하다면?</u></string>
+    <string name="tier_popup_crown_info">티어란? 팝업에 대한 아이콘입니다.</string>
+    <string name="tier_popup_title">티어란?</string>
+
     <!-- DrawFragment -->
     <string name="draw_selected_restaurant_img_info">랜덤으로 뽑힌 음식점 이미지입니다.</string>
     <string name="draw_random_top_info">랜덤 맛집 뽑기</string>

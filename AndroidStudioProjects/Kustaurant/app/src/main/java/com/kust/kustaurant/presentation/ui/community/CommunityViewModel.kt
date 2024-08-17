@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.ui.tier
+package com.kust.kustaurant.presentation.ui.community
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TierViewModel @Inject constructor(
+class CommunityViewModel @Inject constructor(
     private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
     private val getTierRestaurantMapUseCase: GetTierRestaurantMapUseCase
 ) : ViewModel() {

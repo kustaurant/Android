@@ -89,8 +89,8 @@ class HomeFragment : Fragment() {
                 restaurantResponse.restaurantPosition,
                 restaurantResponse.restaurantImgUrl,
                 restaurantResponse.mainTier,
-                restaurantResponse.partnershipInfo,
-                restaurantResponse.restaurantScore.toDouble(),
+                restaurantResponse.partnershipInfo ?: "",
+                restaurantResponse.restaurantScore?.toDouble() ?: 0.0,
                 restaurantResponse.isEvaluated,
                 restaurantResponse.isFavorite
             )
@@ -105,8 +105,8 @@ class HomeFragment : Fragment() {
                 restaurantResponse.restaurantPosition,
                 restaurantResponse.restaurantImgUrl,
                 restaurantResponse.mainTier,
-                restaurantResponse.partnershipInfo,
-                restaurantResponse.restaurantScore.toDouble(),
+                restaurantResponse.partnershipInfo ?: "",
+                restaurantResponse.restaurantScore?.toDouble() ?: 0.0,
                 restaurantResponse.isEvaluated,
                 restaurantResponse.isFavorite
             )

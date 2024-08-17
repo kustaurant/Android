@@ -1,10 +1,17 @@
 package com.kust.kustaurant.presentation.ui.tier
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -35,8 +42,13 @@ class TierCategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToggleGroups()
         observeViewModel()
+
         binding.tierBtnApply.setOnClickListener {
             applyFilters()
+        }
+
+        binding.tierInfo.setOnClickListener {
+            showPopup()
         }
 
         fromTabIndex = arguments?.getInt("fromTabIndex") ?: 0
@@ -183,6 +195,43 @@ class TierCategoryFragment : Fragment() {
             Log.e("TierCategoryFragment", "parentFragment is null")
         }
     }
+    private fun showPopup() {
+        // 팝업창을 위한 Dialog 생성
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.popup_tier)
+
+        // Dialog의 배경을 투명하게 설정
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // 텍스트뷰 가져오기
+        val tierInfoDescriptionTextView = dialog.findViewById<TextView>(R.id.tier_popup_description)
+
+        // HTML 태그를 사용하여 텍스트의 일부 색상을 변경
+        val htmlText = """
+        식당의 티어는 여러분이 부여한 소중한 <font color="#43AB38">평가 점수</font>가 반영되어 결정됩니다!<br><br>
+        평가는 각 식당의 상세 페이지에서 할 수 있으며, 점수는 <font color="#43AB38">5점 만점</font>입니다.<br><br>
+        식당에 대한 여러 <font color="#43AB38">평가의 평균 점수</font>가 가장 높은 식당 순으로 티어가 산출되어 우선적으로 노출됩니다!
+    """.trimIndent()
+
+        tierInfoDescriptionTextView.text = Html.fromHtml(htmlText)
+
+        // Dialog 크기와 위치 설정
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+
+        dialog.window?.setGravity(Gravity.CENTER)
+
+        // Dialog를 표시
+        dialog.show()
+
+        // Dialog 외부를 터치하면 닫히도록 설정
+        dialog.setCanceledOnTouchOutside(true)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -39,7 +39,7 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
             x = it.x.toDoubleOrNull() ?: 0.0,
             y = it.y.toDoubleOrNull() ?: 0.0,
             partnershipInfo = it.partnershipInfo ?: "",
-            restaurantScore = it.restaurantScore.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
+            restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
         )
     } ?: emptyList()
 
@@ -57,8 +57,8 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
             isFavorite = it.isFavorite,
             x = it.x.toDouble(),
             y = it.y.toDouble(),
-            partnershipInfo = it.partnershipInfo,
-            restaurantScore = it.restaurantScore.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
+            partnershipInfo = it.partnershipInfo ?: "",
+            restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
         )
     }
 
@@ -78,8 +78,8 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
                     isFavorite = it.isFavorite,
                     x = it.x.toDouble(),
                     y = it.y.toDouble(),
-                    partnershipInfo = it.partnershipInfo,
-                    restaurantScore = it.restaurantScore.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
+                    partnershipInfo = it.partnershipInfo ?: "",
+                    restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
                 )
             }
         )

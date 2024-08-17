@@ -32,11 +32,6 @@ class DetailMenuFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setRecyclerViewHeight() // 최초 로딩시에도 높이 설정
-    }
-
     override fun onResume() {
         super.onResume()
         setRecyclerViewHeight() // 프래그먼트가 다시 보여질 때 마다 높이 재설정
@@ -45,8 +40,7 @@ class DetailMenuFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.menuData.observe(requireActivity()){ menuData ->
             menuAdapter.submitList(menuData)
-
-            Log.d("this0", viewModel.menuData.value.toString())
+            setRecyclerViewHeight()
         }
     }
 

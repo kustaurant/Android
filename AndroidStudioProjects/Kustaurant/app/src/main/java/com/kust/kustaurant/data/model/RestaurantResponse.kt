@@ -2,7 +2,7 @@ package com.kust.kustaurant.data.model
 
 data class RestaurantResponse(
     val restaurantId: Int,
-    val restaurantRanking: String,
+    val restaurantRanking: String?,
     val restaurantName: String,
     val restaurantCuisine: String,
     val restaurantPosition: String,
@@ -12,6 +12,6 @@ data class RestaurantResponse(
     val isFavorite: Boolean,
     val x: String,
     val y: String,
-    val partnershipInfo: String,
-    val restaurantScore: String
+    val partnershipInfo: String?,
+    val restaurantScore: String?
 )
