@@ -32,11 +32,16 @@ class DetailActivity : AppCompatActivity() {
         viewModel.loadDetailData(restaurantId)
 
         initBack()
-        initTabView()
         initTierRecyclerView()
         initNaverLink()
         changeTopBar()
-        initEvaluate(restaurantId)
+
+        viewModel.detailData.observe(this) { detailData ->
+            if (detailData != null) {
+                initTabView()
+                initEvaluate(restaurantId)
+            }
+        }
     }
 
     private fun initBack() {
