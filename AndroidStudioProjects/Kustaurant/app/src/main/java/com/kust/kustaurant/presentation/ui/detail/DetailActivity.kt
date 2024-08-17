@@ -32,11 +32,11 @@ class DetailActivity : AppCompatActivity() {
         viewModel.loadDetailData(restaurantId)
 
         initBack()
-        initTabView()
         initTierRecyclerView()
         initNaverLink()
         changeTopBar()
         initEvaluate(restaurantId)
+        initTabView()
     }
 
     private fun initBack() {
