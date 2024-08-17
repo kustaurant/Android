@@ -13,7 +13,6 @@ import com.kust.kustaurant.databinding.FragmentDetailMenuBinding
 class DetailMenuFragment : Fragment() {
     lateinit var binding: FragmentDetailMenuBinding
     private lateinit var menuAdapter: DetailMenuAdapter
-    private var menuList: ArrayList<MenuData> = arrayListOf()
     private val viewModel: DetailViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -21,13 +20,11 @@ class DetailMenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailMenuBinding.inflate(layoutInflater)
-        binding.lifecycleOwner = requireActivity()
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         observeViewModel()
-        Log.d("this3.1", viewModel.menuData.value.toString())
         initMenuRecyclerView()
-        Log.d("this3.2", viewModel.menuData.value.toString())
 
         return binding.root
     }
@@ -38,7 +35,7 @@ class DetailMenuFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.menuData.observe(requireActivity()){ menuData ->
+        viewModel.menuData.observe(viewLifecycleOwner){ menuData ->
             menuAdapter.submitList(menuData)
             setRecyclerViewHeight()
         }
@@ -47,7 +44,6 @@ class DetailMenuFragment : Fragment() {
     private fun initMenuRecyclerView() {
         menuAdapter = DetailMenuAdapter(requireContext())
         binding.rvMenu.adapter = menuAdapter
-        Log.d("this9", viewModel.menuData.value.toString())
         binding.rvMenu.layoutManager = object : LinearLayoutManager(requireContext()) {
             override fun canScrollVertically(): Boolean {
                 return false // 스크롤 비활성화

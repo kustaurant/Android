@@ -3,16 +3,20 @@ package com.kust.kustaurant.presentation.ui.detail
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
+import com.kust.kustaurant.presentation.ui.tier.TierListAdapter.Companion.diffUtil
 
-class DetailReviewAdapter(private val reviewData: ArrayList<ReviewData>, private val updateHeight: () -> Unit): RecyclerView.Adapter<DetailReviewAdapter.ViewHolder>() {
+class DetailReviewAdapter(private val updateHeight: () -> Unit): ListAdapter<CommentDataResponse, DetailReviewAdapter.ViewHolder>(diffUtil) {
 
     private lateinit var itemClickListener : OnItemClickListener
 
     interface OnItemClickListener{
-        fun onItemClicked(data: ReviewData, position: Int, type: Int)
+        fun onItemClicked(data: CommentDataResponse, position: Int, type: Int)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -33,14 +37,14 @@ class DetailReviewAdapter(private val reviewData: ArrayList<ReviewData>, private
                 }
             }
         }
-        fun bind(item: ReviewData) {
-            binding.tvGrade.text = item.grade.toString()
-            binding.tvUserName.text = item.userName
-            binding.tvReview.text = item.userText
-            binding.tvLike.text = item.reviewLike.toString()
-            binding.tvHate.text = item.reviewHate.toString()
+        fun bind(item: CommentDataResponse) {
+            binding.tvGrade.text = item.commentScore.toString()
+            binding.tvUserName.text = item.commentNickname
+            binding.tvReview.text = item.commentBody
+            binding.tvLike.text = item.commentLikeCount.toString()
+            binding.tvHate.text = item.commentDislikeCount.toString()
 
-            val replyAdapter = DetailRelyAdapter(item.replyData)
+            val replyAdapter = DetailRelyAdapter(item.commentReplies)
             binding.detailRvReply.adapter = replyAdapter
             binding.detailRvReply.layoutManager = object : LinearLayoutManager(binding.root.context) {
                 override fun canScrollVertically(): Boolean = false
@@ -70,8 +74,16 @@ class DetailReviewAdapter(private val reviewData: ArrayList<ReviewData>, private
     }
 
     override fun onBindViewHolder(holder: DetailReviewAdapter.ViewHolder, position: Int) {
-        holder.bind(reviewData[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = reviewData.size
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<CommentDataResponse>() {
+            override fun areItemsTheSame(oldItem: CommentDataResponse, newItem: CommentDataResponse): Boolean =
+                oldItem.commentId == newItem.commentId
+
+            override fun areContentsTheSame(oldItem: CommentDataResponse, newItem: CommentDataResponse): Boolean =
+                oldItem == newItem
+        }
+    }
 }

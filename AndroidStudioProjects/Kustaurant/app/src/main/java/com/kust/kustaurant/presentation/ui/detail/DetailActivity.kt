@@ -38,7 +38,7 @@ class DetailActivity : AppCompatActivity() {
 
         viewModel.detailData.observe(this) { detailData ->
             if (detailData != null) {
-                initTabView()
+                initTabView(restaurantId)
                 initEvaluate(restaurantId)
             }
         }
@@ -93,9 +93,9 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun initTabView() {
+    private fun initTabView(restaurantId: Int) {
         viewModel.tabList.observe(this) { tabs ->
-            binding.vpMenuReview.adapter = MeReVPAdapter(this)
+            binding.vpMenuReview.adapter = MeReVPAdapter(this, restaurantId)
             TabLayoutMediator(binding.tlMenuReview, binding.vpMenuReview) { tab, position ->
                 tab.text = tabs[position]
             }.attach()

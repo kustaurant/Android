@@ -3,61 +3,62 @@ package com.kust.kustaurant.presentation.ui.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
 
 class DetailReviewFragment : Fragment() {
     lateinit var binding : FragmentDetailReviewBinding
     lateinit var reviewAdapter: DetailReviewAdapter
     private var reviewList : ArrayList<ReviewData> = arrayListOf()
-    private var replyList : ArrayList<ReviewReplyData> = arrayListOf()
+    private val viewModel: DetailViewModel by activityViewModels()
+    private var restaurantId = 0
+    private val popularity = "popularity"
+    private val latest = "latest"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailReviewBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
-        initDummyData()
+        if (arguments != null) {
+            restaurantId = requireArguments().getInt("restaurantId", 0);
+            viewModel.loadCommentData(restaurantId, popularity)
+        }
+
+        observeViewModel()
         initRecyclerView()
 
         return binding.root
     }
 
-    private fun initDummyData() {
-        replyList.addAll(
-            arrayListOf(
-                ReviewReplyData("대댓글1", "20초전","아닌데?", 12, 13),
-                ReviewReplyData("대댓글2", "20초전","아닌데?", 12, 13)
-            )
-        )
-        reviewList.addAll(
-            arrayListOf(
-                ReviewData(4.0, "리뷰1", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰2", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰3", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰4", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰5", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰6", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰7", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰8", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰9", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰10", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰11", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰12", "30초전", "개존맛", 122, 123, replyList),
+    private fun observeViewModel() {
+        viewModel.reviewData.observe(viewLifecycleOwner){ commentData ->
+            reviewAdapter.submitList(commentData)
+            Log.d("commentData", commentData.toString())
+            updateRecyclerViewHeight()
+        }
+    }
 
-            )
-        )
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
     }
 
     private fun initRecyclerView() {
-        reviewAdapter = DetailReviewAdapter(reviewList){
+        reviewAdapter = DetailReviewAdapter(){
             updateRecyclerViewHeight()
         }
+
         binding.detailRvReview.addItemDecoration(ItemDecoration(spacing = 16.dpToPx(requireContext()), endSpacing = 32.dpToPx(requireContext())))
         binding.detailRvReview.adapter = reviewAdapter
         val layoutManager = object : LinearLayoutManager(context) {
@@ -69,7 +70,7 @@ class DetailReviewFragment : Fragment() {
         }
 
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
-            override fun onItemClicked(data: ReviewData, position : Int, type : Int) {
+            override fun onItemClicked(data: CommentDataResponse, position : Int, type : Int) {
                 when (type) {
                     1 -> {  // Report
                         context?.let {
@@ -103,7 +104,7 @@ class DetailReviewFragment : Fragment() {
                 View.MeasureSpec.makeMeasureSpec(binding.detailRvReview.width, View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
             )
-            totalHeight += holder.itemView.measuredHeight
+            totalHeight += holder.itemView.measuredHeight + 40
         }
         val params = binding.detailRvReview.layoutParams
         params.height = totalHeight

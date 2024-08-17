@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.domain.usecase.GetDetailDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,9 @@ class DetailViewModel @Inject constructor(
     private val _tierData = MutableLiveData<TierInfoData>()
     val tierData: LiveData<TierInfoData> = _tierData
 
+    private val _reviewData = MutableLiveData<List<CommentDataResponse>>()
+    val reviewData: LiveData<List<CommentDataResponse>> = _reviewData
+
 
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
@@ -35,6 +39,13 @@ class DetailViewModel @Inject constructor(
             }
             _tierData.value = TierInfoData(getDetailData.restaurantCuisineImgUrl, getDetailData.restaurantCuisine,
                 getDetailData.mainTier, getDetailData.situationList)
+        }
+    }
+
+    fun loadCommentData(restaurantId: Int, sort: String){
+        viewModelScope.launch {
+            val getCommentData = getDetailDataUseCase(restaurantId, sort)
+            _reviewData.value = getCommentData
         }
     }
 
