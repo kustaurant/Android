@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class GetDrawRestaurantUseCase @Inject constructor(
     private val drawRepository: DrawRepository) {
-    suspend operator fun invoke(cuisines: String, situations: String, locations: String):  List<DrawRestaurantData> {
-        return drawRepository.getDrawRestaurantData(cuisines, situations, locations)
+    suspend operator fun invoke(cuisines: String, locations: String):  List<DrawRestaurantData> {
+        return drawRepository.getDrawRestaurantData(cuisines, locations)
     }
 }
