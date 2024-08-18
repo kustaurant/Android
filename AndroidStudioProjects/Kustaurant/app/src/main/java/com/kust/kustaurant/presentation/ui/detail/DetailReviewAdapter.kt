@@ -14,7 +14,7 @@ import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
 import com.kust.kustaurant.presentation.ui.tier.TierListAdapter.Companion.diffUtil
 
-class DetailReviewAdapter(private val context: Context, private val updateHeight: () -> Unit): ListAdapter<CommentDataResponse, DetailReviewAdapter.ViewHolder>(diffUtil) {
+class DetailReviewAdapter(private val context: Context): ListAdapter<CommentDataResponse, DetailReviewAdapter.ViewHolder>(diffUtil) {
 
     private lateinit var itemClickListener : OnItemClickListener
 
@@ -42,6 +42,7 @@ class DetailReviewAdapter(private val context: Context, private val updateHeight
         }
         fun bind(item: CommentDataResponse) {
             binding.tvGrade.text = item.commentScore.toString()
+            binding.tvReviewTime.text = item.commentTime
             binding.tvUserName.text = item.commentNickname
             binding.tvReview.text = item.commentBody
             binding.tvLike.text = item.commentLikeCount.toString()

@@ -34,17 +34,19 @@
             android:layout_height="wrap_content"
             android:paddingVertical="4dp"
             android:paddingHorizontal="16dp"
-            android:background="@drawable/button_keyword_selector"
+            android:background="@drawable/btn_comment_selector"
             app:layout_constraintStart_toStartOf="@id/gl_start"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="18dp"
             android:layout_marginEnd="7dp">
 
             <TextView
+                android:id="@+id/detail_tv_popular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="인기순"
                 android:textSize="14sp"
+                android:textColor="@color/btn_comment_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:fontFamily="@font/pretendard_regular"/>
@@ -59,15 +61,17 @@
             android:paddingVertical="4dp"
             android:paddingHorizontal="16dp"
             android:layout_marginStart="4dp"
-            android:background="@drawable/button_keyword_selector"
+            android:background="@drawable/btn_comment_selector"
             app:layout_constraintStart_toEndOf="@id/detail_btn_popular"
             app:layout_constraintTop_toTopOf="@id/detail_btn_popular">
 
             <TextView
+                android:id="@+id/detail_tv_recent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="최신순"
+                android:textColor="@color/btn_comment_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:fontFamily="@font/pretendard_regular"/>

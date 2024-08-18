@@ -36,7 +36,23 @@ class MyPageFragment : Fragment() {
         binding.myTvOpinion.setOnClickListener {
             initOpinion()
         }
+        binding.myTvLogOut.setOnClickListener {
+            initLogOut()
+        }
+        binding.myTvNotification.setOnClickListener {
+            initNotification()
+        }
         return binding.root
+    }
+
+    private fun initNotification() {
+        val intent = Intent(requireContext(), MyCertificateActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun initLogOut() {
+        val intent = Intent(requireContext(), MyCertificateActivity::class.java)
+        startActivity(intent)
     }
 
     private fun initOwnerCertificate() {

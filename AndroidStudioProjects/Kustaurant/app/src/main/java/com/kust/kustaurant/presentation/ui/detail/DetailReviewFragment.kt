@@ -38,12 +38,37 @@ class DetailReviewFragment : Fragment() {
             Log.d("restaurantId", restaurantId.toString())
 
             viewModel.loadCommentData(restaurantId, popularity)
+            updateButton(binding.detailBtnPopular)
         }
 
         observeViewModel()
         initRecyclerView()
 
+        binding.detailBtnRecent.setOnClickListener {
+            updateButton(it)
+            viewModel.loadCommentData(restaurantId, latest)
+        }
+
+        binding.detailBtnPopular.setOnClickListener {
+            updateButton(it)
+            viewModel.loadCommentData(restaurantId, popularity)
+        }
+
         return binding.root
+    }
+
+    private fun updateButton(selectedView: View?) {
+        val views = listOf(binding.detailBtnRecent, binding.detailBtnPopular)
+        val textViews = listOf(binding.detailTvRecent, binding.detailTvPopular)
+
+        for (index in views.indices) {
+            val view = views[index]
+            val textView = textViews[index]
+            val isSelected = view == selectedView
+
+            view.isSelected = isSelected
+            textView.isSelected = isSelected
+        }
     }
 
     private fun observeViewModel() {
@@ -61,16 +86,10 @@ class DetailReviewFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        reviewAdapter = DetailReviewAdapter(requireContext()){
-//            setRecyclerViewHeight()
-        }
+        reviewAdapter = DetailReviewAdapter(requireContext())
 
-//        binding.detailRvReview.addItemDecoration(ItemDecoration(spacing = 16.dpToPx(requireContext()), endSpacing = 32.dpToPx(requireContext())))
         binding.detailRvReview.adapter = reviewAdapter
         binding.detailRvReview.layoutManager = LinearLayoutManager(requireContext())
-        binding.detailRvReview.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            setRecyclerViewHeight()
-        }
 
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
             override fun onItemClicked(data: CommentDataResponse, position : Int, type : Int) {
@@ -103,14 +122,14 @@ class DetailReviewFragment : Fragment() {
             reviewAdapter.onBindViewHolder(holder, i)
 
             val innerRecyclerView = holder.itemView.findViewById<RecyclerView>(R.id.detail_rv_reply)
-            val innerHeight = calculateInnerRecyclerViewHeight(innerRecyclerView)
+            val innerHeight = calInnerHeight(innerRecyclerView)
 
             holder.itemView.measure(
                 View.MeasureSpec.makeMeasureSpec(binding.detailRvReview.width, View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
             )
 
-            // ViewHolder의 마진 및 패딩 고려
+            // ViewHolder의 마진 및 패딩
             val lp = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
             totalHeight += holder.itemView.measuredHeight + lp.topMargin + lp.bottomMargin + innerHeight
         }
@@ -125,7 +144,7 @@ class DetailReviewFragment : Fragment() {
         }
     }
 
-    private fun calculateInnerRecyclerViewHeight(recyclerView: RecyclerView): Int {
+    private fun calInnerHeight(recyclerView: RecyclerView): Int {
         var innerHeight = 0
         val innerAdapter = recyclerView.adapter ?: return 0
         for (j in 0 until innerAdapter.itemCount) {
