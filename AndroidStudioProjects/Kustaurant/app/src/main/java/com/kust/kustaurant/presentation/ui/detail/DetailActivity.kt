@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,8 +54,12 @@ class DetailActivity : AppCompatActivity() {
 
     private fun initNaverLink() {
         binding.tvToNaver.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.detailData.value!!.naverMapUrl))
-            startActivity(intent)
+            viewModel.detailData.value?.naverMapUrl?.let { url ->
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+            } ?: run {
+                Toast.makeText(this, "데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

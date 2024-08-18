@@ -57,16 +57,8 @@ class DetailReviewAdapter(private val context: Context, private val updateHeight
 
             val replyAdapter = DetailRelyAdapter(item.commentReplies)
             binding.detailRvReply.adapter = replyAdapter
-            binding.detailRvReply.layoutManager = object : LinearLayoutManager(binding.root.context) {
-                override fun canScrollVertically(): Boolean = false
-            }
+            binding.detailRvReply.layoutManager = LinearLayoutManager(binding.root.context)
 
-            replyAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-                override fun onChanged() {
-                    super.onChanged()
-                    updateHeight()
-                }
-            })
 
 
             binding.clReport.setOnClickListener {
