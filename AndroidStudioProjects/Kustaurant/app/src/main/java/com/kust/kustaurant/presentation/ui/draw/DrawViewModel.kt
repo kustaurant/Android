@@ -24,14 +24,10 @@ class DrawViewModel @Inject constructor(
     private val _selectedMenus = MutableLiveData<Set<String>>(setOf("전체"))
     val selectedMenus: LiveData<Set<String>> = _selectedMenus
 
-    private val _selectedSituations = MutableLiveData<Set<String>>(setOf("전체"))
-    val selectedSituations: LiveData<Set<String>> = _selectedSituations
-
     private val _selectedLocations = MutableLiveData<Set<String>>(setOf("전체"))
     val selectedLocations: LiveData<Set<String>> = _selectedLocations
 
     private var _initialSelectedMenus = setOf("전체")
-    private var _initialSelectedSituations = setOf("전체")
     private var _initialSelectedLocations = setOf("전체")
 
     private val _selectedRestaurant = MutableLiveData<DrawRestaurantData>()
@@ -40,7 +36,6 @@ class DrawViewModel @Inject constructor(
     fun drawRestaurants() {
         viewModelScope.launch {
             val checkSameCategory = (selectedMenus.value == _initialSelectedMenus) &&
-                    (selectedSituations.value == _initialSelectedSituations) &&
                     (selectedLocations.value == _initialSelectedLocations)
 
             if (checkSameCategory && sameDrawList < 2) {
@@ -59,11 +54,9 @@ class DrawViewModel @Inject constructor(
 
                 val mappedMenus = selectedMenus.value?.let { CategoryIdMapper.mapMenus(it) }
                 val mappedLocations = selectedLocations.value?.let { CategoryIdMapper.mapLocations(it) }
-                val mappedSituations = selectedSituations.value?.let { CategoryIdMapper.mapSituations(it) }
 
                 val drawRestaurantsListData = getDrawRestaurantUseCase(
                     Uri.encode(mappedMenus),
-                    Uri.encode(mappedSituations),
                     Uri.encode(mappedLocations)
                 )
                 _drawList.value = drawRestaurantsListData
@@ -93,22 +86,16 @@ class DrawViewModel @Inject constructor(
         _selectedMenus.value = types
     }
 
-    private fun setSelectedSituations(situations: Set<String>) {
-        _selectedSituations.value = situations
-    }
-
     private fun setSelectedLocations(locations: Set<String>) {
         _selectedLocations.value = locations
     }
 
-    fun applyFilters(types: Set<String>, situations: Set<String>, locations: Set<String>) {
+    fun applyFilters(types: Set<String>, locations: Set<String>) {
         setSelectedTypes(types)
-        setSelectedSituations(situations)
         setSelectedLocations(locations)
 
         // 현재 선택된 값들을 새로운 "초기" 값으로 설정
         _initialSelectedMenus = types
-        _initialSelectedSituations = situations
         _initialSelectedLocations = locations
 
         sameDrawList = 3

@@ -30,9 +30,7 @@ class TierListFragment : Fragment() {
         setupRecyclerView()
 
         binding.tierSrl.setOnRefreshListener {
-            viewModel.checkAndLoadBackendData(0)
-            binding.tierRecyclerView.scrollToPosition(0)
-            binding.tierSrl.isRefreshing = false
+            refreshData()
         }
 
         return binding.root
@@ -70,6 +68,12 @@ class TierListFragment : Fragment() {
             tierAdapter.setExpanded(isExpanded)
         }
 
+    }
+
+    private fun refreshData() {
+        viewModel.checkAndLoadBackendData(0)
+        binding.tierRecyclerView.scrollToPosition(0)
+        binding.tierSrl.isRefreshing = false
     }
 
     override fun onResume() {

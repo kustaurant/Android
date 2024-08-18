@@ -26,7 +26,6 @@ interface KustaurantApi {
     @GET("/api/v1/draw")
     suspend fun getDrawRestaurantsData(
         @Query("cuisines") cuisines: String,
-        @Query("situations") situations: String,
         @Query("locations") locations: String
     ):  List<DrawRestaurantData>
 }

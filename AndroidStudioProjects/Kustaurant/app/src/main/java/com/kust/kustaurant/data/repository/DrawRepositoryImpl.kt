@@ -8,7 +8,7 @@ import javax.inject.Inject
 class DrawRepositoryImpl @Inject constructor(
     private val kustaurantApi: KustaurantApi
 ) : DrawRepository {
-    override suspend fun getDrawRestaurantData(cuisines: String, situations: String, locations: String): List<DrawRestaurantData> {
-        return kustaurantApi.getDrawRestaurantsData(cuisines, situations, locations)
+    override suspend fun getDrawRestaurantData(cuisines: String, locations: String): List<DrawRestaurantData> {
+        return kustaurantApi.getDrawRestaurantsData(cuisines, locations)
     }
 }

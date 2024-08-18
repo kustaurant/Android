@@ -10,14 +10,32 @@
             type="com.kust.kustaurant.presentation.ui.tier.TierViewModel" />
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.draw.DrawFragment">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <!--  GuideLine 생성-->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/draw_gl_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/draw_gl_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95"/>
+
 
             <!-- Top Bar -->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,8 +44,8 @@
                 android:layout_height="0dp"
                 android:paddingTop="5dp"
                 app:layout_constraintDimensionRatio="360:60"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
+                app:layout_constraintStart_toStartOf="@id/draw_gl_start"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
