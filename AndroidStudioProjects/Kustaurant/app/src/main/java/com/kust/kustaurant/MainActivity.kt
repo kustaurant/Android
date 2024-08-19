@@ -32,14 +32,14 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.main_frm, TierFragment()).commit()
                     return@setOnItemSelectedListener true
                 }
-//                R.id.menu_community -> {
-//                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, CommunityFragment()).commit()
-//                    return@setOnItemSelectedListener true
-//                }
-//                R.id.menu_mypage -> {
-//                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, MyPageFragment()).commit()
-//                    return@setOnItemSelectedListener true
-//                }
+                R.id.menu_community -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, CommunityFragment()).commit()
+                    return@setOnItemSelectedListener true
+                }
+                R.id.menu_mypage -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, MyPageFragment()).commit()
+                    return@setOnItemSelectedListener true
+                }
                 else -> {
                     return@setOnItemSelectedListener true
                 }

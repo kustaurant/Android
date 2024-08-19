@@ -51,8 +51,8 @@ class EvaluateActivity : AppCompatActivity() {
 
     private fun initBack() {
         binding.evaluateIvBack.setOnClickListener {
-            onBackPressed()
-            // dispatcher로 수정해야합니다
+            onBackPressedDispatcher.onBackPressed()
+
         }
     }
 

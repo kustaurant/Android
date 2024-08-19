@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kust.kustaurant.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kust.kustaurant.R
+import com.kust.kustaurant.presentation.ui.home.SpaceDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -32,6 +34,9 @@ class DetailActivity : AppCompatActivity() {
         val restaurantId = intent.getIntExtra("restaurantId", 346)
         Log.d("restaurantId", restaurantId.toString())
         viewModel.loadDetailData(restaurantId)
+        if(viewModel.detailData.value?.partnershipInfo == null){
+            binding.detailClAlliance.visibility = View.GONE
+        }
 
         initBack()
         initTierRecyclerView()
@@ -98,6 +103,10 @@ class DetailActivity : AppCompatActivity() {
 
     private fun initTierRecyclerView() {
         viewModel.tierData.observe(this) { data ->
+            val size = resources.getDimensionPixelSize(R.dimen.MY_SIZE)
+            val m_size = resources.getDimensionPixelSize(R.dimen.MY_EDGE_MARGIN)
+            val deco = SpaceDecoration(size, m_size)
+            binding.rvTier.addItemDecoration(deco)
             tierInfoAdapter = DetailTierInfoAdapter(this, data)
             binding.rvTier.adapter = tierInfoAdapter
             binding.rvTier.layoutManager =

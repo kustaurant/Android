@@ -5,44 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.mypage.MyScrapActivity">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/scrap_cl_top_bar"
-        android:elevation="1dp"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="360:55"
-        app:layout_constraintEnd_toEndOf="@id/gl_info_end"
-        app:layout_constraintStart_toStartOf="@id/gl_info_start"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/scrap_tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_semibold"
-            android:gravity="center"
-            android:text="공지사항"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <ImageView
-            android:id="@+id/scrap_btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/back_btn_info"
-            android:src="@drawable/btn_back"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".presentation.ui.mypage.MyNotificationActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_info_start"
@@ -58,20 +21,42 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.95"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/cement_3"
-        app:layout_constraintTop_toBottomOf="@id/scrap_cl_top_bar"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/scrap_rv_restaurant"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/noti_cl_top_bar"
+        android:elevation="1dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintStart_toStartOf="@id/gl_info_start"
+        app:layout_constraintDimensionRatio="360:55"
         app:layout_constraintEnd_toEndOf="@id/gl_info_end"
-        app:layout_constraintTop_toBottomOf="@id/scrap_cl_top_bar"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="@id/gl_info_start"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/noti_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_semibold"
+            android:gravity="center"
+            android:text="공지사항"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/noti_btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/back_btn_info"
+            android:src="@drawable/btn_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
