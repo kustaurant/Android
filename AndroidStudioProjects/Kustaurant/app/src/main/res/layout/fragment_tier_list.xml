@@ -42,13 +42,14 @@
 
                 <ImageView
                     android:id="@+id/tier_iv_expand_reduce_toggle_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
                     android:src="@{viewModel.isExpanded ? @drawable/ic_reduce : @drawable/ic_expand}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:contentDescription="@string/expand_reduction_fab_info" />
+                    android:contentDescription="@string/expand_reduction_fab_info"
+                    android:layout_marginEnd="2dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"

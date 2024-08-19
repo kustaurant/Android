@@ -29,6 +29,15 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/cement_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/top_bar"/>
+
         <!-- Top Bar -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/top_bar"
@@ -150,7 +159,6 @@
                 android:id="@+id/tier_iv_category_btn"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="21dp"
                 android:background="@drawable/circle_background"
                 android:backgroundTint="@color/signature_1"
                 android:contentDescription="@string/category_btn_info"

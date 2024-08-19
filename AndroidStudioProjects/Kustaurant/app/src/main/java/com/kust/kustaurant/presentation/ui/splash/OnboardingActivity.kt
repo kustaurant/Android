@@ -139,6 +139,13 @@ class OnboardingActivity : AppCompatActivity() {
         editor.apply()
     }
 
+    private fun saveId(userId: String) {
+        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.putString("userId", userId)
+        editor.apply()
+    }
+
     private fun saveAccessToken(token: String) {
         val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
         val editor = preferences.edit()
@@ -153,6 +160,7 @@ class OnboardingActivity : AppCompatActivity() {
                 val provider = "naver"
                 val providerId = response.profile?.id
                 val naverAccessToken = NaverIdLoginSDK.getAccessToken()
+                saveId(providerId?: "")
 
                 Log.d("Naver Login", "${providerId}, ${naverAccessToken}")
 
