@@ -15,8 +15,6 @@
     <string name="search_btn_info">검색하기 버튼입니다.</string>
     <string name="alarm_btn_info">알람 버튼입니다.</string>
     <string name="expand_reduction_fab_info">음식점 리스트를 작게/크게 볼 수 있는 버튼입니다.</string>
-    <string name="fab_expand"><u>크게 보기</u></string>
-    <string name="fab_reduce"><u>작게 보기</u></string>
     <string name="tier_location_info"><u>위치에 대한 설명이 필요하다면?</u></string>
     <string name="tier_popup_crown_info">티어란? 팝업에 대한 아이콘입니다.</string>
     <string name="tier_popup_title">티어란?</string>

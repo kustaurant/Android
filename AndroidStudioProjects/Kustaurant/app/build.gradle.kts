@@ -76,7 +76,7 @@ dependencies {
     // sticky scollview
     implementation(libs.sticky.scroll.view)
 
-            // Naver 지도
+    // Naver 지도
     implementation(libs.naver.maps)
 
     // by viewModels() 사용

@@ -2,6 +2,8 @@ package com.kust.kustaurant.presentation.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +27,10 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels()
 
     private var imageUrls = listOf<String>()
+    private lateinit var autoScrollHandler: Handler
+    private lateinit var autoScrollRunnable: Runnable
+    private var currentPage = 0
+    private val delayMillis = 1500L // 1.5초
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,7 +95,7 @@ class HomeFragment : Fragment() {
                 restaurantResponse.restaurantPosition,
                 restaurantResponse.restaurantImgUrl,
                 restaurantResponse.mainTier,
-                restaurantResponse.partnershipInfo ?: "",
+                restaurantResponse.partnershipInfo ?: "해당사항 없음",
                 restaurantResponse.restaurantScore?.toDouble() ?: 0.0,
                 restaurantResponse.isEvaluated,
                 restaurantResponse.isFavorite
@@ -105,7 +111,7 @@ class HomeFragment : Fragment() {
                 restaurantResponse.restaurantPosition,
                 restaurantResponse.restaurantImgUrl,
                 restaurantResponse.mainTier,
-                restaurantResponse.partnershipInfo ?: "",
+                restaurantResponse.partnershipInfo ?: "해당사항 없음",
                 restaurantResponse.restaurantScore?.toDouble() ?: 0.0,
                 restaurantResponse.isEvaluated,
                 restaurantResponse.isFavorite
@@ -125,10 +131,30 @@ class HomeFragment : Fragment() {
         binding.homeAdBanner.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                val currentPageNumber = position + 1
+                currentPage = position + 1
                 val totalPageNumber = adapter.itemCount
-                binding.homeAdBannerNumber.text = "$currentPageNumber/$totalPageNumber"
+                binding.homeAdBannerNumber.text = "$currentPage/$totalPageNumber"
             }
         })
+
+        // 자동 스크롤 설정
+        autoScrollHandler = Handler(Looper.getMainLooper())
+        autoScrollRunnable = object : Runnable {
+            override fun run() {
+                if (binding.homeAdBanner.currentItem < adapter.itemCount - 1) {
+                    binding.homeAdBanner.currentItem += 1
+                } else {
+                    binding.homeAdBanner.currentItem = 0 // 마지막 이미지 후 첫 번째 이미지로 돌아감
+                }
+                autoScrollHandler.postDelayed(this, delayMillis)
+            }
+        }
+        autoScrollHandler.postDelayed(autoScrollRunnable, delayMillis)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // View가 파괴될 때 Handler를 정리합니다.
+        autoScrollHandler.removeCallbacks(autoScrollRunnable)
     }
 }
