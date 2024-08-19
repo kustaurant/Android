@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tier_cl_restaurant"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="59dp"
     android:layout_marginTop="7dp">
 
     <ImageView
@@ -74,6 +74,7 @@
         app:layout_constraintEnd_toStartOf="@id/tier_tv_restaurant_Name"
         app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_img"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="6dp"
         tools:text="1" />
 
     <TextView
@@ -86,10 +87,8 @@
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@id/tier_iv_restaurant_evaluation_img"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/tier_tv_restaurant_Id"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tier_tv_restaurant_Id"
         tools:text="식당 이름 입니다." />
 
     <TextView
@@ -102,6 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tier_tv_restaurant_Id"
         app:layout_constraintTop_toBottomOf="@id/tier_tv_restaurant_Name"
+        android:layout_marginTop="3dp"
         tools:text="일식 | 건입~중문" />
 
     <!-- Divider Line -->

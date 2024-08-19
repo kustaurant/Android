@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="93dp"
     android:layout_marginTop="9dp"
     android:layout_marginBottom="9dp">
 
@@ -64,7 +64,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_medium"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="6dp"
         android:singleLine="true"
         android:text="@{restaurant.restaurantName}"
         android:textColor="#000000"
@@ -85,6 +85,7 @@
         app:layout_constraintEnd_toStartOf="@id/tier_iv_restaurant_tier_img"
         app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_img"
         app:layout_constraintTop_toBottomOf="@id/tier_tv_restaurant_name"
+        android:layout_marginTop="3dp"
         tools:text="일식 | 건입~중문" />
 
     <TextView
@@ -97,6 +98,7 @@
         android:fontFamily="@font/pretendard_regular"
         app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_img"
         app:layout_constraintTop_toBottomOf="@id/tier_tv_restaurant_details"
+        app:layout_constraintBottom_toBottomOf="@id/tier_iv_restaurant_img"
         tools:text="제휴 해당 사항 없음"/>
 
     <!-- Divider Line -->
