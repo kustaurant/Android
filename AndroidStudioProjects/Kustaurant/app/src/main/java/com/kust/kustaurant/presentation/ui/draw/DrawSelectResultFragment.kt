@@ -25,6 +25,8 @@ class DrawSelectResultFragment : Fragment() {
     private lateinit var adapter: DrawSelectResultAdapter
     private var restaurantList = mutableListOf<DrawRestaurantData>()
     private val viewModel: DrawViewModel by activityViewModels()
+    private var handler: Handler? = null
+    private var runnable: Runnable? = null
     val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -45,9 +47,26 @@ class DrawSelectResultFragment : Fragment() {
         }
 
         viewModel.selectedRestaurant.observe(viewLifecycleOwner) { selected ->
+            if (_binding == null) {
+                _binding = FragmentDrawSelectResultBinding.inflate(layoutInflater)
+            }
+
             displaySelectedRestaurantInfo(selected)
         }
     }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun displaySelectedRestaurantInfo(restaurant: DrawRestaurantData) {
+        binding.drawTvRestaurantName.text = restaurant.restaurantName
+        binding.drawTvRestaurantMenu.text = restaurant.restaurantMenu
+        binding.drawTvRestaurantScore.text = restaurant.restaurantScoreSum.toString()
+        binding.drawTvRestaurantPartnershipInfo.text = "이과대학 학생증 제시 시 99퍼센트 할인적용"
+
+        updateStarRating(restaurant.restaurantScoreSum)
+    }
+
+
 
     private fun setupViewPager() {
         viewPager = binding.drawViewPager
@@ -64,16 +83,6 @@ class DrawSelectResultFragment : Fragment() {
             }
         }
         viewPager.setPageTransformer(pageTransformer)
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun displaySelectedRestaurantInfo(restaurant: DrawRestaurantData) {
-        binding.drawTvRestaurantName.text = restaurant.restaurantName
-        binding.drawTvRestaurantMenu.text = restaurant.restaurantMenu
-        binding.drawTvRestaurantScore.text = restaurant.restaurantScoreSum.toString()
-        binding.drawTvRestaurantPartnershipInfo.text = "이과대학 학생증 제시 시 99퍼센트 할인적용"
-
-        updateStarRating(restaurant.restaurantScoreSum)
     }
 
     private fun updateStarRating(score: Double) {
@@ -129,18 +138,23 @@ class DrawSelectResultFragment : Fragment() {
         val centerPosition = viewPager.currentItem
         adapter.highlightItem(centerPosition)
     }
-
     private fun startAnimation() {
         disableButtons() // 애니메이션 시작 시 버튼 비활성화
 
-        val handler = Handler(Looper.getMainLooper())
-        val runnable = object : Runnable {
+        handler = Handler(Looper.getMainLooper())
+        runnable = object : Runnable {
             var currentPage = 0
             override fun run() {
+                // Fragment가 아직 활성 상태인지 확인
+                if (!isAdded || view == null || _binding == null) {
+                    handler?.removeCallbacks(this) // 핸들러에서 콜백 제거
+                    return
+                }
+
                 if (currentPage < adapter.itemCount) {
                     viewPager.setCurrentItem(currentPage++, true)
-                    handler.postDelayed(this, 2000L / adapter.itemCount)
-                    displaySelectedRestaurantInfo(restaurantList[currentPage-1])
+                    handler?.postDelayed(this, 2000L / adapter.itemCount)
+                    displaySelectedRestaurantInfo(restaurantList[currentPage - 1])
                 } else {
                     // 애니메이션 종료 후, 중앙에 선택된 음식점 배치
                     viewModel.selectedRestaurant.value?.let { selected ->
@@ -153,7 +167,7 @@ class DrawSelectResultFragment : Fragment() {
                 }
             }
         }
-        handler.post(runnable)
+        handler?.post(runnable!!)
     }
 
 
@@ -174,6 +188,10 @@ class DrawSelectResultFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        handler?.removeCallbacks(runnable!!)
+        handler = null
+        runnable = null
         _binding = null
     }
 }
