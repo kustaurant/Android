@@ -3,7 +3,7 @@
     <style name="Base.Theme.Kustaurant" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-<!--        <item name="android:windowTranslucentStatus">true</item>-->
+        <!--        <item name="android:windowTranslucentStatus">true</item>-->
     </style>
 
     <style name="Theme.Kustaurant" parent="Base.Theme.Kustaurant" />

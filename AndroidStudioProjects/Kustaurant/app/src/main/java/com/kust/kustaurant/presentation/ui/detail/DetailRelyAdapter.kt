@@ -3,17 +3,18 @@ package com.kust.kustaurant.presentation.ui.detail
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.kust.kustaurant.data.model.ReplyDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
 
-class DetailRelyAdapter(val replyData : ArrayList<ReviewReplyData>) : RecyclerView.Adapter<DetailRelyAdapter.ViewHolder>() {
+class DetailRelyAdapter(val replyData : ArrayList<ReplyDataResponse>) : RecyclerView.Adapter<DetailRelyAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding : ItemDetailReviewReplyBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : ReviewReplyData){
-            binding.tvUserName.text = item.replyUserName
-            binding.tvReview.text = item.replyReviewText
-            binding.tvLike.text = item.replyReviewLike.toString()
-            binding.tvHate.text = item.replyReviewHate.toString()
-            binding.tvReviewTime.text = item.replyReviewTime
+        fun bind(item : ReplyDataResponse){
+            binding.tvUserName.text = item.commentNickname
+            binding.tvReview.text = item.commentBody
+            binding.tvLike.text = item.commentLikeCount.toString()
+            binding.tvHate.text = item.commentDislikeCount.toString()
+            binding.tvReviewTime.text = item.commentTime
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailRelyAdapter.ViewHolder {

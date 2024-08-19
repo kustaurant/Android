@@ -23,7 +23,7 @@ class MySaveActivity : AppCompatActivity() {
 
     private fun initBack() {
         binding.saveBtnBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 

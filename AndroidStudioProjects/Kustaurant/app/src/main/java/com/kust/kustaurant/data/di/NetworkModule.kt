@@ -3,6 +3,7 @@ package com.kust.kustaurant.data.di
 import com.kust.kustaurant.data.remote.DetailApi
 import com.kust.kustaurant.data.remote.HomeApi
 import com.kust.kustaurant.data.remote.KustaurantApi
+import com.kust.kustaurant.data.remote.MyPageApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,4 +60,11 @@ object NetworkModule {
     fun provideHomeApi(retrofit: Retrofit): HomeApi{
         return retrofit.create(HomeApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideMyPageApi(retrofit: Retrofit): MyPageApi{
+        return retrofit.create(MyPageApi::class.java)
+    }
+
 }
