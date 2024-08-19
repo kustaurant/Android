@@ -43,10 +43,10 @@ class DetailTierInfoAdapter(val context : Context, private val tierData : TierIn
                 binding.clTierBackground.visibility = View.GONE
             } else{
                 when(item.tierNumber){
-                    1 -> binding.clTierBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tier_1))
-                    2 -> binding.clTierBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tier_2))
-                    3 -> binding.clTierBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tier_3))
-                    4 -> binding.clTierBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tier_4))
+                    1 -> binding.clTierBackground.background.setTint(ContextCompat.getColor(context, R.color.tier_1))
+                    2 -> binding.clTierBackground.background.setTint(ContextCompat.getColor(context, R.color.tier_2))
+                    3 -> binding.clTierBackground.background.setTint(ContextCompat.getColor(context, R.color.tier_3))
+                    4 -> binding.clTierBackground.background.setTint(ContextCompat.getColor(context, R.color.tier_4))
                 }
                 Glide.with(context)
                     .load(item.tierImage)

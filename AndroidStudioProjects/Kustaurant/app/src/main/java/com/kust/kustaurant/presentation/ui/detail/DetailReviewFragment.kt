@@ -3,73 +3,96 @@ package com.kust.kustaurant.presentation.ui.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.kust.kustaurant.R
+import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
 
 class DetailReviewFragment : Fragment() {
     lateinit var binding : FragmentDetailReviewBinding
     lateinit var reviewAdapter: DetailReviewAdapter
     private var reviewList : ArrayList<ReviewData> = arrayListOf()
-    private var replyList : ArrayList<ReviewReplyData> = arrayListOf()
+    private val viewModel: DetailViewModel by activityViewModels()
+    private var restaurantId = 0
+    private val popularity = "popularity"
+    private val latest = "latest"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailReviewBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
-        initDummyData()
+        if (arguments != null) {
+//            "애드앤드 테스트 아이디 741"
+            restaurantId = requireArguments().getInt("restaurantId", 0);
+            Log.d("restaurantId", restaurantId.toString())
+
+            viewModel.loadCommentData(restaurantId, popularity)
+            updateButton(binding.detailBtnPopular)
+        }
+
+        observeViewModel()
         initRecyclerView()
+
+        binding.detailBtnRecent.setOnClickListener {
+            updateButton(it)
+            viewModel.loadCommentData(restaurantId, latest)
+        }
+
+        binding.detailBtnPopular.setOnClickListener {
+            updateButton(it)
+            viewModel.loadCommentData(restaurantId, popularity)
+        }
 
         return binding.root
     }
 
-    private fun initDummyData() {
-        replyList.addAll(
-            arrayListOf(
-                ReviewReplyData("대댓글1", "20초전","아닌데?", 12, 13),
-                ReviewReplyData("대댓글2", "20초전","아닌데?", 12, 13)
-            )
-        )
-        reviewList.addAll(
-            arrayListOf(
-                ReviewData(4.0, "리뷰1", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰2", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰3", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰4", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰5", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰6", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰7", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰8", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰9", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰10", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰11", "30초전", "개존맛", 122, 123, replyList),
-                ReviewData(4.0, "리뷰12", "30초전", "개존맛", 122, 123, replyList),
+    private fun updateButton(selectedView: View?) {
+        val views = listOf(binding.detailBtnRecent, binding.detailBtnPopular)
+        val textViews = listOf(binding.detailTvRecent, binding.detailTvPopular)
 
-            )
-        )
+        for (index in views.indices) {
+            val view = views[index]
+            val textView = textViews[index]
+            val isSelected = view == selectedView
+
+            view.isSelected = isSelected
+            textView.isSelected = isSelected
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.reviewData.observe(viewLifecycleOwner){ commentData ->
+            reviewAdapter.submitList(commentData)
+            Log.d("commentData", commentData.toString())
+            setRecyclerViewHeight()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setRecyclerViewHeight() // 프래그먼트가 다시 보여질 때 마다 높이 재설정
+
     }
 
     private fun initRecyclerView() {
-        reviewAdapter = DetailReviewAdapter(reviewList){
-            updateRecyclerViewHeight()
-        }
-        binding.detailRvReview.addItemDecoration(ItemDecoration(spacing = 16.dpToPx(requireContext()), endSpacing = 32.dpToPx(requireContext())))
+        reviewAdapter = DetailReviewAdapter(requireContext())
+
         binding.detailRvReview.adapter = reviewAdapter
-        val layoutManager = object : LinearLayoutManager(context) {
-            override fun canScrollVertically(): Boolean = false // 스크롤 비활성화
-        }
-        binding.detailRvReview.layoutManager = layoutManager
-        binding.detailRvReview.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            updateRecyclerViewHeight()
-        }
+        binding.detailRvReview.layoutManager = LinearLayoutManager(requireContext())
 
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
-            override fun onItemClicked(data: ReviewData, position : Int, type : Int) {
+            override fun onItemClicked(data: CommentDataResponse, position : Int, type : Int) {
                 when (type) {
                     1 -> {  // Report
                         context?.let {
@@ -89,29 +112,52 @@ class DetailReviewFragment : Fragment() {
         })
     }
 
-    private fun Int.dpToPx(context: Context): Int {
-        return (this * context.resources.displayMetrics.density).toInt()
-    }
-
     // 각 tab마다 height 재구성
-    private fun updateRecyclerViewHeight() {
+    private fun setRecyclerViewHeight() {
         var totalHeight = 0
+        val layoutManager = binding.detailRvReview.layoutManager as LinearLayoutManager
+
         for (i in 0 until reviewAdapter.itemCount) {
             val holder = reviewAdapter.createViewHolder(binding.detailRvReview, reviewAdapter.getItemViewType(i))
             reviewAdapter.onBindViewHolder(holder, i)
+
+            val innerRecyclerView = holder.itemView.findViewById<RecyclerView>(R.id.detail_rv_reply)
+            val innerHeight = calInnerHeight(innerRecyclerView)
+
             holder.itemView.measure(
                 View.MeasureSpec.makeMeasureSpec(binding.detailRvReview.width, View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
             )
-            totalHeight += holder.itemView.measuredHeight
+
+            // ViewHolder의 마진 및 패딩
+            val lp = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
+            totalHeight += holder.itemView.measuredHeight + lp.topMargin + lp.bottomMargin + innerHeight
         }
+
         val params = binding.detailRvReview.layoutParams
         params.height = totalHeight
         binding.detailRvReview.layoutParams = params
 
         // DetailActivity에서 상속
         if (activity is DetailActivity) {
-            (activity as DetailActivity).setViewPagerHeight(binding.detailRvReview.measuredHeight)
+            (activity as DetailActivity).setViewPagerHeight(totalHeight)
         }
     }
+
+    private fun calInnerHeight(recyclerView: RecyclerView): Int {
+        var innerHeight = 0
+        val innerAdapter = recyclerView.adapter ?: return 0
+        for (j in 0 until innerAdapter.itemCount) {
+            val type = innerAdapter.getItemViewType(j)
+            val innerHolder = innerAdapter.createViewHolder(recyclerView, type)
+            innerAdapter.onBindViewHolder(innerHolder, j)
+            innerHolder.itemView.measure(
+                View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            )
+            innerHeight += innerHolder.itemView.measuredHeight
+        }
+        return innerHeight
+    }
+
 }

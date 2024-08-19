@@ -19,9 +19,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.ui.mypage.MyEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.ui.mypage.MyNotificationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Kustaurant" />
+        <activity
             android:name=".presentation.ui.detail.ReportActivity"
             android:exported="false" />
-        <activity android:name=".presentation.ui.splash.StartActivity"
+        <activity
+            android:name=".presentation.ui.splash.StartActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.ui.mypage.MyFixAllActivity"
@@ -81,8 +89,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".presentation.ui.detail.EvaluateActivity"
             android:exported="false" />

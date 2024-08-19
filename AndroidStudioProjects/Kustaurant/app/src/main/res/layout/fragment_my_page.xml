@@ -76,12 +76,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_edit"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintStart_toEndOf="@id/my_tv_name"
             app:layout_constraintTop_toTopOf="@id/my_tv_name"
             app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -200,8 +198,9 @@
 
         <TextView
             android:id="@+id/my_tv_save"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
             app:layout_constraintTop_toTopOf="parent"
             android:fontFamily="@font/pretendard_regular"
@@ -219,8 +218,9 @@
 
         <TextView
             android:id="@+id/my_tv_community_comment"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
             app:layout_constraintTop_toBottomOf="@id/my_view_community_comment_top"
             android:fontFamily="@font/pretendard_regular"
@@ -238,8 +238,9 @@
 
         <TextView
             android:id="@+id/my_tv_community_scrap"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
             app:layout_constraintTop_toBottomOf="@id/my_view_community_scrap_top"
             android:fontFamily="@font/pretendard_regular"
@@ -257,8 +258,9 @@
 
         <TextView
             android:id="@+id/my_tv_opinion"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
             app:layout_constraintTop_toBottomOf="@id/my_view_opinion_top"
             android:fontFamily="@font/pretendard_regular"
@@ -276,8 +278,9 @@
 
         <TextView
             android:id="@+id/my_tv_owner_certificate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
             app:layout_constraintTop_toBottomOf="@id/my_view_owner_certificate"
             android:fontFamily="@font/pretendard_regular"
@@ -295,8 +298,9 @@
 
         <TextView
             android:id="@+id/my_tv_fix_alliance"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
             app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
             app:layout_constraintTop_toBottomOf="@id/my_view_fix_alliance_top"
             android:fontFamily="@font/pretendard_regular"
@@ -304,6 +308,46 @@
             android:textColor="@color/black"
             android:paddingVertical="14dp"
             android:text="제휴 정보 수정하기"/>
+
+        <View
+            android:id="@+id/my_view_notification_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cement_3"
+            app:layout_constraintTop_toBottomOf="@id/my_tv_fix_alliance"/>
+
+        <TextView
+            android:id="@+id/my_tv_notification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+            app:layout_constraintTop_toBottomOf="@id/my_view_notification_top"
+            android:fontFamily="@font/pretendard_regular"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:paddingVertical="14dp"
+            android:text="공지사항"/>
+
+        <View
+            android:id="@+id/my_view_log_out_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cement_3"
+            app:layout_constraintTop_toBottomOf="@id/my_tv_notification"/>
+
+        <TextView
+            android:id="@+id/my_tv_log_out"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+            app:layout_constraintTop_toBottomOf="@id/my_view_log_out_top"
+            android:fontFamily="@font/pretendard_regular"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:paddingVertical="14dp"
+            android:text="로그아웃"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

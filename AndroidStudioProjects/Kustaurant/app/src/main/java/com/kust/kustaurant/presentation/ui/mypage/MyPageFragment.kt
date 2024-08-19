@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kust.kustaurant.databinding.FragmentMyPageBinding
+import com.kust.kustaurant.presentation.ui.splash.StartActivity
 
 class MyPageFragment : Fragment() {
     lateinit var binding : FragmentMyPageBinding
@@ -17,7 +18,9 @@ class MyPageFragment : Fragment() {
     ): View? {
         binding = FragmentMyPageBinding.inflate(layoutInflater)
 
-
+        binding.myIvEdit.setOnClickListener {
+            initEdit()
+        }
         binding.myTvOwnerCertificate.setOnClickListener {
             initOwnerCertificate()
         }
@@ -36,7 +39,28 @@ class MyPageFragment : Fragment() {
         binding.myTvOpinion.setOnClickListener {
             initOpinion()
         }
+        binding.myTvLogOut.setOnClickListener {
+            initLogOut()
+        }
+        binding.myTvNotification.setOnClickListener {
+            initNotification()
+        }
         return binding.root
+    }
+
+    private fun initEdit() {
+        val intent = Intent(requireContext(), MyEditActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun initNotification() {
+        val intent = Intent(requireContext(), MyNotificationActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun initLogOut() {
+        val intent = Intent(requireContext(), StartActivity::class.java)
+        startActivity(intent)
     }
 
     private fun initOwnerCertificate() {
