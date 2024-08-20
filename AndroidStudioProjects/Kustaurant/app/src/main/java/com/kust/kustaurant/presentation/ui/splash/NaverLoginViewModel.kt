@@ -21,7 +21,7 @@ class NaverLoginViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = postNaverLoginDataUseCase.invoke(provider, providerId, naverAccessToken)
-                _accessToken.value = response
+                _accessToken.value = response.toString()
             }catch (e: Exception){
                 // 에러 처리
                 Log.e("NaverLoginViewModel", "Error posting Naver login", e)
