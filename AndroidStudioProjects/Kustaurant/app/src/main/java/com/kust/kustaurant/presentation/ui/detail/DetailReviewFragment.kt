@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -92,23 +93,16 @@ class DetailReviewFragment : Fragment() {
         binding.detailRvReview.layoutManager = LinearLayoutManager(requireContext())
 
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
-            override fun onItemClicked(data: CommentDataResponse, position : Int, type : Int) {
-                when (type) {
-                    1 -> {  // Report
-                        context?.let {
-                            val intent = Intent(it, ReportActivity::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                    2 -> {  // Delete
-                        if (position < reviewList.size) {
-                            reviewList.removeAt(position)
-                            reviewAdapter.notifyItemRemoved(position)
-                            reviewAdapter.notifyItemRangeChanged(position, reviewList.size - position)
-                        }
-                    }
-                }
+            override fun onReportClicked(commentId: Int) {
+                val intent = Intent(context, ReportActivity::class.java)
+                intent.putExtra("commentId", commentId)
+                startActivity(intent)
             }
+
+            override fun onDeleteClicked(commentId: Int) {
+
+            }
+
         })
     }
 
