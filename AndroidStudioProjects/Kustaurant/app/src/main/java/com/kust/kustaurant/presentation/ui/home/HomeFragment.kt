@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
     private lateinit var autoScrollHandler: Handler
     private lateinit var autoScrollRunnable: Runnable
     private var currentPage = 0
-    private val delayMillis = 1500L // 1.5초
+    private val delayMillis = 5000L // 5초
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
