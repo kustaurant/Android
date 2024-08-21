@@ -14,5 +14,5 @@ interface DetailRepository {
 
     suspend fun postCommentData(
         restaurantId: Int, commentId: Int, inputText : String
-    ) : List<CommentDataResponse>
+    ) : CommentDataResponse
 }

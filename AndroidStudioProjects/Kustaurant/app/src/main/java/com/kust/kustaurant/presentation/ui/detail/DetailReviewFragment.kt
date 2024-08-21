@@ -175,8 +175,8 @@ class DetailReviewFragment : Fragment() {
             )
 
             // ViewHolder의 마진 및 패딩
-            val lp = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
-            totalHeight += holder.itemView.measuredHeight + lp.topMargin + lp.bottomMargin + innerHeight
+//            val lp = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
+            totalHeight += holder.itemView.measuredHeight + innerHeight
         }
 
         val params = binding.detailRvReview.layoutParams

@@ -7,7 +7,7 @@ import javax.inject.Inject
 class PostCommentDataUseCase @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
-    suspend operator fun invoke(restaurant: Int, commentId: Int, inputText : String): List<CommentDataResponse> {
+    suspend operator fun invoke(restaurant: Int, commentId: Int, inputText : String): CommentDataResponse {
         return detailRepository.postCommentData(restaurant, commentId, inputText)
     }
 }

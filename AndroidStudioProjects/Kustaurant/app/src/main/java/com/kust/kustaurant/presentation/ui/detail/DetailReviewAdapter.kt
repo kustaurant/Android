@@ -109,6 +109,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             val replyAdapter = DetailRelyAdapter(binding.root.context)
             binding.detailRvReply.adapter = replyAdapter
             binding.detailRvReply.layoutManager = LinearLayoutManager(binding.root.context)
+            replyAdapter.submitList(item.commentReplies)
             replyAdapter.notifyDataSetChanged()
         }
     }

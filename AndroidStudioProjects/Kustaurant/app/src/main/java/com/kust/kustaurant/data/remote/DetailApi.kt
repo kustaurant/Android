@@ -25,5 +25,5 @@ interface DetailApi {
         @Path("restaurantId") restaurantId: Int,
         @Path("commentId") commentId : Int,
         @Body inputText : String
-    ) : List<CommentDataResponse>
+    ) : CommentDataResponse
 }
