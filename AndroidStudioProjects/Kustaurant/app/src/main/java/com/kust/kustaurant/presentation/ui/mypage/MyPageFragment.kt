@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentMyPageBinding
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,17 +84,11 @@ class MyPageFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun getAccessToken(): String? {
-        val preferences = requireContext().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
-        return preferences.getString("access_token", null)
-    }
-
     private fun initLogOut() {
-        val accessToken = getAccessToken()
+        val accessToken = getAccessToken(requireContext())
         Log.d("logout","${accessToken}")
         if (accessToken!=null){
-            val authorizationHeader = "Bearer $accessToken"
-            logoutViewModel.postLogout(authorizationHeader)
+            logoutViewModel.postLogout(accessToken)
         }else{
             Log.d("Logout","accessToken 비어있음")
         }

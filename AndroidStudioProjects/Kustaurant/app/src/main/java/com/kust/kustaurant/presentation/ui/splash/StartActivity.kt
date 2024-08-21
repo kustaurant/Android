@@ -6,9 +6,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.kust.kustaurant.BuildConfig
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.saveAccessToken
+import com.kust.kustaurant.data.saveId
 import com.kust.kustaurant.databinding.ActivityStartBinding
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -46,7 +49,7 @@ class StartActivity : AppCompatActivity() {
         naverloginviewModel.accessToken.observe(this){newAccessToken ->
             Log.d("newaccesstoken", "${newAccessToken}")
             // sharedpreference를 통해 accesstoken 저장
-            saveAccessToken(newAccessToken)
+            saveAccessToken(this, newAccessToken)
             val intent = Intent(this@StartActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -73,21 +76,6 @@ class StartActivity : AppCompatActivity() {
 //        }
     }
 
-    private fun saveAccessToken(token: String) {
-        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
-        val editor = preferences.edit()
-        editor.putString("access_token", token)
-        editor.apply()
-    }
-
-    private fun saveId(userId: String) {
-        Log.d("saveId","${userId}")
-        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
-        val editor = preferences.edit()
-        editor.putString("userId", userId)
-        editor.apply()
-    }
-
     private fun startNaverLogin(){
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {
             override fun onSuccess(response: NidProfileResponse) {
@@ -95,7 +83,7 @@ class StartActivity : AppCompatActivity() {
                 val provider = "naver"
                 val providerId = response.profile?.id
                 val naverAccessToken = NaverIdLoginSDK.getAccessToken()
-                saveId(providerId?: "")
+                saveId(this@StartActivity,providerId?: "")
 
                 Log.d("Naver Login", "${
                     providerId}, ${naverAccessToken}")

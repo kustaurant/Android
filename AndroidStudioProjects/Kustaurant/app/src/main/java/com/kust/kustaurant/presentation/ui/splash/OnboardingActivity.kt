@@ -15,6 +15,8 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityOnboardingBinding
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
+import com.kust.kustaurant.data.saveAccessToken
+import com.kust.kustaurant.data.saveId
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -105,7 +107,7 @@ class OnboardingActivity : AppCompatActivity() {
 
         naverloginviewModel.accessToken.observe(this){newAccessToken ->
             // sharedpreference를 통해 accesstoken 저장
-            saveAccessToken(newAccessToken)
+            saveAccessToken(this, newAccessToken)
             val intent = Intent(this@OnboardingActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -139,20 +141,6 @@ class OnboardingActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    private fun saveId(userId: String) {
-        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
-        val editor = preferences.edit()
-        editor.putString("userId", userId)
-        editor.apply()
-    }
-
-    private fun saveAccessToken(token: String) {
-        val preferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
-        val editor = preferences.edit()
-        editor.putString("access_token", token)
-        editor.apply()
-    }
-
     private fun startNaverLogin(){
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {
             override fun onSuccess(response: NidProfileResponse) {
@@ -160,7 +148,7 @@ class OnboardingActivity : AppCompatActivity() {
                 val provider = "naver"
                 val providerId = response.profile?.id
                 val naverAccessToken = NaverIdLoginSDK.getAccessToken()
-                saveId(providerId?: "")
+                saveId(this@OnboardingActivity,providerId?: "")
 
                 Log.d("Naver Login", "${providerId}, ${naverAccessToken}")
 
