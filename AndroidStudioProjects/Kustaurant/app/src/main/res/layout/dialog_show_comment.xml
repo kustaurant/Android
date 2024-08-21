@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="16dp"
+    android:paddingHorizontal="10dp"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/detail_tv_reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="대댓글을 작성하시겠습니까?"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:id="@+id/detail_view_center"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/cement_4"
+        app:layout_constraintTop_toBottomOf="@id/detail_tv_reply"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_view_center">
+
+        <TextView
+            android:id="@+id/detail_tv_confirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="7dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/detail_view_bottom_center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="확인"/>
+
+        <View
+            android:id="@+id/detail_view_bottom_center"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/cement_4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/detail_tv_cancel"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/detail_view_bottom_center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="취소"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

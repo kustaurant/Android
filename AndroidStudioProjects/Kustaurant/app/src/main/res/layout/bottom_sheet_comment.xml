@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/bottom_sheet_input.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding = "10dp"
+    android:layout_marginBottom="10dp">
+
+    <EditText
+        android:id="@+id/detail_et_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="14dp"
+        android:background="@drawable/all_radius_27"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="14sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:textColorHint="@color/cement_4"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintEnd_toStartOf="@id/detail_cl_comment_confirm"
+        android:hint="대댓글을 입력하세요" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/detail_cl_comment_confirm"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.11"
+        app:layout_constraintDimensionRatio="42:46"
+        android:background="@drawable/all_radius_100"
+        android:backgroundTint="@color/cement_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_confirm"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

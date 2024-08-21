@@ -18,4 +18,8 @@ class DetailRepositoryImpl @Inject constructor(
     override suspend fun getCommentData(restaurantId: Int, sort: String) : List<CommentDataResponse>{
         return detailApi.getCommentData(restaurantId, sort)
     }
+
+    override suspend fun postCommentData(restaurantId: Int, commentId : Int, inputText : String) : List<CommentDataResponse>{
+        return detailApi.postCommentData(restaurantId, commentId, inputText)
+    }
 }

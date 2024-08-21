@@ -1,13 +1,17 @@
 package com.kust.kustaurant.presentation.ui.detail
 
+import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.PopupWindow
+import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +22,7 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
 import com.kust.kustaurant.presentation.ui.tier.TierListAdapter.Companion.diffUtil
+import org.w3c.dom.Text
 
 class DetailReviewAdapter(private val context: Context): ListAdapter<CommentDataResponse, DetailReviewAdapter.ViewHolder>(diffUtil) {
 
@@ -26,6 +31,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
     interface OnItemClickListener {
         fun onReportClicked(commentId: Int)
         fun onDeleteClicked(commentId: Int)
+        fun onCommentClicked(commentId: Int)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -37,6 +43,31 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             binding.detailIvDots.setOnClickListener { view ->
                 showPopupWindow(view)
             }
+
+            binding.ivComment.setOnClickListener {
+                showDialog()
+            }
+        }
+
+        private fun showDialog() {
+            val inflater = LayoutInflater.from(context)
+            val view = inflater.inflate(R.layout.dialog_show_comment, null)
+            val btnConfirm = view.findViewById<TextView>(R.id.detail_tv_confirm)
+            val btnCancel = view.findViewById<TextView>(R.id.detail_tv_cancel)
+            val dialog = AlertDialog.Builder(context)
+                .setView(view)
+                .create()
+
+            btnConfirm.setOnClickListener {
+                itemClickListener.onCommentClicked(getItem(adapterPosition).commentId)
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+
+            dialog.show()
         }
 
         private fun showPopupWindow(anchorView: View) {
@@ -75,9 +106,10 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             binding.rvGrade.adapter = gradeAdapter
             binding.rvGrade.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
 
-            val replyAdapter = DetailRelyAdapter(item.commentReplies)
+            val replyAdapter = DetailRelyAdapter(binding.root.context)
             binding.detailRvReply.adapter = replyAdapter
             binding.detailRvReply.layoutManager = LinearLayoutManager(binding.root.context)
+            replyAdapter.notifyDataSetChanged()
         }
     }
 
