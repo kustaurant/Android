@@ -116,24 +116,27 @@
 
     <TextView
         android:id="@+id/draw_tv_restaurant_partnership_info"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="14.5dp"
         android:fontFamily="@font/pretendard_medium"
         android:gravity="center"
         android:text=""
+        app:layout_constraintWidth_percent="0.65"
         android:textColor="@color/top_gray"
         android:textSize="18sp"
+        android:maxLines="3"
+        android:ellipsize="end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/draw_cl_restaurant_score"
-        tools:text="이과대학 학생증 제시 시 99퍼센트 할인적용" />
+        tools:text="이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용" />
 
     <Button
         android:id="@+id/draw_btn_category_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="49dp"
+        android:layout_marginBottom="49dp"
         android:layout_marginEnd="6.5dp"
         android:background="@drawable/all_radius_100_none"
         android:backgroundTint="@color/white"
@@ -149,14 +152,14 @@
         app:layout_constraintEnd_toStartOf="@id/draw_btn_retry"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <Button
         android:id="@+id/draw_btn_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6.5dp"
-        android:layout_marginTop="49dp"
+        android:layout_marginBottom="49dp"
         android:background="@drawable/all_radius_100_none"
         android:backgroundTint="@color/signature_1"
         android:drawableStart="@drawable/ic_retry"
@@ -171,6 +174,6 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/draw_btn_category_reset"
-        app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

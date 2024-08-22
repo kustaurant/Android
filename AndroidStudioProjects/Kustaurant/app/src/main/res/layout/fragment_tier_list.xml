@@ -30,6 +30,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:context=".ui.TierFragment">
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/tier_cl_expand_reduce_toggle"
                 android:layout_width="wrap_content"
@@ -65,13 +66,30 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        <!-- Start Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tier_gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <!-- End Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tier_gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tier_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
+            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toBottomOf="@id/tier_block"
             tools:listitem="@layout/item_restaurant_reduction" />
     </androidx.constraintlayout.widget.ConstraintLayout>

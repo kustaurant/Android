@@ -38,7 +38,6 @@
     <string name="detail_is_open">영업중</string>
     <string name="detail_is_not_open">영업안함</string>
 
-
     <!-- EvaluateActivity -->
     <string name="evaluate_select_alone">혼밥</string>
     <string name="evaluate_select_tow_four">2~4인</string>
@@ -68,7 +67,6 @@
     <!-- naver login -->
     <string name="naver_login_client_name">쿠스토랑</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <!-- Community -->
+    <string name="community_ranking_info">맛집 평가에 참여하고 랭킹에 올라보세요!</string>
 </resources>
