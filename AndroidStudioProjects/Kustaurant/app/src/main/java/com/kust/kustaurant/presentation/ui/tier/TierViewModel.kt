@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.tier
 
+import android.text.Html
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.kust.kustaurant.presentation.util.CategoryIdMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class TierViewModel @Inject constructor(

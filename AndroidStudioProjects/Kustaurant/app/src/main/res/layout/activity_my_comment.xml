@@ -17,7 +17,6 @@
         app:layout_constraintStart_toStartOf="@id/gl_info_start"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- TextView for Centered Text -->
         <TextView
             android:id="@+id/comment_tv_title"
             android:layout_width="wrap_content"
@@ -33,15 +32,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <!-- Back Button -->
         <ImageView
             android:id="@+id/comment_btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:contentDescription="@string/back_btn_info"
-            android:padding="8dp"
             android:src="@drawable/btn_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

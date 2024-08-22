@@ -24,8 +24,8 @@ android {
         applicationId = "com.kust.kustaurant"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 4
+        versionName = "0.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -76,7 +76,7 @@ dependencies {
     // sticky scollview
     implementation(libs.sticky.scroll.view)
 
-            // Naver 지도
+    // Naver 지도
     implementation(libs.naver.maps)
 
     // by viewModels() 사용

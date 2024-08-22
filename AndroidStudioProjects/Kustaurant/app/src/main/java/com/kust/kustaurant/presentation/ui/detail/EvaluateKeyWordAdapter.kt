@@ -12,8 +12,8 @@ class EvaluateKeyWordAdapter(private val keywords: ArrayList<String>) : Recycler
 
     inner class ViewHolder(val binding: ItemEvaluateKeywordBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.clKeyword.setBackgroundResource(R.drawable.button_keyword_selector)
-            binding.tvKeyword.setTextColor(ContextCompat.getColorStateList(binding.root.context, R.color.button_keyword_text))
+            binding.clKeyword.setBackgroundResource(R.drawable.btn_keyword_selector)
+            binding.tvKeyword.setTextColor(ContextCompat.getColorStateList(binding.root.context, R.color.btn_keyword_text))
         }
 
         fun bind(position: Int) {

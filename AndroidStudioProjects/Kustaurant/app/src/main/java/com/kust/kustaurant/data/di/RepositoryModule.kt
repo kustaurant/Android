@@ -3,10 +3,16 @@ package com.kust.kustaurant.data.di
 import com.kust.kustaurant.data.repository.DetailRepositoryImpl
 import com.kust.kustaurant.data.repository.DrawRepositoryImpl
 import com.kust.kustaurant.data.repository.HomeRepositoryImpl
+import com.kust.kustaurant.data.repository.LogoutRepositoryImpl
+import com.kust.kustaurant.data.repository.NaverLoginRepositoryImpl
+import com.kust.kustaurant.data.repository.MyPageRepositoryImpl
 import com.kust.kustaurant.data.repository.TierRepositoryImpl
 import com.kust.kustaurant.domain.repository.DetailRepository
 import com.kust.kustaurant.domain.repository.DrawRepository
 import com.kust.kustaurant.domain.repository.HomeRepository
+import com.kust.kustaurant.domain.repository.LogoutRepository
+import com.kust.kustaurant.domain.repository.NaverLoginRepository
+import com.kust.kustaurant.domain.repository.MyPageRepository
 import com.kust.kustaurant.domain.repository.TierRepository
 import dagger.Binds
 import dagger.Module
@@ -42,4 +48,22 @@ abstract class RepositoryModule {
     abstract fun bindHomeRepository(
         homeRepository: HomeRepositoryImpl
     ): HomeRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNaverLoginRepository(
+        naverloginRepository: NaverLoginRepositoryImpl
+    ): NaverLoginRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindLogoutRepository(
+        logoutRepository: LogoutRepositoryImpl
+    ): LogoutRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMyPageRepository(
+        myPageRepository: MyPageRepositoryImpl
+    ): MyPageRepository
 }
