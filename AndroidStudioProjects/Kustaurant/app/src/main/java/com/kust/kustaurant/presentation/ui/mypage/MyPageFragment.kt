@@ -26,6 +26,25 @@ class MyPageFragment : Fragment() {
     ): View? {
         binding = FragmentMyPageBinding.inflate(layoutInflater)
 
+        initButton()
+
+        logoutViewModel.Response.observe(viewLifecycleOwner){response->
+            if (response == "로그아웃이 완료되었습니다."){
+                // 로그아웃 성공 시 토큰과 ID 초기화
+                clearUserData()
+
+                val intent = Intent(requireContext(), StartActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            }
+        }
+        binding.myTvNotification.setOnClickListener {
+            initNotification()
+        }
+        return binding.root
+    }
+
+    private fun initButton() {
         binding.myIvEdit.setOnClickListener {
             initEdit()
         }
@@ -50,20 +69,6 @@ class MyPageFragment : Fragment() {
         binding.myTvLogOut.setOnClickListener {
             initLogOut()
         }
-        logoutViewModel.Response.observe(viewLifecycleOwner){response->
-            if (response == "로그아웃이 완료되었습니다."){
-                // 로그아웃 성공 시 토큰과 ID 초기화
-                clearUserData()
-
-                val intent = Intent(requireContext(), StartActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
-        }
-        binding.myTvNotification.setOnClickListener {
-            initNotification()
-        }
-        return binding.root
     }
 
     private fun clearUserData() {
