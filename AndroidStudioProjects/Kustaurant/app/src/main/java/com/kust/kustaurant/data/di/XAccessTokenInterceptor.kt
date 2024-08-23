@@ -20,11 +20,6 @@ class XAccessTokenInterceptor(val context: Context) : Interceptor {
         return chain.proceed(builder.build())
     }
 
-    private fun getAccessToken(context: Context): String? {
-        val preferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
-        return preferences.getString("access_token", null)
-    }
-
     companion object {
         const val AUTHORIZATION = "Authorization"
     }
