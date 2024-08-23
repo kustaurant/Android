@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.model.HomeResponse
 import com.kust.kustaurant.databinding.FragmentHomeBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
@@ -39,6 +41,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         setupRecyclerViews()
+        Log.d("token", getAccessToken(requireContext()).toString())
 
         homeViewModel.homeResponse.observe(viewLifecycleOwner) { response ->
             updateUI(response)

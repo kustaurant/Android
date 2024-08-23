@@ -19,12 +19,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyPageFragment : Fragment() {
     lateinit var binding: FragmentMyPageBinding
     private val logoutViewModel: LogoutViewModel by viewModels()
+    private val myPageViewModel: MyPageViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMyPageBinding.inflate(layoutInflater)
+        binding.viewModel = myPageViewModel
+        binding.lifecycleOwner = this
+
+        myPageViewModel.loadMyPageData()
 
         initButtons()
 

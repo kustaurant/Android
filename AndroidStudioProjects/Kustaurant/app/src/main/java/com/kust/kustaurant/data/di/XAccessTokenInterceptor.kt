@@ -1,0 +1,31 @@
+package com.kust.kustaurant.data.di
+
+import android.content.Context
+import android.util.Log
+import com.kust.kustaurant.data.getAccessToken
+import okhttp3.Interceptor
+import okhttp3.Request
+import okhttp3.Response
+
+class XAccessTokenInterceptor(val context: Context) : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val builder = chain.request().newBuilder()
+        val accessToken = getAccessToken(context)
+
+        accessToken?.let {
+            builder.addHeader("Authorization", it)
+            Log.d("NetworkInterceptor", "Authorization: $it")
+        }
+
+        return chain.proceed(builder.build())
+    }
+
+    private fun getAccessToken(context: Context): String? {
+        val preferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        return preferences.getString("access_token", null)
+    }
+
+    companion object {
+        const val AUTHORIZATION = "Authorization"
+    }
+}
