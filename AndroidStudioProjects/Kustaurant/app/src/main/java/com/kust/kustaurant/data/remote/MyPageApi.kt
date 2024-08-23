@@ -46,5 +46,5 @@ interface MyPageApi {
 
     @GET("/api/v1/auth/mypage/")
     suspend fun getMyPageData(
-    ) : List<MyPageResponse>
+    ) : MyPageResponse
 }

@@ -36,9 +36,6 @@ class DetailViewModel @Inject constructor(
     private val _reviewData = MutableLiveData<List<CommentDataResponse>>()
     val reviewData: LiveData<List<CommentDataResponse>> = _reviewData
 
-
-
-
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
             val getDetailData = getDetailDataUseCase(restaurantId)

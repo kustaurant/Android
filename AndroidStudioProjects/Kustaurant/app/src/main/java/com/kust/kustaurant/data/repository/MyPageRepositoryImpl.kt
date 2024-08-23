@@ -33,7 +33,7 @@ class MyPageRepositoryImpl @Inject constructor(
         return myPageApi.getMyCommunityCommentData()
     }
 
-    override suspend fun getMyPageData(): List<MyPageResponse> {
+    override suspend fun getMyPageData(): MyPageResponse {
         return myPageApi.getMyPageData()
     }
 }

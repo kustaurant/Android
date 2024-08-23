@@ -24,5 +24,5 @@ interface MyPageRepository {
     ): List<MyCommentResponse>
 
     suspend fun getMyPageData(
-    ): List<MyPageResponse>
+    ): MyPageResponse
 }
