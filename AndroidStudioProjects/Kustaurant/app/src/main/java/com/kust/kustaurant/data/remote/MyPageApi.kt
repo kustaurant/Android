@@ -1,12 +1,50 @@
 package com.kust.kustaurant.data.remote
 
+import com.kust.kustaurant.data.model.MyCommentResponse
+import com.kust.kustaurant.data.model.MyCommunityListResponse
+import com.kust.kustaurant.data.model.MyEvaluateResponse
 import com.kust.kustaurant.data.model.MyFavoriteResponse
+import com.kust.kustaurant.data.model.MyPageResponse
+import com.kust.kustaurant.data.model.MyProfileResponse
+import com.kust.kustaurant.data.model.MyScrapResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
+import retrofit2.http.POST
 
 interface MyPageApi {
+    // 피드백 Body 질문
+    @POST("/api/v1/auth/mypage/feedback")
+    suspend fun postFeedBackData()
+    @GET("/api/v1/auth/mypage/profile")
+    suspend fun getProfileData(
+    ) : MyProfileResponse
+
+    // 사진 미구현
+    @PATCH("/api/v1/auth/mypage/profile")
+    suspend fun patchProfileData()
+
     @GET("/api/v1/auth/mypage/favorite-restaurant-list")
     suspend fun getFavoriteData(
-        @Header("Authorization") Authorization : String
     ) : List<MyFavoriteResponse>
+
+    @GET("/api/v1/auth/mypage/evaluate-restaurant-list")
+    suspend fun getEvaluateData(
+    ) : List<MyEvaluateResponse>
+
+    @GET("/api/v1/auth/mypage/community-scrap-list")
+    suspend fun getCommunityScrapData(
+    ) : List<MyScrapResponse>
+
+    @GET("/api/v1/auth/mypage/community-list")
+    suspend fun getMyCommunityData(
+    ) : List<MyCommunityListResponse>
+
+    @GET("/api/v1/auth/mypage/community-comment-list")
+    suspend fun getMyCommunityCommentData(
+    ) : List<MyCommentResponse>
+
+    @GET("/api/v1/auth/mypage/")
+    suspend fun getMyPageData(
+    ) : MyPageResponse
 }

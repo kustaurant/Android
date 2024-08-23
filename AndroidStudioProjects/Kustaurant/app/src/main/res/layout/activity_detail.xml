@@ -177,7 +177,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/tv_store_name"
-                        app:layout_constraintStart_toStartOf="@id/gl_info_start">
+                        app:layout_constraintStart_toStartOf="@id/gl_info_start"
+                        app:layout_constraintEnd_toEndOf="@id/gl_info_end">
 
                         <ImageView
                             android:id="@+id/iv_store_location"
@@ -191,15 +192,17 @@
 
                         <TextView
                             android:id="@+id/tv_store_location"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:layout_marginStart="4dp"
                             app:layout_constraintStart_toEndOf="@id/iv_store_location"
                             app:layout_constraintTop_toTopOf="@id/iv_store_location"
                             app:layout_constraintBottom_toBottomOf="@id/iv_store_location"
+                            app:layout_constraintEnd_toEndOf="parent"
                             android:layout_gravity="center_horizontal|top"
                             android:fontFamily="@font/pretendard_medium"
+                            android:textColor="@color/cement_4"
                             android:text="@{viewModel.detailData.restaurantAddress}"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -209,6 +212,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/ll_store_location"
+                        app:layout_constraintEnd_toEndOf="@id/gl_info_end"
                         app:layout_constraintStart_toStartOf="@id/gl_info_start">
 
                         <ImageView
@@ -223,12 +227,16 @@
 
                         <TextView
                             android:id="@+id/tv_store_time"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             app:layout_constraintStart_toEndOf="@id/iv_store_time"
                             app:layout_constraintTop_toTopOf="@id/iv_store_time"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:gravity="start"
                             app:layout_constraintBottom_toBottomOf="@id/iv_store_time"
                             android:textSize="15sp"
+                            android:textColor="@color/cement_4"
+                            android:fontFamily="@font/pretendard_medium"
                             android:layout_marginStart="4dp"
                             android:layout_gravity="center_horizontal|top"
                             android:text="@{viewModel.detailData.businessHours}"/>
@@ -271,9 +279,11 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_tier"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        app:layout_constraintStart_toStartOf="@id/gl_info_start"
+                        app:layout_constraintEnd_toEndOf="@id/gl_info_end"
                         app:layout_constraintTop_toBottomOf="@id/tv_tier_info"/>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -471,7 +481,7 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.95"/>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/btn_evaluate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -481,11 +491,22 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:backgroundTint="@color/signature_1"
                 android:background="@drawable/all_radius_50_cement4"
-                android:text="@string/detail_to_evaluate"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/pretendard_semibold"
-                app:layout_constraintWidth_percent="0.72"/>
+                app:layout_constraintWidth_percent="0.72">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_to_evaluate"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:paddingVertical="12dp"
+                    android:fontFamily="@font/pretendard_semibold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_star"
@@ -493,7 +514,7 @@
                 android:layout_height="0dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-                app:layout_constraintBottom_toTopOf="@id/tv_star"
+                app:layout_constraintBottom_toTopOf="@id/cl_star_count"
                 app:layout_constraintWidth_percent="0.07"
                 app:layout_constraintDimensionRatio="1:1"
                 android:background="@drawable/all_radius_6_yellow">
@@ -509,15 +530,36 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/tv_star"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_star_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="@{String.valueOf(viewModel.detailData.favoriteCount)}"
                 app:layout_constraintBottom_toBottomOf="@id/btn_evaluate"
                 app:layout_constraintStart_toStartOf="@id/cl_star"
-                app:layout_constraintEnd_toEndOf="@id/cl_star"/>
+                app:layout_constraintEnd_toEndOf="@id/cl_star">
+
+                <TextView
+                    android:id="@+id/tv_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="@{String.valueOf(viewModel.detailData.favoriteCount)}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_star_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="명"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_star"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

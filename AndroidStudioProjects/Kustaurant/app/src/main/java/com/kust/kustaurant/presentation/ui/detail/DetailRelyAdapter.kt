@@ -1,12 +1,18 @@
 package com.kust.kustaurant.presentation.ui.detail
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.ReplyDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
+import com.kust.kustaurant.presentation.ui.tier.TierListAdapter.Companion.diffUtil
 
-class DetailRelyAdapter(val replyData : ArrayList<ReplyDataResponse>) : RecyclerView.Adapter<DetailRelyAdapter.ViewHolder>() {
+class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, DetailRelyAdapter.ViewHolder>(
+    diffUtil) {
 
     inner class ViewHolder(val binding : ItemDetailReviewReplyBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : ReplyDataResponse){
@@ -22,9 +28,17 @@ class DetailRelyAdapter(val replyData : ArrayList<ReplyDataResponse>) : Recycler
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = replyData.size
-
     override fun onBindViewHolder(holder: DetailRelyAdapter.ViewHolder, position: Int) {
-        holder.bind(replyData[position])
+        holder.bind(getItem(position))
+    }
+
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<ReplyDataResponse>() {
+            override fun areItemsTheSame(oldItem: ReplyDataResponse, newItem: ReplyDataResponse): Boolean =
+                oldItem.commentId == newItem.commentId
+
+            override fun areContentsTheSame(oldItem: ReplyDataResponse, newItem: ReplyDataResponse): Boolean =
+                oldItem == newItem
+        }
     }
 }

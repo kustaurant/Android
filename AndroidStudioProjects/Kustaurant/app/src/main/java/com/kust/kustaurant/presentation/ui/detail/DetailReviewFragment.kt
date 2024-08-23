@@ -8,9 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.EditText
+import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
@@ -73,7 +80,8 @@ class DetailReviewFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.reviewData.observe(viewLifecycleOwner){ commentData ->
-            reviewAdapter.submitList(commentData)
+            reviewAdapter.submitList(commentData.toList())
+            reviewAdapter.notifyDataSetChanged()
             Log.d("commentData", commentData.toString())
             setRecyclerViewHeight()
         }
@@ -92,24 +100,61 @@ class DetailReviewFragment : Fragment() {
         binding.detailRvReview.layoutManager = LinearLayoutManager(requireContext())
 
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
-            override fun onItemClicked(data: CommentDataResponse, position : Int, type : Int) {
-                when (type) {
-                    1 -> {  // Report
-                        context?.let {
-                            val intent = Intent(it, ReportActivity::class.java)
-                            startActivity(intent)
-                        }
-                    }
-                    2 -> {  // Delete
-                        if (position < reviewList.size) {
-                            reviewList.removeAt(position)
-                            reviewAdapter.notifyItemRemoved(position)
-                            reviewAdapter.notifyItemRangeChanged(position, reviewList.size - position)
-                        }
-                    }
-                }
+            override fun onReportClicked(commentId: Int) {
+                val intent = Intent(context, ReportActivity::class.java)
+                intent.putExtra("commentId", commentId)
+                startActivity(intent)
             }
+
+            override fun onDeleteClicked(commentId: Int) {
+
+            }
+
+            override fun onCommentClicked(commentId: Int) {
+                showBottomSheetInput(commentId)
+            }
+
         })
+    }
+
+    private fun showBottomSheetInput(commentId: Int) {
+        val bottomSheetDialog = BottomSheetDialog(requireContext()).apply {
+            setCancelable(true)
+            setCanceledOnTouchOutside(true)
+        }
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_comment, null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+        val etInput = bottomSheetView.findViewById<EditText>(R.id.detail_et_input)
+        val btnSubmit = bottomSheetView.findViewById<ConstraintLayout>(R.id.detail_cl_comment_confirm)
+
+        bottomSheetDialog.setOnShowListener {
+            etInput.requestFocus()
+            // 바텀 sheet 생성하는데 시간 지연
+            etInput.postDelayed({
+                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.showSoftInput(etInput, InputMethodManager.SHOW_IMPLICIT)
+            }, 100)
+        }
+
+        btnSubmit.setOnClickListener {
+            val inputText = etInput.text.toString()
+            if (inputText.isNotBlank()) {
+                viewModel.postCommentData(restaurantId, commentId, inputText)
+                bottomSheetDialog.dismiss()
+                Toast.makeText(requireContext(), " $inputText", Toast.LENGTH_SHORT).show()
+            } else {
+                etInput.error = "Please enter a comment"
+                Toast.makeText(requireContext(), "텍스트를 입력해주세요", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        bottomSheetDialog.setOnDismissListener {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(etInput.windowToken, 0)
+        }
+
+        bottomSheetDialog.show()
     }
 
     // 각 tab마다 height 재구성
@@ -130,8 +175,8 @@ class DetailReviewFragment : Fragment() {
             )
 
             // ViewHolder의 마진 및 패딩
-            val lp = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
-            totalHeight += holder.itemView.measuredHeight + lp.topMargin + lp.bottomMargin + innerHeight
+//            val lp = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
+            totalHeight += holder.itemView.measuredHeight + innerHeight
         }
 
         val params = binding.detailRvReview.layoutParams

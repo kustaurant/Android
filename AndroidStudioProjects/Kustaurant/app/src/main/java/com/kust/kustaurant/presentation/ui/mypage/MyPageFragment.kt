@@ -17,41 +17,24 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyPageFragment : Fragment() {
-    lateinit var binding : FragmentMyPageBinding
+    lateinit var binding: FragmentMyPageBinding
     private val logoutViewModel: LogoutViewModel by viewModels()
+    private val myPageViewModel: MyPageViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMyPageBinding.inflate(layoutInflater)
+        binding.viewModel = myPageViewModel
+        binding.lifecycleOwner = this
 
-        binding.myIvEdit.setOnClickListener {
-            initEdit()
-        }
-        binding.myTvOwnerCertificate.setOnClickListener {
-            initOwnerCertificate()
-        }
-        binding.myTvFixAlliance.setOnClickListener {
-            initFixAlliance()
-        }
-        binding.myTvSave.setOnClickListener {
-            initSave()
-        }
-        binding.myTvCommunityComment.setOnClickListener {
-            initCommunityComment()
-        }
-        binding.myTvCommunityScrap.setOnClickListener {
-            initCommunityScrap()
-        }
-        binding.myTvOpinion.setOnClickListener {
-            initOpinion()
-        }
-        binding.myTvLogOut.setOnClickListener {
-            initLogOut()
-        }
-        logoutViewModel.Response.observe(viewLifecycleOwner){response->
-            if (response == "로그아웃이 완료되었습니다."){
+        myPageViewModel.loadMyPageData()
+
+        initButtons()
+
+        logoutViewModel.Response.observe(viewLifecycleOwner) { response ->
+            if (response == "로그아웃이 완료되었습니다.") {
                 // 로그아웃 성공 시 토큰과 ID 초기화
                 clearUserData()
 
@@ -60,67 +43,50 @@ class MyPageFragment : Fragment() {
                 requireActivity().finish()
             }
         }
-        binding.myTvNotification.setOnClickListener {
-            initNotification()
-        }
+
         return binding.root
     }
 
-    private fun clearUserData() {
-        val preferences = requireContext().getSharedPreferences("app_preferences", MODE_PRIVATE)
-        val editor = preferences.edit()
-        editor.remove("access_token")
-        editor.remove("userId")
-        editor.apply()
-    }
+    private fun initButtons() {
+        val buttonActions = mapOf(
+            binding.myIvEdit to MyEditActivity::class.java,
+            binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
+            binding.myTvFixAlliance to MyFixAllActivity::class.java,
+            binding.myTvSave to MySaveActivity::class.java,
+            binding.myTvCommunityComment to MyCommentActivity::class.java,
+            binding.myTvCommunityScrap to MyScrapActivity::class.java,
+            binding.myTvOpinion to MyOpinionActivity::class.java,
+            binding.myTvLogOut to null
+        )
 
-    private fun initEdit() {
-        val intent = Intent(requireContext(), MyEditActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun initNotification() {
-        val intent = Intent(requireContext(), MyNotificationActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun initLogOut() {
-        val accessToken = getAccessToken(requireContext())
-        Log.d("logout","${accessToken}")
-        if (accessToken!=null){
-            logoutViewModel.postLogout(accessToken)
-        }else{
-            Log.d("Logout","accessToken 비어있음")
+        buttonActions.forEach { (button, activityClass) ->
+            button.setOnClickListener {
+                if (activityClass != null) {
+                    startActivity(activityClass)
+                } else {
+                    initLogOut()
+                }
+            }
         }
     }
 
-    private fun initOwnerCertificate() {
-        val intent = Intent(requireContext(), MyCertificateActivity::class.java)
+    private fun clearUserData() {
+        requireContext().getSharedPreferences("app_preferences", MODE_PRIVATE).edit().apply {
+            remove("access_token")
+            remove("userId")
+            apply()
+        }
+    }
+
+    private fun startActivity(targetActivity: Class<*>) {
+        val intent = Intent(requireContext(), targetActivity)
         startActivity(intent)
     }
 
-    private fun initFixAlliance() {
-        val intent = Intent(requireContext(), MyFixAllActivity::class.java)
-        startActivity(intent)
-    }
 
-    private fun initSave() {
-        val intent = Intent(requireContext(), MySaveActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun initCommunityComment() {
-        val intent = Intent(requireContext(), MyCommentActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun initCommunityScrap() {
-        val intent = Intent(requireContext(), MyScrapActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun initOpinion() {
-        val intent = Intent(requireContext(), MyOpinionActivity::class.java)
-        startActivity(intent)
+    private fun initLogOut() {
+        getAccessToken(requireContext())?.let { accessToken ->
+            logoutViewModel.postLogout(accessToken)
+        } ?: Log.d("Logout", "accessToken 비어있음")
     }
 }

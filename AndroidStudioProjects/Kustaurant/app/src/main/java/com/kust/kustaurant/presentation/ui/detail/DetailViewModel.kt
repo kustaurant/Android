@@ -1,19 +1,26 @@
 package com.kust.kustaurant.presentation.ui.detail
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
-import com.kust.kustaurant.domain.usecase.GetDetailDataUseCase
+import com.kust.kustaurant.domain.usecase.detail.GetCommentDataUseCase
+import com.kust.kustaurant.domain.usecase.detail.GetDetailDataUseCase
+import com.kust.kustaurant.domain.usecase.detail.PostCommentDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getDetailDataUseCase: GetDetailDataUseCase
+    private val getDetailDataUseCase: GetDetailDataUseCase,
+    private val getCommentDataUseCase: GetCommentDataUseCase,
+    private val postCommentDataUseCase: PostCommentDataUseCase
 ): ViewModel() {
     val tabList = MutableLiveData(listOf("메뉴", "리뷰"))
 
@@ -29,7 +36,6 @@ class DetailViewModel @Inject constructor(
     private val _reviewData = MutableLiveData<List<CommentDataResponse>>()
     val reviewData: LiveData<List<CommentDataResponse>> = _reviewData
 
-
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
             val getDetailData = getDetailDataUseCase(restaurantId)
@@ -44,8 +50,8 @@ class DetailViewModel @Inject constructor(
 
     fun loadCommentData(restaurantId: Int, sort: String){
         viewModelScope.launch {
-            val getCommentData = getDetailDataUseCase(restaurantId, sort)
-            _reviewData.value = getCommentData
+            val getCommentData = getCommentDataUseCase(restaurantId, sort)
+            _reviewData.postValue(getCommentData)
         }
     }
 
@@ -53,6 +59,18 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             val getDetailData = getDetailDataUseCase(restaurantId)
             _detailData.value = getDetailData
+        }
+    }
+
+    fun postCommentData(restaurantId: Int, commentId : Int, inputText: String){
+        viewModelScope.launch {
+            try {
+                val response = postCommentDataUseCase(restaurantId, commentId, inputText)
+                // 댓글 작성 후, 댓글 목록을 새로 고침
+                loadCommentData(restaurantId, "latest")
+            } catch (e: Exception) {
+                Log.e("CommentPost", "Error posting comment", e)
+            }
         }
     }
 }

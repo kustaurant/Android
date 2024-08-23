@@ -11,4 +11,8 @@ interface DetailRepository {
     suspend fun getCommentData(
         restaurantId: Int, sort: String
     ) : List<CommentDataResponse>
+
+    suspend fun postCommentData(
+        restaurantId: Int, commentId: Int, inputText : String
+    ) : CommentDataResponse
 }
