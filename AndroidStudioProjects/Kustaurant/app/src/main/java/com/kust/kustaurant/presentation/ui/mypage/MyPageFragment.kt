@@ -85,8 +85,6 @@ class MyPageFragment : Fragment() {
 
 
     private fun initLogOut() {
-        getAccessToken(requireContext())?.let { accessToken ->
-            logoutViewModel.postLogout(accessToken)
-        } ?: Log.d("Logout", "accessToken 비어있음")
+        logoutViewModel.postLogout() ?: Log.d("Logout", "accessToken 비어있음")
     }
 }
