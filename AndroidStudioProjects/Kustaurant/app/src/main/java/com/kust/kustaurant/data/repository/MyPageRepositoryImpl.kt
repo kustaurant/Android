@@ -5,6 +5,8 @@ import com.kust.kustaurant.data.model.MyCommunityListResponse
 import com.kust.kustaurant.data.model.MyEvaluateResponse
 import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.data.model.MyPageResponse
+import com.kust.kustaurant.data.model.MyProfileRequest
+import com.kust.kustaurant.data.model.MyProfileResponse
 import com.kust.kustaurant.data.model.MyScrapResponse
 import com.kust.kustaurant.data.remote.MyPageApi
 import com.kust.kustaurant.domain.repository.MyPageRepository
@@ -13,6 +15,20 @@ import javax.inject.Inject
 class MyPageRepositoryImpl @Inject constructor(
     private val myPageApi: MyPageApi
 ) : MyPageRepository {
+
+    override suspend fun getProfileData(): MyProfileResponse {
+        return myPageApi.getProfileData()
+    }
+
+    override suspend fun patchProfileData(
+        nickname:String,
+        email:String,
+        phoneNumber : String
+    ) {
+        val request = MyProfileRequest(nickname, email, phoneNumber)
+        return myPageApi.patchProfileData(request)
+    }
+
     override suspend fun getFavoriteData(): List<MyFavoriteResponse> {
         return myPageApi.getFavoriteData()
     }

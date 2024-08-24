@@ -120,8 +120,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:text="@string/detail_evaluation_count"
                     android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="@id/tv_evaluate_count"
-                    app:layout_constraintEnd_toEndOf="@id/tv_evaluate_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/tv_evaluate_count"/>
 
                 <TextView
@@ -131,22 +131,11 @@
                     android:textSize="18sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/pretendard_bold"
-                    app:layout_constraintEnd_toStartOf="@id/tv_evaluate_count"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="@{String.valueOf(viewModel.myPageData.evaluateCount)}" />
 
-                <TextView
-                    android:id="@+id/tv_evaluate_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="개"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/pretendard_bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/tv_evaluate_count"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -178,8 +167,8 @@
                     android:textColor="@color/white"
                     app:layout_constraintTop_toTopOf="parent"
                     android:text="@string/detail_evaluation_grade"
-                    app:layout_constraintStart_toStartOf="@id/tv_evaluate_grade"
-                    app:layout_constraintEnd_toEndOf="@id/tv_evaluate_grade"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/tv_evaluate_grade"/>
 
                 <TextView
@@ -190,6 +179,7 @@
                     android:fontFamily="@font/pretendard_bold"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="@{String.valueOf(viewModel.myPageData.favoriteCount)}" />
 

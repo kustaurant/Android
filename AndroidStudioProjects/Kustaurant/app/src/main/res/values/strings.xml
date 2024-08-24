@@ -28,8 +28,8 @@
     <string name="detail_to_naver">네이버 지도로 이동하기</string>
     <string name="detail_tier_info">티어 정보</string>
     <string name="detail_alliance_info">제휴 정보</string>
-    <string name="detail_evaluation_count">평가수</string>
-    <string name="detail_evaluation_grade">평점</string>
+    <string name="detail_evaluation_count">내 평가</string>
+    <string name="detail_evaluation_grade">내 게시글</string>
     <string name="detail_menu">메뉴</string>
     <string name="detail_reviwe">리뷰</string>
     <string name="detail_to_evaluate">맛집 평가하기</string>

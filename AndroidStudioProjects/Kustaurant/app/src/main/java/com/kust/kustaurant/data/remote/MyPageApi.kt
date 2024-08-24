@@ -5,8 +5,10 @@ import com.kust.kustaurant.data.model.MyCommunityListResponse
 import com.kust.kustaurant.data.model.MyEvaluateResponse
 import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.data.model.MyPageResponse
+import com.kust.kustaurant.data.model.MyProfileRequest
 import com.kust.kustaurant.data.model.MyProfileResponse
 import com.kust.kustaurant.data.model.MyScrapResponse
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -22,7 +24,9 @@ interface MyPageApi {
 
     // 사진 미구현
     @PATCH("/api/v1/auth/mypage/profile")
-    suspend fun patchProfileData()
+    suspend fun patchProfileData(
+        @Body request : MyProfileRequest
+    )
 
     @GET("/api/v1/auth/mypage/favorite-restaurant-list")
     suspend fun getFavoriteData(
