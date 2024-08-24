@@ -37,8 +37,20 @@ class DetailActivity : AppCompatActivity() {
         val restaurantId = intent.getIntExtra("restaurantId", 346)
         Log.d("restaurantId", restaurantId.toString())
         viewModel.loadDetailData(restaurantId)
+
         if(viewModel.detailData.value?.partnershipInfo == null){
             binding.detailClAlliance.visibility = View.GONE
+        }
+
+        Log.d("mainTier", viewModel.detailData.value?.mainTier.toString())
+        Log.d("mainTier", viewModel.detailData.value.toString())
+
+        when(viewModel.detailData.value?.mainTier){
+            1 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_1)
+            2 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_2)
+            3 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_3)
+            4 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_4)
+            else -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_all)
         }
 
         initBack()
@@ -47,6 +59,19 @@ class DetailActivity : AppCompatActivity() {
         changeTopBar()
 
         viewModel.detailData.observe(this) { detailData ->
+            if (detailData.partnershipInfo == null){
+                binding.detailClAlliance.visibility = View.GONE
+            }
+
+            when (detailData.mainTier){
+                1 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_1)
+                2 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_2)
+                3 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_3)
+                4 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_4)
+                else -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_all)
+
+            }
+
             if (detailData != null) {
                 Handler(Looper.getMainLooper()).postDelayed({
                     initTabView(restaurantId)

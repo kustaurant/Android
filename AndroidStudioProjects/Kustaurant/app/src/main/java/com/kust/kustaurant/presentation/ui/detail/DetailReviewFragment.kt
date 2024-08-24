@@ -25,7 +25,6 @@ import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
 class DetailReviewFragment : Fragment() {
     lateinit var binding : FragmentDetailReviewBinding
     lateinit var reviewAdapter: DetailReviewAdapter
-    private var reviewList : ArrayList<ReviewData> = arrayListOf()
     private val viewModel: DetailViewModel by activityViewModels()
     private var restaurantId = 0
     private val popularity = "popularity"
@@ -80,6 +79,11 @@ class DetailReviewFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.reviewData.observe(viewLifecycleOwner){ commentData ->
+            if(commentData.isEmpty()){
+                binding.detailBtnRecent.visibility = View.GONE
+                binding.detailBtnPopular.visibility = View.GONE
+                binding.detailClReviewNone.visibility = View.VISIBLE
+            }
             reviewAdapter.submitList(commentData.toList())
             reviewAdapter.notifyDataSetChanged()
             Log.d("commentData", commentData.toString())

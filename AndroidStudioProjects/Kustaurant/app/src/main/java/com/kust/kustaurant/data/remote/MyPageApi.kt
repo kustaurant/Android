@@ -17,7 +17,9 @@ import retrofit2.http.POST
 interface MyPageApi {
     // 피드백 Body 질문
     @POST("/api/v1/auth/mypage/feedback")
-    suspend fun postFeedBackData()
+    suspend fun postFeedBackData(
+        @Body feedBack : String
+    )
     @GET("/api/v1/auth/mypage/profile")
     suspend fun getProfileData(
     ) : MyProfileResponse
@@ -28,11 +30,11 @@ interface MyPageApi {
         @Body request : MyProfileRequest
     )
 
-    @GET("/api/v1/auth/mypage/favorite-restaurant-list")
+    @GET("/api/v1/auth/mypage/favorite-restuarnt-list")
     suspend fun getFavoriteData(
     ) : List<MyFavoriteResponse>
 
-    @GET("/api/v1/auth/mypage/evaluate-restaurant-list")
+    @GET("/api/v1/auth/mypage/evaluate-restuarnt-list")
     suspend fun getEvaluateData(
     ) : List<MyEvaluateResponse>
 

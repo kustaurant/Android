@@ -29,6 +29,10 @@ class MyPageRepositoryImpl @Inject constructor(
         return myPageApi.patchProfileData(request)
     }
 
+    override suspend fun postFeedBackData(feedback: String) {
+        return myPageApi.postFeedBackData(feedback)
+    }
+
     override suspend fun getFavoriteData(): List<MyFavoriteResponse> {
         return myPageApi.getFavoriteData()
     }

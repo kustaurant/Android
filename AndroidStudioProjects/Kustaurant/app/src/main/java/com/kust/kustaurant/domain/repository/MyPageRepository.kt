@@ -19,6 +19,10 @@ interface MyPageRepository {
         phoneNumber : String
     )
 
+    suspend fun postFeedBackData(
+        feedback : String
+    )
+
     suspend fun getFavoriteData(
     ): List<MyFavoriteResponse>
 

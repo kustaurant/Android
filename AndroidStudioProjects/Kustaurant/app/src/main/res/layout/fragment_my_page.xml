@@ -98,6 +98,7 @@
             android:background="@drawable/all_radius_13_white"
             android:backgroundTint="@color/signature_1"
             android:paddingVertical="18dp"
+            android:elevation="20dp"
             app:layout_constraintBottom_toBottomOf="@id/my_view_top"
             app:layout_constraintTop_toBottomOf="@id/my_view_top"
             app:layout_constraintEnd_toEndOf="@id/gl_end"
@@ -118,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="@string/detail_evaluation_count"
+                    android:text="내 평가"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -134,7 +135,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="@{String.valueOf(viewModel.myPageData.evaluateCount)}" />
+                    android:text="@{String.valueOf(viewModel.myPageData.evaluationCount)}" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -166,7 +167,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="@string/detail_evaluation_grade"
+                    android:text="내 게시글"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/tv_evaluate_grade"/>

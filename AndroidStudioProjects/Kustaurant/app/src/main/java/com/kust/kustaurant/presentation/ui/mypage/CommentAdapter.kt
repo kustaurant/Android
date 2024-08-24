@@ -3,14 +3,20 @@ package com.kust.kustaurant.presentation.ui.mypage
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kust.kustaurant.data.model.CommentDataResponse
+import com.kust.kustaurant.data.model.MyCommentResponse
+import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.databinding.ItemMyCommentBinding
 
-class CommentAdapter(val context: Context, val data : ArrayList<CommentData>) : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
+class CommentAdapter(val context: Context) : ListAdapter<MyCommentResponse, CommentAdapter.ViewHolder>(
+    diffUtil) {
 
     inner class ViewHolder(val binding : ItemMyCommentBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : CommentData){
-            binding.tvComment.text = item.postCommentBody
+        fun bind(item : MyCommentResponse){
+            binding.tvComment.text = item.postcommentBody
             binding.tvCommentTitle.text = item.postTitle
         }
     }
@@ -23,9 +29,17 @@ class CommentAdapter(val context: Context, val data : ArrayList<CommentData>) : 
     }
 
     override fun onBindViewHolder(holder: CommentAdapter.ViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = data.size
 
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<MyCommentResponse>() {
+            override fun areItemsTheSame(oldItem: MyCommentResponse, newItem: MyCommentResponse): Boolean =
+                oldItem.postcommentBody == newItem.postcommentBody
+
+            override fun areContentsTheSame(oldItem: MyCommentResponse, newItem: MyCommentResponse): Boolean =
+                oldItem.postcommentBody == newItem.postcommentBody
+        }
+    }
 }
