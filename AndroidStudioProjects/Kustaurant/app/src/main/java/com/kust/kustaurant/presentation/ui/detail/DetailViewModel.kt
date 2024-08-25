@@ -11,6 +11,7 @@ import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.domain.usecase.detail.GetCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentDataUseCase
+import com.kust.kustaurant.domain.usecase.detail.PostFavoriteToggleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val getDetailDataUseCase: GetDetailDataUseCase,
     private val getCommentDataUseCase: GetCommentDataUseCase,
-    private val postCommentDataUseCase: PostCommentDataUseCase
+    private val postCommentDataUseCase: PostCommentDataUseCase,
+    private val postFavoriteToggleUseCase: PostFavoriteToggleUseCase
 ): ViewModel() {
     val tabList = MutableLiveData(listOf("메뉴", "리뷰"))
 
@@ -35,6 +37,9 @@ class DetailViewModel @Inject constructor(
 
     private val _reviewData = MutableLiveData<List<CommentDataResponse>>()
     val reviewData: LiveData<List<CommentDataResponse>> = _reviewData
+
+    private val _favoriteData = MutableLiveData<Boolean>()
+    val favoriteData: LiveData<Boolean> = _favoriteData
 
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
@@ -69,8 +74,24 @@ class DetailViewModel @Inject constructor(
                 // 댓글 작성 후, 댓글 목록을 새로 고침
                 loadCommentData(restaurantId, "latest")
             } catch (e: Exception) {
-                Log.e("CommentPost", "Error posting comment", e)
+                Log.e("CommentPost", "Failed to post comment", e)
             }
         }
     }
+
+    fun postFavoriteToggle(restaurantId: Int){
+        viewModelScope.launch {
+            try {
+                val newFavoriteState = postFavoriteToggleUseCase(restaurantId)
+                _detailData.value?.let {
+                    val updatedDetailData = it.copy(isFavorite = newFavoriteState)
+                    _detailData.postValue(updatedDetailData)
+                }
+            } catch (e: Exception) {
+                Log.e("DetailViewModel", "Failed to toggle favorite", e)
+            }
+        }
+    }
+
+
 }

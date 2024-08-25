@@ -15,4 +15,8 @@ interface DetailRepository {
     suspend fun postCommentData(
         restaurantId: Int, commentId: Int, inputText : String
     ) : CommentDataResponse
+
+    suspend fun postFavoriteToggle(
+        restaurantId: Int
+    ) : Boolean
 }

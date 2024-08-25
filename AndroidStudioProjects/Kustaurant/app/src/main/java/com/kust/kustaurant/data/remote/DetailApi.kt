@@ -26,4 +26,9 @@ interface DetailApi {
         @Path("commentId") commentId : Int,
         @Body inputText : String
     ) : CommentDataResponse
+
+    @POST("/api/v1/restaurants/{restaurantId}/favorite-toggle")
+    suspend fun postFavoriteToggle(
+        @Path("restaurantId") restaurantId: Int,
+    ) : Boolean
 }

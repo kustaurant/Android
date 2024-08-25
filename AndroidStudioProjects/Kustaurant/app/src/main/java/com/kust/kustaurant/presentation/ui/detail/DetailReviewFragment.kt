@@ -163,50 +163,31 @@ class DetailReviewFragment : Fragment() {
 
     // 각 tab마다 height 재구성
     private fun setRecyclerViewHeight() {
-        var totalHeight = 0
-        val layoutManager = binding.detailRvReview.layoutManager as LinearLayoutManager
+        val buttonHeight = binding.detailBtnPopular.height + binding.detailBtnRecent.height
 
-        for (i in 0 until reviewAdapter.itemCount) {
-            val holder = reviewAdapter.createViewHolder(binding.detailRvReview, reviewAdapter.getItemViewType(i))
-            reviewAdapter.onBindViewHolder(holder, i)
+        binding.detailRvReview.post {
+            var totalHeight = 0
+            val layoutManager = binding.detailRvReview.layoutManager as LinearLayoutManager
+            for (i in 0 until reviewAdapter.itemCount) {
+                val childView = layoutManager.findViewByPosition(i) ?: continue // 이미 렌더링된 뷰 사용
+                val lp = childView.layoutParams as ViewGroup.MarginLayoutParams
 
-            val innerRecyclerView = holder.itemView.findViewById<RecyclerView>(R.id.detail_rv_reply)
-            val innerHeight = calInnerHeight(innerRecyclerView)
+                childView.measure(
+                    View.MeasureSpec.makeMeasureSpec(binding.detailRvReview.width - lp.leftMargin - lp.rightMargin, View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                )
 
-            holder.itemView.measure(
-                View.MeasureSpec.makeMeasureSpec(binding.detailRvReview.width, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-            )
+                totalHeight += childView.measuredHeight + lp.topMargin + lp.bottomMargin
+            }
+            totalHeight += buttonHeight
 
-            // ViewHolder의 마진 및 패딩
-//            val lp = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
-            totalHeight += holder.itemView.measuredHeight + innerHeight
+            val params = binding.detailRvReview.layoutParams
+            params.height = totalHeight
+            binding.detailRvReview.layoutParams = params
+
+            // ViewPager 높이 조정을 위한 메소드 호출
+            (activity as? DetailActivity)?.setViewPagerHeight(totalHeight)
         }
-
-        val params = binding.detailRvReview.layoutParams
-        params.height = totalHeight
-        binding.detailRvReview.layoutParams = params
-
-        // DetailActivity에서 상속
-        if (activity is DetailActivity) {
-            (activity as DetailActivity).setViewPagerHeight(totalHeight)
-        }
-    }
-
-    private fun calInnerHeight(recyclerView: RecyclerView): Int {
-        var innerHeight = 0
-        val innerAdapter = recyclerView.adapter ?: return 0
-        for (j in 0 until innerAdapter.itemCount) {
-            val type = innerAdapter.getItemViewType(j)
-            val innerHolder = innerAdapter.createViewHolder(recyclerView, type)
-            innerAdapter.onBindViewHolder(innerHolder, j)
-            innerHolder.itemView.measure(
-                View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-            )
-            innerHeight += innerHolder.itemView.measuredHeight
-        }
-        return innerHeight
     }
 
 }

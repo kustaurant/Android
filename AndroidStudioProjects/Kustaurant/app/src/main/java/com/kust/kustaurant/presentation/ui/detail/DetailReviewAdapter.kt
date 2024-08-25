@@ -2,7 +2,10 @@ package com.kust.kustaurant.presentation.ui.detail
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,6 +61,17 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
                 .setView(view)
                 .create()
 
+            dialog.show()
+
+            dialog.window?.apply {
+                val displayMetrics = context.resources.displayMetrics
+                val width = (displayMetrics.widthPixels * 0.6).toInt()
+
+                setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+                setGravity(Gravity.CENTER)
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+
             btnConfirm.setOnClickListener {
                 itemClickListener.onCommentClicked(getItem(adapterPosition).commentId)
                 dialog.dismiss()
@@ -67,7 +81,6 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             }
 
 
-            dialog.show()
         }
 
         private fun showPopupWindow(anchorView: View) {

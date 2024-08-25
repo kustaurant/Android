@@ -22,4 +22,8 @@ class DetailRepositoryImpl @Inject constructor(
     override suspend fun postCommentData(restaurantId: Int, commentId : Int, inputText : String) : CommentDataResponse{
         return detailApi.postCommentData(restaurantId, commentId, inputText)
     }
+
+    override suspend fun postFavoriteToggle(restaurantId: Int) : Boolean{
+        return detailApi.postFavoriteToggle(restaurantId)
+    }
 }
