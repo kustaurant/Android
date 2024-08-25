@@ -3,6 +3,7 @@ package com.kust.kustaurant.data.di
 import android.content.Context
 import android.util.Log
 import com.kust.kustaurant.data.getAccessToken
+import com.navercorp.nid.oauth.NidOAuthPreferencesManager.accessToken
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

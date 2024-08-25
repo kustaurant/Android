@@ -6,6 +6,5 @@ import retrofit2.http.POST
 
 interface LogoutApi {
     @POST("/api/v1/auth/logout")
-    suspend fun postLogout(
-    ): ResponseBody
+    suspend fun postLogout(): ResponseBody
 }
