@@ -3,6 +3,8 @@ package com.kust.kustaurant.data.repository
 
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
+import com.kust.kustaurant.data.model.EvaluationDataRequest
+import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.data.remote.DetailApi
 import com.kust.kustaurant.domain.repository.DetailRepository
 import com.kust.kustaurant.presentation.ui.mypage.CommentData
@@ -25,5 +27,13 @@ class DetailRepositoryImpl @Inject constructor(
 
     override suspend fun postFavoriteToggle(restaurantId: Int) : Boolean{
         return detailApi.postFavoriteToggle(restaurantId)
+    }
+
+    override suspend fun getEvaluationData(restaurantId: Int): EvaluationDataResponse {
+        return detailApi.getEvaluationData(restaurantId)
+    }
+
+    override suspend fun postEvaluationData(restaurantId: Int, request: EvaluationDataRequest) : DetailDataResponse {
+        return detailApi.postEvaluationData(restaurantId, request)
     }
 }

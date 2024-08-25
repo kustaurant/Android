@@ -26,6 +26,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var tierInfoAdapter: DetailTierInfoAdapter
+    private var isEvaluated = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +55,7 @@ class DetailActivity : AppCompatActivity() {
             }
 
             binding.detailClFavorite.isSelected = detailData.isFavorite
+            isEvaluated = detailData.isEvaluated
 
             when (detailData.mainTier){
                 1 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_1)
@@ -125,6 +127,7 @@ class DetailActivity : AppCompatActivity() {
         binding.btnEvaluate.setOnClickListener {
             val intent = Intent(this, EvaluateActivity::class.java)
             intent.putExtra("restaurantId",restaurantId)
+            intent.putExtra("isEvaluated", isEvaluated)
             startActivity(intent)
         }
     }

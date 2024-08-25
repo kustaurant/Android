@@ -8,9 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
+import com.kust.kustaurant.data.model.EvaluationDataRequest
+import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.domain.usecase.detail.GetCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetDetailDataUseCase
+import com.kust.kustaurant.domain.usecase.detail.GetEvaluationDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentDataUseCase
+import com.kust.kustaurant.domain.usecase.detail.PostEvaluationDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostFavoriteToggleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,7 +26,9 @@ class DetailViewModel @Inject constructor(
     private val getDetailDataUseCase: GetDetailDataUseCase,
     private val getCommentDataUseCase: GetCommentDataUseCase,
     private val postCommentDataUseCase: PostCommentDataUseCase,
-    private val postFavoriteToggleUseCase: PostFavoriteToggleUseCase
+    private val postFavoriteToggleUseCase: PostFavoriteToggleUseCase,
+    private val getEvaluationDataUseCase: GetEvaluationDataUseCase,
+    private val postEvaluationDataUseCase: PostEvaluationDataUseCase
 ): ViewModel() {
     val tabList = MutableLiveData(listOf("메뉴", "리뷰"))
 
@@ -40,6 +46,12 @@ class DetailViewModel @Inject constructor(
 
     private val _favoriteData = MutableLiveData<Boolean>()
     val favoriteData: LiveData<Boolean> = _favoriteData
+
+    private val _evaluationData = MutableLiveData<EvaluationDataResponse>()
+    val evaluationData: LiveData<EvaluationDataResponse> = _evaluationData
+
+    private val _pEvaluationData = MutableLiveData<DetailDataResponse>()
+    val pEvaluationData: LiveData<DetailDataResponse> = _pEvaluationData
 
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
@@ -89,6 +101,25 @@ class DetailViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 Log.e("DetailViewModel", "Failed to toggle favorite", e)
+            }
+        }
+    }
+
+    fun loadMyEvaluationData(restaurantId: Int){
+        viewModelScope.launch {
+            val evaluationData = getEvaluationDataUseCase(restaurantId)
+            _evaluationData.postValue(evaluationData)
+        }
+    }
+
+    fun postEvaluationData(restaurantId: Int, rating: Double, comment: String, keywords: List<Int>, imageUrl : String){
+        viewModelScope.launch {
+            try {
+                val request = EvaluationDataRequest(rating, keywords, null, comment, emptyList(), imageUrl)
+                postEvaluationDataUseCase(restaurantId, request)
+
+            } catch (e: Exception) {
+                Log.e("DetailViewModel", "Failed to post evaluate", e)
             }
         }
     }

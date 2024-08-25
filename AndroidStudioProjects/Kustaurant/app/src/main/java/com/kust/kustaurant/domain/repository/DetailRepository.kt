@@ -2,6 +2,8 @@ package com.kust.kustaurant.domain.repository
 
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
+import com.kust.kustaurant.data.model.EvaluationDataRequest
+import com.kust.kustaurant.data.model.EvaluationDataResponse
 
 interface DetailRepository {
     suspend fun getDetailData(
@@ -19,4 +21,13 @@ interface DetailRepository {
     suspend fun postFavoriteToggle(
         restaurantId: Int
     ) : Boolean
+
+    suspend fun getEvaluationData(
+        restaurantId: Int
+    ) : EvaluationDataResponse
+
+    suspend fun postEvaluationData(
+        restaurantId: Int,
+        request : EvaluationDataRequest
+    ) : DetailDataResponse
 }
