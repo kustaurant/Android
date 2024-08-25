@@ -77,7 +77,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="@{viewModel.myPageData.nickname}"/>
+                android:text='@{viewModel.myPageData.nickname != null ? viewModel.myPageData.nickname : "로그인 후 이용해주세요"}' />
+
 
             <ImageView
                 android:id="@+id/my_iv_edit"
@@ -88,6 +89,18 @@
                 app:layout_constraintStart_toEndOf="@id/my_tv_name"
                 app:layout_constraintTop_toTopOf="@id/my_tv_name"
                 app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
+
+            <ImageView
+                android:id="@+id/my_iv_log_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_go_log_in"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/my_tv_name"
+                app:layout_constraintTop_toTopOf="@id/my_tv_name"
+                app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -135,7 +148,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="@{String.valueOf(viewModel.myPageData.evaluationCount)}" />
+                    android:text='@{viewModel.myPageData.evaluationCount != 0 ? String.valueOf(viewModel.myPageData.evaluationCount) : "-"}' />
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -182,7 +196,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="@{String.valueOf(viewModel.myPageData.favoriteCount)}" />
+                    android:text='@{viewModel.myPageData.favoriteCount != 0 ? String.valueOf(viewModel.myPageData.favoriteCount) : "-"}' />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

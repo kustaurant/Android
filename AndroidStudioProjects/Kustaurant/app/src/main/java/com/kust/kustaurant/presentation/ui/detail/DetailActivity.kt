@@ -129,6 +129,7 @@ class DetailActivity : AppCompatActivity() {
             intent.putExtra("restaurantId",restaurantId)
             intent.putExtra("isEvaluated", isEvaluated)
             startActivity(intent)
+            finish()
         }
     }
 

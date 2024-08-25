@@ -54,6 +54,7 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+
     fun loadMyProfileData() {
         viewModelScope.launch {
             val myProfileData = getMyProfileDataUseCase()

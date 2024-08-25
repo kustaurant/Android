@@ -4,6 +4,10 @@ import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface DetailRepository {
     suspend fun getDetailData(
@@ -28,6 +32,9 @@ interface DetailRepository {
 
     suspend fun postEvaluationData(
         restaurantId: Int,
-        request : EvaluationDataRequest
+        evaluationScore: RequestBody,
+        evaluationSituations: List<MultipartBody.Part>,
+        evaluationComment: RequestBody?,
+        newImage: MultipartBody.Part?
     ) : DetailDataResponse
 }

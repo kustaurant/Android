@@ -8,6 +8,8 @@ import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.data.remote.DetailApi
 import com.kust.kustaurant.domain.repository.DetailRepository
 import com.kust.kustaurant.presentation.ui.mypage.CommentData
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class DetailRepositoryImpl @Inject constructor(
@@ -33,7 +35,19 @@ class DetailRepositoryImpl @Inject constructor(
         return detailApi.getEvaluationData(restaurantId)
     }
 
-    override suspend fun postEvaluationData(restaurantId: Int, request: EvaluationDataRequest) : DetailDataResponse {
-        return detailApi.postEvaluationData(restaurantId, request)
+    override suspend fun postEvaluationData(
+        restaurantId: Int,
+        evaluationScore: RequestBody,
+        evaluationSituations: List<MultipartBody.Part>,
+        evaluationComment: RequestBody?,
+        newImage: MultipartBody.Part?
+    ): DetailDataResponse {
+        return detailApi.postEvaluationData(
+            restaurantId,
+            evaluationScore,
+            evaluationSituations,
+            evaluationComment,
+            newImage
+        )
     }
 }

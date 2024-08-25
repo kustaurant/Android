@@ -1,5 +1,7 @@
 package com.kust.kustaurant.presentation.ui.detail
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -18,7 +20,12 @@ import com.kust.kustaurant.domain.usecase.detail.PostEvaluationDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostFavoriteToggleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.w3c.dom.Text
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -112,17 +119,36 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun postEvaluationData(restaurantId: Int, rating: Double, comment: String, keywords: List<Int>, imageUrl : String){
+    fun postEvaluationData(context: Context, restaurantId: Int, rating: Double, comment: String, keywords: List<Int>, imageUri: Uri?) {
         viewModelScope.launch {
             try {
-                val request = EvaluationDataRequest(rating, keywords, null, comment, emptyList(), imageUrl)
-                postEvaluationDataUseCase(restaurantId, request)
+                val ratingPart = rating.toString().toRequestBody(MultipartBody.FORM)
+                val commentPart = comment.toRequestBody(MultipartBody.FORM)
+                val keywordParts = keywords.map { keyword ->
+                    MultipartBody.Part.createFormData("evaluationSituations", keyword.toString())
+                }
+                val imagePart: MultipartBody.Part? = imageUri?.let { uri ->
+                    val file = getFileFromUri(context, uri)
+                    val requestFile = file?.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    MultipartBody.Part.createFormData("evaluationImg", file?.name, requestFile!!)
+                }
 
+                postEvaluationDataUseCase(restaurantId, ratingPart, keywordParts, commentPart, imagePart
+                )
             } catch (e: Exception) {
-                Log.e("DetailViewModel", "Failed to post evaluate", e)
+                Log.e("DetailViewModel", "Failed to post evaluation", e)
             }
         }
     }
 
+
+    private fun getFileFromUri(context: Context, uri: Uri): File? {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val tempFile = File.createTempFile("temp_image", ".jpg", context.cacheDir)
+        tempFile.outputStream().use { outputStream ->
+            inputStream?.copyTo(outputStream)
+        }
+        return tempFile
+    }
 
 }

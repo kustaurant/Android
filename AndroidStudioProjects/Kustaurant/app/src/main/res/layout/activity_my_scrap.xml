@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_semibold"
             android:gravity="center"
-            android:text="공지사항"
+            android:text="커뮤니티 스크랩"
             android:textColor="@color/black"
             android:textSize="17sp"
             android:textStyle="bold"
