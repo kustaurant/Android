@@ -17,6 +17,8 @@ import com.kust.kustaurant.domain.usecase.detail.GetCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetEvaluationDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentDataUseCase
+import com.kust.kustaurant.domain.usecase.detail.PostCommentDisLikeUseCase
+import com.kust.kustaurant.domain.usecase.detail.PostCommentLikeUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostEvaluationDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostFavoriteToggleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +39,9 @@ class DetailViewModel @Inject constructor(
     private val postFavoriteToggleUseCase: PostFavoriteToggleUseCase,
     private val getEvaluationDataUseCase: GetEvaluationDataUseCase,
     private val postEvaluationDataUseCase: PostEvaluationDataUseCase,
-    private val deleteCommentDataUseCase: DeleteCommentDataUseCase
+    private val deleteCommentDataUseCase: DeleteCommentDataUseCase,
+    private val postCommentLikeUseCase: PostCommentLikeUseCase,
+    private val postCommentDisLikeUseCase: PostCommentDisLikeUseCase
 ): ViewModel() {
     val tabList = MutableLiveData(listOf("메뉴", "리뷰"))
 
@@ -161,6 +165,18 @@ class DetailViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("DetailViewModel", "Failed to delete comment", e)
             }
+        }
+    }
+
+    fun postCommentLike(restaurantId: Int, comment: Int){
+        viewModelScope.launch {
+            postCommentLikeUseCase(restaurantId, comment)
+        }
+    }
+
+    fun postCommentDisLike(restaurantId: Int, comment: Int){
+        viewModelScope.launch {
+            postCommentDisLikeUseCase(restaurantId, comment)
         }
     }
 }

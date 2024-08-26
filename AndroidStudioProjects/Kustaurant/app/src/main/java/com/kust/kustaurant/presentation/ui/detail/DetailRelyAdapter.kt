@@ -24,6 +24,8 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
     interface OnItemClickListener {
         fun onReportClicked(commentId: Int)
         fun onDeleteClicked(commentId: Int)
+        fun onLikeClicked(commentId: Int)
+        fun onDisLikeClicked(commentId: Int)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -70,6 +72,12 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
             binding.tvLike.text = item.commentLikeCount.toString()
             binding.tvHate.text = item.commentDislikeCount.toString()
             binding.tvReviewTime.text = item.commentTime
+            binding.ivLike.setOnClickListener {
+                itemClickListener.onLikeClicked(item.commentId)
+            }
+            binding.ivHate.setOnClickListener {
+                itemClickListener.onDisLikeClicked(item.commentId)
+            }
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailRelyAdapter.ViewHolder {

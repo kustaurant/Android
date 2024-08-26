@@ -120,6 +120,17 @@ class DetailReviewFragment : Fragment() {
             override fun onCommentClicked(commentId: Int) {
                 showBottomSheetInput(commentId)
             }
+
+            override fun onLikeClicked(commentId: Int) {
+                viewModel.postCommentLike(restaurantId, commentId)
+                // 여기에 lottie animation?
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
+
+            override fun onDisLikeClicked(commentId: Int) {
+                viewModel.postCommentDisLike(restaurantId, commentId)
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
         })
 
         reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener{
@@ -132,6 +143,16 @@ class DetailReviewFragment : Fragment() {
             override fun onDeleteClicked(commentId: Int) {
                 viewModel.deleteCommentData(restaurantId, commentId)
                 Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
+
+            override fun onLikeClicked(commentId: Int) {
+                viewModel.postCommentLike(restaurantId, commentId)
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
+
+            override fun onDisLikeClicked(commentId: Int) {
+                viewModel.postCommentDisLike(restaurantId, commentId)
                 viewModel.loadCommentData(restaurantId, popularity)
             }
         }

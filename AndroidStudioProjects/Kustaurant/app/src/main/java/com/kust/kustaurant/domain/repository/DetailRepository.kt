@@ -42,4 +42,14 @@ interface DetailRepository {
         restaurantId: Int,
         commentId: Int
     )
+
+    suspend fun postCommentLike(
+        restaurantId: Int,
+        commentId: Int
+    ) : CommentDataResponse
+
+    suspend fun postCommentDiskLike(
+        restaurantId: Int,
+        commentId: Int
+    ) : CommentDataResponse
 }

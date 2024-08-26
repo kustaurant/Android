@@ -36,6 +36,9 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
         fun onReportClicked(commentId: Int)
         fun onDeleteClicked(commentId: Int)
         fun onCommentClicked(commentId: Int)
+        fun onLikeClicked(commentId: Int)
+        fun onDisLikeClicked(commentId: Int)
+
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -125,6 +128,13 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
                     .into(binding.detailIvPhoto)
             }
 
+            binding.ivLike.setOnClickListener {
+                itemClickListener.onLikeClicked(item.commentId)
+            }
+            binding.ivHate.setOnClickListener {
+                itemClickListener.onDisLikeClicked(item.commentId)
+            }
+
             val gradeAdapter = DetailGradeAdapter(item.commentScore)
             binding.rvGrade.adapter = gradeAdapter
             binding.rvGrade.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
@@ -137,6 +147,14 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
 
                     override fun onDeleteClicked(commentId: Int) {
                         interactionListener?.onDeleteClicked(commentId)
+                    }
+
+                    override fun onLikeClicked(commentId: Int) {
+                        interactionListener?.onLikeClicked(commentId)
+                    }
+
+                    override fun onDisLikeClicked(commentId: Int) {
+                        interactionListener?.onDisLikeClicked(commentId)
                     }
 
                 })
