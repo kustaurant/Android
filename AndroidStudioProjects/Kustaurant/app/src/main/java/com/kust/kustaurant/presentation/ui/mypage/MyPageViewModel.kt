@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kust.kustaurant.data.model.MyCommentResponse
 import com.kust.kustaurant.data.model.MyCommunityListResponse
+import com.kust.kustaurant.data.model.MyEvaluateResponse
 import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.data.model.MyPageResponse
 import com.kust.kustaurant.data.model.MyProfileResponse
 import com.kust.kustaurant.domain.usecase.mypage.GetMyCommunityCommentUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyCommunityListUseCase
+import com.kust.kustaurant.domain.usecase.mypage.GetMyEvaluateDataUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyFavoriteDataUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyPageDataUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyProfileDataUseCase
@@ -27,7 +29,8 @@ class MyPageViewModel @Inject constructor(
     private val patchMyProfileDataUseCase: PatchMyProfileDataUseCase,
     private val getMyFavoriteDataUseCase: GetMyFavoriteDataUseCase,
     private val getMyCommunityCommentUseCase: GetMyCommunityCommentUseCase,
-    private val getMyCommunityListUseCase: GetMyCommunityListUseCase
+    private val getMyCommunityListUseCase: GetMyCommunityListUseCase,
+    private val getMyEvaluateDataUseCase: GetMyEvaluateDataUseCase
 ) : ViewModel() {
     private var originalProfileData: MyProfileResponse?= null
 
@@ -46,6 +49,8 @@ class MyPageViewModel @Inject constructor(
     private val _myCommunityData = MutableLiveData<List<MyCommunityListResponse>>()
     val myCommunityData: LiveData<List<MyCommunityListResponse>> = _myCommunityData
 
+    private val _myEvaluateData = MutableLiveData<List<MyEvaluateResponse>>()
+    val myEvaluateData: LiveData<List<MyEvaluateResponse>> = _myEvaluateData
     fun loadMyPageData(){
         viewModelScope.launch {
             val myPageData = getMyPageDataUseCase()
@@ -98,6 +103,13 @@ class MyPageViewModel @Inject constructor(
         viewModelScope.launch {
             val myCommunityData = getMyCommunityListUseCase()
             _myCommunityData.postValue(myCommunityData)
+        }
+    }
+
+    fun loadMyEvaluateData(){
+        viewModelScope.launch {
+            val myEvaluateData = getMyEvaluateDataUseCase()
+            _myEvaluateData.postValue(myEvaluateData)
         }
     }
 

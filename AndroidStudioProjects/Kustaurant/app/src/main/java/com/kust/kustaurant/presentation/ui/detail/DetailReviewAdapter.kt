@@ -30,6 +30,7 @@ import org.w3c.dom.Text
 class DetailReviewAdapter(private val context: Context): ListAdapter<CommentDataResponse, DetailReviewAdapter.ViewHolder>(diffUtil) {
 
     private lateinit var itemClickListener : OnItemClickListener
+    var interactionListener: DetailRelyAdapter.OnItemClickListener? = null
 
     interface OnItemClickListener {
         fun onReportClicked(commentId: Int)
@@ -73,30 +74,33 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             }
 
             btnConfirm.setOnClickListener {
-                itemClickListener.onCommentClicked(getItem(adapterPosition).commentId)
+                itemClickListener.onCommentClicked(getItem(absoluteAdapterPosition).commentId)
                 dialog.dismiss()
             }
             btnCancel.setOnClickListener {
                 dialog.dismiss()
             }
-
-
         }
 
         private fun showPopupWindow(anchorView: View) {
             val inflater = LayoutInflater.from(context)
-            val popupView = inflater.inflate(R.layout.popup_review_comment, null)
+            val layoutRes = if (getItem(absoluteAdapterPosition).isCommentMine) {
+                R.layout.popup_review_comment
+            } else {
+                R.layout.popup_review_only_report
+            }
+            val popupView = inflater.inflate(layoutRes, null)
             val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
 
-            // 신고하기 버튼
+            // 신고 버튼 설정
             popupView.findViewById<ConstraintLayout>(R.id.cl_report).setOnClickListener {
-                itemClickListener.onReportClicked(getItem(adapterPosition).commentId)
+                itemClickListener.onReportClicked(getItem(absoluteAdapterPosition).commentId)
                 popupWindow.dismiss()
             }
 
-            // 삭제하기 버튼
-            popupView.findViewById<ConstraintLayout>(R.id.cl_delete).setOnClickListener {
-                itemClickListener.onDeleteClicked(getItem(adapterPosition).commentId)
+            // 삭제 버튼이 존재하는 경우에만 설정
+            popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
+                itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).commentId)
                 popupWindow.dismiss()
             }
 
@@ -114,12 +118,29 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             Glide.with(context)
                 .load(item.commentIconImgUrl)
                 .into(binding.ivUserImage)
+            if (item.commentImgUrl != null){
+                binding.detailCvPhoto.visibility = View.VISIBLE
+                Glide.with(context)
+                    .load(item.commentImgUrl)
+                    .into(binding.detailIvPhoto)
+            }
 
             val gradeAdapter = DetailGradeAdapter(item.commentScore)
             binding.rvGrade.adapter = gradeAdapter
             binding.rvGrade.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
 
-            val replyAdapter = DetailRelyAdapter(binding.root.context)
+            val replyAdapter = DetailRelyAdapter(context).apply {
+                setOnItemClickListener(object : DetailRelyAdapter.OnItemClickListener{
+                    override fun onReportClicked(commentId: Int) {
+                        interactionListener?.onReportClicked(commentId)
+                    }
+
+                    override fun onDeleteClicked(commentId: Int) {
+                        interactionListener?.onDeleteClicked(commentId)
+                    }
+
+                })
+            }
             binding.detailRvReply.adapter = replyAdapter
             binding.detailRvReply.layoutManager = LinearLayoutManager(binding.root.context)
             replyAdapter.submitList(item.commentReplies)

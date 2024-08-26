@@ -170,11 +170,10 @@ class EvaluateActivity : AppCompatActivity() {
     private fun submitEvaluate() {
         binding.btnSubmit.setOnClickListener {
             val rating = ratingBar.rating
-            Log.d("rating", rating.toString())
             val comment = binding.etEvaluate.text.toString()
-            val keywords = keyWordAdapter.getSelectedItems()  // 선택된 키워드 목록
+            val keywords = keyWordAdapter.getSelectedItems() // 선택된 키워드 목록
+            Log.d("taejung", keywords.toString())
             val imageUrl = (binding.ivPlusPhoto.tag as? Uri)  // 이미지 URI 저장을 위한 방법 중 하나
-
             viewModel.postEvaluationData(this , restaurantId, rating.toDouble(), comment, keywords, imageUrl)
             val intent = Intent(this, DetailActivity::class.java)
             intent.putExtra("restaurantId", restaurantId)

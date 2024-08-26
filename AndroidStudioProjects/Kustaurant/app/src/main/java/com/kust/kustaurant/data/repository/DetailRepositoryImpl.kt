@@ -50,4 +50,8 @@ class DetailRepositoryImpl @Inject constructor(
             newImage
         )
     }
+
+    override suspend fun deleteCommentData(restaurantId: Int, commentId: Int){
+        return detailApi.deleteCommentData(restaurantId, commentId)
+    }
 }

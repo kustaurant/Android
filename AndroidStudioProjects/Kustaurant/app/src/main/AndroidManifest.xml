@@ -19,6 +19,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.ui.mypage.MyPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.ui.mypage.MyEvaluateActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.ui.mypage.MyEditActivity"
             android:exported="false" />
         <activity

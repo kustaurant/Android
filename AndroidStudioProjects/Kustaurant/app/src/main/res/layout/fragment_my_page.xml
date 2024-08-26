@@ -166,7 +166,7 @@
                 android:layout_marginHorizontal="65dp"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_evaluate_grade"
+                android:id="@+id/my_cl_post_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
@@ -184,10 +184,10 @@
                     android:text="내 게시글"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/tv_evaluate_grade"/>
+                    app:layout_constraintBottom_toTopOf="@id/tv_post_count"/>
 
                 <TextView
-                    android:id="@+id/tv_evaluate_grade"
+                    android:id="@+id/tv_post_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"

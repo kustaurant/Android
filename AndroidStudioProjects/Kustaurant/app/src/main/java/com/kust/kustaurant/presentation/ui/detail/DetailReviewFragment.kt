@@ -93,6 +93,7 @@ class DetailReviewFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.loadCommentData(restaurantId, popularity)
         setRecyclerViewHeight() // 프래그먼트가 다시 보여질 때 마다 높이 재설정
 
     }
@@ -111,14 +112,29 @@ class DetailReviewFragment : Fragment() {
             }
 
             override fun onDeleteClicked(commentId: Int) {
-
+                viewModel.deleteCommentData(restaurantId, commentId)
+                Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                viewModel.loadCommentData(restaurantId, popularity)
             }
 
             override fun onCommentClicked(commentId: Int) {
                 showBottomSheetInput(commentId)
             }
-
         })
+
+        reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener{
+            override fun onReportClicked(commentId: Int) {
+                val intent = Intent(context, ReportActivity::class.java)
+                intent.putExtra("commentId", commentId)
+                startActivity(intent)
+            }
+
+            override fun onDeleteClicked(commentId: Int) {
+                viewModel.deleteCommentData(restaurantId, commentId)
+                Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
+        }
     }
 
     private fun showBottomSheetInput(commentId: Int) {
@@ -146,9 +162,11 @@ class DetailReviewFragment : Fragment() {
             if (inputText.isNotBlank()) {
                 viewModel.postCommentData(restaurantId, commentId, inputText)
                 bottomSheetDialog.dismiss()
-                Toast.makeText(requireContext(), " $inputText", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                viewModel.loadCommentData(restaurantId, popularity)
+                setRecyclerViewHeight()
             } else {
-                etInput.error = "Please enter a comment"
+                etInput.error = "텍스트를 입력해주세요"
                 Toast.makeText(requireContext(), "텍스트를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
         }

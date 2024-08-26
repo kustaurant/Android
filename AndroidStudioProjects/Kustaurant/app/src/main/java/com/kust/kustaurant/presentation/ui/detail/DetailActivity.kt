@@ -17,6 +17,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.presentation.ui.home.SpaceDecoration
 import dagger.hilt.android.AndroidEntryPoint
 

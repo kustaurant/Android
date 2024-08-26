@@ -37,4 +37,9 @@ interface DetailRepository {
         evaluationComment: RequestBody?,
         newImage: MultipartBody.Part?
     ) : DetailDataResponse
+
+    suspend fun deleteCommentData(
+        restaurantId: Int,
+        commentId: Int
+    )
 }

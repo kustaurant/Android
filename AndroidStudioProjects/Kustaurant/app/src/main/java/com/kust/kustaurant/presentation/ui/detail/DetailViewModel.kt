@@ -12,6 +12,7 @@ import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
+import com.kust.kustaurant.domain.usecase.detail.DeleteCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetEvaluationDataUseCase
@@ -35,7 +36,8 @@ class DetailViewModel @Inject constructor(
     private val postCommentDataUseCase: PostCommentDataUseCase,
     private val postFavoriteToggleUseCase: PostFavoriteToggleUseCase,
     private val getEvaluationDataUseCase: GetEvaluationDataUseCase,
-    private val postEvaluationDataUseCase: PostEvaluationDataUseCase
+    private val postEvaluationDataUseCase: PostEvaluationDataUseCase,
+    private val deleteCommentDataUseCase: DeleteCommentDataUseCase
 ): ViewModel() {
     val tabList = MutableLiveData(listOf("메뉴", "리뷰"))
 
@@ -59,6 +61,8 @@ class DetailViewModel @Inject constructor(
 
     private val _pEvaluationData = MutableLiveData<DetailDataResponse>()
     val pEvaluationData: LiveData<DetailDataResponse> = _pEvaluationData
+
+    val evaluationComplete = MutableLiveData<Boolean>()
 
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
@@ -90,8 +94,6 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = postCommentDataUseCase(restaurantId, commentId, inputText)
-                // 댓글 작성 후, 댓글 목록을 새로 고침
-                loadCommentData(restaurantId, "latest")
             } catch (e: Exception) {
                 Log.e("CommentPost", "Failed to post comment", e)
             }
@@ -127,14 +129,15 @@ class DetailViewModel @Inject constructor(
                 val keywordParts = keywords.map { keyword ->
                     MultipartBody.Part.createFormData("evaluationSituations", keyword.toString())
                 }
+                Log.d("taejung", keywords.toString())
                 val imagePart: MultipartBody.Part? = imageUri?.let { uri ->
                     val file = getFileFromUri(context, uri)
-                    val requestFile = file?.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                    MultipartBody.Part.createFormData("evaluationImg", file?.name, requestFile!!)
-                }
+                    val requestFile = file?.asRequestBody("image/jpg".toMediaTypeOrNull())
+                    MultipartBody.Part.createFormData("newImage", file?.name, requestFile!!)
 
-                postEvaluationDataUseCase(restaurantId, ratingPart, keywordParts, commentPart, imagePart
-                )
+                }
+                postEvaluationDataUseCase(restaurantId, ratingPart, keywordParts, commentPart, imagePart)
+                evaluationComplete.value = true
             } catch (e: Exception) {
                 Log.e("DetailViewModel", "Failed to post evaluation", e)
             }
@@ -151,4 +154,13 @@ class DetailViewModel @Inject constructor(
         return tempFile
     }
 
+    fun deleteCommentData(restaurantId: Int, commentId: Int){
+        viewModelScope.launch {
+            try{
+                deleteCommentDataUseCase(restaurantId, commentId)
+            } catch (e: Exception) {
+                Log.e("DetailViewModel", "Failed to delete comment", e)
+            }
+        }
+    }
 }

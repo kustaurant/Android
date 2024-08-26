@@ -73,6 +73,8 @@ class MyPageFragment : Fragment() {
 
     private fun initButtons() {
         val buttonActions = mapOf(
+            binding.myClEvaluateCount to MyEvaluateActivity::class.java,
+            binding.myClPostCount to MyPostActivity::class.java,
             binding.myIvEdit to MyEditActivity::class.java,
             binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
             binding.myTvFixAlliance to MyFixAllActivity::class.java,
@@ -110,6 +112,9 @@ class MyPageFragment : Fragment() {
             textView.isEnabled = false
             textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
         }
+
+        binding.myClPostCount.isEnabled = false
+        binding.myClPostCount.isEnabled = false
     }
 
     private fun clearUserData() {
