@@ -3,15 +3,19 @@ package com.kust.kustaurant.presentation.ui.mypage
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.databinding.ItemMySaveBinding
+import com.kust.kustaurant.presentation.ui.detail.MenuData
 
-class SaveRestaurantAdapter(val context: Context, val data : ArrayList<SaveRestaurantData>) : RecyclerView.Adapter<SaveRestaurantAdapter.ViewHolder>() {
+class SaveRestaurantAdapter(val context: Context) : ListAdapter<MyFavoriteResponse, SaveRestaurantAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(val binding : ItemMySaveBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : SaveRestaurantData){
+        fun bind(item : MyFavoriteResponse){
             Glide.with(context)
                 .load(item.restaurantImgURL)
                 .into(binding.saveIvImg)
@@ -37,9 +41,18 @@ class SaveRestaurantAdapter(val context: Context, val data : ArrayList<SaveResta
     }
 
     override fun onBindViewHolder(holder: SaveRestaurantAdapter.ViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = data.size
+
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<MyFavoriteResponse>() {
+            override fun areItemsTheSame(oldItem: MyFavoriteResponse, newItem: MyFavoriteResponse): Boolean =
+                oldItem.restaurantName == newItem.restaurantName
+
+            override fun areContentsTheSame(oldItem: MyFavoriteResponse, newItem: MyFavoriteResponse): Boolean =
+                oldItem.restaurantName == newItem.restaurantName
+        }
+    }
 
 }

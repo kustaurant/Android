@@ -25,7 +25,6 @@ import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
 class DetailReviewFragment : Fragment() {
     lateinit var binding : FragmentDetailReviewBinding
     lateinit var reviewAdapter: DetailReviewAdapter
-    private var reviewList : ArrayList<ReviewData> = arrayListOf()
     private val viewModel: DetailViewModel by activityViewModels()
     private var restaurantId = 0
     private val popularity = "popularity"
@@ -80,6 +79,11 @@ class DetailReviewFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.reviewData.observe(viewLifecycleOwner){ commentData ->
+            if(commentData.isEmpty()){
+                binding.detailBtnRecent.visibility = View.GONE
+                binding.detailBtnPopular.visibility = View.GONE
+                binding.detailClReviewNone.visibility = View.VISIBLE
+            }
             reviewAdapter.submitList(commentData.toList())
             reviewAdapter.notifyDataSetChanged()
             Log.d("commentData", commentData.toString())
@@ -89,6 +93,7 @@ class DetailReviewFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        viewModel.loadCommentData(restaurantId, popularity)
         setRecyclerViewHeight() // 프래그먼트가 다시 보여질 때 마다 높이 재설정
 
     }
@@ -107,14 +112,50 @@ class DetailReviewFragment : Fragment() {
             }
 
             override fun onDeleteClicked(commentId: Int) {
-
+                viewModel.deleteCommentData(restaurantId, commentId)
+                Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                viewModel.loadCommentData(restaurantId, popularity)
             }
 
             override fun onCommentClicked(commentId: Int) {
                 showBottomSheetInput(commentId)
             }
 
+            override fun onLikeClicked(commentId: Int) {
+                viewModel.postCommentLike(restaurantId, commentId)
+                // 여기에 lottie animation?
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
+
+            override fun onDisLikeClicked(commentId: Int) {
+                viewModel.postCommentDisLike(restaurantId, commentId)
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
         })
+
+        reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener{
+            override fun onReportClicked(commentId: Int) {
+                val intent = Intent(context, ReportActivity::class.java)
+                intent.putExtra("commentId", commentId)
+                startActivity(intent)
+            }
+
+            override fun onDeleteClicked(commentId: Int) {
+                viewModel.deleteCommentData(restaurantId, commentId)
+                Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
+
+            override fun onLikeClicked(commentId: Int) {
+                viewModel.postCommentLike(restaurantId, commentId)
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
+
+            override fun onDisLikeClicked(commentId: Int) {
+                viewModel.postCommentDisLike(restaurantId, commentId)
+                viewModel.loadCommentData(restaurantId, popularity)
+            }
+        }
     }
 
     private fun showBottomSheetInput(commentId: Int) {
@@ -142,9 +183,11 @@ class DetailReviewFragment : Fragment() {
             if (inputText.isNotBlank()) {
                 viewModel.postCommentData(restaurantId, commentId, inputText)
                 bottomSheetDialog.dismiss()
-                Toast.makeText(requireContext(), " $inputText", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                viewModel.loadCommentData(restaurantId, popularity)
+                setRecyclerViewHeight()
             } else {
-                etInput.error = "Please enter a comment"
+                etInput.error = "텍스트를 입력해주세요"
                 Toast.makeText(requireContext(), "텍스트를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
         }
@@ -159,50 +202,31 @@ class DetailReviewFragment : Fragment() {
 
     // 각 tab마다 height 재구성
     private fun setRecyclerViewHeight() {
-        var totalHeight = 0
-        val layoutManager = binding.detailRvReview.layoutManager as LinearLayoutManager
+        val buttonHeight = binding.detailBtnPopular.height + binding.detailBtnRecent.height
 
-        for (i in 0 until reviewAdapter.itemCount) {
-            val holder = reviewAdapter.createViewHolder(binding.detailRvReview, reviewAdapter.getItemViewType(i))
-            reviewAdapter.onBindViewHolder(holder, i)
+        binding.detailRvReview.post {
+            var totalHeight = 0
+            val layoutManager = binding.detailRvReview.layoutManager as LinearLayoutManager
+            for (i in 0 until reviewAdapter.itemCount) {
+                val childView = layoutManager.findViewByPosition(i) ?: continue // 이미 렌더링된 뷰 사용
+                val lp = childView.layoutParams as ViewGroup.MarginLayoutParams
 
-            val innerRecyclerView = holder.itemView.findViewById<RecyclerView>(R.id.detail_rv_reply)
-            val innerHeight = calInnerHeight(innerRecyclerView)
+                childView.measure(
+                    View.MeasureSpec.makeMeasureSpec(binding.detailRvReview.width - lp.leftMargin - lp.rightMargin, View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                )
 
-            holder.itemView.measure(
-                View.MeasureSpec.makeMeasureSpec(binding.detailRvReview.width, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-            )
+                totalHeight += childView.measuredHeight + lp.topMargin + lp.bottomMargin
+            }
+            totalHeight += buttonHeight
 
-            // ViewHolder의 마진 및 패딩
-//            val lp = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
-            totalHeight += holder.itemView.measuredHeight + innerHeight
+            val params = binding.detailRvReview.layoutParams
+            params.height = totalHeight
+            binding.detailRvReview.layoutParams = params
+
+            // ViewPager 높이 조정을 위한 메소드 호출
+            (activity as? DetailActivity)?.setViewPagerHeight(totalHeight)
         }
-
-        val params = binding.detailRvReview.layoutParams
-        params.height = totalHeight
-        binding.detailRvReview.layoutParams = params
-
-        // DetailActivity에서 상속
-        if (activity is DetailActivity) {
-            (activity as DetailActivity).setViewPagerHeight(totalHeight)
-        }
-    }
-
-    private fun calInnerHeight(recyclerView: RecyclerView): Int {
-        var innerHeight = 0
-        val innerAdapter = recyclerView.adapter ?: return 0
-        for (j in 0 until innerAdapter.itemCount) {
-            val type = innerAdapter.getItemViewType(j)
-            val innerHolder = innerAdapter.createViewHolder(recyclerView, type)
-            innerAdapter.onBindViewHolder(innerHolder, j)
-            innerHolder.itemView.measure(
-                View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-            )
-            innerHeight += innerHolder.itemView.measuredHeight
-        }
-        return innerHeight
     }
 
 }
