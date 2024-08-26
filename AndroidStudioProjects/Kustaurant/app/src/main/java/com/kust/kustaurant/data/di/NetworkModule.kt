@@ -8,6 +8,8 @@ import com.kust.kustaurant.data.remote.LogoutApi
 import com.kust.kustaurant.data.remote.NaverLoginApi
 import com.kust.kustaurant.data.remote.MyPageApi
 import com.kust.kustaurant.data.remote.NewAccessTokenApi
+import com.kust.kustaurant.domain.usecase.login.PostNewAccessTokenDataUseCase
+import com.kust.kustaurant.presentation.ui.mypage.NewAccessTokenViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

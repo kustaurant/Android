@@ -1,5 +1,5 @@
 package com.kust.kustaurant.data.model
 
-data class NaverLoginResponse(
+data class LoginResponse(
      val accessToken: String
 )

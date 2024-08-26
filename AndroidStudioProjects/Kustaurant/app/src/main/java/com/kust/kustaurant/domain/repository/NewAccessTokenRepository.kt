@@ -1,8 +1,7 @@
 package com.kust.kustaurant.domain.repository
 
-import okhttp3.ResponseBody
-import retrofit2.Response
+import com.kust.kustaurant.data.model.LoginResponse
 
 interface NewAccessTokenRepository {
-    suspend fun postNewAccessToken(): Response<ResponseBody>
+    suspend fun postNewAccessToken(): LoginResponse
 }

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.kust.kustaurant.data.getAccessToken
+import com.kust.kustaurant.data.saveAccessToken
 import com.kust.kustaurant.databinding.FragmentMyPageBinding
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint

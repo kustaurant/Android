@@ -20,12 +20,7 @@ class NewAccessTokenViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = postNewAccessTokenDataUseCase.invoke()
-                if (response.isSuccessful){
-                    val accessToken = response.body()?.string()
-                    _accessToken.value = accessToken
-                }else{
-                    // response 실패
-                }
+                _accessToken.value = response.accessToken
             } catch (e: Exception) {
                 // 에러 처리
             }
