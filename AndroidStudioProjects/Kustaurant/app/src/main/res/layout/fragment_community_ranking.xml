@@ -18,7 +18,7 @@
             android:id="@+id/community_tv_ranking_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/pretendard_medium"
             android:gravity="center"
             android:text="@string/community_ranking_info"
@@ -28,14 +28,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Start Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/community_gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <!-- End Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/community_gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/community_cl_toggle_group"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="19dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+            app:layout_constraintStart_toStartOf="@id/community_gl_start"
             app:layout_constraintTop_toBottomOf="@id/community_tv_ranking_info">
 
             <ToggleButton
@@ -78,12 +93,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/community_cl_top_ranking_group"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/community_cl_post_list"
-            app:layout_constraintEnd_toEndOf="parent"
             android:foregroundGravity="center"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintDimensionRatio="360:250"
+            app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+            app:layout_constraintStart_toStartOf="@id/community_gl_start"
             app:layout_constraintTop_toBottomOf="@id/community_cl_toggle_group">
 
             <ImageView
@@ -92,7 +107,6 @@
                 android:src="@drawable/ic_community_halo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintDimensionRatio="227:250"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -104,26 +118,28 @@
                 android:src="@drawable/ic_community_rank_2"
                 app:layout_constraintBottom_toTopOf="@id/community_cl_ranking_2"
                 app:layout_constraintEnd_toEndOf="@id/community_cl_ranking_2"
-                app:layout_constraintStart_toStartOf="@id/community_cl_ranking_2"/>
+                app:layout_constraintStart_toStartOf="@id/community_cl_ranking_2" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/community_cl_ranking_2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginBottom="12dp"
                 android:background="@color/category_gray"
-                app:layout_constraintWidth_percent="0.29"
                 app:layout_constraintBottom_toBottomOf="@id/community_cl_ranking_1"
                 app:layout_constraintDimensionRatio="98:121"
-                android:layout_marginBottom="12dp"
                 app:layout_constraintEnd_toStartOf="@id/community_cl_ranking_1"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.29">
 
                 <ImageView
                     android:id="@+id/community_iv_rank_2"
                     android:layout_width="61dp"
                     android:layout_height="59dp"
-                    android:layout_marginTop="19dp"
+                    android:layout_marginTop="27dp"
+                    android:contentDescription="@string/community_user_img_info"
                     android:src="@drawable/ic_upper_class_cow"
+                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_2_nickname"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -132,16 +148,17 @@
                     android:id="@+id/community_tv_rank_2_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/pretendard_medium"
                     android:maxLines="1"
                     android:textColor="@color/black"
-                    android:layout_marginBottom="8dp"
                     android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_2_comment_cnt"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_2_comment_cnt"
+                    app:layout_constraintTop_toBottomOf="@id/community_iv_rank_2"
                     tools:text="역병" />
 
                 <TextView
@@ -160,7 +177,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <ImageView
                 android:layout_width="57dp"
                 android:layout_height="55dp"
@@ -178,18 +194,19 @@
                 android:background="@drawable/all_radius_15_none"
                 android:backgroundTint="@color/white"
                 android:elevation="4dp"
-                app:layout_constraintWidth_percent="0.42"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="140:183"
                 app:layout_constraintEnd_toStartOf="@id/community_cl_ranking_3"
                 app:layout_constraintStart_toEndOf="@id/community_cl_ranking_2"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.42">
 
                 <ImageView
                     android:id="@+id/community_iv_rank_1"
                     android:layout_width="102dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="20dp"
+                    android:contentDescription="@string/community_user_img_info"
                     android:src="@drawable/ic_upper_class_cow"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -198,13 +215,13 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toTopOf="@id/community_tv_rank_1_comment_cnt"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginBottom="10dp">
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <ImageView
                         android:id="@+id/community_iv_rank_1_crown"
@@ -221,9 +238,9 @@
                         android:fontFamily="@font/pretendard_medium"
                         android:maxLines="1"
                         android:paddingEnd="5dp"
-                        tools:text="역병"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        tools:text="역병" />
                 </LinearLayout>
 
                 <TextView
@@ -257,20 +274,22 @@
                 android:id="@+id/community_cl_ranking_3"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginBottom="12dp"
                 android:background="@color/category_gray"
-                app:layout_constraintWidth_percent="0.29"
                 app:layout_constraintBottom_toBottomOf="@id/community_cl_ranking_1"
                 app:layout_constraintDimensionRatio="98:121"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintStart_toEndOf="@id/community_cl_ranking_1" >
+                app:layout_constraintStart_toEndOf="@id/community_cl_ranking_1"
+                app:layout_constraintWidth_percent="0.29">
 
                 <ImageView
                     android:id="@+id/community_iv_rank_3"
                     android:layout_width="61dp"
                     android:layout_height="59dp"
-                    android:layout_marginTop="19dp"
+                    android:layout_marginTop="27dp"
+                    android:contentDescription="@string/community_user_img_info"
                     android:src="@drawable/ic_upper_class_cow"
+                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_3_nickname"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -279,16 +298,17 @@
                     android:id="@+id/community_tv_rank_3_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/pretendard_medium"
                     android:maxLines="1"
                     android:textColor="@color/black"
-                    android:layout_marginBottom="8dp"
                     android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_3_comment_cnt"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_3_comment_cnt"
+                    app:layout_constraintTop_toBottomOf="@id/community_iv_rank_3"
                     tools:text="역병" />
 
                 <TextView
@@ -304,25 +324,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="88개" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/community_cl_post_list"
-            android:layout_width="match_parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/community_rv_recycler_view"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/community_cl_top_ranking_group">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/community_rv_recycler_view"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:listitem="@layout/item_community_ranking" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+            app:layout_constraintStart_toStartOf="@id/community_gl_start"
+            app:layout_constraintTop_toBottomOf="@id/community_cl_top_ranking_group"
+            tools:listitem="@layout/item_community_ranking" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

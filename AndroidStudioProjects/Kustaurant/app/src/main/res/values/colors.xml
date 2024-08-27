@@ -36,4 +36,5 @@
     <!--홈 -->
     <color name="top_gray">#838383</color>
     <color name="category_gray">#F5F5F5</color>
+    <color name="community_post_title">#353535</color>
 </resources>

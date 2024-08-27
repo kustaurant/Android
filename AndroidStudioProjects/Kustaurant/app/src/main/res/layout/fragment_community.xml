@@ -108,11 +108,12 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/community_tab_layout"  />
+                app:layout_constraintTop_toBottomOf="@id/community_tab_layout"
+                app:layout_constraintVertical_bias="1.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <!-- Container for fragment replacement -->
         <FrameLayout
