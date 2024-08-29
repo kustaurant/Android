@@ -26,10 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class OnboardingFragment1: Fragment(R.layout.fragment_onboarding1)
-class OnboardingFragment2: Fragment(R.layout.fragment_onboarding2)
-class OnboardingFragment3: Fragment(R.layout.fragment_onboarding3)
-class OnboardingFragment4: Fragment(R.layout.fragment_onboarding4)
 @AndroidEntryPoint
 class OnboardingActivity : AppCompatActivity() {
     lateinit var binding: ActivityOnboardingBinding
