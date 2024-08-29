@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
+import com.kust.kustaurant.data.saveAccessToken
 import com.kust.kustaurant.databinding.FragmentMyPageBinding
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -132,8 +133,6 @@ class MyPageFragment : Fragment() {
 
 
     private fun initLogOut() {
-        getAccessToken(requireContext())?.let { accessToken ->
-            logoutViewModel.postLogout(accessToken)
-        } ?: Log.d("Logout", "accessToken 비어있음")
+        logoutViewModel.postLogout() ?: Log.d("Logout", "accessToken 비어있음")
     }
 }
