@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.presentation.ui.home.SpaceDecoration
+import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -78,7 +79,9 @@ class DetailActivity : AppCompatActivity() {
 
     private fun initFavorite(restaurantId : Int) {
         binding.detailClFavorite.setOnClickListener {
-            viewModel.postFavoriteToggle(restaurantId)
+            checkToken {
+                viewModel.postFavoriteToggle(restaurantId)
+            }
         }
     }
 
@@ -126,11 +129,22 @@ class DetailActivity : AppCompatActivity() {
 
     private fun initEvaluate(restaurantId : Int) {
         binding.btnEvaluate.setOnClickListener {
-            val intent = Intent(this, EvaluateActivity::class.java)
-            intent.putExtra("restaurantId",restaurantId)
-            intent.putExtra("isEvaluated", isEvaluated)
+            checkToken{
+                val intent = Intent(this, EvaluateActivity::class.java)
+                intent.putExtra("restaurantId",restaurantId)
+                intent.putExtra("isEvaluated", isEvaluated)
+                startActivity(intent)
+            }
+        }
+    }
+
+    private fun checkToken(action: () -> Unit) {
+        val accessToken = getAccessToken(this)
+        if (accessToken == null) {
+            val intent = Intent(this, StartActivity::class.java)
             startActivity(intent)
-            finish()
+        } else {
+            action()
         }
     }
 
