@@ -97,7 +97,7 @@ class DetailViewModel @Inject constructor(
     fun postCommentData(restaurantId: Int, commentId : Int, inputText: String){
         viewModelScope.launch {
             try {
-                val response = postCommentDataUseCase(restaurantId, commentId, inputText)
+                postCommentDataUseCase(restaurantId, commentId, inputText)
             } catch (e: Exception) {
                 Log.e("CommentPost", "Failed to post comment", e)
             }
