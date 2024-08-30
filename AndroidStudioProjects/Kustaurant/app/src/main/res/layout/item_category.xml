@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="73dp"
+    android:layout_height="85dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/all_radius_15_none"
+    android:clickable="true"
+    android:layout_margin="8dp">
+
+    <ImageView
+        android:id="@+id/category_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/img_category_benefit"/>
+
+    <TextView
+        android:id="@+id/category_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="제휴"
+        android:textSize="11sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/pretendard_medium"/>
+
+</LinearLayout>
