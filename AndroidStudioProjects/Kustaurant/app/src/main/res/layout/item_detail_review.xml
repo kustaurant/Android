@@ -75,13 +75,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_dots"/>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/detail_cv_photo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.591"
+        app:layout_constraintDimensionRatio="1:1"
+        app:cardCornerRadius="10dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/detail_iv_dots"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/detail_iv_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+
+    </androidx.cardview.widget.CardView>
+
     <TextView
         android:id="@+id/tv_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="그냥저냥 괜찮괜찮 무난무난"
         android:layout_marginTop="11dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+        app:layout_constraintTop_toBottomOf="@id/detail_cv_photo"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView

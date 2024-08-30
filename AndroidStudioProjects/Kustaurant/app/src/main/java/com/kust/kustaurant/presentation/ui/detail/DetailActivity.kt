@@ -17,6 +17,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.presentation.ui.home.SpaceDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +27,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var tierInfoAdapter: DetailTierInfoAdapter
+    private var isEvaluated = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,22 +39,46 @@ class DetailActivity : AppCompatActivity() {
         val restaurantId = intent.getIntExtra("restaurantId", 346)
         Log.d("restaurantId", restaurantId.toString())
         viewModel.loadDetailData(restaurantId)
-        if(viewModel.detailData.value?.partnershipInfo == null){
-            binding.detailClAlliance.visibility = View.GONE
-        }
 
         initBack()
         initTierRecyclerView()
         initNaverLink()
         changeTopBar()
+        initFavorite(restaurantId)
 
         viewModel.detailData.observe(this) { detailData ->
+            if (detailData.partnershipInfo == null){
+                binding.detailClAlliance.visibility = View.GONE
+            }
+
+            if (detailData.isEvaluated){
+                binding.detailIvEvaluateCheck.visibility = View.VISIBLE
+            }
+
+            binding.detailClFavorite.isSelected = detailData.isFavorite
+            isEvaluated = detailData.isEvaluated
+
+            when (detailData.mainTier){
+                1 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_1)
+                2 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_2)
+                3 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_3)
+                4 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_4)
+                else -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_all)
+
+            }
+
             if (detailData != null) {
                 Handler(Looper.getMainLooper()).postDelayed({
                     initTabView(restaurantId)
                     initEvaluate(restaurantId)
                 }, 100) // 100ms 후에 실행
             }
+        }
+    }
+
+    private fun initFavorite(restaurantId : Int) {
+        binding.detailClFavorite.setOnClickListener {
+            viewModel.postFavoriteToggle(restaurantId)
         }
     }
 
@@ -102,7 +128,9 @@ class DetailActivity : AppCompatActivity() {
         binding.btnEvaluate.setOnClickListener {
             val intent = Intent(this, EvaluateActivity::class.java)
             intent.putExtra("restaurantId",restaurantId)
+            intent.putExtra("isEvaluated", isEvaluated)
             startActivity(intent)
+            finish()
         }
     }
 

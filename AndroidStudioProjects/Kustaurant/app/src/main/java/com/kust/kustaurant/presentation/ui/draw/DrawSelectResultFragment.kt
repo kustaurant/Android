@@ -1,6 +1,7 @@
 package com.kust.kustaurant.presentation.ui.draw
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -17,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.DrawRestaurantData
 import com.kust.kustaurant.databinding.FragmentDrawSelectResultBinding
+import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import kotlin.math.abs
 
 class DrawSelectResultFragment : Fragment() {
@@ -64,6 +66,12 @@ class DrawSelectResultFragment : Fragment() {
         binding.drawTvRestaurantPartnershipInfo.text = "이과대학 학생증 제시 시 99퍼센트 할인적용"
 
         updateStarRating(restaurant.restaurantScoreSum)
+
+        binding.drawViewPager.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("restaurantId",viewModel.selectedRestaurant.value!!.restaurantId)
+            startActivity(intent)
+        }
     }
 
 

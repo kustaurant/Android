@@ -61,6 +61,17 @@
             app:layout_constraintTop_toTopOf="@id/tv_user_name"
             app:layout_constraintBottom_toBottomOf="@id/tv_user_name"/>
 
+        <ImageView
+            android:id="@+id/reply_iv_dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingVertical="10dp"
+            app:layout_constraintTop_toTopOf="@id/tv_review_time"
+            app:layout_constraintBottom_toBottomOf="@id/tv_review_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_dots"/>
+
         <TextView
             android:id="@+id/tv_review"
             android:layout_width="wrap_content"

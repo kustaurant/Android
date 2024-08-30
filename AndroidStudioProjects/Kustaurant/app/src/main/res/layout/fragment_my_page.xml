@@ -77,7 +77,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="@{viewModel.myPageData.nickname}"/>
+                android:text='@{viewModel.myPageData.nickname != null ? viewModel.myPageData.nickname : "로그인 후 이용해주세요"}' />
+
 
             <ImageView
                 android:id="@+id/my_iv_edit"
@@ -89,6 +90,18 @@
                 app:layout_constraintTop_toTopOf="@id/my_tv_name"
                 app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
 
+            <ImageView
+                android:id="@+id/my_iv_log_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_go_log_in"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/my_tv_name"
+                app:layout_constraintTop_toTopOf="@id/my_tv_name"
+                app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -98,6 +111,7 @@
             android:background="@drawable/all_radius_13_white"
             android:backgroundTint="@color/signature_1"
             android:paddingVertical="18dp"
+            android:elevation="20dp"
             app:layout_constraintBottom_toBottomOf="@id/my_view_top"
             app:layout_constraintTop_toBottomOf="@id/my_view_top"
             app:layout_constraintEnd_toEndOf="@id/gl_end"
@@ -118,10 +132,10 @@
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="@string/detail_evaluation_count"
+                    android:text="내 평가"
                     android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="@id/tv_evaluate_count"
-                    app:layout_constraintEnd_toEndOf="@id/tv_evaluate_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/tv_evaluate_count"/>
 
                 <TextView
@@ -131,22 +145,12 @@
                     android:textSize="18sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/pretendard_bold"
-                    app:layout_constraintEnd_toStartOf="@id/tv_evaluate_count"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="@{String.valueOf(viewModel.myPageData.evaluateCount)}" />
-
-                <TextView
-                    android:id="@+id/tv_evaluate_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="개"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/pretendard_bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/tv_evaluate_count"/>
+                    android:text='@{viewModel.myPageData.evaluationCount != 0 ? String.valueOf(viewModel.myPageData.evaluationCount) : "-"}' />
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -162,7 +166,7 @@
                 android:layout_marginHorizontal="65dp"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_evaluate_grade"
+                android:id="@+id/my_cl_post_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
@@ -177,21 +181,22 @@
                     android:textSize="12sp"
                     android:textColor="@color/white"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="@string/detail_evaluation_grade"
-                    app:layout_constraintStart_toStartOf="@id/tv_evaluate_grade"
-                    app:layout_constraintEnd_toEndOf="@id/tv_evaluate_grade"
-                    app:layout_constraintBottom_toTopOf="@id/tv_evaluate_grade"/>
+                    android:text="내 게시글"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tv_post_count"/>
 
                 <TextView
-                    android:id="@+id/tv_evaluate_grade"
+                    android:id="@+id/tv_post_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:fontFamily="@font/pretendard_bold"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="@{String.valueOf(viewModel.myPageData.favoriteCount)}" />
+                    android:text='@{viewModel.myPageData.favoriteCount != 0 ? String.valueOf(viewModel.myPageData.favoriteCount) : "-"}' />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
