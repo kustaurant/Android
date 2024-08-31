@@ -8,7 +8,7 @@ import javax.inject.Singleton
 class PostLogoutDataUseCase @Inject constructor(
     private val logoutRepository: LogoutRepository
 ){
-    suspend fun invoke(Authorization: String):String{
-        return logoutRepository.postLogout(Authorization)
+    suspend fun invoke():String{
+        return logoutRepository.postLogout()
     }
 }

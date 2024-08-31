@@ -7,9 +7,9 @@
     tools:context=".presentation.ui.splash.Onboarding2Fragment">
 
     <ImageView
+        android:id="@+id/onboarding2_iv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@drawable/img_onboarding2"
         app:layout_constraintBottom_toTopOf="@id/onboarding2_tv"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="11dp"

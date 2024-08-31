@@ -13,7 +13,7 @@ data class DetailDataResponse (
     val businessHours : String,
     val naverMapUrl : String,
     val situationList : List<String>,
-    val partnershipInfo : String,
+    val partnershipInfo : String?,
     val evaluationCount : Int,
     val restaurantScore : Double,
     val isEvaluated : Boolean,

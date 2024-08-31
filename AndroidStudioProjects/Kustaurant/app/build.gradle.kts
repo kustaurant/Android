@@ -116,8 +116,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     //MVVM Lifecycle JetPack 라이브러리
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
     implementation("androidx.activity:activity-ktx:1.5.0")
 
 }

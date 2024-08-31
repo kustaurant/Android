@@ -5,14 +5,17 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.ui.splash.Onboarding1Fragment">
-    
+
     <ImageView
+        android:id="@+id/onboarding1_iv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@drawable/img_onboarding1"
         app:layout_constraintBottom_toTopOf="@id/onboarding1_tv"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="52dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:scaleType="fitXY"/>
 
     <TextView
@@ -20,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/onboarding_fragment1"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:textAlignment="center"

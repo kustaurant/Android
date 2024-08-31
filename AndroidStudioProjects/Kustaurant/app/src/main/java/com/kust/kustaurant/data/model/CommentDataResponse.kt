@@ -11,6 +11,7 @@ data class CommentDataResponse(
     val commentLikeStatus: Int,
     val commentLikeCount: Int,
     val commentDislikeCount: Int,
+    val isCommentMine : Boolean,
     val commentReplies: ArrayList<ReplyDataResponse>
 )
 
@@ -25,6 +26,7 @@ data class ReplyDataResponse(
     val commentLikeStatus: Int,
     val commentLikeCount: Int,
     val commentDislikeCount: Int,
+    val isCommentMine: Boolean,
     val commentReplies: String
 
 )

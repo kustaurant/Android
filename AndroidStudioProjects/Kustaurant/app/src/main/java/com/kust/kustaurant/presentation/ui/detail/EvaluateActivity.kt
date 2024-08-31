@@ -13,10 +13,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.databinding.ActivityEvaluateBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +31,7 @@ class EvaluateActivity : AppCompatActivity() {
     private lateinit var ratingBar: RatingBar
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
+    private var restaurantId = 1
     private val REQ_GALLERY = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +40,16 @@ class EvaluateActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val restaurantId = intent.getIntExtra("restaurantId", 1)
+        restaurantId = intent.getIntExtra("restaurantId", 1)
+        val isEvaluated = intent.getBooleanExtra("isEvaluated", false)
         Log.d("restaurantId", restaurantId.toString())
         viewModel.loadEvaluateData(restaurantId)
+
+        if(isEvaluated){
+           viewModel.loadMyEvaluationData(restaurantId)
+        }
+
+        observeViewModel()
 
         initBack()
         initKeyWord()
@@ -46,7 +57,29 @@ class EvaluateActivity : AppCompatActivity() {
         initPhotoPicker()
         initPlusPhoto()
         initRatingBar()
+        submitEvaluate()
         setContentView(binding.root)
+    }
+
+    private fun observeViewModel() {
+        viewModel.evaluationData.observe(this) { data ->
+            updateEvaluation(data)
+        }
+    }
+
+    private fun updateEvaluation(data: EvaluationDataResponse){
+        ratingBar.rating = data.evaluationScore.toFloat()
+        binding.etEvaluate.setText(data.evaluationComment)
+        val commentForRating = data.starComments.find { it.star.toFloat() == ratingBar.rating }?.comment
+        binding.tvEvaluateHow.text = commentForRating ?: "선택한 별점에 대한 코멘트가 없습니다."
+
+        if(data.evaluationImgUrl != null){
+            binding.cvPlushPhoto.visibility = View.VISIBLE
+            Glide.with(this)
+                .load(data.evaluationImgUrl)
+                .into(binding.ivPlusPhoto)
+        }
+        keyWordAdapter.setSelectedKeywords(data.evaluationSituations)
     }
 
     private fun initBack() {
@@ -62,6 +95,7 @@ class EvaluateActivity : AppCompatActivity() {
                 result.data?.data?.let { uri: Uri ->
                     binding.cvPlushPhoto.visibility = View.VISIBLE
                     binding.ivPlusPhoto.setImageURI(uri)
+                    binding.ivPlusPhoto.tag = uri  // 태그에 Uri 저장
                 }
             }
         }
@@ -98,19 +132,27 @@ class EvaluateActivity : AppCompatActivity() {
         ratingBar = binding.rbEvaluate
         ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
             binding.tvEvaluateHow.text = when (rating) {
-                0f, 0.5f -> "아직 선택하지 않으셨습니다."
-                1f, 1.5f -> "맘에 안듬"
-                2f, 2.5f, 3f, 3.5f -> "괜찮아요 다음에 또 방문할 것 같아요"
-                4f, 4.5f -> "매우 좋아요"
-                5f -> "굿"
+                0f -> "아직 선택하지 않으셨습니다."
+                0.5f -> "다시 갈 것 같진 않아요."
+                1f -> "많이 아쉬워요"
+                1.5f -> "다른데 갈껄"
+                2f -> "조금 아쉬워요."
+                2.5f -> "무난했어요."
+                3f -> "괜찮았어요."
+                3.5f -> "만족스러웠어요."
+                4f -> "무조건 한번 더 올 것 같아요."
+                4.5f -> "행복했습니다."
+                5f -> "인생 최고의 식당입니다."
                 else -> "선택오류"
             }
             if (rating == 0f) {
                 binding.btnSubmit.setBackgroundResource(R.drawable.all_radius_50_cement3)
                 binding.btnSubmit.setTextColor(getColor(R.color.cement_4))
+                binding.btnSubmit.isEnabled = false
             } else {
                 binding.btnSubmit.setBackgroundResource(R.drawable.all_radius_50_sig1)
                 binding.btnSubmit.setTextColor(Color.WHITE)
+                binding.btnSubmit.isEnabled = true
             }
         }
     }
@@ -123,5 +165,20 @@ class EvaluateActivity : AppCompatActivity() {
         keyWordAdapter = EvaluateKeyWordAdapter(keyWordList)
         binding.rvKeyword.adapter = keyWordAdapter
         binding.rvKeyword.layoutManager = FlexboxLayoutManager(this)
+    }
+
+    private fun submitEvaluate() {
+        binding.btnSubmit.setOnClickListener {
+            val rating = ratingBar.rating
+            val comment = binding.etEvaluate.text.toString()
+            val keywords = keyWordAdapter.getSelectedItems() // 선택된 키워드 목록
+            Log.d("taejung", keywords.toString())
+            val imageUrl = (binding.ivPlusPhoto.tag as? Uri)  // 이미지 URI 저장을 위한 방법 중 하나
+            viewModel.postEvaluationData(this , restaurantId, rating.toDouble(), comment, keywords, imageUrl)
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("restaurantId", restaurantId)
+            startActivity(intent)
+            finish()
+        }
     }
 }

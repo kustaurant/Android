@@ -17,10 +17,10 @@ class LogoutViewModel @Inject constructor(
     private val _response = MutableLiveData<String>()
     val Response: LiveData<String> get() = _response
 
-    fun postLogout(authorization: String){
+    fun postLogout(){
         viewModelScope.launch {
             try {
-                val response = postLogoutDataUseCase.invoke(authorization)
+                val response = postLogoutDataUseCase.invoke()
                 _response.value = response
             }catch (e: Exception){
                 // 에러 처리

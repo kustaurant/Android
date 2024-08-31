@@ -14,6 +14,7 @@
         app:layout_constraintDimensionRatio="94:77"
         app:layout_constraintTop_toTopOf="parent"
         android:scaleType="centerCrop"
+        app:strokeColor="@null"
         app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/cement_3"/>
@@ -34,6 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="B특호야"
+            android:textColor="@color/cement_5"
+            android:textSize="14sp"
             android:fontFamily="@font/pretendard_regular"
             android:layout_marginBottom="3dp"/>
 
@@ -42,7 +45,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_regular"
+            android:textColor="@color/cement_6"
             android:text="29,000원"
+            android:textSize="14sp"
             android:layout_marginTop="3dp"/>
 
     </LinearLayout>

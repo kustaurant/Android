@@ -7,7 +7,7 @@ import javax.inject.Inject
 class LogoutRepositoryImpl @Inject constructor(
     private val logoutApi : LogoutApi
 ):LogoutRepository{
-    override suspend fun postLogout(Authorization: String):String{
-        return logoutApi.postLogout(Authorization).string()
+    override suspend fun postLogout():String{
+        return logoutApi.postLogout().string()
     }
 }

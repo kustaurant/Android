@@ -1,354 +1,384 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.ui.mypage.MyPageFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95"/>
-
-    <View
-        android:id="@+id/my_view_top"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/signature_2"
-        app:layout_constraintDimensionRatio="360:228"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/my_cv_user"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.217"
-        app:layout_constraintDimensionRatio="1:1"
-        app:cardCornerRadius="100dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@id/my_cl_user_info"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/my_iv_user"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/my_cl_user_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@id/my_cl_user_doing">
-
-        <TextView
-            android:id="@+id/my_tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/pretendard_semibold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="닉네임"/>
-
-        <ImageView
-            android:id="@+id/my_iv_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit"
-            android:layout_marginStart="10dp"
-            app:layout_constraintStart_toEndOf="@id/my_tv_name"
-            app:layout_constraintTop_toTopOf="@id/my_tv_name"
-            app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/my_cl_user_doing"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/all_radius_13_white"
-        android:backgroundTint="@color/signature_1"
-        android:paddingVertical="18dp"
-        app:layout_constraintBottom_toBottomOf="@id/my_view_top"
-        app:layout_constraintTop_toBottomOf="@id/my_view_top"
-        app:layout_constraintEnd_toEndOf="@id/gl_end"
-        app:layout_constraintStart_toStartOf="@id/gl_start">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/my_cl_evaluate_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/view_evaluate_center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <TextView
-                android:id="@+id/tv_count_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/detail_evaluation_count"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="@id/tv_evaluate_count"
-                app:layout_constraintEnd_toEndOf="@id/tv_evaluate_count"
-                app:layout_constraintBottom_toTopOf="@id/tv_evaluate_count"/>
-
-            <TextView
-                android:id="@+id/tv_evaluate_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/pretendard_bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="100개"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:id="@+id/view_evaluate_center"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:background="@color/white"
-            app:layout_constraintTop_toTopOf="@id/my_cl_evaluate_count"
-            app:layout_constraintBottom_toBottomOf="@id/my_cl_evaluate_count"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginHorizontal="65dp"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_evaluate_grade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/view_evaluate_center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/tv_grade_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/detail_evaluation_grade"
-                app:layout_constraintStart_toStartOf="@id/tv_evaluate_grade"
-                app:layout_constraintEnd_toEndOf="@id/tv_evaluate_grade"
-                app:layout_constraintBottom_toTopOf="@id/tv_evaluate_grade"/>
-
-            <TextView
-                android:id="@+id/tv_evaluate_grade"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:fontFamily="@font/pretendard_bold"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="1.9"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.kust.kustaurant.presentation.ui.mypage.MyPageViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/my_cl_user_doing"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_bottom_start"
+            android:id="@+id/gl_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.05"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_bottom_end"
+            android:id="@+id/gl_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95"/>
 
-        <TextView
-            android:id="@+id/my_tv_save"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintTop_toTopOf="parent"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="저장된 맛집"/>
-
         <View
-            android:id="@+id/my_view_community_comment_top"
+            android:id="@+id/my_view_top"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintTop_toBottomOf="@id/my_tv_save"/>
+            android:layout_height="0dp"
+            android:background="@color/signature_2"
+            app:layout_constraintDimensionRatio="360:228"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/my_tv_community_comment"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/my_cv_user"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.217"
+            app:layout_constraintDimensionRatio="1:1"
+            app:cardCornerRadius="100dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@id/my_cl_user_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/my_iv_user"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/my_cl_user_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@id/my_cl_user_doing">
+
+            <TextView
+                android:id="@+id/my_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/pretendard_semibold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text='@{viewModel.myPageData.nickname != null ? viewModel.myPageData.nickname : "로그인 후 이용해주세요"}' />
+
+
+            <ImageView
+                android:id="@+id/my_iv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_edit"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@id/my_tv_name"
+                app:layout_constraintTop_toTopOf="@id/my_tv_name"
+                app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
+
+            <ImageView
+                android:id="@+id/my_iv_log_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_go_log_in"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/my_tv_name"
+                app:layout_constraintTop_toTopOf="@id/my_tv_name"
+                app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/my_cl_user_doing"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintTop_toBottomOf="@id/my_view_community_comment_top"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="커뮤니티 댓글 단 글"/>
+            android:background="@drawable/all_radius_13_white"
+            android:backgroundTint="@color/signature_1"
+            android:paddingVertical="18dp"
+            android:elevation="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/my_view_top"
+            app:layout_constraintTop_toBottomOf="@id/my_view_top"
+            app:layout_constraintEnd_toEndOf="@id/gl_end"
+            app:layout_constraintStart_toStartOf="@id/gl_start">
 
-        <View
-            android:id="@+id/my_view_community_scrap_top"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/my_cl_evaluate_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/view_evaluate_center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_count_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="내 평가"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tv_evaluate_count"/>
+
+                <TextView
+                    android:id="@+id/tv_evaluate_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/pretendard_bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text='@{viewModel.myPageData.evaluationCount != 0 ? String.valueOf(viewModel.myPageData.evaluationCount) : "-"}' />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view_evaluate_center"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                app:layout_constraintTop_toTopOf="@id/my_cl_evaluate_count"
+                app:layout_constraintBottom_toBottomOf="@id/my_cl_evaluate_count"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginHorizontal="65dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/my_cl_post_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/view_evaluate_center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_grade_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="내 게시글"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tv_post_count"/>
+
+                <TextView
+                    android:id="@+id/tv_post_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text='@{viewModel.myPageData.favoriteCount != 0 ? String.valueOf(viewModel.myPageData.favoriteCount) : "-"}' />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintTop_toBottomOf="@id/my_tv_community_comment"/>
-
-        <TextView
-            android:id="@+id/my_tv_community_scrap"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintTop_toBottomOf="@id/my_view_community_scrap_top"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="커뮤니티 스크랩"/>
+            app:layout_constraintTop_toBottomOf="@id/my_cl_user_doing"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <View
-            android:id="@+id/my_view_opinion_top"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintTop_toBottomOf="@id/my_tv_community_scrap"/>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_bottom_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05"/>
 
-        <TextView
-            android:id="@+id/my_tv_opinion"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintTop_toBottomOf="@id/my_view_opinion_top"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="의견 보내기"/>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_bottom_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95"/>
 
-        <View
-            android:id="@+id/my_view_owner_certificate"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintTop_toBottomOf="@id/my_tv_opinion"/>
+            <TextView
+                android:id="@+id/my_tv_save"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:paddingVertical="14dp"
+                android:text="저장된 맛집"/>
 
-        <TextView
-            android:id="@+id/my_tv_owner_certificate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintTop_toBottomOf="@id/my_view_owner_certificate"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="점주 인증하기"/>
+            <View
+                android:id="@+id/my_view_community_comment_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cement_3"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_save"/>
 
-        <View
-            android:id="@+id/my_view_fix_alliance_top"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintTop_toBottomOf="@id/my_tv_owner_certificate"/>
+            <TextView
+                android:id="@+id/my_tv_community_comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                app:layout_constraintTop_toBottomOf="@id/my_view_community_comment_top"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:paddingVertical="14dp"
+                android:text="커뮤니티 댓글 단 글"/>
 
-        <TextView
-            android:id="@+id/my_tv_fix_alliance"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintTop_toBottomOf="@id/my_view_fix_alliance_top"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="제휴 정보 수정하기"/>
+            <View
+                android:id="@+id/my_view_community_scrap_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cement_3"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_community_comment"/>
 
-        <View
-            android:id="@+id/my_view_notification_top"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintTop_toBottomOf="@id/my_tv_fix_alliance"/>
+            <TextView
+                android:id="@+id/my_tv_community_scrap"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                app:layout_constraintTop_toBottomOf="@id/my_view_community_scrap_top"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:paddingVertical="14dp"
+                android:text="커뮤니티 스크랩"/>
 
-        <TextView
-            android:id="@+id/my_tv_notification"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintTop_toBottomOf="@id/my_view_notification_top"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="공지사항"/>
+            <View
+                android:id="@+id/my_view_opinion_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cement_3"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_community_scrap"/>
 
-        <View
-            android:id="@+id/my_view_log_out_top"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cement_3"
-            app:layout_constraintTop_toBottomOf="@id/my_tv_notification"/>
+            <TextView
+                android:id="@+id/my_tv_opinion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                app:layout_constraintTop_toBottomOf="@id/my_view_opinion_top"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:paddingVertical="14dp"
+                android:text="의견 보내기"/>
 
-        <TextView
-            android:id="@+id/my_tv_log_out"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-            app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-            app:layout_constraintTop_toBottomOf="@id/my_view_log_out_top"
-            android:fontFamily="@font/pretendard_regular"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:paddingVertical="14dp"
-            android:text="로그아웃"/>
+            <View
+                android:id="@+id/my_view_owner_certificate"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cement_3"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_opinion"/>
+
+            <TextView
+                android:id="@+id/my_tv_owner_certificate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                app:layout_constraintTop_toBottomOf="@id/my_view_owner_certificate"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:paddingVertical="14dp"
+                android:text="점주 인증하기"/>
+
+            <View
+                android:id="@+id/my_view_fix_alliance_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cement_3"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_owner_certificate"/>
+
+            <TextView
+                android:id="@+id/my_tv_fix_alliance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                app:layout_constraintTop_toBottomOf="@id/my_view_fix_alliance_top"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:paddingVertical="14dp"
+                android:text="제휴 정보 수정하기"/>
+
+            <View
+                android:id="@+id/my_view_notification_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cement_3"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_fix_alliance"/>
+
+            <TextView
+                android:id="@+id/my_tv_notification"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                app:layout_constraintTop_toBottomOf="@id/my_view_notification_top"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:paddingVertical="14dp"
+                android:text="공지사항"/>
+
+            <View
+                android:id="@+id/my_view_log_out_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cement_3"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_notification"/>
+
+            <TextView
+                android:id="@+id/my_tv_log_out"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintTop_toBottomOf="@id/my_view_log_out_top"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:paddingVertical="14dp"
+                android:text="로그아웃"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,6 +1,7 @@
 package com.kust.kustaurant.presentation.ui.tier
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,6 +20,7 @@ import com.kust.kustaurant.domain.model.TierRestaurant
 import com.kust.kustaurant.data.model.TierMapData
 import com.kust.kustaurant.databinding.FragmentTierMapBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
@@ -145,6 +148,13 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 else -> R.drawable.ic_rank_all
             }
             tierImageView.setImageResource(tierImageResource)
+            tierBottomSheet.findViewById<ConstraintLayout>(R.id.tier_cl_content).setOnClickListener {
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra("restaurantId", tierRestaurant.restaurantId)
+                startActivity(intent)
+            }
+
+
         }
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }

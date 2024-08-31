@@ -61,26 +61,24 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/btn_alarm"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="4dp"
-                    android:src="@drawable/ic_alarm"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/alarm_btn_info" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/btn_alarm"-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:src="@drawable/ic_alarm"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    android:contentDescription="@string/alarm_btn_info" />-->
 
                 <ImageView
                     android:id="@+id/btn_search"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="10dp"
                     android:src="@drawable/ic_search"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_alarm"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:contentDescription="@string/search_btn_info" />
             </androidx.constraintlayout.widget.ConstraintLayout>
