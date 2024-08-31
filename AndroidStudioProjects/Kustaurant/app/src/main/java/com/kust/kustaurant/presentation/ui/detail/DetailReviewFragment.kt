@@ -95,11 +95,11 @@ class DetailReviewFragment : Fragment() {
                 binding.detailBtnRecent.visibility = View.GONE
                 binding.detailBtnPopular.visibility = View.GONE
                 binding.detailClReviewNone.visibility = View.VISIBLE
+            } else {
+                reviewAdapter.submitList(commentData)
+                Log.d("commentData", commentData.toString())
+                setRecyclerViewHeight()
             }
-            reviewAdapter.submitList(commentData.toList())
-            reviewAdapter.notifyDataSetChanged()
-            Log.d("commentData", commentData.toString())
-            setRecyclerViewHeight()
         }
     }
 
@@ -139,18 +139,15 @@ class DetailReviewFragment : Fragment() {
                 }
             }
 
-            override fun onLikeClicked(commentId: Int) {
+            override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId)
-                    // 여기에 lottie animation?
-                    viewModel.loadCommentData(restaurantId, popularity)
+                    viewModel.postCommentLike(restaurantId, commentId, position)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int) {
                 checkToken{
                     viewModel.postCommentDisLike(restaurantId, commentId)
-                    viewModel.loadCommentData(restaurantId, popularity)
                 }
             }
         })
@@ -172,17 +169,15 @@ class DetailReviewFragment : Fragment() {
                 }
             }
 
-            override fun onLikeClicked(commentId: Int) {
+            override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId)
-                    viewModel.loadCommentData(restaurantId, popularity)
+                    viewModel.postCommentLike(restaurantId, commentId, position)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int) {
                 checkToken{
                     viewModel.postCommentDisLike(restaurantId, commentId)
-                    viewModel.loadCommentData(restaurantId, popularity)
                 }
             }
         }

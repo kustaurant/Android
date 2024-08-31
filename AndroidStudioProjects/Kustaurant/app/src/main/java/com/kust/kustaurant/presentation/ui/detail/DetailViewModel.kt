@@ -66,6 +66,9 @@ class DetailViewModel @Inject constructor(
     private val _pEvaluationData = MutableLiveData<DetailDataResponse>()
     val pEvaluationData: LiveData<DetailDataResponse> = _pEvaluationData
 
+    private val _itemUpdateIndex = MutableLiveData<Int>()
+    val itemUpdateIndex: LiveData<Int> = _itemUpdateIndex
+
     val evaluationComplete = MutableLiveData<Boolean>()
 
     fun loadDetailData(restaurantId : Int) {
@@ -168,9 +171,15 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun postCommentLike(restaurantId: Int, comment: Int){
+    fun postCommentLike(restaurantId: Int, commentId: Int, position: Int){
         viewModelScope.launch {
-            postCommentLikeUseCase(restaurantId, comment)
+            try {
+                val response = postCommentLikeUseCase(restaurantId, commentId)
+                updateLocalCommentData(response)
+                _itemUpdateIndex.postValue(position)
+            } catch (e: Exception) {
+                Log.e("DetailViewModel", "Failed to post comment like", e)
+            }
         }
     }
 
@@ -178,5 +187,12 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             postCommentDisLikeUseCase(restaurantId, comment)
         }
+    }
+
+    private fun updateLocalCommentData(updatedComment: CommentDataResponse) {
+        val updatedReviews = _reviewData.value?.map { comment ->
+            if (comment.commentId == updatedComment.commentId) updatedComment else comment
+        }
+        _reviewData.postValue(updatedReviews!!)
     }
 }
