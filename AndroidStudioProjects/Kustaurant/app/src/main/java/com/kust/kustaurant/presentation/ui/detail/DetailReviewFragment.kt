@@ -19,8 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
+import com.kust.kustaurant.presentation.ui.splash.StartActivity
 
 class DetailReviewFragment : Fragment() {
     lateinit var binding : FragmentDetailReviewBinding
@@ -61,6 +63,16 @@ class DetailReviewFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    fun checkToken(action: () -> Unit) {
+        val accessToken = getAccessToken(requireContext())
+        if (accessToken == null) {
+            val intent = Intent(context, StartActivity::class.java)
+            startActivity(intent)
+        } else {
+            action()
+        }
     }
 
     private fun updateButton(selectedView: View?) {
@@ -106,54 +118,72 @@ class DetailReviewFragment : Fragment() {
 
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
             override fun onReportClicked(commentId: Int) {
-                val intent = Intent(context, ReportActivity::class.java)
-                intent.putExtra("commentId", commentId)
-                startActivity(intent)
+                checkToken{
+                    val intent = Intent(context, ReportActivity::class.java)
+                    intent.putExtra("commentId", commentId)
+                    startActivity(intent)
+                }
             }
 
             override fun onDeleteClicked(commentId: Int) {
-                viewModel.deleteCommentData(restaurantId, commentId)
-                Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                viewModel.loadCommentData(restaurantId, popularity)
+                checkToken{
+                    viewModel.deleteCommentData(restaurantId, commentId)
+                    Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    viewModel.loadCommentData(restaurantId, popularity)
+                }
             }
 
             override fun onCommentClicked(commentId: Int) {
-                showBottomSheetInput(commentId)
+                checkToken{
+                    showBottomSheetInput(commentId)
+                }
             }
 
             override fun onLikeClicked(commentId: Int) {
-                viewModel.postCommentLike(restaurantId, commentId)
-                // 여기에 lottie animation?
-                viewModel.loadCommentData(restaurantId, popularity)
+                checkToken{
+                    viewModel.postCommentLike(restaurantId, commentId)
+                    // 여기에 lottie animation?
+                    viewModel.loadCommentData(restaurantId, popularity)
+                }
             }
 
             override fun onDisLikeClicked(commentId: Int) {
-                viewModel.postCommentDisLike(restaurantId, commentId)
-                viewModel.loadCommentData(restaurantId, popularity)
+                checkToken{
+                    viewModel.postCommentDisLike(restaurantId, commentId)
+                    viewModel.loadCommentData(restaurantId, popularity)
+                }
             }
         })
 
         reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener{
             override fun onReportClicked(commentId: Int) {
-                val intent = Intent(context, ReportActivity::class.java)
-                intent.putExtra("commentId", commentId)
-                startActivity(intent)
+                checkToken{
+                    val intent = Intent(context, ReportActivity::class.java)
+                    intent.putExtra("commentId", commentId)
+                    startActivity(intent)
+                }
             }
 
             override fun onDeleteClicked(commentId: Int) {
-                viewModel.deleteCommentData(restaurantId, commentId)
-                Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                viewModel.loadCommentData(restaurantId, popularity)
+                checkToken{
+                    viewModel.deleteCommentData(restaurantId, commentId)
+                    Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    viewModel.loadCommentData(restaurantId, popularity)
+                }
             }
 
             override fun onLikeClicked(commentId: Int) {
-                viewModel.postCommentLike(restaurantId, commentId)
-                viewModel.loadCommentData(restaurantId, popularity)
+                checkToken{
+                    viewModel.postCommentLike(restaurantId, commentId)
+                    viewModel.loadCommentData(restaurantId, popularity)
+                }
             }
 
             override fun onDisLikeClicked(commentId: Int) {
-                viewModel.postCommentDisLike(restaurantId, commentId)
-                viewModel.loadCommentData(restaurantId, popularity)
+                checkToken{
+                    viewModel.postCommentDisLike(restaurantId, commentId)
+                    viewModel.loadCommentData(restaurantId, popularity)
+                }
             }
         }
     }
