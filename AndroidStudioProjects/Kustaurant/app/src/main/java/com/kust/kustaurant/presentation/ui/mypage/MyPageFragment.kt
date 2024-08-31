@@ -76,13 +76,15 @@ class MyPageFragment : Fragment() {
         val buttonActions = mapOf(
             binding.myClEvaluateCount to MyEvaluateActivity::class.java,
             binding.myClPostCount to MyPostActivity::class.java,
-            binding.myIvEdit to MyEditActivity::class.java,
-            binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
-            binding.myTvFixAlliance to MyFixAllActivity::class.java,
+            binding.myClUserInfo to MyEditActivity::class.java,
             binding.myTvSave to MySaveActivity::class.java,
             binding.myTvCommunityComment to MyCommentActivity::class.java,
             binding.myTvCommunityScrap to MyScrapActivity::class.java,
+            binding.myTvTermsUse to MyTermsUseActivity::class.java,
             binding.myTvOpinion to MyOpinionActivity::class.java,
+            binding.myTvNotification to MyNotificationActivity::class.java,
+            binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
+            binding.myTvFixAlliance to MyFixAllActivity::class.java,
             binding.myTvLogOut to null
         )
 
@@ -103,6 +105,8 @@ class MyPageFragment : Fragment() {
             binding.myTvOwnerCertificate,
             binding.myTvFixAlliance,
             binding.myTvSave,
+            binding.myTvTermsUse,
+            binding.myTvPrivatePolicy,
             binding.myTvCommunityComment,
             binding.myTvCommunityScrap,
             binding.myTvOpinion,

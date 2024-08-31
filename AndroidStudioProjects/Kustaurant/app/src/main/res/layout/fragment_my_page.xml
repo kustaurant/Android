@@ -231,6 +231,7 @@
                     android:id="@+id/my_tv_save"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
                     app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
                     app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
                     app:layout_constraintTop_toTopOf="parent"
@@ -281,11 +282,31 @@
                     android:text="커뮤니티 스크랩"/>
 
                 <View
+                    android:id="@+id/my_view_terms_use_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@color/cement_3"
+                    app:layout_constraintTop_toBottomOf="@id/my_tv_community_scrap"/>
+
+                <TextView
+                    android:id="@+id/my_tv_terms_use"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                    app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                    app:layout_constraintTop_toBottomOf="@id/my_view_terms_use_top"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:paddingVertical="14dp"
+                    android:text="이용약관"/>
+
+                <View
                     android:id="@+id/my_view_opinion_top"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/cement_3"
-                    app:layout_constraintTop_toBottomOf="@id/my_tv_community_scrap"/>
+                    app:layout_constraintTop_toBottomOf="@id/my_tv_terms_use"/>
 
                 <TextView
                     android:id="@+id/my_tv_opinion"
@@ -301,11 +322,51 @@
                     android:text="의견 보내기"/>
 
                 <View
-                    android:id="@+id/my_view_owner_certificate"
+                    android:id="@+id/my_view_notification_top"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/cement_3"
                     app:layout_constraintTop_toBottomOf="@id/my_tv_opinion"/>
+
+                <TextView
+                    android:id="@+id/my_tv_notification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                    app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                    app:layout_constraintTop_toBottomOf="@id/my_view_notification_top"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:paddingVertical="14dp"
+                    android:text="공지사항"/>
+
+                <View
+                    android:id="@+id/my_view_private_policy_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/cement_3"
+                    app:layout_constraintTop_toBottomOf="@id/my_tv_notification"/>
+
+                <TextView
+                    android:id="@+id/my_tv_private_policy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                    app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                    app:layout_constraintTop_toBottomOf="@id/my_view_private_policy_top"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:paddingVertical="14dp"
+                    android:text="개인정보처리방침"/>
+
+                <View
+                    android:id="@+id/my_view_owner_certificate"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@color/cement_3"
+                    app:layout_constraintTop_toBottomOf="@id/my_tv_private_policy"/>
 
                 <TextView
                     android:id="@+id/my_tv_owner_certificate"
@@ -340,32 +401,13 @@
                     android:paddingVertical="14dp"
                     android:text="제휴 정보 수정하기"/>
 
-                <View
-                    android:id="@+id/my_view_notification_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/cement_3"
-                    app:layout_constraintTop_toBottomOf="@id/my_tv_fix_alliance"/>
-
-                <TextView
-                    android:id="@+id/my_tv_notification"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
-                    app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
-                    app:layout_constraintTop_toBottomOf="@id/my_view_notification_top"
-                    android:fontFamily="@font/pretendard_regular"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:paddingVertical="14dp"
-                    android:text="공지사항"/>
 
                 <View
                     android:id="@+id/my_view_log_out_top"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="20dp"
                     android:background="@color/cement_3"
-                    app:layout_constraintTop_toBottomOf="@id/my_tv_notification"/>
+                    app:layout_constraintTop_toBottomOf="@id/my_tv_fix_alliance"/>
 
                 <TextView
                     android:id="@+id/my_tv_log_out"
@@ -379,6 +421,33 @@
                     android:textColor="@color/black"
                     android:paddingVertical="14dp"
                     android:text="로그아웃"/>
+
+                <View
+                    android:id="@+id/my_view_withdrawal_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/cement_3"
+                    app:layout_constraintTop_toBottomOf="@id/my_tv_log_out"/>
+
+                <TextView
+                    android:id="@+id/my_tv_withdrawal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                    app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                    app:layout_constraintTop_toBottomOf="@id/my_view_withdrawal_top"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:paddingVertical="14dp"
+                    android:text="회원탈퇴"/>
+
+                <View
+                    android:id="@+id/my_view_withdrawal_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="33dp"
+                    android:background="@color/cement_3"
+                    app:layout_constraintTop_toBottomOf="@id/my_tv_withdrawal"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
