@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.kust.kustaurant.presentation.ui.community.CommunityViewModel" />
@@ -43,12 +44,14 @@
             <!-- 게시판 선택 드롭다운 -->
             <Spinner
                 android:id="@+id/community_spinner_board"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:background="@drawable/item_community_spinner_background"
+                android:spinnerMode="dropdown"
+                android:paddingEnd="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:spinnerMode="dropdown" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ToggleButton
                 android:id="@+id/community_toggle_lastest_sort"
@@ -91,8 +94,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/community_gl_start"
             app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+            app:layout_constraintStart_toStartOf="@id/community_gl_start"
             app:layout_constraintTop_toBottomOf="@id/community_middle_bar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,7 +109,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@layout/item_community" />
+                    tools:listitem="@layout/item_community_post" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

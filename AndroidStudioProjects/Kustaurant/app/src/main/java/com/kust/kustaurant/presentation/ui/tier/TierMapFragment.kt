@@ -85,6 +85,8 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(map: NaverMap) {
         naverMap = map
+        naverMap.uiSettings.isZoomControlEnabled = false
+
         val cameraUpdate = CameraUpdate.scrollTo(LatLng(37.5407, 127.0738))
         naverMap.moveCamera(cameraUpdate)
 
@@ -155,6 +157,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateMap(mapData: TierMapData) {
         clearOverlaysAndMarkers()
+
         mapData.solidLines.forEach { line ->
             if (line.isNotEmpty()) {
                 val polyline = PolylineOverlay().apply {

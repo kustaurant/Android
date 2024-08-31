@@ -10,11 +10,20 @@ import javax.inject.Inject
 class TierRepositoryImpl @Inject constructor(
     private val kustaurantApi: KustaurantApi
 ) : TierRepository {
-    override suspend fun getRestaurantList(cuisines: String, situations: String, locations: String): List<RestaurantResponse> {
-        return kustaurantApi.getRestaurantList(cuisines, situations, locations)
+    override suspend fun getRestaurantList(
+        cuisines: String,
+        situations: String,
+        locations: String,
+        page: Int
+    ): List<RestaurantResponse> {
+        return kustaurantApi.getRestaurantList(cuisines, situations, locations, page)
     }
 
-    override suspend fun getRestaurantMapList(cuisines: String, situations: String, locations: String): TierMapData {
+    override suspend fun getRestaurantMapList(
+        cuisines: String,
+        situations: String,
+        locations: String
+    ): TierMapData {
         return kustaurantApi.getTierMapList(cuisines, situations, locations).toTierMapData()
     }
 }

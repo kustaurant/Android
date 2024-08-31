@@ -14,6 +14,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentTierBinding
 import com.google.android.material.tabs.TabLayout
+import com.kust.kustaurant.MainActivity
+import com.kust.kustaurant.presentation.ui.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TierFragment : Fragment() {
@@ -118,12 +120,18 @@ class TierFragment : Fragment() {
         categories.forEach { category ->
             val textView = TextView(context).apply {
                 text = category
-                setPadding(16, 4, 16, 4) // paddingLeft, paddingTop, paddingRight, paddingBottom
-                background = ContextCompat.getDrawable(context, R.drawable.btn_tier_catetory_selected)
                 setTextColor(ContextCompat.getColor(context, R.color.signature_1))
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-                minWidth = 0
-                minHeight = 0
+                background = ContextCompat.getDrawable(context, R.drawable.btn_tier_catetory_selected)
+
+                val paddingHorizontal = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 13f, resources.displayMetrics
+                ).toInt()
+                val paddingVertical = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 4f, resources.displayMetrics
+                ).toInt()
+                setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
+
                 layoutParams = ViewGroup.MarginLayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -143,8 +151,11 @@ class TierFragment : Fragment() {
         binding.tierViewPager.visibility = View.VISIBLE
         binding.tierTabLayout.visibility = View.VISIBLE
         binding.tierClMiddleBar.visibility = View.VISIBLE
-        pagerAdapter.refreshAllFragments()
+        binding.tierViewPager.post {
+            pagerAdapter.refreshAllFragments()
+        }
     }
+
 
     private fun hideMainContent() {
         binding.tierViewPager.visibility = View.GONE
@@ -164,7 +175,12 @@ class TierFragment : Fragment() {
                 showMainContent()
                 parentFragmentManager.popBackStack()
             } else {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+                (requireActivity() as? MainActivity)?.let { mainActivity ->
+                    mainActivity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_frm, HomeFragment())
+                        .commit()
+                    mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_home
+                }
             }
         }
     }

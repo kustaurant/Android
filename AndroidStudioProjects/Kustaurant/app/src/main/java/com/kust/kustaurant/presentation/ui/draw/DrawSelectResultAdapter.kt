@@ -1,6 +1,7 @@
 package com.kust.kustaurant.presentation.ui.draw
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,8 @@ class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestauran
     private var highlightedPosition: Int = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_draw_select_result_img, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_draw_select_result_img, parent, false)
         return RestaurantViewHolder(view, parent.context)
     }
 
@@ -38,12 +40,13 @@ class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestauran
             }
             holder.imageView.background = drawable
             holder.imageView.setPadding(2)
+            //holder.setHighlighted()
         } else {
             holder.imageView.background = null
             holder.imageView.setPadding(0, 0, 0, 0)
         }
     }
-
+ 
     fun highlightItem(position: Int) {
         val previousHighlightedPosition = highlightedPosition
         highlightedPosition = position
@@ -53,14 +56,16 @@ class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestauran
 
     override fun getItemCount() = restaurants.size
 
-    class RestaurantViewHolder(itemView: View, val context: Context) : RecyclerView.ViewHolder(itemView) {
+    class RestaurantViewHolder(itemView: View, val context: Context) :
+        RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.draw_iv_image_Restaurant)
 
         fun bind(restaurant: DrawRestaurantData) {
             Glide.with(context)
                 .load(restaurant.restaurantImgUrl)
-                .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(30))) // Apply Glide transformations for rounding corners
+                .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(30)))
                 .into(imageView)
+
         }
     }
 }

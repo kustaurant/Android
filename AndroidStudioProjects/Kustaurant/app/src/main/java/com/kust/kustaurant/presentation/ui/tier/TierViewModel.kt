@@ -1,6 +1,5 @@
 package com.kust.kustaurant.presentation.ui.tier
 
-import android.text.Html
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,7 +45,12 @@ class TierViewModel @Inject constructor(
     val selectedCategories: LiveData<Set<String>> = _selectedCategories
 
     //사용자 입력 카테고리가 변경됐는지 여부
-    private val _isSelectedCategoriesChanged = MutableLiveData<Boolean>(false)
+    private val _isSelectedCategoriesChanged = MutableLiveData<Boolean>(true)
+    val isSelectedCategoriesChanged: Boolean
+        get() = _isSelectedCategoriesChanged.value ?: false
+
+    //음식점 리스트 페이지를 관리하는 변수
+    private var tierListPage = 1
 
     init {
         loadRestaurantList(setOf("ALL"), setOf("ALL"), setOf("ALL"))
@@ -61,7 +65,8 @@ class TierViewModel @Inject constructor(
             val tierListData = getTierRestaurantListUseCase(
                 CategoryIdMapper.mapMenus(menus),
                 CategoryIdMapper.mapSituations(situations),
-                CategoryIdMapper.mapLocations(locations)
+                CategoryIdMapper.mapLocations(locations),
+                tierListPage++
             )
 
             _tierRestaurantList.value = tierListData.map {
@@ -83,7 +88,6 @@ class TierViewModel @Inject constructor(
             }
         }
     }
-
 
     private fun loadRestaurantMap(menus: Set<String>, situations: Set<String>, locations: Set<String>) {
         viewModelScope.launch {
@@ -122,11 +126,16 @@ class TierViewModel @Inject constructor(
     }
 
     fun applyFilters(menus: Set<String>, situations: Set<String>, locations: Set<String>, tabIndex : Int) {
+        if (hasFilterChanged(menus, situations, locations)) {
+            tierListPage = 1
+            setIsSelectedCategoriesChanged(true)
+        }
+        else
+            setIsSelectedCategoriesChanged(false)
+
         setSelectedTypes(menus)
         setSelectedSituations(situations)
         setSelectedLocations(locations)
-
-        setIsSelectedCategoriesChanged(true)
 
         val selectedTypesValue = selectedMenus.value ?: emptySet()
         val selectedSelectedSituations = selectedSituations.value ?: emptySet()

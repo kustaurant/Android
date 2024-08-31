@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
-import com.kust.kustaurant.presentation.ui.tier.TierListAdapter.Companion.diffUtil
 
 class DetailReviewAdapter(private val context: Context): ListAdapter<CommentDataResponse, DetailReviewAdapter.ViewHolder>(diffUtil) {
 

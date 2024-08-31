@@ -128,7 +128,6 @@ class TierCategoryFragment : Fragment() {
         val selectedType = getSelectedTogglesText(binding.tierToggleTypeGroup)
         val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
         val selectedLocation = getSelectedTogglesText(binding.tierToggleLocationGroup)
-
         val hasChanges = viewModel.hasFilterChanged(selectedType, selectedSituation, selectedLocation)
         val isAnyGroupSelected = selectedType.isNotEmpty() && selectedSituation.isNotEmpty() && selectedLocation.isNotEmpty()
 
@@ -141,7 +140,6 @@ class TierCategoryFragment : Fragment() {
             binding.tierBtnApply.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
         }
     }
-
 
     private fun applyFilters() {
         val selectedType = getSelectedTogglesText(binding.tierToggleTypeGroup)
@@ -195,16 +193,14 @@ class TierCategoryFragment : Fragment() {
             Log.e("TierCategoryFragment", "parentFragment is null")
         }
     }
+
     private fun showPopup() {
-        // 팝업창을 위한 Dialog 생성
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.popup_tier)
 
-        // Dialog의 배경을 투명하게 설정
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        // 텍스트뷰 가져오기
         val tierInfoDescriptionTextView = dialog.findViewById<TextView>(R.id.tier_popup_description)
 
         // HTML 태그를 사용하여 텍스트의 일부 색상을 변경
@@ -216,22 +212,15 @@ class TierCategoryFragment : Fragment() {
 
         tierInfoDescriptionTextView.text = Html.fromHtml(htmlText)
 
-        // Dialog 크기와 위치 설정
         dialog.window?.setLayout(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-
         dialog.window?.setGravity(Gravity.CENTER)
-
-        // Dialog를 표시
         dialog.show()
-
-        // Dialog 외부를 터치하면 닫히도록 설정
         dialog.setCanceledOnTouchOutside(true)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
