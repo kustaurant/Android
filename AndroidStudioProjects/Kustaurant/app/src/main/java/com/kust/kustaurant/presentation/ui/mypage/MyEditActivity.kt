@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyEditBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,9 +31,24 @@ class MyEditActivity : AppCompatActivity() {
 
         viewModel.loadMyProfileData()
 
+        observeViewModel()
         initBack()
         setEditChanged()
         patchInfo()
+    }
+
+    private fun observeViewModel() {
+        viewModel.updateSuccess.observe(this, Observer { success ->
+            if (success) {
+                finish()
+            }
+        })
+
+        viewModel.toastMessage.observe(this, Observer { message ->
+            if (message != null) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setEditChanged() {
@@ -79,7 +95,6 @@ class MyEditActivity : AppCompatActivity() {
                 binding.editEtEmail.text.toString(),
                 binding.editEtPhone.text.toString()
             )
-            Toast.makeText(this, "프로필 정보 변경이 완료되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 

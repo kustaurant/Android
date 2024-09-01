@@ -24,7 +24,7 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
     interface OnItemClickListener {
         fun onReportClicked(commentId: Int)
         fun onDeleteClicked(commentId: Int)
-        fun onLikeClicked(commentId: Int)
+        fun onLikeClicked(commentId: Int, position: Int)
         fun onDisLikeClicked(commentId: Int)
     }
 
@@ -73,7 +73,7 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
             binding.tvHate.text = item.commentDislikeCount.toString()
             binding.tvReviewTime.text = item.commentTime
             binding.ivLike.setOnClickListener {
-                itemClickListener.onLikeClicked(item.commentId)
+                itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
             }
             binding.ivHate.setOnClickListener {
                 itemClickListener.onDisLikeClicked(item.commentId)

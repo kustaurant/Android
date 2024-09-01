@@ -95,11 +95,11 @@ class DetailReviewFragment : Fragment() {
                 binding.detailBtnRecent.visibility = View.GONE
                 binding.detailBtnPopular.visibility = View.GONE
                 binding.detailClReviewNone.visibility = View.VISIBLE
+            } else {
+                reviewAdapter.submitList(commentData)
+                Log.d("commentData", commentData.toString())
+                setRecyclerViewHeight()
             }
-            reviewAdapter.submitList(commentData.toList())
-            reviewAdapter.notifyDataSetChanged()
-            Log.d("commentData", commentData.toString())
-            setRecyclerViewHeight()
         }
     }
 
@@ -139,18 +139,15 @@ class DetailReviewFragment : Fragment() {
                 }
             }
 
-            override fun onLikeClicked(commentId: Int) {
+            override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId)
-                    // 여기에 lottie animation?
-                    viewModel.loadCommentData(restaurantId, popularity)
+                    viewModel.postCommentLike(restaurantId, commentId, position)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int) {
                 checkToken{
                     viewModel.postCommentDisLike(restaurantId, commentId)
-                    viewModel.loadCommentData(restaurantId, popularity)
                 }
             }
         })
@@ -169,20 +166,19 @@ class DetailReviewFragment : Fragment() {
                     viewModel.deleteCommentData(restaurantId, commentId)
                     Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     viewModel.loadCommentData(restaurantId, popularity)
+                    setRecyclerViewHeight()
                 }
             }
 
-            override fun onLikeClicked(commentId: Int) {
+            override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId)
-                    viewModel.loadCommentData(restaurantId, popularity)
+                    viewModel.postCommentLike(restaurantId, commentId, position)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int) {
                 checkToken{
                     viewModel.postCommentDisLike(restaurantId, commentId)
-                    viewModel.loadCommentData(restaurantId, popularity)
                 }
             }
         }
@@ -215,7 +211,7 @@ class DetailReviewFragment : Fragment() {
                 bottomSheetDialog.dismiss()
                 Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
                 viewModel.loadCommentData(restaurantId, popularity)
-                setRecyclerViewHeight()
+//                setRecyclerViewHeight()
             } else {
                 etInput.error = "텍스트를 입력해주세요"
                 Toast.makeText(requireContext(), "텍스트를 입력해주세요", Toast.LENGTH_SHORT).show()

@@ -1,116 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".presentation.ui.mypage.MyOpinionActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_info_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_info_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95"/>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.kust.kustaurant.presentation.ui.mypage.MyPageViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/opinion_cl_top_bar"
-        android:elevation="1dp"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="360:55"
-        app:layout_constraintEnd_toEndOf="@id/gl_info_end"
-        app:layout_constraintStart_toStartOf="@id/gl_info_start"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/opinion_tv_title"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_info_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_semibold"
-            android:gravity="center"
-            android:text="의견 보내기"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"/>
 
-        <ImageView
-            android:id="@+id/opinion_btn_back"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_info_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/back_btn_info"
-            android:src="@drawable/btn_back"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_opinion_edit"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="@id/gl_info_start"
-        app:layout_constraintEnd_toEndOf="@id/gl_info_end"
-        app:layout_constraintTop_toBottomOf="@id/opinion_cl_top_bar"
-        app:layout_constraintDimensionRatio="318:198"
-        android:paddingVertical="12dp"
-        android:paddingHorizontal="16dp"
-        android:background="@drawable/all_radius_13_white"
-        android:backgroundTint="@color/cement_3">
-
-        <EditText
-            android:id="@+id/et_opinion"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/opinion_cl_top_bar"
+            android:elevation="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:hint="어떤 피드백이든 감사합니다!"
-            android:textColorHint="@color/cement_4"
-            android:fontFamily="@font/pretendard_regular"
-            android:gravity="start"
-            android:textSize="13sp"
-            android:background="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintDimensionRatio="360:55"
+            app:layout_constraintEnd_toEndOf="@id/gl_info_end"
+            app:layout_constraintStart_toStartOf="@id/gl_info_start"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/opinion_tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:gravity="center"
+                android:text="의견 보내기"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/opinion_btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/back_btn_info"
+                android:src="@drawable/btn_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_opinion_edit"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="@id/gl_info_start"
+            app:layout_constraintEnd_toEndOf="@id/gl_info_end"
+            app:layout_constraintTop_toBottomOf="@id/opinion_cl_top_bar"
+            app:layout_constraintDimensionRatio="318:198"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="16dp"
+            android:background="@drawable/all_radius_13_white"
+            android:backgroundTint="@color/cement_3">
+
+            <EditText
+                android:id="@+id/et_opinion"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:hint="어떤 피드백이든 감사합니다!"
+                android:textColorHint="@color/cement_4"
+                android:fontFamily="@font/pretendard_regular"
+                android:gravity="start"
+                android:textSize="13sp"
+                android:background="@android:color/transparent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btn_submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_info_start"
+            app:layout_constraintEnd_toEndOf="@id/gl_info_end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/all_radius_50_cement3"
+            android:textColor="@color/cement_4">
+
+            <TextView
+                android:id="@+id/tv_submit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="제출하기"
+                android:fontFamily="@font/pretendard_semibold"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/cement_4"
+                android:paddingVertical="15dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/btn_submit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/gl_info_start"
-        app:layout_constraintEnd_toEndOf="@id/gl_info_end"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/all_radius_50_cement3"
-        android:textColor="@color/cement_4">
 
-        <TextView
-            android:id="@+id/tv_submit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="제출하기"
-            android:fontFamily="@font/pretendard_semibold"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="@color/cement_4"
-            android:paddingVertical="15dp"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
