@@ -19,8 +19,7 @@ import org.json.JSONObject
 
 class TokenAuthenticator(private val context: Context) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
-        // 400 또는 403 응답을 만료된 토큰으로 간주
-        if (response.code == 400 || response.code == 403) {
+        if (response.code == 401) {
             val token = getAccessToken(context)  // 기존 토큰 가져오기
             val newToken = refreshToken(token)  // 토큰 갱신 로직
             return if (newToken != null) {
@@ -29,33 +28,29 @@ class TokenAuthenticator(private val context: Context) : Authenticator {
                     .header("Authorization", "Bearer $newToken")
                     .build()
             } else {
-                null  // 갱신 실패 시 null 반환
+                null
             }
         }
         return null
     }
 
     private fun refreshToken(oldToken: String?): String? {
-        val refreshTokenRequest = Request.Builder()
-            .url("http://3.35.154.191:8080/api/v1/new-access-token")
-            .post(RequestBody.create("application/json".toMediaTypeOrNull(), ""))
-            .header("Authorization", oldToken ?: "")
-            .build()
-
-        val client = OkHttpClient()
         try {
+            val refreshTokenRequest = Request.Builder()
+                .url("http://3.35.154.191:8080/api/v1/new-access-token")
+                .post(RequestBody.create("application/json".toMediaTypeOrNull(), "{}"))
+                .header("Authorization", oldToken ?: "")
+                .build()
+
+            val client = OkHttpClient()
             val response = client.newCall(refreshTokenRequest).execute()
-            return if (response.isSuccessful) {
+            if (response.isSuccessful) {
                 val body = response.body?.string()
-                JSONObject(body).getString("accessToken")
-            } else {
-                Log.e("TokenAuthenticator", "Failed to refresh token: ${response.body?.string()}")
-                null
+                return JSONObject(body).getString("accessToken")  // 서버 응답 형식에 맞게 수정
             }
         } catch (e: Exception) {
-            Log.e("TokenAuthenticator", "Error during token refresh", e)
-            return null
+            Log.e("TokenAuthenticator", "Failed to refresh token: ${e.localizedMessage}")
         }
+        return null
     }
-
 }
