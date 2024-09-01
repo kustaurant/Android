@@ -27,7 +27,7 @@
         tools:text="자유게시판" />
 
     <TextView
-        android:id="@+id/community_tv_board_title"
+        android:id="@+id/community_tv_post_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -36,15 +36,13 @@
         android:maxWidth="226dp"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="@{restaurant.restaurantName}"
         android:textColor="@color/community_post_title"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/community_iv_board_img"
+        app:layout_constraintEnd_toStartOf="@id/community_iv_post_img"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/community_tv_category"
         tools:text="호야초밥 요즘 맛 변한 거 같다.." />
-
 
     <TextView
         android:id="@+id/community_tv_board_content"
@@ -58,9 +56,9 @@
         android:text="@{restaurant.restaurantName}"
         android:textColor="@color/community_post_title"
         android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@id/community_iv_board_img"
+        app:layout_constraintEnd_toStartOf="@id/community_iv_post_img"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/community_tv_board_title"
+        app:layout_constraintTop_toBottomOf="@id/community_tv_post_title"
         tools:text="원래는 맛있었는데 요즘 가면 전이랑 다른.." />
 
     <LinearLayout
@@ -81,6 +79,7 @@
             android:src="@drawable/ic_baby_cow" />
 
         <TextView
+            android:id="@+id/community_tv_user_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
@@ -95,10 +94,10 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
-            android:src="@drawable/ic_community_divider"
-            android:contentDescription="@string/community_post_img_info" />
+            android:src="@drawable/ic_community_divider" />
 
         <TextView
+            android:id="@+id/community_tv_created_date"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -118,11 +117,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
-            android:src="@drawable/ic_like_true" />
+            android:src="@drawable/ic_like" />
 
 
         <TextView
-            android:id="@+id/community_tv_board_like_cnt"
+            android:id="@+id/community_tv_post_like_cnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -139,7 +138,7 @@
 
 
         <TextView
-            android:id="@+id/community_tv_board_chat_cnt"
+            android:id="@+id/community_tv_post_chat_cnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -150,7 +149,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/community_iv_board_img"
+        android:id="@+id/community_iv_post_img"
         android:layout_width="74dp"
         android:layout_height="74dp"
         android:background="@drawable/square_round_background"

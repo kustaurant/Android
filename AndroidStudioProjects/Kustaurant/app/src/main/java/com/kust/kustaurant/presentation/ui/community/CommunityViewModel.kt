@@ -4,199 +4,116 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.data.model.TierMapData
-import com.kust.kustaurant.domain.model.TierRestaurant
-import com.kust.kustaurant.domain.usecase.tier.GetTierRestaurantListUseCase
-import com.kust.kustaurant.domain.usecase.tier.GetTierRestaurantMapUseCase
-import com.kust.kustaurant.presentation.util.CategoryIdMapper
+import com.kust.kustaurant.domain.model.CommunityPost
+import com.kust.kustaurant.domain.model.CommunityRanking
+import com.kust.kustaurant.domain.usecase.community.GetCommunityPostListUseCase
+import com.kust.kustaurant.domain.usecase.community.GetCommunityRankingListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CommunityViewModel @Inject constructor(
-    private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
-    private val getTierRestaurantMapUseCase: GetTierRestaurantMapUseCase
+    private val getCommunityPostListUseCase: GetCommunityPostListUseCase,
+    private val getCommunityRankingListUseCase: GetCommunityRankingListUseCase
 ) : ViewModel() {
-    private val _filterApplied = MutableLiveData<Boolean>()
-    val filterApplied: LiveData<Boolean> = _filterApplied
+    private val _postCategory = MutableLiveData<String>("all")
+    val postCategory: LiveData<String> = _postCategory
 
-    private val _isExpanded = MutableLiveData<Boolean>(false)
-    val isExpanded: LiveData<Boolean> = _isExpanded
+    private val _page = MutableLiveData<Int>(0)
+    val page: LiveData<Int> = _page
 
-    private val _tierRestaurantList = MutableLiveData<List<TierRestaurant>>()
-    val tierRestaurantList: LiveData<List<TierRestaurant>> = _tierRestaurantList
+    private val _sort = MutableLiveData<String>("recent")
+    val sort: LiveData<String> = _sort
 
-    private val _mapData = MutableLiveData<TierMapData>()
-    val mapData: LiveData<TierMapData> = _mapData
+    private val _communityPosts = MutableLiveData<List<CommunityPost>>()
+    val communityPosts: LiveData<List<CommunityPost>> = _communityPosts
 
-    private val _selectedMenus = MutableLiveData<Set<String>>(setOf("전체"))
-    val selectedMenus: LiveData<Set<String>> = _selectedMenus
+    private val _communityRanking = MutableLiveData<List<CommunityRanking>>()
+    val communityRanking: LiveData<List<CommunityRanking>> = _communityRanking
 
-    private val _selectedSituations = MutableLiveData<Set<String>>(setOf("전체"))
-    val selectedSituations: LiveData<Set<String>> = _selectedSituations
+    private var isLastPage = false
 
-    private val _selectedLocations = MutableLiveData<Set<String>>(setOf("전체"))
-    val selectedLocations: LiveData<Set<String>> = _selectedLocations
-
-    //티어 프래그먼트에서 보여줄 카테고리들
-    private val _selectedCategories = MutableLiveData<Set<String>>()
-    val selectedCategories: LiveData<Set<String>> = _selectedCategories
-
-    //사용자 입력 카테고리가 변경됐는지 여부
-    private val _isSelectedCategoriesChanged = MutableLiveData<Boolean>(false)
+    private val _rankingSortType = MutableLiveData<String>("")
+    val rankingSortType: LiveData<String> = _rankingSortType
 
     init {
-        loadRestaurantList(setOf("ALL"), setOf("ALL"), setOf("ALL"))
+        loadCommunityPosts("all", 0, "recent")
     }
 
-    fun toggleExpand() {
-        _isExpanded.value = _isExpanded.value?.not()
-    }
+    fun loadCommunityPosts(postCategory: String, currentPage: Int, sort: String) {
+        if (isLastPage) return
 
-    private fun loadRestaurantList(menus:  Set<String>, situations:  Set<String>, locations:  Set<String>) {
         viewModelScope.launch {
-            val tierListData = getTierRestaurantListUseCase(
-                CategoryIdMapper.mapMenus(menus),
-                CategoryIdMapper.mapSituations(situations),
-                CategoryIdMapper.mapLocations(locations)
-            )
-
-            _tierRestaurantList.value = tierListData.map {
-                TierRestaurant(
-                    restaurantId = it.restaurantId,
-                    restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
-                    restaurantName = it.restaurantName,
-                    restaurantCuisine = it.restaurantCuisine,
-                    restaurantPosition = it.restaurantPosition,
-                    restaurantImgUrl = it.restaurantImgUrl,
-                    mainTier = it.mainTier,
-                    partnershipInfo = it.partnershipInfo ?: "",
-                    isFavorite = it.isFavorite,
-                    x = it.x.toDouble(),
-                    y = it.y.toDouble(),
-                    isEvaluated = it.isEvaluated,
-                    restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
+            try {
+                val newPosts = getCommunityPostListUseCase(
+                    postCategory,
+                    currentPage,
+                    sort
                 )
+                if (newPosts.isEmpty()) {
+                    isLastPage = true
+                } else {
+                    val currentPosts = communityPosts.value.orEmpty().toMutableList()
+                    currentPosts.addAll(newPosts)
+                    _communityPosts.value = currentPosts
+                    _page.value = page.value?.plus(1)
+                }
+            } catch (e: Exception) {
+                // 에러 처리
+            } finally {
+                // 기타 처리
             }
         }
     }
 
-
-    private fun loadRestaurantMap(menus: Set<String>, situations: Set<String>, locations: Set<String>) {
+    // 랭킹 데이터를 로드하고 상위 3명과 나머지를 분리
+    fun loadCommunityRanking(sort: String) {
         viewModelScope.launch {
-            val tierMapData = getTierRestaurantMapUseCase(
-                CategoryIdMapper.mapMenus(menus),
-                CategoryIdMapper.mapSituations(situations),
-                CategoryIdMapper.mapLocations(locations)
-            )
-
-            _mapData.value = tierMapData
+            try {
+                val rankings = getCommunityRankingListUseCase(sort)
+                _communityRanking.value = rankings
+            } catch (e: Exception) {
+                // 에러 처리
+            }
         }
     }
 
-    private fun setSelectedTypes(types: Set<String>) {
-        _selectedMenus.value = types
-    }
-
-    private fun setSelectedSituations(situations: Set<String>) {
-        _selectedSituations.value = situations
-    }
-
-    private fun setSelectedLocations(locations: Set<String>) {
-        _selectedLocations.value = locations
-    }
-
-    private fun setIsSelectedCategoriesChanged(flag : Boolean) {
-        _isSelectedCategoriesChanged.value = flag
-    }
-
-    fun getLoadRestaurantMap() {
-        loadRestaurantMap(
-            selectedMenus.value ?: emptySet(),
-            selectedSituations.value ?: emptySet(),
-            selectedLocations.value ?: emptySet()
+    fun resetPageAndLoad() {
+        _page.value = 0
+        isLastPage = false
+        _communityPosts.value = emptyList()
+        loadCommunityPosts(
+            postCategory.value ?: "all",
+            page.value ?: 0,
+            sort.value ?: "recent"
         )
     }
 
-    fun applyFilters(menus: Set<String>, situations: Set<String>, locations: Set<String>, tabIndex : Int) {
-        setSelectedTypes(menus)
-        setSelectedSituations(situations)
-        setSelectedLocations(locations)
-
-        setIsSelectedCategoriesChanged(true)
-
-        val selectedTypesValue = selectedMenus.value ?: emptySet()
-        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
-        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
-
-        if(tabIndex == 0){
-            loadRestaurantList(
-                selectedTypesValue,
-                selectedSelectedSituations,
-                selectedSelectedLocations
-            )
-        }
-        else if(tabIndex == 1) {
-            loadRestaurantMap(
-                selectedTypesValue,
-                selectedSelectedSituations,
-                selectedSelectedLocations
-            )
-        }
-
-        updateSelectedCategories()
-        _filterApplied.value = true
-    }
-    fun resetFilterApplied() {
-        _filterApplied.value = false
-    }
-
-    fun checkAndLoadBackendData(tabIndex : Int) {
-        val selectedTypesValue = selectedMenus.value ?: emptySet()
-        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
-        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
-
-        if(_isSelectedCategoriesChanged.value == true){
-            setIsSelectedCategoriesChanged(false)
-
-            if(tabIndex == 0){
-                loadRestaurantList(
-                    selectedTypesValue,
-                    selectedSelectedSituations,
-                    selectedSelectedLocations
-                )
-            }
-            else if(tabIndex == 1) {
-                loadRestaurantMap(
-                    selectedTypesValue,
-                    selectedSelectedSituations,
-                    selectedSelectedLocations
-                )
-            }
+    fun onSortTypeChanged(newSortType: String) {
+        if (_rankingSortType.value != newSortType) {
+            _rankingSortType.value = newSortType
+            loadCommunityRanking(newSortType)
         }
     }
 
-    private fun updateSelectedCategories() {
-        val selectedTypesValue = selectedMenus.value ?: emptySet()
-        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
-        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
-        val categories = mutableSetOf<String>()
-
-        if (selectedMenus.value != setOf("전체")) categories.addAll(selectedTypesValue)
-        if (selectedSituations.value != setOf("전체")) categories.addAll(selectedSelectedSituations)
-        if (selectedLocations.value != setOf("전체")) categories.addAll(selectedSelectedLocations)
-
-        if (categories.isEmpty()) {
-            categories.add("전체")
-        }
-        _selectedCategories.value = categories
+    fun onPostCategoryChanged(newCategory: String) {
+        _postCategory.value = newCategory
+        resetPageAndLoad()
     }
 
-    fun hasFilterChanged(currentTypes: Set<String>, currentSituations: Set<String>, currentLocations: Set<String>): Boolean {
-        return (currentTypes != selectedMenus.value ||
-                currentSituations != selectedSituations.value ||
-                currentLocations != selectedLocations.value)
+    fun onSortChanged(newSort: String) {
+        _sort.value = newSort
+        resetPageAndLoad()
+    }
+
+    fun onRankingDataChanged(rankings: List<CommunityRanking>): Pair<List<CommunityRanking>, List<CommunityRanking>> {
+        return processRankingData(rankings)
+    }
+
+    private fun processRankingData(rankings: List<CommunityRanking>): Pair<List<CommunityRanking>, List<CommunityRanking>> {
+        val topRankers = rankings.take(3)
+        val remainingRankings = rankings.drop(3)
+        return Pair(topRankers, remainingRankings)
     }
 }
-

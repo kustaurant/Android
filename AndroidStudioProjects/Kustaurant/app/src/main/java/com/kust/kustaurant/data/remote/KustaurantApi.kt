@@ -19,7 +19,7 @@ interface KustaurantApi {
         @Query("cuisines") cuisines: String,
         @Query("situations") situations: String,
         @Query("locations") locations: String,
-        @Query("page") page: Int = 1,
+        @Query("page") page: Int,
         @Query("limit") limit: Int = 30
     ): List<RestaurantResponse>
 

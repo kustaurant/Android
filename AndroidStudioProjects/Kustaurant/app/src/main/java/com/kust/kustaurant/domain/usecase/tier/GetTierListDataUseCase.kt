@@ -9,7 +9,7 @@ import javax.inject.Singleton
 class GetTierRestaurantListUseCase @Inject constructor(
     private val tierRepository: TierRepository
 ) {
-    suspend operator fun invoke(cuisines: String, situations: String, locations: String): List<RestaurantResponse> {
-        return tierRepository.getRestaurantList(cuisines, situations, locations)
+    suspend operator fun invoke(cuisines: String, situations: String, locations: String, page : Int): List<RestaurantResponse> {
+        return tierRepository.getRestaurantList(cuisines, situations, locations, page)
     }
 }

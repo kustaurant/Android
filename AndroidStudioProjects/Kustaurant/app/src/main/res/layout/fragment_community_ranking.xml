@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.kust.kustaurant.presentation.ui.community.CommunityViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/community_tv_ranking_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="@string/community_ranking_info"
+            android:textColor="@color/top_gray"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Start Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/community_gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <!-- End Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/community_gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/community_cl_toggle_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+            app:layout_constraintStart_toStartOf="@id/community_gl_start"
+            app:layout_constraintTop_toBottomOf="@id/community_tv_ranking_info">
+
+            <ToggleButton
+                android:id="@+id/community_toggle_quarterly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/btn_toggle_background"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="4dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/cement_4"
+                android:textOff="분기순"
+                android:textOn="분기순"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ToggleButton
+                android:id="@+id/community_toggle_popular_sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/btn_toggle_background"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="4dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/cement_4"
+                android:textOff="누적순"
+                android:textOn="누적순"
+                app:layout_constraintStart_toEndOf="@id/community_toggle_quarterly"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/community_cl_top_ranking_group"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:foregroundGravity="center"
+            app:layout_constraintDimensionRatio="360:250"
+            app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+            app:layout_constraintStart_toStartOf="@id/community_gl_start"
+            app:layout_constraintTop_toBottomOf="@id/community_cl_toggle_group">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_community_halo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="39dp"
+                android:layout_height="37dp"
+                android:layout_marginBottom="-20dp"
+                android:elevation="2dp"
+                android:src="@drawable/ic_community_rank_2"
+                app:layout_constraintBottom_toTopOf="@id/community_cl_ranking_2"
+                app:layout_constraintEnd_toEndOf="@id/community_cl_ranking_2"
+                app:layout_constraintStart_toStartOf="@id/community_cl_ranking_2" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/community_cl_ranking_2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/category_gray"
+                app:layout_constraintBottom_toBottomOf="@id/community_cl_ranking_1"
+                app:layout_constraintDimensionRatio="98:121"
+                app:layout_constraintEnd_toStartOf="@id/community_cl_ranking_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.29">
+
+                <ImageView
+                    android:id="@+id/community_iv_rank_2"
+                    android:layout_width="61dp"
+                    android:layout_height="59dp"
+                    android:layout_marginTop="27dp"
+                    android:contentDescription="@string/community_user_img_info"
+                    android:src="@drawable/ic_upper_class_cow"
+                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_2_nickname"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/community_tv_rank_2_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_2_comment_cnt"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/community_iv_rank_2"
+                    tools:text="역병" />
+
+                <TextView
+                    android:id="@+id/community_tv_rank_2_comment_cnt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:textColor="@color/signature_1"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="88개" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:layout_width="57dp"
+                android:layout_height="55dp"
+                android:layout_marginBottom="-25dp"
+                android:elevation="6dp"
+                android:src="@drawable/ic_community_rank_1"
+                app:layout_constraintBottom_toTopOf="@id/community_cl_ranking_1"
+                app:layout_constraintEnd_toEndOf="@id/community_cl_ranking_1"
+                app:layout_constraintStart_toStartOf="@id/community_cl_ranking_1" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/community_cl_ranking_1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/all_radius_15_none"
+                android:backgroundTint="@color/white"
+                android:elevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="140:183"
+                app:layout_constraintEnd_toStartOf="@id/community_cl_ranking_3"
+                app:layout_constraintStart_toEndOf="@id/community_cl_ranking_2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.42">
+
+                <ImageView
+                    android:id="@+id/community_iv_rank_1"
+                    android:layout_width="102dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="@string/community_user_img_info"
+                    android:src="@drawable/ic_upper_class_cow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_1_comment_cnt"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <ImageView
+                        android:id="@+id/community_iv_rank_1_crown"
+                        android:layout_width="16dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_crown" />
+
+                    <TextView
+                        android:id="@+id/community_tv_rank_1_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:maxLines="1"
+                        android:paddingEnd="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:text="역병" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/community_tv_rank_1_comment_cnt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:textColor="@color/signature_1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="88개" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:layout_width="39dp"
+                android:layout_height="37dp"
+                android:layout_marginBottom="-20dp"
+                android:elevation="2dp"
+                android:src="@drawable/ic_community_rank_3"
+                app:layout_constraintBottom_toTopOf="@id/community_cl_ranking_3"
+                app:layout_constraintEnd_toEndOf="@id/community_cl_ranking_3"
+                app:layout_constraintStart_toStartOf="@id/community_cl_ranking_3" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/community_cl_ranking_3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/category_gray"
+                app:layout_constraintBottom_toBottomOf="@id/community_cl_ranking_1"
+                app:layout_constraintDimensionRatio="98:121"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/community_cl_ranking_1"
+                app:layout_constraintWidth_percent="0.29">
+
+                <ImageView
+                    android:id="@+id/community_iv_rank_3"
+                    android:layout_width="61dp"
+                    android:layout_height="59dp"
+                    android:layout_marginTop="27dp"
+                    android:contentDescription="@string/community_user_img_info"
+                    android:src="@drawable/ic_upper_class_cow"
+                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_3_nickname"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/community_tv_rank_3_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@id/community_tv_rank_3_comment_cnt"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/community_iv_rank_3"
+                    tools:text="역병" />
+
+                <TextView
+                    android:id="@+id/community_tv_rank_3_comment_cnt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="11dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:textColor="@color/signature_1"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="88개" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/community_rv_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+            app:layout_constraintStart_toStartOf="@id/community_gl_start"
+            app:layout_constraintTop_toBottomOf="@id/community_cl_top_ranking_group"
+            tools:listitem="@layout/item_community_ranking" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
