@@ -115,6 +115,7 @@ class DetailReviewFragment : Fragment() {
 
         binding.detailRvReview.adapter = reviewAdapter
         binding.detailRvReview.layoutManager = LinearLayoutManager(requireContext())
+        binding.detailRvReview.itemAnimator = null
 
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
             override fun onReportClicked(commentId: Int) {
