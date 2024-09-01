@@ -83,6 +83,7 @@ class MyPageFragment : Fragment() {
             binding.myTvTermsUse to MyTermsUseActivity::class.java,
             binding.myTvOpinion to MyOpinionActivity::class.java,
             binding.myTvNotification to MyNotificationActivity::class.java,
+            binding.myTvPrivatePolicy to MyPrivacyPolicyActivity::class.java,
             binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
             binding.myTvFixAlliance to MyFixAllActivity::class.java,
             binding.myTvLogOut to null
