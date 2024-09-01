@@ -1,5 +1,6 @@
 package com.kust.kustaurant.data.di
 
+import com.kust.kustaurant.data.remote.CommunityApi
 import android.content.Context
 import com.kust.kustaurant.data.remote.DetailApi
 import com.kust.kustaurant.data.remote.HomeApi
@@ -63,6 +64,12 @@ object NetworkModule {
     fun provideDetailApi(retrofit: Retrofit): DetailApi {
         return retrofit.create(DetailApi::class.java)
     }
+    @Provides
+    @Singleton
+    fun provideCommunityApi(retrofit: Retrofit): CommunityApi {
+        return retrofit.create(CommunityApi::class.java)
+    }
+
 
     @Provides
     @Singleton

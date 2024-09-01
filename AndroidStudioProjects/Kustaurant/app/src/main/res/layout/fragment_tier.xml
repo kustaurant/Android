@@ -48,7 +48,6 @@
             app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- TextView for Centered Text -->
             <TextView
                 android:id="@+id/tier_tv_category_text"
                 android:layout_width="wrap_content"
@@ -103,18 +102,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
-
-            <!-- Notification Button -->
-<!--            <ImageView-->
-<!--                android:id="@+id/tier_iv_notification"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:contentDescription="@string/alarm_btn_info"-->
-<!--                android:src="@drawable/ic_bell_badge"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

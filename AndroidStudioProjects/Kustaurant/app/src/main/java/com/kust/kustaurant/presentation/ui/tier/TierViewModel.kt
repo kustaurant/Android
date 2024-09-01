@@ -1,6 +1,6 @@
 package com.kust.kustaurant.presentation.ui.tier
 
-import android.text.Html
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -45,8 +45,11 @@ class TierViewModel @Inject constructor(
     private val _selectedCategories = MutableLiveData<Set<String>>()
     val selectedCategories: LiveData<Set<String>> = _selectedCategories
 
-    //사용자 입력 카테고리가 변경됐는지 여부
-    private val _isSelectedCategoriesChanged = MutableLiveData<Boolean>(false)
+    private val _isSelectedCategoriesChanged = MutableLiveData<Boolean>(true)
+    val isSelectedCategoriesChanged: LiveData<Boolean> = _isSelectedCategoriesChanged
+
+    //음식점 리스트 페이지를 관리하는 변수
+    private var tierListPage = 1
 
     init {
         loadRestaurantList(setOf("ALL"), setOf("ALL"), setOf("ALL"))
@@ -56,12 +59,17 @@ class TierViewModel @Inject constructor(
         _isExpanded.value = _isExpanded.value?.not()
     }
 
-    private fun loadRestaurantList(menus:  Set<String>, situations:  Set<String>, locations:  Set<String>) {
+    private fun loadRestaurantList(
+        menus: Set<String>,
+        situations: Set<String>,
+        locations: Set<String>
+    ) {
         viewModelScope.launch {
             val tierListData = getTierRestaurantListUseCase(
                 CategoryIdMapper.mapMenus(menus),
                 CategoryIdMapper.mapSituations(situations),
-                CategoryIdMapper.mapLocations(locations)
+                CategoryIdMapper.mapLocations(locations),
+                tierListPage
             )
 
             _tierRestaurantList.value = tierListData.map {
@@ -78,21 +86,24 @@ class TierViewModel @Inject constructor(
                     x = it.x.toDouble(),
                     y = it.y.toDouble(),
                     isEvaluated = it.isEvaluated,
-                    restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
+                    restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() }
+                        ?: 0.0
                 )
             }
         }
     }
 
-
-    private fun loadRestaurantMap(menus: Set<String>, situations: Set<String>, locations: Set<String>) {
+    private fun loadRestaurantMap(
+        menus: Set<String>,
+        situations: Set<String>,
+        locations: Set<String>
+    ) {
         viewModelScope.launch {
             val tierMapData = getTierRestaurantMapUseCase(
                 CategoryIdMapper.mapMenus(menus),
                 CategoryIdMapper.mapSituations(situations),
                 CategoryIdMapper.mapLocations(locations)
             )
-
             _mapData.value = tierMapData
         }
     }
@@ -109,7 +120,7 @@ class TierViewModel @Inject constructor(
         _selectedLocations.value = locations
     }
 
-    private fun setIsSelectedCategoriesChanged(flag : Boolean) {
+    private fun setIsSelectedCategoriesChanged(flag: Boolean) {
         _isSelectedCategoriesChanged.value = flag
     }
 
@@ -121,25 +132,41 @@ class TierViewModel @Inject constructor(
         )
     }
 
-    fun applyFilters(menus: Set<String>, situations: Set<String>, locations: Set<String>, tabIndex : Int) {
+    fun applyFilters(
+        menus: Set<String>,
+        situations: Set<String>,
+        locations: Set<String>,
+        tabIndex: Int
+    ) {
+        if (hasFilterChanged(menus, situations, locations)) {
+            tierListPage = 1
+            setIsSelectedCategoriesChanged(true)
+        } else {
+            setIsSelectedCategoriesChanged(false)
+            tierListPage++
+        }
+
+
         setSelectedTypes(menus)
         setSelectedSituations(situations)
         setSelectedLocations(locations)
-
-        setIsSelectedCategoriesChanged(true)
 
         val selectedTypesValue = selectedMenus.value ?: emptySet()
         val selectedSelectedSituations = selectedSituations.value ?: emptySet()
         val selectedSelectedLocations = selectedLocations.value ?: emptySet()
 
-        if(tabIndex == 0){
+        Log.e(
+            "TierCategory",
+            "TierViewModel에서" + "\n" + selectedTypesValue.toString() + "\n" + selectedSelectedSituations.toString() + "\n" + selectedSelectedLocations.toString() + "\b" + _isSelectedCategoriesChanged.value.toString()
+        )
+
+        if (tabIndex == 0) {
             loadRestaurantList(
                 selectedTypesValue,
                 selectedSelectedSituations,
                 selectedSelectedLocations
             )
-        }
-        else if(tabIndex == 1) {
+        } else if (tabIndex == 1) {
             loadRestaurantMap(
                 selectedTypesValue,
                 selectedSelectedSituations,
@@ -150,34 +177,49 @@ class TierViewModel @Inject constructor(
         updateSelectedCategories()
         _filterApplied.value = true
     }
+
     fun resetFilterApplied() {
         _filterApplied.value = false
     }
 
-    fun checkAndLoadBackendData(tabIndex : Int) {
+    fun checkAndLoadBackendListData(state: RestaurantState) {
         val selectedTypesValue = selectedMenus.value ?: emptySet()
         val selectedSelectedSituations = selectedSituations.value ?: emptySet()
         val selectedSelectedLocations = selectedLocations.value ?: emptySet()
 
-        if(_isSelectedCategoriesChanged.value == true){
+        if (_isSelectedCategoriesChanged.value == true) {
             setIsSelectedCategoriesChanged(false)
 
-            if(tabIndex == 0){
-                loadRestaurantList(
-                    selectedTypesValue,
-                    selectedSelectedSituations,
-                    selectedSelectedLocations
-                )
+            if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
+                tierListPage = 1
+            } else if (state == RestaurantState.NEXT_PAGE_LIST_DATA) {
+                tierListPage++
             }
-            else if(tabIndex == 1) {
-                loadRestaurantMap(
-                    selectedTypesValue,
-                    selectedSelectedSituations,
-                    selectedSelectedLocations
-                )
-            }
+
+            loadRestaurantList(
+                selectedTypesValue,
+                selectedSelectedSituations,
+                selectedSelectedLocations
+            )
         }
     }
+
+    fun checkAndLoadBackendMapData() {
+        val selectedTypesValue = selectedMenus.value ?: emptySet()
+        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
+        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
+
+        if (_isSelectedCategoriesChanged.value == true) {
+            setIsSelectedCategoriesChanged(false)
+
+            loadRestaurantMap(
+                selectedTypesValue,
+                selectedSelectedSituations,
+                selectedSelectedLocations
+            )
+        }
+    }
+
 
     private fun updateSelectedCategories() {
         val selectedTypesValue = selectedMenus.value ?: emptySet()
@@ -195,10 +237,22 @@ class TierViewModel @Inject constructor(
         _selectedCategories.value = categories
     }
 
-    fun hasFilterChanged(currentTypes: Set<String>, currentSituations: Set<String>, currentLocations: Set<String>): Boolean {
+    fun hasFilterChanged(
+        currentTypes: Set<String>,
+        currentSituations: Set<String>,
+        currentLocations: Set<String>
+    ): Boolean {
         return (currentTypes != selectedMenus.value ||
                 currentSituations != selectedSituations.value ||
                 currentLocations != selectedLocations.value)
+    }
+
+
+    companion object {
+        enum class RestaurantState {
+            RELOAD_RESTAURANT_LIST_DATA,
+            NEXT_PAGE_LIST_DATA
+        }
     }
 }
 

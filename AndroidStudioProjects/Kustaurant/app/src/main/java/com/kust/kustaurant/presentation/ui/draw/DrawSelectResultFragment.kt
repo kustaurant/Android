@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.draw
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
@@ -20,6 +21,7 @@ import com.kust.kustaurant.data.model.DrawRestaurantData
 import com.kust.kustaurant.databinding.FragmentDrawSelectResultBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import kotlin.math.abs
+import kotlin.math.floor
 
 class DrawSelectResultFragment : Fragment() {
     private var _binding: FragmentDrawSelectResultBinding? = null
@@ -61,11 +63,7 @@ class DrawSelectResultFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun displaySelectedRestaurantInfo(restaurant: DrawRestaurantData) {
         binding.drawTvRestaurantName.text = restaurant.restaurantName
-        binding.drawTvRestaurantMenu.text = restaurant.restaurantMenu
-        binding.drawTvRestaurantScore.text = restaurant.restaurantScoreSum.toString()
-        binding.drawTvRestaurantPartnershipInfo.text = "이과대학 학생증 제시 시 99퍼센트 할인적용"
-
-        updateStarRating(restaurant.restaurantScoreSum)
+        binding.drawTvRestaurantMenu.text = restaurant.restaurantCuisine
 
         binding.drawViewPager.setOnClickListener {
             val intent = Intent(requireContext(), DetailActivity::class.java)
@@ -73,8 +71,6 @@ class DrawSelectResultFragment : Fragment() {
             startActivity(intent)
         }
     }
-
-
 
     private fun setupViewPager() {
         viewPager = binding.drawViewPager
@@ -115,9 +111,14 @@ class DrawSelectResultFragment : Fragment() {
             cornerRadius = 100f
             setColor(ContextCompat.getColor(requireContext(), R.color.white))
         }
+
         binding.drawBtnCategoryReset.background = drawable
 
         binding.drawBtnRetry.setOnClickListener {
+            binding.drawTvRestaurantScore.text = ""
+            binding.drawTvRestaurantPartnershipInfo.text = ""
+            binding.drawLlScoreImgGroup.visibility = View.GONE
+
             loadRestaurants()
         }
 
@@ -141,13 +142,17 @@ class DrawSelectResultFragment : Fragment() {
         }
     }
 
-    // Assuming this method is called when the ViewPager stops at a page
     private fun highlightCenterImage() {
         val centerPosition = viewPager.currentItem
         adapter.highlightItem(centerPosition)
+
     }
+
     private fun startAnimation() {
         disableButtons() // 애니메이션 시작 시 버튼 비활성화
+        // 텍스트뷰의 alpha 애니메이션 추가
+        val textView = binding.drawSelectedTvClickableInfo
+        textView.alpha = 0f
 
         handler = Handler(Looper.getMainLooper())
         runnable = object : Runnable {
@@ -169,8 +174,23 @@ class DrawSelectResultFragment : Fragment() {
                         val selectedIndex = restaurantList.indexOf(selected)
                         viewPager.setCurrentItem(selectedIndex, true)
                         displaySelectedRestaurantInfo(selected)
+
+                        val roundedScore = selected.restaurantScore?.let {
+                            floor(it * 2) / 2
+                        } ?: 0.0
+
+                        binding.drawTvRestaurantScore.text = roundedScore.toString()
+                        binding.drawTvRestaurantPartnershipInfo.text = selected.partnershipInfo?: "제휴 해당사항 없음"
+
+                        updateStarRating(selected.restaurantScore?: 0.0)
+                        binding.drawLlScoreImgGroup.visibility = View.VISIBLE
+
                         highlightCenterImage()
-                        enableButtons() // 애니메이션 종료 후 버튼 활성화
+                        enableButtons()
+
+                        val fadeIn = ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f)
+                        fadeIn.duration = 500
+                        fadeIn.start()
                     }
                 }
             }
@@ -178,19 +198,17 @@ class DrawSelectResultFragment : Fragment() {
         handler?.post(runnable!!)
     }
 
-
-
     private fun disableButtons() {
         binding.drawBtnCategoryReset.isClickable = false
         binding.drawBtnRetry.isClickable = false
-        binding.drawBtnCategoryReset.alpha = 0.5f // 버튼을 흐리게 표시
+        binding.drawBtnCategoryReset.alpha = 0.5f
         binding.drawBtnRetry.alpha = 0.5f
     }
 
     private fun enableButtons() {
         binding.drawBtnCategoryReset.isClickable = true
         binding.drawBtnRetry.isClickable = true
-        binding.drawBtnCategoryReset.alpha = 1.0f // 버튼을 명확하게 표시
+        binding.drawBtnCategoryReset.alpha = 1.0f
         binding.drawBtnRetry.alpha = 1.0f
     }
 
