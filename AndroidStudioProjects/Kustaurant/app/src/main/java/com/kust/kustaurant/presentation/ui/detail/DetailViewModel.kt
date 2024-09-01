@@ -86,7 +86,7 @@ class DetailViewModel @Inject constructor(
     fun loadCommentData(restaurantId: Int, sort: String){
         viewModelScope.launch {
             val getCommentData = getCommentDataUseCase(restaurantId, sort)
-            _reviewData.postValue(getCommentData)
+            _reviewData.postValue(getCommentData.toList())
         }
     }
 

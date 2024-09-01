@@ -166,6 +166,7 @@ class DetailReviewFragment : Fragment() {
                     viewModel.deleteCommentData(restaurantId, commentId)
                     Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     viewModel.loadCommentData(restaurantId, popularity)
+                    setRecyclerViewHeight()
                 }
             }
 
@@ -210,7 +211,7 @@ class DetailReviewFragment : Fragment() {
                 bottomSheetDialog.dismiss()
                 Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
                 viewModel.loadCommentData(restaurantId, popularity)
-                setRecyclerViewHeight()
+//                setRecyclerViewHeight()
             } else {
                 etInput.error = "텍스트를 입력해주세요"
                 Toast.makeText(requireContext(), "텍스트를 입력해주세요", Toast.LENGTH_SHORT).show()

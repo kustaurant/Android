@@ -147,6 +147,11 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
                 Glide.with(context)
                     .load(item.commentImgUrl)
                     .into(binding.detailIvPhoto)
+            } else {
+                binding.detailCvPhoto.visibility = View.GONE
+                Glide.with(context)
+                    .clear(binding.detailIvPhoto)
+                binding.detailIvPhoto.setImageDrawable(null)
             }
 
             binding.ivLike.setOnClickListener {
