@@ -64,11 +64,6 @@ class DrawSelectResultFragment : Fragment() {
     private fun displaySelectedRestaurantInfo(restaurant: DrawRestaurantData) {
         binding.drawTvRestaurantName.text = restaurant.restaurantName
         binding.drawTvRestaurantMenu.text = restaurant.restaurantCuisine
-        binding.drawTvRestaurantMenu.text = restaurant.restaurantMenu
-        binding.drawTvRestaurantScore.text = restaurant.restaurantScoreSum.toString()
-        binding.drawTvRestaurantPartnershipInfo.text = "이과대학 학생증 제시 시 99퍼센트 할인적용"
-
-        updateStarRating(restaurant.restaurantScoreSum)
 
         binding.drawViewPager.setOnClickListener {
             val intent = Intent(requireContext(), DetailActivity::class.java)
@@ -191,7 +186,7 @@ class DrawSelectResultFragment : Fragment() {
                         binding.drawLlScoreImgGroup.visibility = View.VISIBLE
 
                         highlightCenterImage()
-                        enableButtons() // 애니메이션 종료 후 버튼 활성화
+                        enableButtons()
 
                         val fadeIn = ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f)
                         fadeIn.duration = 500

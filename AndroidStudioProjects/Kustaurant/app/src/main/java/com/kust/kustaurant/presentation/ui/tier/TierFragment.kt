@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayout
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.presentation.ui.home.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
+
 @AndroidEntryPoint
 class TierFragment : Fragment() {
     private var _binding: FragmentTierBinding? = null
@@ -62,11 +63,13 @@ class TierFragment : Fragment() {
                 binding.tierViewPager.currentItem = tab.position
                 handleTabSelected(tab.position)
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-        binding.tierViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.tierViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.tierTabLayout.selectTab(binding.tierTabLayout.getTabAt(position))
                 handleTabSelected(position)
@@ -78,7 +81,8 @@ class TierFragment : Fragment() {
     }
 
     private fun handleTabSelected(position: Int) {
-        val layoutParams = binding.tierSvSelectedCategory.layoutParams as ViewGroup.MarginLayoutParams
+        val layoutParams =
+            binding.tierSvSelectedCategory.layoutParams as ViewGroup.MarginLayoutParams
 
         if (position == 1) { // 지도 탭
             layoutParams.marginEnd = 0
@@ -122,7 +126,8 @@ class TierFragment : Fragment() {
                 text = category
                 setTextColor(ContextCompat.getColor(context, R.color.signature_1))
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-                background = ContextCompat.getDrawable(context, R.drawable.btn_tier_catetory_selected)
+                background =
+                    ContextCompat.getDrawable(context, R.drawable.btn_tier_catetory_selected)
 
                 val paddingHorizontal = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 13f, resources.displayMetrics
@@ -146,7 +151,7 @@ class TierFragment : Fragment() {
         }
     }
 
-    private fun showMainContent() {
+    fun showMainContent() {
         binding.tierTvCategoryText.visibility = View.GONE
         binding.tierViewPager.visibility = View.VISIBLE
         binding.tierTabLayout.visibility = View.VISIBLE
@@ -155,7 +160,6 @@ class TierFragment : Fragment() {
             pagerAdapter.refreshAllFragments()
         }
     }
-
 
     private fun hideMainContent() {
         binding.tierViewPager.visibility = View.GONE
@@ -171,10 +175,25 @@ class TierFragment : Fragment() {
 
     private fun setupBackButton() {
         binding.btnBack.setOnClickListener {
+            // 백스택에 프래그먼트가 있는지 확인
             if (parentFragmentManager.backStackEntryCount > 0) {
-                showMainContent()
-                parentFragmentManager.popBackStack()
+                // 백스택에서 최근의 프래그먼트가 TierCategoryFragment인지 확인
+                val currentFragment = parentFragmentManager.findFragmentById(R.id.tier_fragment_container)
+                if (currentFragment is TierCategoryFragment) {
+                    // TierCategoryFragment가 있다면 먼저 뷰페이저를 보여줌
+                    showMainContent()
+                    parentFragmentManager.popBackStack() // TierCategoryFragment 제거
+                } else {
+                    // 그렇지 않으면 HomeFragment로 이동
+                    (requireActivity() as? MainActivity)?.let { mainActivity ->
+                        mainActivity.supportFragmentManager.beginTransaction()
+                            .replace(R.id.main_frm, HomeFragment())
+                            .commit()
+                        mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_home
+                    }
+                }
             } else {
+                // 백스택에 프래그먼트가 없는 경우
                 (requireActivity() as? MainActivity)?.let { mainActivity ->
                     mainActivity.supportFragmentManager.beginTransaction()
                         .replace(R.id.main_frm, HomeFragment())
@@ -185,9 +204,6 @@ class TierFragment : Fragment() {
         }
     }
 
-    fun navigateToTab(tabIndex: Int) {
-        binding.tierViewPager.currentItem = tabIndex
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

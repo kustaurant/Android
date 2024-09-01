@@ -13,18 +13,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- Start Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tier_gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <!-- End Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tier_gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/cement_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/top_bar"/>
 
         <!-- Top Bar -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/top_bar"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="360:55"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintDimensionRatio="360:60"
+            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
+            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- TextView for Centered Text -->
             <TextView
                 android:id="@+id/tier_tv_category_text"
                 android:layout_width="wrap_content"
@@ -47,7 +70,6 @@
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/back_btn_info"
                 android:padding="8dp"
@@ -66,7 +88,9 @@
                 app:layout_constraintStart_toEndOf="@id/btn_back"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabGravity="fill"
-                app:tabMode="fixed" />
+                app:tabMode="fixed"
+                android:layout_marginStart="65dp"
+                android:layout_marginEnd="10dp"/>
 
             <!-- Search Button -->
             <ImageView
@@ -78,18 +102,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
-
-            <!-- Notification Button -->
-<!--            <ImageView-->
-<!--                android:id="@+id/tier_iv_notification"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:contentDescription="@string/alarm_btn_info"-->
-<!--                android:src="@drawable/ic_bell_badge"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -99,9 +111,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toBottomOf="@id/top_bar"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -111,9 +123,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toBottomOf="@id/top_bar" />
 
 
@@ -125,15 +137,14 @@
             android:elevation="4dp"
             app:flow_verticalAlign="baseline"
             app:layout_constraintDimensionRatio="360:60"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
+            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toBottomOf="@id/top_bar">
 
             <ImageView
                 android:id="@+id/tier_iv_category_btn"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="21dp"
                 android:background="@drawable/circle_background"
                 android:backgroundTint="@color/signature_1"
                 android:contentDescription="@string/category_btn_info"

@@ -2,7 +2,6 @@ package com.kust.kustaurant.data.model
 
 data class DrawRestaurantData(
     val restaurantId: Int,
-    val restaurantRanking: Int?,
     val restaurantName: String,
     val restaurantCuisine: String,
     val restaurantPosition: String,
@@ -13,6 +12,12 @@ data class DrawRestaurantData(
     val x: String,
     val y: String,
     val partnershipInfo: String?,
-    val restaurantScore: Double?
+    val restaurantScore: Double?,
+    val restaurantAddress: String,
+    val restaurantTel: String,
+    val restaurantUrl: String,
+    val restaurantVisitCount: Int,
+    val restaurantEvaluationCount: Int,
+    val status: String,
+    val mainScoreMaxTen: String
 )
-

@@ -281,7 +281,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkAndLoadBackendData(1)
+        viewModel.checkAndLoadBackendMapData()
         binding.tierMapView.onResume()
     }
 

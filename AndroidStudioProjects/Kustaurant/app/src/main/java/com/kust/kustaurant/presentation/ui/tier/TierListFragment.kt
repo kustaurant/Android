@@ -49,7 +49,7 @@ class TierListFragment : Fragment() {
                         viewModel.selectedLocations.value ?: emptySet(),
                         0
                     )
-                 }
+                }
             }
         })
         return binding.root
@@ -79,7 +79,8 @@ class TierListFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.tierRestaurantList.observe(viewLifecycleOwner) { tierList ->
-            if(viewModel.isSelectedCategoriesChanged) {
+
+            if(viewModel.isSelectedCategoriesChanged.value == true) {
                 allTierData.clear()
                 binding.tierRecyclerView.scrollToPosition(0)
                 Log.e("TIerList", "들옴")
@@ -98,14 +99,16 @@ class TierListFragment : Fragment() {
 
     private fun refreshData() {
         allTierData.clear()
-        viewModel.checkAndLoadBackendData(0)
+        viewModel.checkAndLoadBackendListData(TierViewModel.Companion.RestaurantState.RELOAD_RESTAURANT_LIST_DATA)
         binding.tierRecyclerView.scrollToPosition(0)
         binding.tierSrl.isRefreshing = false
     }
 
     override fun onResume() {
         super.onResume()
+        Log.e("TierFragment", "onResume is called")
+
         binding.tierRecyclerView.scrollToPosition(0)
-        viewModel.checkAndLoadBackendData(0)
+        //viewModel.checkAndLoadBackendListData(TierViewModel.Companion.RestaurantState.NEXT_PAGE_LIST_DATA)
     }
 }

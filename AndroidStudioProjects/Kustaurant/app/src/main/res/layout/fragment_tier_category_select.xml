@@ -8,30 +8,12 @@
             type="com.kust.kustaurant.presentation.ui.tier.TierViewModel" />
     </data>
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <!-- Start Guideline -->
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/tier_gl_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.05" />
-
-            <!-- End Guideline -->
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/tier_gl_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
-
 
             <TextView
                 android:id="@+id/tier_tv_type_label"
@@ -41,7 +23,7 @@
                 android:text="음식"
                 android:textColor="@color/black"
                 android:textSize="17sp"
-                app:layout_constraintStart_toStartOf="@id/tier_gl_start"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -53,18 +35,18 @@
                 android:textColor="#666666"
                 android:clickable="true"
                 android:textSize="11sp"
-                app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/tier_toggle_type_group"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:flexWrap="wrap"
                 app:justifyContent="flex_start"
-                app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
-                app:layout_constraintStart_toStartOf="@id/tier_gl_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tier_tv_type_label">
 
                 <ToggleButton
@@ -349,18 +331,18 @@
                 android:text="상황"
                 android:textColor="@color/black"
                 android:textSize="17sp"
-                app:layout_constraintStart_toStartOf="@id/tier_gl_start"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tier_toggle_type_group" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/tier_toggle_situation_group"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:flexWrap="wrap"
                 app:justifyContent="flex_start"
-                app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
-                app:layout_constraintStart_toStartOf="@id/tier_gl_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tier_tv_situation_label">
 
                 <ToggleButton
@@ -544,7 +526,7 @@
                 android:textColor="@color/black"
                 android:clickable="true"
                 android:textSize="17sp"
-                app:layout_constraintStart_toStartOf="@id/tier_gl_start"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tier_toggle_situation_group" />
 
             <TextView
@@ -555,18 +537,19 @@
                 android:text="@string/tier_location_info"
                 android:textColor="@color/black"
                 android:textSize="11sp"
-                app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tier_toggle_situation_group" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/tier_toggle_location_group"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:flexWrap="wrap"
                 app:justifyContent="flex_start"
-                app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
-                app:layout_constraintStart_toStartOf="@id/tier_gl_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tier_tv_location_label">
 
                 <ToggleButton
