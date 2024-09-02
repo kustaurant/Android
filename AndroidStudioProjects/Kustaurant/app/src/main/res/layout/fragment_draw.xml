@@ -42,8 +42,7 @@
                 android:id="@+id/draw_top_bar"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:paddingTop="5dp"
-                app:layout_constraintDimensionRatio="360:60"
+                app:layout_constraintDimensionRatio="360:63"
                 app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
                 app:layout_constraintStart_toStartOf="@id/draw_gl_start"
                 app:layout_constraintTop_toTopOf="parent">

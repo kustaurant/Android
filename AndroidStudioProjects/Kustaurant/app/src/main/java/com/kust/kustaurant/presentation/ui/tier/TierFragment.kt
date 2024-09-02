@@ -1,6 +1,7 @@
 package com.kust.kustaurant.presentation.ui.tier
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentTierBinding
 import com.google.android.material.tabs.TabLayout
+import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TierFragment : Fragment() {
@@ -28,6 +30,12 @@ class TierFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTierBinding.inflate(inflater, container, false)
+
+        binding.tierIvSearch.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
+        }
+
         return binding.root
     }
 

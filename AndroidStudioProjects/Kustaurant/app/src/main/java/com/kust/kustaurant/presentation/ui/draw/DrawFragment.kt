@@ -1,11 +1,14 @@
 package com.kust.kustaurant.presentation.ui.draw
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.kust.kustaurant.R
+import com.kust.kustaurant.presentation.ui.search.SearchActivity
 
 class DrawFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +29,12 @@ class DrawFragment : Fragment() {
             childFragmentManager.beginTransaction()
                 .replace(R.id.draw_fragment_container, DrawSelectCategoryFragment())
                 .commit()
+        }
+
+        val btnSearch: ImageView = view.findViewById(R.id.btn_search)
+        btnSearch.setOnClickListener {
+            val intent = Intent(activity, SearchActivity::class.java)
+            startActivity(intent)
         }
     }
 }
