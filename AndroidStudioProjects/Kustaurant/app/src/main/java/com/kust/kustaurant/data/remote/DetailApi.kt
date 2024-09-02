@@ -60,6 +60,12 @@ interface DetailApi {
         @Path("commentId") commentId: Int
     )
 
+    @POST("api/v1/auth/restaurants/{restaurantId}/comments/{commentId}/report")
+    suspend fun postCommentReport(
+        @Path("restaurantId") restaurantId: Int,
+        @Path("commentId") commentId: Int
+    )
+
     @POST("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}/like")
     suspend fun postCommentLike(
         @Path("restaurantId") restaurantId: Int,

@@ -1,19 +1,22 @@
 package com.kust.kustaurant.presentation.ui.detail
 
+import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.ReplyDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
-import com.kust.kustaurant.presentation.ui.tier.TierListAdapter.Companion.diffUtil
 
 class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, DetailRelyAdapter.ViewHolder>(
     diffUtil) {
@@ -43,26 +46,55 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
         private fun showPopupWindow(anchorView: View) {
             val inflater = LayoutInflater.from(context)
             val layoutRes = if (getItem(absoluteAdapterPosition).isCommentMine) {
-                R.layout.popup_review_comment
+                R.layout.popup_review_only_delete
             } else {
                 R.layout.popup_review_only_report
             }
             val popupView = inflater.inflate(layoutRes, null)
             val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
 
-            // 신고 버튼 설정
-            popupView.findViewById<ConstraintLayout>(R.id.cl_report).setOnClickListener {
-                itemClickListener.onReportClicked(getItem(absoluteAdapterPosition).commentId)
-                popupWindow.dismiss()
-            }
-
-            // 삭제 버튼이 존재하는 경우에만 설정
-            popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
-                itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).commentId)
-                popupWindow.dismiss()
+            if(layoutRes == R.layout.popup_review_only_report){
+                popupView.findViewById<ConstraintLayout>(R.id.cl_report).setOnClickListener {
+                    showReportDialog()
+                    popupWindow.dismiss()
+                }
+            } else {
+                popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
+                    itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).commentId)
+                    popupWindow.dismiss()
+                }
             }
 
             popupWindow.showAsDropDown(anchorView)
+        }
+
+        private fun showReportDialog() {
+            val inflater = LayoutInflater.from(context)
+            val view = inflater.inflate(R.layout.dialog_show_report, null)
+            val btnConfirm = view.findViewById<TextView>(R.id.detail_tv_confirm)
+            val btnCancel = view.findViewById<TextView>(R.id.detail_tv_cancel)
+            val dialog = AlertDialog.Builder(context)
+                .setView(view)
+                .create()
+
+            dialog.show()
+
+            dialog.window?.apply {
+                val displayMetrics = context.resources.displayMetrics
+                val width = (displayMetrics.widthPixels * 0.6).toInt()
+
+                setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+                setGravity(Gravity.CENTER)
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+
+            btnConfirm.setOnClickListener {
+                itemClickListener.onReportClicked(getItem(absoluteAdapterPosition).commentId)
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
         }
 
 

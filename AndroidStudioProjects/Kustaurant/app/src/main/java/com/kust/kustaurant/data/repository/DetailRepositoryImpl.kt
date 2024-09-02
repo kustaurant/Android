@@ -55,6 +55,10 @@ class DetailRepositoryImpl @Inject constructor(
         return detailApi.deleteCommentData(restaurantId, commentId)
     }
 
+    override suspend fun postCommentReport(restaurantId: Int, commentId: Int) {
+        return detailApi.postCommentReport(restaurantId, commentId)
+    }
+
     override suspend fun postCommentLike(restaurantId: Int, commentId: Int) : CommentDataResponse{
         return detailApi.postCommentLike(restaurantId, commentId)
     }

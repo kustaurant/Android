@@ -120,9 +120,8 @@ class DetailReviewFragment : Fragment() {
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
             override fun onReportClicked(commentId: Int) {
                 checkToken{
-                    val intent = Intent(context, ReportActivity::class.java)
-                    intent.putExtra("commentId", commentId)
-                    startActivity(intent)
+                    viewModel.postCommentReport(restaurantId, commentId)
+                    Toast.makeText(requireContext(), "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -212,7 +211,7 @@ class DetailReviewFragment : Fragment() {
                 bottomSheetDialog.dismiss()
                 Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
                 viewModel.loadCommentData(restaurantId, popularity)
-//                setRecyclerViewHeight()
+                setRecyclerViewHeight()
             } else {
                 etInput.error = "텍스트를 입력해주세요"
                 Toast.makeText(requireContext(), "텍스트를 입력해주세요", Toast.LENGTH_SHORT).show()
