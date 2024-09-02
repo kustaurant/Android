@@ -30,11 +30,11 @@ interface MyPageApi {
         @Body request : MyProfileRequest
     )
 
-    @GET("/api/v1/auth/mypage/favorite-restuarnt-list")
+    @GET("/api/v1/auth/mypage/favorite-restaurant-list")
     suspend fun getFavoriteData(
     ) : List<MyFavoriteResponse>
 
-    @GET("/api/v1/auth/mypage/evaluate-restuarnt-list")
+    @GET("/api/v1/auth/mypage/evaluate-restaurant-list")
     suspend fun getEvaluateData(
     ) : List<MyEvaluateResponse>
 

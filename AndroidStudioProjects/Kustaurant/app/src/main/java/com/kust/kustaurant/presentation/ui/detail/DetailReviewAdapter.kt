@@ -36,7 +36,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
         fun onReportClicked(commentId: Int)
         fun onDeleteClicked(commentId: Int)
         fun onCommentClicked(commentId: Int)
-        fun onLikeClicked(commentId: Int)
+        fun onLikeClicked(commentId: Int, position: Int)
         fun onDisLikeClicked(commentId: Int)
 
     }
@@ -110,7 +110,28 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             popupWindow.showAsDropDown(anchorView)
         }
 
+        fun getLikeIconResource(likeStatus: Int): Int {
+            return when(likeStatus) {
+                1 -> R.drawable.ic_like_true
+                0 -> R.drawable.ic_like_false
+                -1 -> R.drawable.ic_like_false
+                else -> R.drawable.ic_like_false
+            }
+        }
+
+        fun getDislikeIconResource(likeStatus: Int): Int {
+            return when(likeStatus) {
+                1 -> R.drawable.ic_dislike_false
+                0 -> R.drawable.ic_dislike_false
+                -1 -> R.drawable.ic_dislike_true
+                else -> R.drawable.ic_dislike_false
+            }
+        }
+
         fun bind(item: CommentDataResponse) {
+            binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
+            binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
+
             binding.tvGrade.text = item.commentScore.toString()
             binding.tvReviewTime.text = item.commentTime
             binding.tvUserName.text = item.commentNickname
@@ -126,10 +147,15 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
                 Glide.with(context)
                     .load(item.commentImgUrl)
                     .into(binding.detailIvPhoto)
+            } else {
+                binding.detailCvPhoto.visibility = View.GONE
+                Glide.with(context)
+                    .clear(binding.detailIvPhoto)
+                binding.detailIvPhoto.setImageDrawable(null)
             }
 
             binding.ivLike.setOnClickListener {
-                itemClickListener.onLikeClicked(item.commentId)
+                itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
             }
             binding.ivHate.setOnClickListener {
                 itemClickListener.onDisLikeClicked(item.commentId)
@@ -149,8 +175,8 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
                         interactionListener?.onDeleteClicked(commentId)
                     }
 
-                    override fun onLikeClicked(commentId: Int) {
-                        interactionListener?.onLikeClicked(commentId)
+                    override fun onLikeClicked(commentId: Int, position: Int) {
+                        interactionListener?.onLikeClicked(commentId, position)
                     }
 
                     override fun onDisLikeClicked(commentId: Int) {
@@ -173,6 +199,8 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
 
     override fun onBindViewHolder(holder: DetailReviewAdapter.ViewHolder, position: Int) {
         holder.bind(getItem(position))
+
+
     }
 
     companion object {

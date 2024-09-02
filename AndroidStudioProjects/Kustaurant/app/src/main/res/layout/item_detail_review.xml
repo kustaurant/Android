@@ -108,7 +108,7 @@
         android:id="@+id/iv_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_like"
+        android:src="@drawable/ic_like_false"
         android:layout_marginTop="11dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_review"/>
@@ -127,7 +127,7 @@
         android:id="@+id/iv_hate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_hate"
+        android:src="@drawable/ic_dislike_false"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@id/tv_like"
         app:layout_constraintTop_toTopOf="@id/iv_like"

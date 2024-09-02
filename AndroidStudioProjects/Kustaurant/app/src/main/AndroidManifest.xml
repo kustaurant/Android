@@ -22,6 +22,9 @@
             android:name=".presentation.ui.search.SearchActivity"
             android:exported="false" />
         <activity
+            android:name=".presentation.ui.mypage.MyTermsUseActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.ui.mypage.MyPostActivity"
             android:exported="false" />
         <activity

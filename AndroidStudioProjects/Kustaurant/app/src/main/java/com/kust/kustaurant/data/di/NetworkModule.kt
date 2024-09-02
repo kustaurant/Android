@@ -1,5 +1,6 @@
 package com.kust.kustaurant.data.di
 
+import com.kust.kustaurant.data.remote.CommunityApi
 import android.content.Context
 import com.kust.kustaurant.data.remote.DetailApi
 import com.kust.kustaurant.data.remote.HomeApi
@@ -7,9 +8,6 @@ import com.kust.kustaurant.data.remote.KustaurantApi
 import com.kust.kustaurant.data.remote.LogoutApi
 import com.kust.kustaurant.data.remote.NaverLoginApi
 import com.kust.kustaurant.data.remote.MyPageApi
-import com.kust.kustaurant.data.remote.NewAccessTokenApi
-import com.kust.kustaurant.domain.usecase.login.PostNewAccessTokenDataUseCase
-import com.kust.kustaurant.presentation.ui.mypage.NewAccessTokenViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,7 +38,8 @@ object NetworkModule {
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(XAccessTokenInterceptor(context))  // context 전달로 수정
+            .addInterceptor(XAccessTokenInterceptor(context))
+            .authenticator(TokenAuthenticator(context))  // Authenticator 추가
             .build()
     }
 
@@ -65,6 +64,12 @@ object NetworkModule {
     fun provideDetailApi(retrofit: Retrofit): DetailApi {
         return retrofit.create(DetailApi::class.java)
     }
+    @Provides
+    @Singleton
+    fun provideCommunityApi(retrofit: Retrofit): CommunityApi {
+        return retrofit.create(CommunityApi::class.java)
+    }
+
 
     @Provides
     @Singleton
@@ -82,12 +87,6 @@ object NetworkModule {
     @Singleton
     fun provideLogoutApi(retrofit: Retrofit): LogoutApi {
         return retrofit.create(LogoutApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideNewAccessTokenApi(retrofit: Retrofit): NewAccessTokenApi {
-        return retrofit.create(NewAccessTokenApi::class.java)
     }
 
     @Provides

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="community_board_options">
+        <item>전체게시판</item>
+        <item>자유게시판</item>
+        <item>칼럼게시판</item>
+        <item>건의게시판</item>
+    </string-array>
+</resources>

@@ -1,6 +1,5 @@
 package com.kust.kustaurant.presentation.ui.draw
 
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -55,18 +54,22 @@ class DrawViewModel @Inject constructor(
                 val mappedMenus = selectedMenus.value?.let { CategoryIdMapper.mapMenus(it) }
                 val mappedLocations = selectedLocations.value?.let { CategoryIdMapper.mapLocations(it) }
 
-                val drawRestaurantsListData = getDrawRestaurantUseCase(
-                    Uri.encode(mappedMenus),
-                    Uri.encode(mappedLocations)
-                )
-                _drawList.value = drawRestaurantsListData
+                if (mappedMenus != null && mappedLocations != null) {
+                    val drawRestaurantsListData = getDrawRestaurantUseCase(
+                        mappedMenus,
+                        mappedLocations
+                    )
+                    _drawList.value = drawRestaurantsListData
 
-                val selected = getRandomRestaurants(drawRestaurantsListData)
-                _selectedRestaurant.value = selected
-                updateSelectedIndex(drawRestaurantsListData, selected)
+                    val selected = getRandomRestaurants(drawRestaurantsListData)
+                    _selectedRestaurant.value = selected
+                    updateSelectedIndex(drawRestaurantsListData, selected)
 
-                Log.d("DrawViewModel", "Draw restaurant data: $drawRestaurantsListData")
-                Log.d("DrawViewModel", "Draw selected restaurant data: $selectedRestaurant")
+                    Log.d("DrawViewModel", "Draw restaurant data: $drawRestaurantsListData")
+                    Log.d("DrawViewModel", "Draw selected restaurant data: $selectedRestaurant")
+                } else {
+                    Log.e("DrawViewModel", "Menus or Locations mapping failed. Menus: $mappedMenus, Locations: $mappedLocations")
+                }
             }
         }
     }

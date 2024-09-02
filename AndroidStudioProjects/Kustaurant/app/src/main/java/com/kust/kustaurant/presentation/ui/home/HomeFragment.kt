@@ -45,6 +45,11 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         setupCategoryRV()
+        autoScrollHandler = Handler(Looper.getMainLooper())
+        autoScrollRunnable = Runnable {
+            // 아무 것도 안 함, 실제 로직은 setupViewPager에서 설정
+        }
+
         setupRecyclerViews()
         Log.d("token", getAccessToken(requireContext()).toString())
 
@@ -59,6 +64,7 @@ class HomeFragment : Fragment() {
 
         return binding.root
     }
+
 
     private fun setupCategoryRV(){
         val categoryList = listOf(
@@ -196,5 +202,10 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         // View가 파괴될 때 Handler를 정리합니다.
         autoScrollHandler.removeCallbacks(autoScrollRunnable)
+
+        // View가 파괴될 때 Handler를 정리합니다.
+        if (::autoScrollRunnable.isInitialized && ::autoScrollHandler.isInitialized) {
+            autoScrollHandler.removeCallbacks(autoScrollRunnable)
+        }
     }
 }

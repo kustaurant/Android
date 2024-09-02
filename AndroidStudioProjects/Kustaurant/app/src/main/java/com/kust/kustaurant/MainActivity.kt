@@ -3,6 +3,7 @@ package com.kust.kustaurant
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.kust.kustaurant.databinding.ActivityMainBinding
+import com.kust.kustaurant.presentation.ui.community.CommunityFragment
 import com.kust.kustaurant.presentation.ui.draw.DrawFragment
 import com.kust.kustaurant.presentation.ui.home.HomeFragment
 import com.kust.kustaurant.presentation.ui.mypage.MyPageFragment
