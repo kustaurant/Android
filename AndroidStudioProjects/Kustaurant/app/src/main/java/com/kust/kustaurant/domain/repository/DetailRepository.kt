@@ -43,6 +43,10 @@ interface DetailRepository {
         commentId: Int
     )
 
+    suspend fun postCommentReport(
+        restaurantId: Int,
+        commentId: Int
+    )
     suspend fun postCommentLike(
         restaurantId: Int,
         commentId: Int

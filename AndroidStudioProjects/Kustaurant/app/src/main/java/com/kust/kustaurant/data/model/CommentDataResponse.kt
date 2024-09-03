@@ -2,7 +2,7 @@ package com.kust.kustaurant.data.model
 
 data class CommentDataResponse(
     val commentId : Int,
-    val commentScore: Double, 
+    val commentScore: Double,
     val commentIconImgUrl: String,
     val commentNickname: String,
     val commentTime: String,
@@ -12,7 +12,7 @@ data class CommentDataResponse(
     val commentLikeCount: Int,
     val commentDislikeCount: Int,
     val isCommentMine : Boolean,
-    val commentReplies: ArrayList<ReplyDataResponse>
+    var commentReplies: ArrayList<ReplyDataResponse>
 )
 
 data class ReplyDataResponse(

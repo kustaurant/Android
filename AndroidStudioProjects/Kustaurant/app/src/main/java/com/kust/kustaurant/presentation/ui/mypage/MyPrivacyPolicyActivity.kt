@@ -6,26 +6,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.kust.kustaurant.R
-import com.kust.kustaurant.databinding.ActivityMyTermsUseBinding
+import com.kust.kustaurant.databinding.ActivityMyPrivacyPolicyBinding
 
-class MyTermsUseActivity : AppCompatActivity() {
-    lateinit var binding : ActivityMyTermsUseBinding
+class MyPrivacyPolicyActivity : AppCompatActivity() {
+    lateinit var binding : ActivityMyPrivacyPolicyBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMyTermsUseBinding.inflate(layoutInflater)
+        binding = ActivityMyPrivacyPolicyBinding.inflate(layoutInflater)
 
         initBack()
-        initTermsUse()
+        initNotification()
 
         setContentView(binding.root)
     }
 
-    private fun initTermsUse() {
-        binding.termsUseWvTerms.loadUrl("https://kustaurant.com/terms_of_use")
+    private fun initNotification() {
+        binding.privacyWvNotification.loadUrl("https://kustaurant.com/privacy-policy")
     }
 
     private fun initBack() {
-        binding.termsUseBtnBack.setOnClickListener {
+        binding.privacyBtnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

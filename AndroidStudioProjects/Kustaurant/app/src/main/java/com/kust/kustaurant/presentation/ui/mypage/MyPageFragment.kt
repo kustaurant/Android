@@ -38,16 +38,15 @@ class MyPageFragment : Fragment() {
 
         val accessToken = getAccessToken(requireContext())
 
-        if (accessToken == null) {
+        if (accessToken != null) {
+            myPageViewModel.loadMyPageData()
+            initButtons()
+        } else {
             binding.myIvEdit.visibility = View.GONE
             binding.myIvLogIn.visibility = View.VISIBLE
             binding.myIvUser.setImageResource(R.drawable.ic_none_user)
             initLogIn()
             disableButtons()
-        } else {
-            myPageViewModel.loadMyPageData()
-
-            initButtons()
         }
 
         logoutViewModel.Response.observe(viewLifecycleOwner) { response ->
@@ -83,6 +82,7 @@ class MyPageFragment : Fragment() {
             binding.myTvTermsUse to MyTermsUseActivity::class.java,
             binding.myTvOpinion to MyOpinionActivity::class.java,
             binding.myTvNotification to MyNotificationActivity::class.java,
+            binding.myTvPrivatePolicy to MyPrivacyPolicyActivity::class.java,
             binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
             binding.myTvFixAlliance to MyFixAllActivity::class.java,
             binding.myTvLogOut to null

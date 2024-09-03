@@ -1,6 +1,7 @@
 package com.kust.kustaurant.data.model
 
 data class MyProfileResponse (
+    var iconImageUrl : String = "",
     var nickname: String = "",
     var email: String = "",
     var phoneNumber: String = ""
