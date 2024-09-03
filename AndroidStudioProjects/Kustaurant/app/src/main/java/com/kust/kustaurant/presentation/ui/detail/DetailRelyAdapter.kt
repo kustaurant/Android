@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.ReplyDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
@@ -28,7 +29,7 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
         fun onReportClicked(commentId: Int)
         fun onDeleteClicked(commentId: Int)
         fun onLikeClicked(commentId: Int, position: Int)
-        fun onDisLikeClicked(commentId: Int)
+        fun onDisLikeClicked(commentId: Int, position: Int)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -104,11 +105,14 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
             binding.tvLike.text = item.commentLikeCount.toString()
             binding.tvHate.text = item.commentDislikeCount.toString()
             binding.tvReviewTime.text = item.commentTime
+            Glide.with(context)
+                .load(item.commentIconImgUrl)
+                .into(binding.ivUserImage)
             binding.ivLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
             }
             binding.ivHate.setOnClickListener {
-                itemClickListener.onDisLikeClicked(item.commentId)
+                itemClickListener.onDisLikeClicked(item.commentId, absoluteAdapterPosition)
             }
         }
     }

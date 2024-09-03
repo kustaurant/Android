@@ -90,18 +90,28 @@ class DetailReviewFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.reviewData.observe(viewLifecycleOwner){ commentData ->
-            if(commentData.isEmpty()){
+        viewModel.itemUpdateIndex.observe(viewLifecycleOwner) { position ->
+            if (position != null) {
+                reviewAdapter.notifyItemChanged(position)
+            }
+        }
+
+        viewModel.reviewData.observe(viewLifecycleOwner) { commentData ->
+            if (commentData.isEmpty()) {
                 binding.detailBtnRecent.visibility = View.GONE
                 binding.detailBtnPopular.visibility = View.GONE
                 binding.detailClReviewNone.visibility = View.VISIBLE
             } else {
-                reviewAdapter.submitList(commentData)
-                Log.d("commentData", commentData.toString())
-                setRecyclerViewHeight()
+                reviewAdapter.submitList(commentData) {
+                    binding.detailRvReview.postDelayed({
+                        setRecyclerViewHeight()
+                    }, 100)
+                }
             }
         }
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -129,7 +139,7 @@ class DetailReviewFragment : Fragment() {
                 checkToken{
                     viewModel.deleteCommentData(restaurantId, commentId)
                     Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    viewModel.loadCommentData(restaurantId, popularity)
+                    setRecyclerViewHeight()
                 }
             }
 
@@ -145,9 +155,9 @@ class DetailReviewFragment : Fragment() {
                 }
             }
 
-            override fun onDisLikeClicked(commentId: Int) {
+            override fun onDisLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentDisLike(restaurantId, commentId)
+                    viewModel.postCommentDisLike(restaurantId, commentId, position)
                 }
             }
         })
@@ -165,7 +175,6 @@ class DetailReviewFragment : Fragment() {
                 checkToken{
                     viewModel.deleteCommentData(restaurantId, commentId)
                     Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    viewModel.loadCommentData(restaurantId, popularity)
                     setRecyclerViewHeight()
                 }
             }
@@ -176,9 +185,9 @@ class DetailReviewFragment : Fragment() {
                 }
             }
 
-            override fun onDisLikeClicked(commentId: Int) {
+            override fun onDisLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentDisLike(restaurantId, commentId)
+                    viewModel.postCommentDisLike(restaurantId, commentId, position)
                 }
             }
         }
@@ -210,7 +219,6 @@ class DetailReviewFragment : Fragment() {
                 viewModel.postCommentData(restaurantId, commentId, inputText)
                 bottomSheetDialog.dismiss()
                 Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
-                viewModel.loadCommentData(restaurantId, popularity)
                 setRecyclerViewHeight()
             } else {
                 etInput.error = "텍스트를 입력해주세요"

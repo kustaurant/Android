@@ -31,7 +31,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
         fun onDeleteClicked(commentId: Int)
         fun onCommentClicked(commentId: Int)
         fun onLikeClicked(commentId: Int, position: Int)
-        fun onDisLikeClicked(commentId: Int)
+        fun onDisLikeClicked(commentId: Int, position: Int)
 
     }
 
@@ -181,7 +181,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
             }
             binding.ivHate.setOnClickListener {
-                itemClickListener.onDisLikeClicked(item.commentId)
+                itemClickListener.onDisLikeClicked(item.commentId, absoluteAdapterPosition)
             }
 
             val gradeAdapter = DetailGradeAdapter(item.commentScore)
@@ -202,8 +202,8 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
                         interactionListener?.onLikeClicked(commentId, position)
                     }
 
-                    override fun onDisLikeClicked(commentId: Int) {
-                        interactionListener?.onDisLikeClicked(commentId)
+                    override fun onDisLikeClicked(commentId: Int, position: Int) {
+                        interactionListener?.onDisLikeClicked(commentId, position)
                     }
 
                 })
