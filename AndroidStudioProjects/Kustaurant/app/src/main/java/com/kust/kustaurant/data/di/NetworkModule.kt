@@ -3,6 +3,7 @@ package com.kust.kustaurant.data.di
 import com.kust.kustaurant.data.remote.CommunityApi
 import android.content.Context
 import com.kust.kustaurant.data.remote.DetailApi
+import com.kust.kustaurant.data.remote.GoodByeApi
 import com.kust.kustaurant.data.remote.HomeApi
 import com.kust.kustaurant.data.remote.KustaurantApi
 import com.kust.kustaurant.data.remote.LogoutApi
@@ -88,6 +89,12 @@ object NetworkModule {
     @Singleton
     fun provideLogoutApi(retrofit: Retrofit): LogoutApi {
         return retrofit.create(LogoutApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoodbyeApi(retrofit: Retrofit): GoodByeApi {
+        return retrofit.create(GoodByeApi::class.java)
     }
 
     @Provides

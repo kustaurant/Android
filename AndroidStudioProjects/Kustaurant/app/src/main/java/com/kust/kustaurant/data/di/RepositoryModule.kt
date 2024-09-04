@@ -3,6 +3,7 @@ package com.kust.kustaurant.data.di
 import com.kust.kustaurant.data.repository.CommunityRepositoryImpl
 import com.kust.kustaurant.data.repository.DetailRepositoryImpl
 import com.kust.kustaurant.data.repository.DrawRepositoryImpl
+import com.kust.kustaurant.data.repository.GoodByeRepositoryImpl
 import com.kust.kustaurant.data.repository.HomeRepositoryImpl
 import com.kust.kustaurant.data.repository.LogoutRepositoryImpl
 import com.kust.kustaurant.data.repository.NaverLoginRepositoryImpl
@@ -13,6 +14,7 @@ import com.kust.kustaurant.data.repository.TierRepositoryImpl
 import com.kust.kustaurant.domain.repository.CommunityRepository
 import com.kust.kustaurant.domain.repository.DetailRepository
 import com.kust.kustaurant.domain.repository.DrawRepository
+import com.kust.kustaurant.domain.repository.GoodByeRepository
 import com.kust.kustaurant.domain.repository.HomeRepository
 import com.kust.kustaurant.domain.repository.LogoutRepository
 import com.kust.kustaurant.domain.repository.NaverLoginRepository
@@ -73,6 +75,12 @@ abstract class RepositoryModule {
     abstract fun bindLogoutRepository(
         logoutRepository: LogoutRepositoryImpl
     ): LogoutRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindGoodByeRepository(
+        goodByeRepository: GoodByeRepositoryImpl
+    ): GoodByeRepository
 
 
     @Binds

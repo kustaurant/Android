@@ -27,6 +27,7 @@ class MyPageFragment : Fragment() {
     lateinit var binding: FragmentMyPageBinding
     private val logoutViewModel: LogoutViewModel by viewModels()
     private val myPageViewModel: MyPageViewModel by viewModels()
+    private val goodByeViewModel: GoodByeViewModel by viewModels()
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -48,27 +49,6 @@ class MyPageFragment : Fragment() {
             binding.myIvUser.setImageResource(R.drawable.ic_none_user)
             initLogIn()
             disableButtons()
-        }
-
-        logoutViewModel.response.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                "success" -> {
-                    // 로그아웃 성공 시 토큰과 ID 초기화
-                    clearUserData()
-
-                    val intent = Intent(requireContext(), StartActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
-                }
-                "fail" -> {
-                    // 로그아웃 실패 시 처리
-                    Toast.makeText(requireContext(), "로그아웃 실패: 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
-                }
-                else -> {
-                    // 기타 경우의 처리
-                    Toast.makeText(requireContext(), "알 수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
         }
 
         return binding.root
@@ -96,7 +76,8 @@ class MyPageFragment : Fragment() {
             binding.myTvPrivatePolicy to MyPrivacyPolicyActivity::class.java,
             binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
             binding.myTvFixAlliance to MyFixAllActivity::class.java,
-            binding.myTvLogOut to null
+            binding.myTvLogOut to null,
+            binding.myTvWithdrawal to null
         )
 
         buttonActions.forEach { (button, activityClass) ->
@@ -104,7 +85,10 @@ class MyPageFragment : Fragment() {
                 if (activityClass != null) {
                     startActivity(activityClass)
                 } else {
-                    initLogOut()
+                    when (button.id) {
+                        binding.myTvLogOut.id -> initLogOut() // 로그아웃 버튼
+                        binding.myTvWithdrawal.id -> initWithdrawal() // 회원탈퇴 버튼
+                    }
                 }
             }
         }
@@ -121,7 +105,8 @@ class MyPageFragment : Fragment() {
             binding.myTvCommunityComment,
             binding.myTvCommunityScrap,
             binding.myTvOpinion,
-            binding.myTvLogOut
+            binding.myTvLogOut,
+            binding.myTvWithdrawal
         )
 
         textViews.forEach { textView ->
@@ -148,6 +133,48 @@ class MyPageFragment : Fragment() {
 
 
     private fun initLogOut() {
-        logoutViewModel.postLogout() ?: Log.d("Logout", "accessToken 비어있음")
+        logoutViewModel.postLogout()
+
+        logoutViewModel.response.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                "success" -> {
+                    // 로그아웃 성공 시 토큰과 ID 초기화
+                    clearUserData()
+
+                    val intent = Intent(requireContext(), StartActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+                "fail" -> {
+                    // 로그아웃 실패 시 처리
+                    Toast.makeText(requireContext(), "로그아웃 실패: 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    // 기타 경우의 처리
+                    Toast.makeText(requireContext(), "알 수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun initWithdrawal() {
+        goodByeViewModel.postGoodBye()
+
+        goodByeViewModel.response.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                "success" -> {
+                    clearUserData()
+                    val intent = Intent(requireContext(), StartActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+                "fail" -> {
+                    Toast.makeText(requireContext(), "회원탈퇴 실패: 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(requireContext(), "알 수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }
