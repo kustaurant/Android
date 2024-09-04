@@ -81,7 +81,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
 
         private fun showPopupWindow(anchorView: View) {
             val inflater = LayoutInflater.from(context)
-            val layoutRes = if (getItem(absoluteAdapterPosition).isCommentMine) {
+            val layoutRes = if (getItem(absoluteAdapterPosition).isCommentMine == true) {
                 R.layout.popup_review_only_delete
             } else {
                 R.layout.popup_review_only_report
@@ -152,6 +152,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
         }
 
         fun bind(item: CommentDataResponse) {
+            Log.d("review", item.toString())
             binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
             binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
 
@@ -161,7 +162,6 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             binding.tvReview.text = item.commentBody
             binding.tvLike.text = item.commentLikeCount.toString()
             binding.tvHate.text = item.commentDislikeCount.toString()
-            Log.d("img", item.commentIconImgUrl)
             Glide.with(context)
                 .load(item.commentIconImgUrl)
                 .into(binding.ivUserImage)
@@ -221,9 +221,9 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
     }
 
     override fun onBindViewHolder(holder: DetailReviewAdapter.ViewHolder, position: Int) {
-        holder.bind(getItem(position))
-
-
+        val item = getItem(position)
+        Log.d("DetailReviewAdapter", "Binding position $position: $item")
+        holder.bind(item)
     }
 
     companion object {

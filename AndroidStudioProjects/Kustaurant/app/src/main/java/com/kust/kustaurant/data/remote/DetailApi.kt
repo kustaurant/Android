@@ -1,6 +1,7 @@
 package com.kust.kustaurant.data.remote
 
 import com.kust.kustaurant.data.model.CommentDataResponse
+import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
@@ -70,11 +71,11 @@ interface DetailApi {
     suspend fun postCommentLike(
         @Path("restaurantId") restaurantId: Int,
         @Path("commentId") commentId: Int
-    ) : CommentDataResponse
+    ) : CommentLikeResponse
 
     @POST("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}/dislike")
     suspend fun postCommentDisLike(
         @Path("restaurantId") restaurantId: Int,
         @Path("commentId") commentId: Int
-    ) : CommentDataResponse
+    ) : CommentLikeResponse
 }

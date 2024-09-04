@@ -31,12 +31,12 @@ class DetailMenuFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.d("life","start")
+        Log.d("life","menu start")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("life","resume")
+        Log.d("life","menu resume")
         setRecyclerViewHeight() // 프래그먼트가 다시 보여질 때 마다 높이 재설정
     }
 

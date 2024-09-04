@@ -16,7 +16,7 @@ object CategoryIdMapper {
         "카페/디저트" to "CA",
         "베이커리" to "BA",
         "샐러드" to "SA",
-        "제휴업체" to "JH"
+        "제휴" to "JH"
     )
 
     val situationMap = mapOf(
