@@ -26,6 +26,9 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.searchNoneCl.visibility = View.GONE
+        binding.searchRv.visibility = View.GONE
+
         setupRecyclerView()
         setupObservers()
         setupListeners()
@@ -48,14 +51,19 @@ class SearchActivity : AppCompatActivity() {
     private fun setupObservers() {
         searchViewModel.searchResults.observe(this) { results ->
             searchAdapter.updateData(results)
+
             if (results.isEmpty()) {
-                Toast.makeText(this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show() // 검색 결과가 없는 경우 사용자에게 알림
+                binding.searchNoneCl.visibility = View.VISIBLE
+                binding.searchRv.visibility = View.GONE
+            } else {
+                binding.searchNoneCl.visibility = View.GONE
+                binding.searchRv.visibility = View.VISIBLE
             }
         }
 
         searchViewModel.error.observe(this) { errorMessage ->
             errorMessage?.let {
-                Toast.makeText(this, "오류 발생: $it", Toast.LENGTH_SHORT).show() // 오류 메시지 표시
+                Toast.makeText(this, "오류 발생: $it", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -67,7 +75,7 @@ class SearchActivity : AppCompatActivity() {
 
         binding.searchEt.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                val drawableRight = 2 // 오른쪽 drawable 인덱스
+                val drawableRight = 2 // Right drawable index
                 if (event.rawX >= (binding.searchEt.right - binding.searchEt.compoundDrawables[drawableRight].bounds.width())) {
                     performSearch()
                     return@setOnTouchListener true
@@ -79,12 +87,13 @@ class SearchActivity : AppCompatActivity() {
 
     private fun performSearch() {
         val query = binding.searchEt.text.toString()
-        Log.d("search","${query}")
+        Log.d("search", "$query")
         if (query.isNotEmpty()) {
             searchViewModel.searchRestaurants(query)
         } else {
-            searchAdapter.updateData(emptyList()) // 검색어가 비어있을 경우 RecyclerView 비우기
-            Toast.makeText(this, "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show() // 빈 검색어 알림 추가
+            searchAdapter.updateData(emptyList())
+            binding.searchNoneCl.visibility = View.VISIBLE
+            binding.searchRv.visibility = View.GONE
         }
     }
 }
