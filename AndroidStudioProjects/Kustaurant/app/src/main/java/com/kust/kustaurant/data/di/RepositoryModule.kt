@@ -7,6 +7,7 @@ import com.kust.kustaurant.data.repository.HomeRepositoryImpl
 import com.kust.kustaurant.data.repository.LogoutRepositoryImpl
 import com.kust.kustaurant.data.repository.NaverLoginRepositoryImpl
 import com.kust.kustaurant.data.repository.MyPageRepositoryImpl
+import com.kust.kustaurant.data.repository.SearchRepositoryImpl
 //import com.kust.kustaurant.data.repository.NewAccessTokenRepositoryImpl
 import com.kust.kustaurant.data.repository.TierRepositoryImpl
 import com.kust.kustaurant.domain.repository.CommunityRepository
@@ -16,6 +17,7 @@ import com.kust.kustaurant.domain.repository.HomeRepository
 import com.kust.kustaurant.domain.repository.LogoutRepository
 import com.kust.kustaurant.domain.repository.NaverLoginRepository
 import com.kust.kustaurant.domain.repository.MyPageRepository
+import com.kust.kustaurant.domain.repository.SearchRepository
 //import com.kust.kustaurant.domain.repository.NewAccessTokenRepository
 import com.kust.kustaurant.domain.repository.TierRepository
 import dagger.Binds
@@ -78,4 +80,10 @@ abstract class RepositoryModule {
     abstract fun bindMyPageRepository(
         myPageRepository: MyPageRepositoryImpl
     ): MyPageRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSearchRepository(
+        searchRepository: SearchRepositoryImpl
+    ): SearchRepository
 }

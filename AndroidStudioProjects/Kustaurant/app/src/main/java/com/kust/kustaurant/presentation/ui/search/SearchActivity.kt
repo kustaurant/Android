@@ -1,31 +1,69 @@
 package com.kust.kustaurant.presentation.ui.search
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
+import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kust.kustaurant.databinding.ActivitySearchBinding
 import com.kust.kustaurant.domain.model.SearchRestaurant
+import com.kust.kustaurant.presentation.ui.detail.DetailActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
-    lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: ActivitySearchBinding
     private lateinit var searchAdapter: SearchAdapter
-    private lateinit var restaurantList: List<SearchRestaurant>
+
+    private val searchViewModel: SearchViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupRecyclerView()
+        setupObservers()
+        setupListeners()
+    }
+
+    private fun setupRecyclerView() {
+        searchAdapter = SearchAdapter(emptyList())
+        binding.searchRv.adapter = searchAdapter
+        binding.searchRv.layoutManager = LinearLayoutManager(this)
+
+        searchAdapter.setOnItemClickListener(object : SearchAdapter.OnItemClickListener {
+            override fun onItemClicked(data: SearchRestaurant) {
+                val intent = Intent(this@SearchActivity, DetailActivity::class.java)
+                intent.putExtra("restaurantId", data.restaurantId)
+                startActivity(intent)
+            }
+        })
+    }
+
+    private fun setupObservers() {
+        searchViewModel.searchResults.observe(this) { results ->
+            searchAdapter.updateData(results)
+            if (results.isEmpty()) {
+                Toast.makeText(this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show() // 검색 결과가 없는 경우 사용자에게 알림
+            }
+        }
+
+        searchViewModel.error.observe(this) { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(this, "오류 발생: $it", Toast.LENGTH_SHORT).show() // 오류 메시지 표시
+            }
+        }
+    }
+
+    private fun setupListeners() {
         binding.searchBtnBack.setOnClickListener {
             finish()
         }
-
-        // 어댑터를 빈 리스트로 초기화
-        searchAdapter = SearchAdapter(emptyList())
-        binding.searchRv.adapter = searchAdapter
-
-        // RecyclerView 레이아웃 매니저 설정
-        binding.searchRv.layoutManager = LinearLayoutManager(this)
 
         binding.searchEt.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
@@ -39,22 +77,14 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    // 검색을 수행하고 RecyclerView를 업데이트하는 함수
     private fun performSearch() {
         val query = binding.searchEt.text.toString()
+        Log.d("search","${query}")
         if (query.isNotEmpty()) {
-            // 여기서 실제 서버 호출을 수행할 수 있음
-            // 현재는 더미 데이터로 시뮬레이션
-            val dummyData = listOf(
-                SearchRestaurant(1, 1, "부탄츄", "Korean", "Downtown", "url_to_image", 3, true, false, 37.56, 126.97, null, 4.5),
-                SearchRestaurant(2, 2, "샤브로", "Japanese", "Uptown", "url_to_image", 2, false, true, 37.56, 126.98, null, 4.2)
-            )
-
-            // 더미 데이터로 어댑터 업데이트
-            searchAdapter.updateData(dummyData)
+            searchViewModel.searchRestaurants(query)
         } else {
-            // 검색어가 비어있을 경우 RecyclerView를 비움
-            searchAdapter.updateData(emptyList())
+            searchAdapter.updateData(emptyList()) // 검색어가 비어있을 경우 RecyclerView 비우기
+            Toast.makeText(this, "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show() // 빈 검색어 알림 추가
         }
     }
 }

@@ -8,6 +8,7 @@ import com.kust.kustaurant.data.remote.KustaurantApi
 import com.kust.kustaurant.data.remote.LogoutApi
 import com.kust.kustaurant.data.remote.NaverLoginApi
 import com.kust.kustaurant.data.remote.MyPageApi
+import com.kust.kustaurant.data.remote.SearchApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -93,6 +94,12 @@ object NetworkModule {
     @Singleton
     fun provideMyPageApi(retrofit: Retrofit): MyPageApi{
         return retrofit.create(MyPageApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchApi(retrofit: Retrofit): SearchApi {
+        return retrofit.create(SearchApi::class.java)
     }
 
 }

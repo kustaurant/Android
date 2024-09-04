@@ -66,6 +66,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/search_gl_start"
         app:layout_constraintEnd_toEndOf="@id/search_gl_end"
+        android:layout_marginTop="21dp"
         android:scrollbars="vertical"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
