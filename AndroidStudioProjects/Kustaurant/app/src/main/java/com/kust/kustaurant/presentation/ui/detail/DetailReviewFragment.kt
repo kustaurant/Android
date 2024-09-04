@@ -94,6 +94,7 @@ class DetailReviewFragment : Fragment() {
                 binding.detailBtnRecent.visibility = View.GONE
                 binding.detailBtnPopular.visibility = View.GONE
                 binding.detailClReviewNone.visibility = View.VISIBLE
+                setNoneHeight()
             } else {
                 reviewAdapter.submitList(commentData) {
                     binding.detailRvReview.post {
@@ -253,5 +254,13 @@ class DetailReviewFragment : Fragment() {
             // 부모 뷰 또는 연관된 뷰의 높이를 조절해야 할 경우
             (activity as? DetailActivity)?.setViewPagerHeight(totalHeight)
         }
+    }
+
+    private fun setNoneHeight() {
+        val params = binding.detailClReviewNone.layoutParams
+        params.height = 700
+        binding.detailClReviewNone.layoutParams = params
+
+        (activity as? DetailActivity)?.setViewPagerHeight(700)
     }
 }
