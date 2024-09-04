@@ -3,11 +3,13 @@ package com.kust.kustaurant.data.di
 import com.kust.kustaurant.data.remote.CommunityApi
 import android.content.Context
 import com.kust.kustaurant.data.remote.DetailApi
+import com.kust.kustaurant.data.remote.GoodByeApi
 import com.kust.kustaurant.data.remote.HomeApi
 import com.kust.kustaurant.data.remote.KustaurantApi
 import com.kust.kustaurant.data.remote.LogoutApi
 import com.kust.kustaurant.data.remote.NaverLoginApi
 import com.kust.kustaurant.data.remote.MyPageApi
+import com.kust.kustaurant.data.remote.SearchApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -91,8 +93,20 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideGoodbyeApi(retrofit: Retrofit): GoodByeApi {
+        return retrofit.create(GoodByeApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideMyPageApi(retrofit: Retrofit): MyPageApi{
         return retrofit.create(MyPageApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchApi(retrofit: Retrofit): SearchApi {
+        return retrofit.create(SearchApi::class.java)
     }
 
 }

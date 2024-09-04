@@ -1,6 +1,7 @@
 package com.kust.kustaurant.presentation.ui.tier
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.kust.kustaurant.databinding.FragmentTierBinding
 import com.google.android.material.tabs.TabLayout
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.presentation.ui.home.HomeFragment
+import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +33,12 @@ class TierFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTierBinding.inflate(inflater, container, false)
+
+        binding.tierIvSearch.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
+        }
+
         return binding.root
     }
 
@@ -63,7 +71,6 @@ class TierFragment : Fragment() {
                 binding.tierViewPager.currentItem = tab.position
                 handleTabSelected(tab.position)
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
@@ -81,8 +88,7 @@ class TierFragment : Fragment() {
     }
 
     private fun handleTabSelected(position: Int) {
-        val layoutParams =
-            binding.tierSvSelectedCategory.layoutParams as ViewGroup.MarginLayoutParams
+        val layoutParams = binding.tierSvSelectedCategory.layoutParams as ViewGroup.MarginLayoutParams
 
         if (position == 1) { // 지도 탭
             layoutParams.marginEnd = 0
@@ -203,7 +209,6 @@ class TierFragment : Fragment() {
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
