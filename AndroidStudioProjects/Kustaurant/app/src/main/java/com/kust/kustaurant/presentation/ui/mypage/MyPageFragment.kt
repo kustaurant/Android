@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.kust.kustaurant.R
@@ -49,14 +50,24 @@ class MyPageFragment : Fragment() {
             disableButtons()
         }
 
-        logoutViewModel.Response.observe(viewLifecycleOwner) { response ->
-            if (response == "로그아웃이 완료되었습니다.") {
-                // 로그아웃 성공 시 토큰과 ID 초기화
-                clearUserData()
+        logoutViewModel.response.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                "success" -> {
+                    // 로그아웃 성공 시 토큰과 ID 초기화
+                    clearUserData()
 
-                val intent = Intent(requireContext(), StartActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
+                    val intent = Intent(requireContext(), StartActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+                "fail" -> {
+                    // 로그아웃 실패 시 처리
+                    Toast.makeText(requireContext(), "로그아웃 실패: 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    // 기타 경우의 처리
+                    Toast.makeText(requireContext(), "알 수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
