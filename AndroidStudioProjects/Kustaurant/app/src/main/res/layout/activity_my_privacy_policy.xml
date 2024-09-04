@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.mypage.MyTermsUseActivity">
+    tools:context=".presentation.ui.mypage.MyPrivacyPolicyActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_info_start"
@@ -22,7 +22,7 @@
         app:layout_constraintGuide_percent="0.95"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/terms_use_cl_top_bar"
+        android:id="@+id/privacy_cl_top_bar"
         android:elevation="1dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -32,12 +32,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/terms_use_tv_title"
+            android:id="@+id/privacy_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_semibold"
             android:gravity="center"
-            android:text="이용약관"
+            android:text="개인정보 처리방침"
             android:textColor="@color/black"
             android:textSize="17sp"
             android:textStyle="bold"
@@ -47,7 +47,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
-            android:id="@+id/terms_use_btn_back"
+            android:id="@+id/privacy_btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/back_btn_info"
@@ -59,11 +59,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <WebView
-        android:id="@+id/terms_use_wv_terms"
+        android:id="@+id/privacy_wv_notification"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/terms_use_cl_top_bar"
+        app:layout_constraintTop_toBottomOf="@id/privacy_cl_top_bar"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

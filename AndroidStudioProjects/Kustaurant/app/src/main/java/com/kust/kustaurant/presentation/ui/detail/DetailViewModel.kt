@@ -19,6 +19,7 @@ import com.kust.kustaurant.domain.usecase.detail.GetEvaluationDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentDisLikeUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentLikeUseCase
+import com.kust.kustaurant.domain.usecase.detail.PostCommentReportUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostEvaluationDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostFavoriteToggleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,7 +42,8 @@ class DetailViewModel @Inject constructor(
     private val postEvaluationDataUseCase: PostEvaluationDataUseCase,
     private val deleteCommentDataUseCase: DeleteCommentDataUseCase,
     private val postCommentLikeUseCase: PostCommentLikeUseCase,
-    private val postCommentDisLikeUseCase: PostCommentDisLikeUseCase
+    private val postCommentDisLikeUseCase: PostCommentDisLikeUseCase,
+    private val postCommentReportUseCase : PostCommentReportUseCase
 ): ViewModel() {
     val tabList = MutableLiveData(listOf("메뉴", "리뷰"))
 
@@ -54,7 +56,7 @@ class DetailViewModel @Inject constructor(
     private val _tierData = MutableLiveData<TierInfoData>()
     val tierData: LiveData<TierInfoData> = _tierData
 
-    private val _reviewData = MutableLiveData<List<CommentDataResponse>>()
+    private var _reviewData = MutableLiveData<List<CommentDataResponse>>()
     val reviewData: LiveData<List<CommentDataResponse>> = _reviewData
 
     private val _favoriteData = MutableLiveData<Boolean>()
@@ -70,6 +72,7 @@ class DetailViewModel @Inject constructor(
     val itemUpdateIndex: LiveData<Int> = _itemUpdateIndex
 
     val evaluationComplete = MutableLiveData<Boolean>()
+    private var currentSort = "popularity"
 
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
@@ -84,9 +87,14 @@ class DetailViewModel @Inject constructor(
     }
 
     fun loadCommentData(restaurantId: Int, sort: String){
+        currentSort = sort
         viewModelScope.launch {
-            val getCommentData = getCommentDataUseCase(restaurantId, sort)
-            _reviewData.postValue(getCommentData.toList())
+            try{
+                val getCommentData = getCommentDataUseCase(restaurantId, sort)
+                _reviewData.postValue(getCommentData.toList())
+            } catch (e: Exception){
+                Log.e("CommentLoad", "Failed to load comment", e)
+            }
         }
     }
 
@@ -97,10 +105,11 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun postCommentData(restaurantId: Int, commentId : Int, inputText: String){
+    fun postCommentData(restaurantId: Int, commentId: Int, inputText: String) {
         viewModelScope.launch {
             try {
                 postCommentDataUseCase(restaurantId, commentId, inputText)
+                loadCommentData(restaurantId, currentSort)
             } catch (e: Exception) {
                 Log.e("CommentPost", "Failed to post comment", e)
             }
@@ -161,38 +170,55 @@ class DetailViewModel @Inject constructor(
         return tempFile
     }
 
-    fun deleteCommentData(restaurantId: Int, commentId: Int){
+    fun deleteCommentData(restaurantId: Int, commentId: Int) {
         viewModelScope.launch {
-            try{
+            try {
                 deleteCommentDataUseCase(restaurantId, commentId)
+                loadCommentData(restaurantId, currentSort)
             } catch (e: Exception) {
                 Log.e("DetailViewModel", "Failed to delete comment", e)
             }
         }
     }
 
-    fun postCommentLike(restaurantId: Int, commentId: Int, position: Int){
+
+    fun postCommentReport(restaurantId: Int, commentId: Int){
+        try {
+            viewModelScope.launch {
+                postCommentReportUseCase(restaurantId, commentId)
+            }
+        } catch (e: Exception){
+            Log.d("DetailViewModel", "post report", e)
+        }
+    }
+
+    fun postCommentLike(restaurantId: Int, commentId: Int, position: Int) {
         viewModelScope.launch {
             try {
                 val response = postCommentLikeUseCase(restaurantId, commentId)
-                updateLocalCommentData(response)
-                _itemUpdateIndex.postValue(position)
+                updateLocalCommentData(response, position)
             } catch (e: Exception) {
                 Log.e("DetailViewModel", "Failed to post comment like", e)
             }
         }
     }
 
-    fun postCommentDisLike(restaurantId: Int, comment: Int){
+    fun postCommentDisLike(restaurantId: Int, commentId: Int, position: Int) {
         viewModelScope.launch {
-            postCommentDisLikeUseCase(restaurantId, comment)
+            try {
+                val response = postCommentDisLikeUseCase(restaurantId, commentId)
+                updateLocalCommentData(response, position)
+            } catch (e: Exception) {
+                Log.e("DetailViewModel", "Failed to post comment dislike", e)
+            }
         }
     }
 
-    private fun updateLocalCommentData(updatedComment: CommentDataResponse) {
-        val updatedReviews = _reviewData.value?.map { comment ->
-            if (comment.commentId == updatedComment.commentId) updatedComment else comment
-        }
+    private fun updateLocalCommentData(updatedComment: CommentDataResponse, position: Int) {
+        val updatedReviews = _reviewData.value?.toMutableList()
+        updatedReviews?.set(position, updatedComment)
         _reviewData.postValue(updatedReviews!!)
+        _itemUpdateIndex.postValue(position)
     }
+
 }
