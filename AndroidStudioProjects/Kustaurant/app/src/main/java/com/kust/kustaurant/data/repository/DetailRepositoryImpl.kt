@@ -2,6 +2,7 @@ package com.kust.kustaurant.data.repository
 
 
 import com.kust.kustaurant.data.model.CommentDataResponse
+import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
@@ -59,11 +60,11 @@ class DetailRepositoryImpl @Inject constructor(
         return detailApi.postCommentReport(restaurantId, commentId)
     }
 
-    override suspend fun postCommentLike(restaurantId: Int, commentId: Int) : CommentDataResponse{
+    override suspend fun postCommentLike(restaurantId: Int, commentId: Int) : CommentLikeResponse {
         return detailApi.postCommentLike(restaurantId, commentId)
     }
 
-    override suspend fun postCommentDiskLike(restaurantId: Int, commentId: Int) : CommentDataResponse{
+    override suspend fun postCommentDiskLike(restaurantId: Int, commentId: Int) : CommentLikeResponse{
         return detailApi.postCommentDisLike(restaurantId, commentId)
     }
 }

@@ -1,6 +1,7 @@
 package com.kust.kustaurant.domain.repository
 
 import com.kust.kustaurant.data.model.CommentDataResponse
+import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
@@ -50,10 +51,10 @@ interface DetailRepository {
     suspend fun postCommentLike(
         restaurantId: Int,
         commentId: Int
-    ) : CommentDataResponse
+    ) : CommentLikeResponse
 
     suspend fun postCommentDiskLike(
         restaurantId: Int,
         commentId: Int
-    ) : CommentDataResponse
+    ) : CommentLikeResponse
 }

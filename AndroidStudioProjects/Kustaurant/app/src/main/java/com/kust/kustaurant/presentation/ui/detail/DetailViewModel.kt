@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kust.kustaurant.data.model.CommentDataResponse
+import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
@@ -116,12 +117,16 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun postFavoriteToggle(restaurantId: Int){
+    fun postFavoriteToggle(restaurantId: Int) {
         viewModelScope.launch {
             try {
                 val newFavoriteState = postFavoriteToggleUseCase(restaurantId)
-                _detailData.value?.let {
-                    val updatedDetailData = it.copy(isFavorite = newFavoriteState)
+
+                _detailData.value?.let { currentDetailData ->
+                    val updatedDetailData = currentDetailData.copy(
+                        isFavorite = newFavoriteState,
+                        favoriteCount = calculateFavoriteCount(currentDetailData, newFavoriteState)
+                    )
                     _detailData.postValue(updatedDetailData)
                 }
             } catch (e: Exception) {
@@ -129,6 +134,15 @@ class DetailViewModel @Inject constructor(
             }
         }
     }
+
+    private fun calculateFavoriteCount(currentDetailData: DetailDataResponse, newFavoriteState: Boolean): Int {
+        return if (newFavoriteState) {
+            currentDetailData.favoriteCount + 1
+        } else {
+            currentDetailData.favoriteCount - 1
+        }
+    }
+
 
     fun loadMyEvaluationData(restaurantId: Int){
         viewModelScope.launch {
@@ -214,11 +228,23 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private fun updateLocalCommentData(updatedComment: CommentDataResponse, position: Int) {
-        val updatedReviews = _reviewData.value?.toMutableList()
-        updatedReviews?.set(position, updatedComment)
-        _reviewData.postValue(updatedReviews!!)
-        _itemUpdateIndex.postValue(position)
+    private fun updateLocalCommentData(response: CommentLikeResponse, position: Int) {
+        _reviewData.value?.let { currentReviews ->
+            val updatedReviews = currentReviews.toMutableList()
+            val currentComment = updatedReviews[position]
+
+            val updatedComment = currentComment.copy(
+                commentLikeStatus = response.commentLikeStatus,
+                commentLikeCount = response.commentLikeCount,
+                commentDislikeCount = response.commentDislikeCount
+            )
+
+            updatedReviews[position] = updatedComment
+            _reviewData.postValue(updatedReviews)
+            _itemUpdateIndex.postValue(position)
+        }
     }
+
+
 
 }
