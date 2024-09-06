@@ -39,7 +39,7 @@ class EvaluateRestaurantAdapter(val context: Context) : ListAdapter<MyEvaluateRe
             binding.myRvEvaluateCuisine.layoutManager = FlexboxLayoutManager(binding.root.context)
             keyWordAdapter.submitList(item.evaluationItemScores)
 
-            val gradeAdapter = DetailGradeAdapter(item.evaluationScore)
+            val gradeAdapter = EvaluateGradeAdapter(item.evaluationScore)
             binding.myRvGrade.adapter = gradeAdapter
             binding.myRvGrade.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
 
