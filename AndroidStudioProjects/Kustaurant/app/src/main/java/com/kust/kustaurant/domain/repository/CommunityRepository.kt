@@ -13,4 +13,8 @@ interface CommunityRepository {
     suspend fun getCommunityRankingListData(
         sort: String
     ): List<CommunityRanking>
+
+    suspend fun getCommunityPostDetailData(
+        postId: Int
+    ): CommunityPost
 }

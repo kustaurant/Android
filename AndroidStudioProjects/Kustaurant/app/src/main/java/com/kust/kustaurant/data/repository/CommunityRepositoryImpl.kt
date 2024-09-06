@@ -18,4 +18,8 @@ class CommunityRepositoryImpl @Inject constructor(
     ): List<CommunityRanking> {
         return communityApi.getCommunityRankingListData(sort)
     }
+
+    override suspend fun getCommunityPostDetailData(postId: Int): CommunityPost {
+        return communityApi.getCommunityPostDetailData(postId)
+    }
 }
