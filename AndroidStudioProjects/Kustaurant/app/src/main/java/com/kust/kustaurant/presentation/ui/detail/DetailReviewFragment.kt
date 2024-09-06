@@ -239,18 +239,18 @@ class DetailReviewFragment : Fragment() {
             // RecyclerView의 전체 내용 높이 계산
             val recyclerHeight = binding.detailRvReview.computeVerticalScrollRange()
 
-            // 버튼들의 높이 계산 (예시에서는 버튼 2개의 높이를 합산)
+            // 버튼들의 높이 계산
             val buttonsHeight = binding.detailBtnPopular.height + binding.detailBtnRecent.height
 
             // 전체 뷰의 높이는 RecyclerView 높이 + 버튼 높이
             val totalHeight = recyclerHeight + buttonsHeight
 
-            // RecyclerView 레이아웃 파라미터 업데이트
+            // RecyclerView 파라미터 업데이트
             val params = binding.detailRvReview.layoutParams
             params.height = totalHeight
             binding.detailRvReview.layoutParams = params
 
-            // 부모 뷰 또는 연관된 뷰의 높이를 조절해야 할 경우
+            // 부모 뷰 조절
             (activity as? DetailActivity)?.setViewPagerHeight(totalHeight)
         }
     }

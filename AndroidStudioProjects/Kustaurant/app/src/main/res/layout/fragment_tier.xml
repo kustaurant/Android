@@ -83,14 +83,13 @@
                 android:id="@+id/tier_tab_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                app:layout_constraintWidth_percent="0.48"
                 app:flow_horizontalAlign="center"
-                app:layout_constraintEnd_toStartOf="@id/tier_iv_search"
-                app:layout_constraintStart_toEndOf="@id/btn_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabGravity="fill"
-                app:tabMode="fixed"
-                android:layout_marginStart="65dp"
-                android:layout_marginEnd="10dp"/>
+                app:tabMode="fixed"/>
 
             <!-- Search Button -->
             <ImageView

@@ -113,12 +113,10 @@ class DetailActivity : AppCompatActivity() {
             if (scrollY >= binding.clStoreInfo.top - binding.detailClTopBar.height) {
                 binding.detailClTopBar.setBackgroundColor(Color.WHITE)
                 binding.detailIvBack.setImageResource(R.drawable.btn_back)
-                binding.detailIvAlarm.setImageResource(R.drawable.ic_alarm)
                 binding.detailIvSearch.setImageResource(R.drawable.ic_search)
             } else {
                 binding.detailClTopBar.setBackgroundColor(Color.TRANSPARENT)
                 binding.detailIvBack.setImageResource(R.drawable.ic_back_white)
-                binding.detailIvAlarm.setImageResource(R.drawable.ic_alarm_white)
                 binding.detailIvSearch.setImageResource(R.drawable.ic_search_white)
             }
         }
