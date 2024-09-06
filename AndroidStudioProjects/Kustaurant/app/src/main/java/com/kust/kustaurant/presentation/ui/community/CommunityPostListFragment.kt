@@ -25,11 +25,19 @@ class CommunityPostListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: CommunityViewModel by activityViewModels()
-
     private lateinit var adapter: CommunityPostListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = CommunityPostListAdapter()
+        adapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener{
+            override fun onItemClicked(data: CommunityPost) {
+                viewModel.loadCommunityPostDetail(data.postId)
+                val intent = Intent(requireActivity(), CommunityPostDetailActivity::class.java)
+                intent.putExtra("postId", data.postId)
+                startActivity(intent)
+            }
+        })
 
         setupUI()
         setupObservers()
@@ -71,6 +79,9 @@ class CommunityPostListFragment : Fragment() {
                 return view
             }
         }
+
+        binding.communityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.communityRecyclerView.adapter = adapter
 
         binding.communitySpinnerBoard.adapter = spinnerAdapter
 
@@ -125,10 +136,6 @@ class CommunityPostListFragment : Fragment() {
                 }
             }
         }
-
-
-        binding.communityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.communityRecyclerView.adapter = adapter
 
         // RecyclerView 스크롤 리스너 설정
         binding.communityRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

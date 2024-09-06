@@ -28,5 +28,4 @@ data class ReplyDataResponse(
     val commentDislikeCount: Int,
     val isCommentMine: Boolean,
     val commentReplies: String
-
 )

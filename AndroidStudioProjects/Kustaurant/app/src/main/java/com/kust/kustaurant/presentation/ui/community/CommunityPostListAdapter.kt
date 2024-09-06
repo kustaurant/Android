@@ -12,9 +12,10 @@ import com.bumptech.glide.Glide
 import com.kust.kustaurant.databinding.ItemCommunityPostBinding
 import com.kust.kustaurant.domain.model.CommunityPost
 
-class CommunityPostListAdapter(private val onClick: (CommunityPost) -> Unit) :
+class CommunityPostListAdapter() :
     ListAdapter<CommunityPost, CommunityPostListAdapter.ViewHolder>(communityPostListDiffUtil) {
     lateinit var itemClickListener: OnItemClickListener
+
 
     interface OnItemClickListener{
         fun onItemClicked(data : CommunityPost)
@@ -30,9 +31,6 @@ class CommunityPostListAdapter(private val onClick: (CommunityPost) -> Unit) :
     ) : RecyclerView.ViewHolder(viewBinding.root) {
 
         fun bind(item: CommunityPost) {
-            viewBinding.root.setOnClickListener {
-                onClick(item)
-            }
             viewBinding.communityTvCategory.text = item.postCategory
 
             // 이미지 URL 추출 및 제거

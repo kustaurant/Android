@@ -25,17 +25,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="27dp"
-        app:layout_constraintDimensionRatio="360:296"
+        app:layout_constraintDimensionRatio="360:290"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/draw_selected_tv_clickable_info"
-        tools:layout_height="296dp" />
+        tools:layout_height="296dp"
+        app:layout_constraintBottom_toTopOf="@id/draw_tv_restaurant_menu"/>
 
     <TextView
         android:id="@+id/draw_tv_restaurant_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
         android:fontFamily="@font/pretendard_semibold"
         android:gravity="center"
         android:text=""
@@ -156,7 +156,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="6.5dp"
-        android:layout_marginBottom="49dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/all_radius_100_none"
         android:backgroundTint="@color/white"
         android:fontFamily="@font/pretendard_medium"
@@ -178,7 +178,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6.5dp"
-        android:layout_marginBottom="49dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/all_radius_100_none"
         android:backgroundTint="@color/signature_1"
         android:drawableStart="@drawable/ic_retry"
