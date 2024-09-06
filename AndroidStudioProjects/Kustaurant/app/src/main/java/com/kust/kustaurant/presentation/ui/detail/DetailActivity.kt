@@ -10,16 +10,13 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
-import com.kust.kustaurant.presentation.ui.home.SpaceDecoration
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
 

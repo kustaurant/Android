@@ -45,7 +45,7 @@ class TokenAuthenticator(private val context: Context) : Authenticator {
             val client = OkHttpClient()
             val response = client.newCall(refreshTokenRequest).execute()
             if (response.isSuccessful) {
-                val body = response.body?.string()
+                val body = response.body.string()
                 return JSONObject(body).getString("accessToken")  // 서버 응답 형식에 맞게 수정
             }
         } catch (e: Exception) {

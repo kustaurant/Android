@@ -32,6 +32,8 @@
             android:id="@+id/detail_cl_review_none"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:nestedScrollingEnabled="false"
             android:visibility="gone">
 
             <TextView
