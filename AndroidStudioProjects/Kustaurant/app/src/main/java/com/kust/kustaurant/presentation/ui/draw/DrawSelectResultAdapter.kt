@@ -1,7 +1,6 @@
 package com.kust.kustaurant.presentation.ui.draw
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +39,6 @@ class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestauran
             }
             holder.imageView.background = drawable
             holder.imageView.setPadding(2)
-            //holder.setHighlighted()
         } else {
             holder.imageView.background = null
             holder.imageView.setPadding(0, 0, 0, 0)

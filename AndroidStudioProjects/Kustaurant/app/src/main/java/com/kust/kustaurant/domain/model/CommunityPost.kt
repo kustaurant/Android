@@ -10,7 +10,7 @@ data class CommunityPost(
     val updatedAt: String?,
     val likeCount: Int,
     val user: User,
-    val postCommentList: List<PostComment>
+    val postCommentList: List<CommunityPostComment>
 )
 
 data class User(
@@ -20,7 +20,8 @@ data class User(
     val rank: String?
 )
 
-data class PostComment(
+data class CommunityPostComment(
+    val commentId: Int,
     val commentBody: String,
     val user: User,
     val likeCount: Int,

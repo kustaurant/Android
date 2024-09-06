@@ -3,6 +3,7 @@ package com.kust.kustaurant.data.remote
 import com.kust.kustaurant.domain.model.CommunityPost
 import com.kust.kustaurant.domain.model.CommunityRanking
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CommunityApi {
@@ -17,4 +18,9 @@ interface CommunityApi {
     suspend fun getCommunityRankingListData(
         @Query("sort") sort : String,
     ) : List<CommunityRanking>
+
+    @GET("/api/v1/community/{postId}")
+    suspend fun getCommunityPostDetailData(
+        @Path("commentId") postId : Int,
+    ) : CommunityPost
 }
