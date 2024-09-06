@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
+import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -44,6 +45,7 @@ class DetailActivity : AppCompatActivity() {
         initNaverLink()
         changeTopBar()
         initFavorite(restaurantId)
+        initTouchExtension()
 
         viewModel.detailData.observe(this) { detailData ->
             if (detailData.partnershipInfo == null){
@@ -73,6 +75,10 @@ class DetailActivity : AppCompatActivity() {
                 }, 100) // 100ms 후에 실행
             }
         }
+    }
+
+    private fun initTouchExtension() {
+        TouchExtension.expandTouchArea(binding.detailClTopBar, binding.detailIvBack, 10)
     }
 
     private fun initFavorite(restaurantId : Int) {

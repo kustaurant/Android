@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
@@ -94,6 +95,9 @@ class DetailReviewFragment : Fragment() {
                 binding.detailBtnRecent.visibility = View.GONE
                 binding.detailBtnPopular.visibility = View.GONE
                 binding.detailClReviewNone.visibility = View.VISIBLE
+                Glide.with(requireContext())
+                    .load(R.drawable.ic_baby_cow)
+                    .into(binding.detailIvNone)
                 setNoneHeight()
             } else {
                 reviewAdapter.submitList(commentData) {
@@ -257,9 +261,9 @@ class DetailReviewFragment : Fragment() {
 
     private fun setNoneHeight() {
         val params = binding.detailClReviewNone.layoutParams
-        params.height = 700
+        params.height = 1000
         binding.detailClReviewNone.layoutParams = params
 
-        (activity as? DetailActivity)?.setViewPagerHeight(700)
+        (activity as? DetailActivity)?.setViewPagerHeight(1000)
     }
 }

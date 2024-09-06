@@ -8,7 +8,7 @@ plugins {
 }
 
 val properties = Properties()
-file("./local.properties").inputStream().use{ properties.load(it) }
+file("../local.properties").inputStream().use{ properties.load(it) }
 
 android {
     namespace = "com.kust.kustaurant"

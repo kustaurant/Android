@@ -28,21 +28,39 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/detail_cl_review_none"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:overScrollMode="never"
+            android:orientation="vertical"
+            android:gravity="center"
             android:nestedScrollingEnabled="false"
             android:visibility="gone">
 
+            <ImageView
+                android:id="@+id/detail_iv_none"
+                android:layout_width="75dp"
+                android:layout_height="72dp"
+                android:src="@drawable/ic_baby_cow_shadow"
+                app:layout_constraintBottom_toTopOf="@id/detail_tv_none"/>
+
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/detail_tv_none"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textSize="17sp"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/cement_4"
                 android:gravity="center"
                 android:text="해당 식당에 대한 평가가 없어요"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/detail_btn_popular"
