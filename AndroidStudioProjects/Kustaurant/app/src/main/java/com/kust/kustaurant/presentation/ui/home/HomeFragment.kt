@@ -18,6 +18,7 @@ import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.model.HomeResponse
 import com.kust.kustaurant.databinding.FragmentHomeBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
+import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,6 +55,11 @@ class HomeFragment : Fragment() {
 
         homeViewModel.homeResponse.observe(viewLifecycleOwner) { response ->
             updateUI(response)
+        }
+
+        binding.btnSearch.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
         }
 
         return binding.root
