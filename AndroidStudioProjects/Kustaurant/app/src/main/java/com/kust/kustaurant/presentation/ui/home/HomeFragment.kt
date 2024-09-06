@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -88,9 +89,17 @@ class HomeFragment : Fragment() {
 
         categoryAdapter = CategoryAdapter(categoryList)
         binding.categoryRecyclerView.apply {
-            layoutManager = GridLayoutManager(context, 4)
+            val spanCount = 4
+            val spacing = 10
+            val spacingInPx = context.dpToPx(spacing) // dp를 px로 변환
+
+            addItemDecoration(CategorySpaceDecoration(spanCount, spacingInPx))
             adapter = categoryAdapter
         }
+    }
+
+    fun Context.dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 
     private fun setupRecyclerViews() {

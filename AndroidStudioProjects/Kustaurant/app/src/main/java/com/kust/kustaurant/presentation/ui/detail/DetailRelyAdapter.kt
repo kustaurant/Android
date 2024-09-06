@@ -98,8 +98,29 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
             }
         }
 
+        fun getLikeIconResource(likeStatus: Int): Int {
+            return when(likeStatus) {
+                1 -> R.drawable.ic_like_true
+                0 -> R.drawable.ic_like_false
+                -1 -> R.drawable.ic_like_false
+                else -> R.drawable.ic_like_false
+            }
+        }
+
+        fun getDislikeIconResource(likeStatus: Int): Int {
+            return when(likeStatus) {
+                1 -> R.drawable.ic_dislike_false
+                0 -> R.drawable.ic_dislike_false
+                -1 -> R.drawable.ic_dislike_true
+                else -> R.drawable.ic_dislike_false
+            }
+        }
+
 
         fun bind(item : ReplyDataResponse){
+            binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
+            binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
+
             binding.tvUserName.text = item.commentNickname
             binding.tvReview.text = item.commentBody
             binding.tvLike.text = item.commentLikeCount.toString()
@@ -114,6 +135,7 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
             binding.ivHate.setOnClickListener {
                 itemClickListener.onDisLikeClicked(item.commentId, absoluteAdapterPosition)
             }
+
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailRelyAdapter.ViewHolder {
