@@ -9,18 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
-import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 
@@ -36,21 +32,22 @@ class DetailReviewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentDetailReviewBinding.inflate(layoutInflater)
+        binding = FragmentDetailReviewBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        if (arguments != null) {
-//            "애드앤드 테스트 아이디 741"
-            restaurantId = requireArguments().getInt("restaurantId", 0);
-            Log.d("restaurantId", restaurantId.toString())
+        initRecyclerView()
+        return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-            viewModel.loadCommentData(restaurantId, popularity)
-            updateButton(binding.detailBtnPopular)
+        if (arguments != null) {
+            restaurantId = requireArguments().getInt("restaurantId", 0)
+            Log.d("restaurantId", restaurantId.toString())
         }
 
-        observeViewModel()
-        initRecyclerView()
+        updateButton(binding.detailBtnPopular)
 
         binding.detailBtnRecent.setOnClickListener {
             updateButton(it)
@@ -62,8 +59,10 @@ class DetailReviewFragment : Fragment() {
             viewModel.loadCommentData(restaurantId, popularity)
         }
 
-        return binding.root
+        observeViewModel()
+        viewModel.loadCommentData(restaurantId, popularity)
     }
+
 
     fun checkToken(action: () -> Unit) {
         val accessToken = getAccessToken(requireContext())
@@ -90,33 +89,34 @@ class DetailReviewFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.itemUpdateIndex.observe(viewLifecycleOwner) { position ->
-            if (position != null) {
-                reviewAdapter.notifyItemChanged(position)
-            }
-        }
-
         viewModel.reviewData.observe(viewLifecycleOwner) { commentData ->
             if (commentData.isEmpty()) {
                 binding.detailBtnRecent.visibility = View.GONE
                 binding.detailBtnPopular.visibility = View.GONE
                 binding.detailClReviewNone.visibility = View.VISIBLE
+                setNoneHeight()
             } else {
                 reviewAdapter.submitList(commentData) {
-                    binding.detailRvReview.postDelayed({
+                    binding.detailRvReview.post {
                         setRecyclerViewHeight()
-                    }, 100)
+                    }
                 }
             }
         }
     }
 
 
+    override fun onStart() {
+        super.onStart()
+        Log.d("life","review start")
+    }
+
 
     override fun onResume() {
         super.onResume()
+        Log.d("life","review resume")
         viewModel.loadCommentData(restaurantId, popularity)
-        setRecyclerViewHeight() // 프래그먼트가 다시 보여질 때 마다 높이 재설정
+        Log.d("reviewData", viewModel.loadCommentData(restaurantId, popularity).toString())
 
     }
 
@@ -165,9 +165,8 @@ class DetailReviewFragment : Fragment() {
         reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener{
             override fun onReportClicked(commentId: Int) {
                 checkToken{
-                    val intent = Intent(context, ReportActivity::class.java)
-                    intent.putExtra("commentId", commentId)
-                    startActivity(intent)
+                    viewModel.postCommentReport(restaurantId, commentId)
+                    Toast.makeText(requireContext(), "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -236,31 +235,31 @@ class DetailReviewFragment : Fragment() {
 
     // 각 tab마다 height 재구성
     private fun setRecyclerViewHeight() {
-        val buttonHeight = binding.detailBtnPopular.height + binding.detailBtnRecent.height
-
         binding.detailRvReview.post {
-            var totalHeight = 0
-            val layoutManager = binding.detailRvReview.layoutManager as LinearLayoutManager
-            for (i in 0 until reviewAdapter.itemCount) {
-                val childView = layoutManager.findViewByPosition(i) ?: continue // 이미 렌더링된 뷰 사용
-                val lp = childView.layoutParams as ViewGroup.MarginLayoutParams
+            // RecyclerView의 전체 내용 높이 계산
+            val recyclerHeight = binding.detailRvReview.computeVerticalScrollRange()
 
-                childView.measure(
-                    View.MeasureSpec.makeMeasureSpec(binding.detailRvReview.width - lp.leftMargin - lp.rightMargin, View.MeasureSpec.EXACTLY),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                )
+            // 버튼들의 높이 계산 (예시에서는 버튼 2개의 높이를 합산)
+            val buttonsHeight = binding.detailBtnPopular.height + binding.detailBtnRecent.height
 
-                totalHeight += childView.measuredHeight + lp.topMargin + lp.bottomMargin
-            }
-            totalHeight += buttonHeight
+            // 전체 뷰의 높이는 RecyclerView 높이 + 버튼 높이
+            val totalHeight = recyclerHeight + buttonsHeight
 
+            // RecyclerView 레이아웃 파라미터 업데이트
             val params = binding.detailRvReview.layoutParams
             params.height = totalHeight
             binding.detailRvReview.layoutParams = params
 
-            // ViewPager 높이 조정을 위한 메소드 호출
+            // 부모 뷰 또는 연관된 뷰의 높이를 조절해야 할 경우
             (activity as? DetailActivity)?.setViewPagerHeight(totalHeight)
         }
     }
 
+    private fun setNoneHeight() {
+        val params = binding.detailClReviewNone.layoutParams
+        params.height = 700
+        binding.detailClReviewNone.layoutParams = params
+
+        (activity as? DetailActivity)?.setViewPagerHeight(700)
+    }
 }

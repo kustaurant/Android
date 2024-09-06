@@ -152,6 +152,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
         }
 
         fun bind(item: CommentDataResponse) {
+            Log.d("review", item.toString())
             binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
             binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
 
@@ -161,7 +162,6 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             binding.tvReview.text = item.commentBody
             binding.tvLike.text = item.commentLikeCount.toString()
             binding.tvHate.text = item.commentDislikeCount.toString()
-            Log.d("img", item.commentIconImgUrl)
             Glide.with(context)
                 .load(item.commentIconImgUrl)
                 .into(binding.ivUserImage)
@@ -211,7 +211,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             binding.detailRvReply.adapter = replyAdapter
             binding.detailRvReply.layoutManager = LinearLayoutManager(binding.root.context)
             replyAdapter.submitList(item.commentReplies)
-            replyAdapter.notifyDataSetChanged()
+            replyAdapter.notifyItemChanged(absoluteAdapterPosition)
         }
     }
 
@@ -221,9 +221,9 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
     }
 
     override fun onBindViewHolder(holder: DetailReviewAdapter.ViewHolder, position: Int) {
-        holder.bind(getItem(position))
-
-
+        val item = getItem(position)
+        Log.d("DetailReviewAdapter", "Binding position $position: $item")
+        holder.bind(item)
     }
 
     companion object {

@@ -154,11 +154,13 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/category_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_category"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="4" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -215,6 +217,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
+                            tools:listitem="@layout/item_home_rv"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="MY_SIZE">10dp</dimen>
     <dimen name="MY_EDGE_MARGIN">20dp</dimen>
+
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">13sp</dimen>
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">11sp</dimen>
+
 </resources>
