@@ -81,7 +81,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
 
         private fun showPopupWindow(anchorView: View) {
             val inflater = LayoutInflater.from(context)
-            val layoutRes = if (getItem(absoluteAdapterPosition).isCommentMine == true) {
+            val layoutRes = if (getItem(absoluteAdapterPosition).isCommentMine) {
                 R.layout.popup_review_only_delete
             } else {
                 R.layout.popup_review_only_report
@@ -211,7 +211,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             binding.detailRvReply.adapter = replyAdapter
             binding.detailRvReply.layoutManager = LinearLayoutManager(binding.root.context)
             replyAdapter.submitList(item.commentReplies)
-            replyAdapter.notifyDataSetChanged()
+            replyAdapter.notifyItemChanged(absoluteAdapterPosition)
         }
     }
 

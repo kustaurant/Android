@@ -165,9 +165,8 @@ class DetailReviewFragment : Fragment() {
         reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener{
             override fun onReportClicked(commentId: Int) {
                 checkToken{
-                    val intent = Intent(context, ReportActivity::class.java)
-                    intent.putExtra("commentId", commentId)
-                    startActivity(intent)
+                    viewModel.postCommentReport(restaurantId, commentId)
+                    Toast.makeText(requireContext(), "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 

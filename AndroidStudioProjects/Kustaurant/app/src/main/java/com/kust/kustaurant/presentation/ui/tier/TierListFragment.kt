@@ -2,6 +2,7 @@ package com.kust.kustaurant.presentation.ui.tier
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ class TierListFragment : Fragment() {
     private val viewModel: TierViewModel by activityViewModels()
     private lateinit var tierAdapter: TierListAdapter
     private val allTierData = mutableListOf<TierRestaurant>()
+    private var recyclerViewState: Parcelable?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +59,10 @@ class TierListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (savedInstanceState != null) {
+            recyclerViewState = savedInstanceState.getParcelable("recyclerViewState")
+        }
 
         observeViewModel()
     }
@@ -108,7 +114,14 @@ class TierListFragment : Fragment() {
         super.onResume()
         Log.e("TierFragment", "onResume is called")
 
-        binding.tierRecyclerView.scrollToPosition(0)
-        //viewModel.checkAndLoadBackendListData(TierViewModel.Companion.RestaurantState.NEXT_PAGE_LIST_DATA)
+        if (recyclerViewState != null) {
+            binding.tierRecyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
+        }
+    //viewModel.checkAndLoadBackendListData(TierViewModel.Companion.RestaurantState.NEXT_PAGE_LIST_DATA)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable("recyclerViewState", binding.tierRecyclerView.layoutManager?.onSaveInstanceState())
     }
 }
