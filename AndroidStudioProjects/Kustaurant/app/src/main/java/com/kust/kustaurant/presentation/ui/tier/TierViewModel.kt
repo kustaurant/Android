@@ -32,13 +32,13 @@ class TierViewModel @Inject constructor(
     private val _mapData = MutableLiveData<TierMapData>()
     val mapData: LiveData<TierMapData> = _mapData
 
-    private val _selectedMenus = MutableLiveData<Set<String>>(setOf("전체"))
+    private val _selectedMenus = MutableLiveData<Set<String>>(setOf(""))
     val selectedMenus: LiveData<Set<String>> = _selectedMenus
 
-    private val _selectedSituations = MutableLiveData<Set<String>>(setOf("전체"))
+    private val _selectedSituations = MutableLiveData<Set<String>>(setOf(""))
     val selectedSituations: LiveData<Set<String>> = _selectedSituations
 
-    private val _selectedLocations = MutableLiveData<Set<String>>(setOf("전체"))
+    private val _selectedLocations = MutableLiveData<Set<String>>(setOf(""))
     val selectedLocations: LiveData<Set<String>> = _selectedLocations
 
     //티어 프래그먼트에서 보여줄 카테고리들
@@ -52,7 +52,13 @@ class TierViewModel @Inject constructor(
     private var tierListPage = 1
 
     init {
-        loadRestaurantList(setOf("ALL"), setOf("ALL"), setOf("ALL"))
+        if ((selectedMenus.value ?: emptySet()) == setOf("") &&
+            (selectedSituations.value ?: emptySet()) == setOf("") &&
+            (selectedLocations.value ?: emptySet()) == setOf("")
+        ) {
+            Log.e("TierViewModel", "init block")
+            loadRestaurantList(setOf("ALL"), setOf("ALL"), setOf("ALL"))
+        }
     }
 
     fun toggleExpand() {
@@ -141,11 +147,11 @@ class TierViewModel @Inject constructor(
         if (hasFilterChanged(menus, situations, locations)) {
             tierListPage = 1
             setIsSelectedCategoriesChanged(true)
+            Log.e("TierViewModel", "applyFilters is called and hasFilter is True")
         } else {
             setIsSelectedCategoriesChanged(false)
             tierListPage++
         }
-
 
         setSelectedTypes(menus)
         setSelectedSituations(situations)

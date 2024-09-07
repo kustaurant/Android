@@ -89,42 +89,61 @@ class DrawSelectCategoryFragment : Fragment() {
         for (i in 0 until toggleGroup.childCount) {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
             toggleButton.setOnCheckedChangeListener { _, isChecked ->
-                if(isChecked)
-                    toggleButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
-                else
-                    toggleButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
+                if (!isChecked && !hasOtherTogglesSelected(toggleGroup)) {
+                    // Prevent unchecking the last selected button
+                    toggleButton.isChecked = true
+                } else {
+                    if (isChecked) {
+                        // Change the text color to active
+                        toggleButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
 
-                if (isChecked && toggleButton.text.toString() == "전체") {
-                    clearOtherToggles(toggleGroup, toggleButton)
-                } else if (isChecked && hasOtherTogglesSelected(toggleGroup)) {
-                    clearTotalToggle(toggleGroup)
+                        if (toggleButton.text.toString() == "전체") {
+                            // "전체" is selected, so deselect all others
+                            clearOtherToggles(toggleGroup, toggleButton)
+                        }
+                    } else {
+                        // Change the text color to inactive
+                        toggleButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
+                    }
+
+                    // Ensure "전체" is deselected if any other button is selected
+                    if (isChecked && toggleButton.text.toString() != "전체") {
+                        clearTotalToggle(toggleGroup)
+                    }
                 }
             }
         }
     }
 
+    // "전체"가 선택된 경우 나머지 버튼을 모두 해제
     private fun clearOtherToggles(toggleGroup: ViewGroup, selectedToggle: ToggleButton) {
-        for (i in 0 until toggleGroup.childCount) {
-            val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
-            if (toggleButton != selectedToggle) {
-                toggleButton.isChecked = false
+        toggleGroup.post {
+            for (i in 0 until toggleGroup.childCount) {
+                val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
+                if (toggleButton != selectedToggle) {
+                    toggleButton.isChecked = false
+                }
             }
         }
     }
 
+    // 다른 버튼이 선택된 경우 "전체" 버튼을 해제
     private fun clearTotalToggle(toggleGroup: ViewGroup) {
-        for (i in 0 until toggleGroup.childCount) {
-            val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
-            if (toggleButton.text.toString() == "전체") {
-                toggleButton.isChecked = false
+        toggleGroup.post {
+            for (i in 0 until toggleGroup.childCount) {
+                val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
+                if (toggleButton.text.toString() == "전체") {
+                    toggleButton.isChecked = false
+                }
             }
         }
     }
 
+    // 하나 이상의 토글 버튼이 선택되어 있는지 확인
     private fun hasOtherTogglesSelected(toggleGroup: ViewGroup): Boolean {
         for (i in 0 until toggleGroup.childCount) {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
-            if (toggleButton.isChecked && toggleButton.text.toString() != "전체") {
+            if (toggleButton.isChecked) {
                 return true
             }
         }
@@ -171,21 +190,23 @@ class DrawSelectCategoryFragment : Fragment() {
             }
         }
     }
-
     private fun setupToggleMenuSelection(menuText: String, view: LinearLayout) {
         val isSelected = !view.isSelected
         view.isSelected = isSelected
         applyMenuToggleUI(view, isSelected)
 
-        if (menuText == "전체" && isSelected) {
+        if ((menuText == "전체" || menuText == "제휴") && isSelected) {
+            // "전체" 또는 "제휴"가 선택되었을 때 다른 모든 메뉴 선택 해제
             selectedMenus.clear()
-            selectedMenus.add("전체")
+            selectedMenus.add(menuText)
             deselectOtherMenusToggle(view)
         } else {
             if (isSelected) {
-                if (selectedMenus.contains("전체")) {
+                // "전체" 또는 "제휴"가 이미 선택되었으면 해제하고 다른 메뉴 선택
+                if (selectedMenus.contains("전체") || selectedMenus.contains("제휴")) {
                     selectedMenus.remove("전체")
-                    deselectTotalMenuToggle()
+                    selectedMenus.remove("제휴")
+                    deselectSpecialMenuToggles() // "전체"와 "제휴" 해제
                 }
                 selectedMenus.add(menuText)
             } else {
@@ -194,6 +215,7 @@ class DrawSelectCategoryFragment : Fragment() {
         }
     }
 
+    // "전체" 또는 "제휴"가 선택되었을 때 다른 메뉴 해제
     private fun deselectOtherMenusToggle(excludeView: LinearLayout) {
         allMenuViews.filter { it != excludeView }.forEach { menuView ->
             menuView.isSelected = false
@@ -201,10 +223,16 @@ class DrawSelectCategoryFragment : Fragment() {
         }
     }
 
-    private fun deselectTotalMenuToggle() {
+    // "전체" 또는 "제휴" 버튼 해제
+    private fun deselectSpecialMenuToggles() {
         val totalMenuView = binding.homeBtnAll
+        val benefitMenuView = binding.homeBtnBenefit
+
         totalMenuView.isSelected = false
+        benefitMenuView.isSelected = false
+
         applyMenuToggleUI(totalMenuView, false)
+        applyMenuToggleUI(benefitMenuView, false)
     }
 
     private fun applyMenuToggleUI(view: View, isSelected: Boolean) {

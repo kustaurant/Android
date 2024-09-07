@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.draw.DrawSelectResultFragment">
 
-
     <TextView
         android:id="@+id/draw_selected_tv_clickable_info"
         android:layout_width="match_parent"
@@ -25,11 +24,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="27dp"
-        app:layout_constraintDimensionRatio="360:290"
+        app:layout_constraintDimensionRatio="360:280"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/draw_selected_tv_clickable_info"
-        tools:layout_height="296dp"
+        tools:layout_height="290dp"
         app:layout_constraintBottom_toTopOf="@id/draw_tv_restaurant_menu"/>
 
     <TextView

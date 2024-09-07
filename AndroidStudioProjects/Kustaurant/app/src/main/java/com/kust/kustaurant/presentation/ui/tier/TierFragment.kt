@@ -34,6 +34,13 @@ class TierFragment : Fragment() {
     ): View {
         _binding = FragmentTierBinding.inflate(inflater, container, false)
 
+        if ((viewModel.selectedMenus.value ?: emptySet()) == setOf("") &&
+            (viewModel.selectedSituations.value ?: emptySet()) == setOf("") &&
+            (viewModel.selectedLocations.value ?: emptySet()) == setOf("")
+        ) {
+            viewModel.applyFilters(setOf("전체"),setOf("전체"),setOf("전체"), 0)
+        }
+
         binding.tierIvSearch.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)

@@ -72,10 +72,6 @@ class TierCategoryFragment : Fragment() {
             }
         }
 
-
-
-
-
         fromTabIndex = arguments?.getInt("fromTabIndex") ?: 0
 
         // 현재 선택된 필터 값들을 적용
