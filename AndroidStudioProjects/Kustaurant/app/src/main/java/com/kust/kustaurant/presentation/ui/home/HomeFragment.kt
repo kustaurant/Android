@@ -151,7 +151,7 @@ class HomeFragment : Fragment() {
                 restaurantResponse.restaurantImgUrl,
                 restaurantResponse.mainTier,
                 restaurantResponse.partnershipInfo ?: "해당사항 없음",
-                restaurantResponse.restaurantScore?.toDouble() ?: 0.0, // 별점
+                restaurantResponse.restaurantScore?.toDouble() ?: 0.0,
                 restaurantResponse.isEvaluated,
                 restaurantResponse.isFavorite
             )
