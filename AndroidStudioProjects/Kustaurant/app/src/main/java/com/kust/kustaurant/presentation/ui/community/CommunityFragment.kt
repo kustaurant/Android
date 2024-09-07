@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.kust.kustaurant.databinding.FragmentCommunityBinding
+import com.kust.kustaurant.presentation.util.TouchExtension
 
 class CommunityFragment  : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
@@ -29,6 +30,12 @@ class CommunityFragment  : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
         setupTabLayout()
+        initTouchExtension()
+    }
+
+    private fun initTouchExtension() {
+        TouchExtension.expandTouchArea(binding.topBar, binding.communityIvBack, 40)
+        TouchExtension.expandTouchArea(binding.topBar, binding.communityIvSearch, 40)
     }
 
     private fun setupViewPager() {

@@ -8,7 +8,6 @@ object TouchExtension {
     // 사용방법 : TouchDelegateUtil.expandTouchArea(parentView, iconView, 10)
     // parentView: 해당 아이콘 상위뷰, iconView: 해당 아이콘, extraPadding : 터치 늘릴 padding 값(dp값 넣어 주세요)
     fun expandTouchArea(parentView: View, iconView: View, extraPadding: Int) {
-        val extraPadding = parentView.dpToPx(extraPadding)
         parentView.post {
             val rect = Rect()
             iconView.getHitRect(rect)
@@ -21,10 +20,6 @@ object TouchExtension {
             val touchDelegate = TouchDelegate(rect, iconView)
             (iconView.parent as? View)?.touchDelegate = touchDelegate
         }
-    }
-
-    private fun View.dpToPx(dp: Int): Int {
-        return (dp * resources.displayMetrics.density).toInt()
     }
 }
 

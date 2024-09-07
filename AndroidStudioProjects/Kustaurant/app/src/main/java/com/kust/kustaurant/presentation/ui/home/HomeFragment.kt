@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.home
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.kust.kustaurant.data.model.HomeResponse
 import com.kust.kustaurant.databinding.FragmentHomeBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
+import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -63,7 +65,13 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        initTouchExtension()
+
         return binding.root
+    }
+
+    private fun initTouchExtension() {
+        TouchExtension.expandTouchArea(binding.homeTopbar, binding.btnSearch, 40)
     }
 
 
@@ -125,7 +133,8 @@ class HomeFragment : Fragment() {
             override fun onItemClicked(data: RestaurantModel) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra("restaurantId", data.restaurantId)
-                startActivity(intent)
+                val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.slide_in_right, R.anim.stay_in_place)
+                startActivity(intent, options.toBundle())
             }
         })
 
@@ -133,7 +142,8 @@ class HomeFragment : Fragment() {
             override fun onItemClicked(data: RestaurantModel) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra("restaurantId", data.restaurantId)
-                startActivity(intent)
+                val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.slide_in_right, R.anim.stay_in_place)
+                startActivity(intent, options.toBundle())
             }
         })
     }
