@@ -34,8 +34,7 @@ class CommunityFragment  : Fragment() {
     }
 
     private fun initTouchExtension() {
-        TouchExtension.expandTouchArea(binding.topBar, binding.communityIvBack, 40)
-        TouchExtension.expandTouchArea(binding.topBar, binding.communityIvSearch, 40)
+        TouchExtension.expandTouchArea(binding.communityClEntireParent, binding.topBar, 40)
     }
 
     private fun setupViewPager() {

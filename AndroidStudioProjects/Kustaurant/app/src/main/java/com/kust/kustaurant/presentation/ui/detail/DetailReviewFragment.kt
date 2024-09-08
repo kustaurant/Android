@@ -20,6 +20,7 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
+import com.kust.kustaurant.presentation.util.TouchExtension
 
 class DetailReviewFragment : Fragment() {
     lateinit var binding : FragmentDetailReviewBinding
@@ -61,7 +62,13 @@ class DetailReviewFragment : Fragment() {
         }
 
         observeViewModel()
+        initTouchExtension()
         viewModel.loadCommentData(restaurantId, popularity)
+    }
+
+    private fun initTouchExtension() {
+//        TouchExtension.expandTouchArea(binding.homeTopbar, binding.btnSearch, 40)
+
     }
 
 
@@ -155,13 +162,13 @@ class DetailReviewFragment : Fragment() {
 
             override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId, position)
+                    viewModel.postCommentLike(restaurantId, commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentDisLike(restaurantId, commentId, position)
+                    viewModel.postCommentDisLike(restaurantId, commentId)
                 }
             }
         })
@@ -184,13 +191,13 @@ class DetailReviewFragment : Fragment() {
 
             override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId, position)
+                    viewModel.postCommentLike(restaurantId, commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentDisLike(restaurantId, commentId, position)
+                    viewModel.postCommentDisLike(restaurantId, commentId)
                 }
             }
         }

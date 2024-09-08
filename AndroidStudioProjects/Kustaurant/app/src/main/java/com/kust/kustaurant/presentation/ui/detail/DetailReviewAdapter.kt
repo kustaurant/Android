@@ -152,7 +152,6 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
         }
 
         fun bind(item: CommentDataResponse) {
-            Log.d("review", item.toString())
             binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
             binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
 

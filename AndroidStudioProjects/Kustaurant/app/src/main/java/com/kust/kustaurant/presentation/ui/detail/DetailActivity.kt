@@ -89,8 +89,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun initTouchExtension() {
-        TouchExtension.expandTouchArea(binding.detailClTopBar, binding.detailIvBack, 40)
-        TouchExtension.expandTouchArea(binding.detailClTopBar, binding.detailIvSearch, 40)
+        TouchExtension.expandTouchArea(binding.detailClEntireParent, binding.detailClTopBar, 100)
     }
 
     private fun initFavorite(restaurantId : Int) {

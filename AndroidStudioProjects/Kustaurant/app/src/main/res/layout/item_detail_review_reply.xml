@@ -36,6 +36,7 @@
             android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="역병"
             app:layout_constraintStart_toEndOf="@id/iv_user_image"
             app:layout_constraintTop_toTopOf="@id/iv_user_image"

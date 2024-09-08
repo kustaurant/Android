@@ -68,6 +68,7 @@
         app:layout_constraintEnd_toStartOf="@id/home_star"
         app:layout_constraintTop_toTopOf="@id/home_star"
         app:layout_constraintBottom_toBottomOf="@id/home_star"
+        android:layout_marginEnd="2dp"
         android:src="@drawable/ic_star"/>
 
     <TextView
@@ -78,6 +79,7 @@
         app:layout_constraintTop_toTopOf="@id/home_cuisine"
         android:text=" 4.5"
         android:textSize="12sp"
+        android:layout_marginEnd="2dp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/top_gray"/>
 
