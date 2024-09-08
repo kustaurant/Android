@@ -538,6 +538,7 @@
                 android:textColor="@color/black"
                 android:textSize="11sp"
                 android:clickable="true"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tier_toggle_situation_group" />
 

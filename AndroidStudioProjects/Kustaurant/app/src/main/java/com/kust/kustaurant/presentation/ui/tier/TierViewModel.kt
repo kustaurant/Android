@@ -51,16 +51,6 @@ class TierViewModel @Inject constructor(
     //음식점 리스트 페이지를 관리하는 변수
     private var tierListPage = 1
 
-    init {
-        if ((selectedMenus.value ?: emptySet()) == setOf("") &&
-            (selectedSituations.value ?: emptySet()) == setOf("") &&
-            (selectedLocations.value ?: emptySet()) == setOf("")
-        ) {
-            Log.e("TierViewModel", "init block")
-            loadRestaurantList(setOf("ALL"), setOf("ALL"), setOf("ALL"))
-        }
-    }
-
     fun toggleExpand() {
         _isExpanded.value = _isExpanded.value?.not()
     }

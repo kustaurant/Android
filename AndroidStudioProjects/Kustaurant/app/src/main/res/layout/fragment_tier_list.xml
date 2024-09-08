@@ -49,16 +49,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tier_tv_toggle_extend_reduce"
                     android:contentDescription="@string/expand_reduction_fab_info"
-                    android:layout_marginEnd="2dp"/>
+                    android:layout_marginEnd="3dp"/>
 
                 <TextView
+                    android:id="@+id/tier_tv_toggle_extend_reduce"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.isExpanded ? @string/small_btn_info : @string/wide_btn_info}"
+                    android:text="@string/small_btn_info"
                     android:textColor="@color/cement_5"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:textSize="11sp"
-                    app:layout_constraintStart_toEndOf="@id/tier_iv_expand_reduce_toggle_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
 

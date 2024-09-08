@@ -239,9 +239,9 @@ class DrawSelectCategoryFragment : Fragment() {
         if (isSelected) {
             val drawable = GradientDrawable()
             drawable.shape = GradientDrawable.RECTANGLE
-            drawable.setStroke(1, ContextCompat.getColor(requireContext(), R.color.signature_1))
+            drawable.setStroke(4, ContextCompat.getColor(requireContext(), R.color.signature_1))
             drawable.cornerRadius = 15f
-            view.setPadding(1)
+            view.setPadding(4)
             view.background = drawable
         } else {
             view.setBackgroundResource(R.drawable.all_radius_15_none)

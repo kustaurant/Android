@@ -159,6 +159,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="60dp"
+                android:fadingEdgeLength="30dp"
+                android:requiresFadingEdge="horizontal"
                 android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="@id/tier_cl_middle_bar"
                 app:layout_constraintEnd_toEndOf="@id/tier_cl_middle_bar"
