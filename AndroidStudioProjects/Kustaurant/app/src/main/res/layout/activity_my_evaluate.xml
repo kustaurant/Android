@@ -42,7 +42,7 @@
 
             <!-- Back Button -->
             <ImageView
-                android:id="@+id/save_btn_back"
+                android:id="@+id/my_btn_evaluate_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/back_btn_info"
@@ -79,6 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="30dp"
+            tools:listitem="@layout/item_my_evaluate"
             app:layout_constraintStart_toStartOf="@id/gl_info_start"
             app:layout_constraintEnd_toEndOf="@id/gl_info_end"
             app:layout_constraintTop_toBottomOf="@id/save_cl_top_bar"

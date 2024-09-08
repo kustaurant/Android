@@ -61,8 +61,8 @@ class MyEditActivity : AppCompatActivity() {
         }
 
         binding.editEtName.addTextChangedListener(textWatcher)
-        binding.editEtEmail.addTextChangedListener(textWatcher)
         binding.editEtPhone.addTextChangedListener(textWatcher)
+        binding.editEtEmail.isEnabled = false
     }
 
     private fun checkForChanges() {

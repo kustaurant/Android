@@ -4,5 +4,7 @@ data class MyEvaluateResponse (
     val restaurantName: String,
     val restaurantImgURL: String,
     val cuisine: String,
-    val evaluateScore: Double,
+    val evaluationScore: Double,
+    val restaurantComment : String,
+    val evaluationItemScores : ArrayList<String>?
 )

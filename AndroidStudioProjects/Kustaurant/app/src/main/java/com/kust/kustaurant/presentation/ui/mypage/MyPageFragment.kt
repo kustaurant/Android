@@ -115,7 +115,7 @@ class MyPageFragment : Fragment() {
         }
 
         binding.myClPostCount.isEnabled = false
-        binding.myClPostCount.isEnabled = false
+        binding.myClEvaluateCount.isEnabled = false
     }
 
     private fun clearUserData() {

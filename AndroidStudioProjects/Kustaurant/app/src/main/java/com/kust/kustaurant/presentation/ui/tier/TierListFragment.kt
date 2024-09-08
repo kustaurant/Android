@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.tier
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentTierListBinding
 import com.kust.kustaurant.domain.model.TierRestaurant
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
@@ -77,8 +79,9 @@ class TierListFragment : Fragment() {
         tierAdapter.setOnItemClickListener(object : TierListAdapter.OnItemClickListener{
             override fun onItemClicked(data: TierRestaurant) {
                 val intent = Intent(requireActivity(), DetailActivity::class.java)
+                val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.slide_in_right, R.anim.stay_in_place)
                 intent.putExtra("restaurantId", data.restaurantId)
-                startActivity(intent)
+                startActivity(intent, options.toBundle())
             }
         })
     }

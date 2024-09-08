@@ -12,12 +12,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
+import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
+import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -42,8 +45,10 @@ class DetailActivity : AppCompatActivity() {
         initBack()
         initTierRecyclerView()
         initNaverLink()
+        initSearch()
         changeTopBar()
         initFavorite(restaurantId)
+        initTouchExtension()
 
         viewModel.detailData.observe(this) { detailData ->
             if (detailData.partnershipInfo == null){
@@ -75,6 +80,19 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun initSearch() {
+        binding.detailIvSearch.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+
+        }
+    }
+
+    private fun initTouchExtension() {
+        TouchExtension.expandTouchArea(binding.detailClTopBar, binding.detailIvBack, 40)
+        TouchExtension.expandTouchArea(binding.detailClTopBar, binding.detailIvSearch, 40)
+    }
+
     private fun initFavorite(restaurantId : Int) {
         binding.detailClFavorite.setOnClickListener {
             checkToken {
@@ -86,6 +104,7 @@ class DetailActivity : AppCompatActivity() {
     private fun initBack() {
         binding.detailIvBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+            overridePendingTransition(R.anim.stay_in_place, R.anim.slide_out_right)
         }
     }
 
@@ -113,12 +132,10 @@ class DetailActivity : AppCompatActivity() {
             if (scrollY >= binding.clStoreInfo.top - binding.detailClTopBar.height) {
                 binding.detailClTopBar.setBackgroundColor(Color.WHITE)
                 binding.detailIvBack.setImageResource(R.drawable.btn_back)
-                binding.detailIvAlarm.setImageResource(R.drawable.ic_alarm)
                 binding.detailIvSearch.setImageResource(R.drawable.ic_search)
             } else {
                 binding.detailClTopBar.setBackgroundColor(Color.TRANSPARENT)
                 binding.detailIvBack.setImageResource(R.drawable.ic_back_white)
-                binding.detailIvAlarm.setImageResource(R.drawable.ic_alarm_white)
                 binding.detailIvSearch.setImageResource(R.drawable.ic_search_white)
             }
         }
