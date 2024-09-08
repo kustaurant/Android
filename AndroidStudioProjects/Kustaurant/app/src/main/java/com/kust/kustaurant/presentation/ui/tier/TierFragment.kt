@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayout
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.presentation.ui.home.HomeFragment
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
+import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -56,6 +57,7 @@ class TierFragment : Fragment() {
         setupCategoryButton()
         setupBackButton()
         observeViewModel()
+        initTouchExtension()
 
         viewModel.filterApplied.observe(viewLifecycleOwner) { applied ->
             if (applied) {
@@ -64,6 +66,11 @@ class TierFragment : Fragment() {
             }
         }
         updateCategoryLinearLayout(setOf("전체"))
+    }
+
+    private fun initTouchExtension() {
+        TouchExtension.expandTouchArea(binding.topBar, binding.btnBack, 40)
+        TouchExtension.expandTouchArea(binding.topBar, binding.tierIvSearch, 40)
     }
 
     private fun setupViewPager() {

@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.home
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -24,6 +25,7 @@ import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import com.kust.kustaurant.presentation.ui.tier.TierFragment
 import com.kust.kustaurant.presentation.ui.tier.TierViewModel
+import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -68,9 +70,11 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
             startActivity(intent)
         }
 
+        initTouchExtension()
+
         return binding.root
     }
-
+    
     override fun onCategoryItemClick(category: String) {
         when (category) {
             "전체" -> {
@@ -138,6 +142,9 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
             mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_rank
         }
     }
+    private fun initTouchExtension() {
+        TouchExtension.expandTouchArea(binding.homeTopbar, binding.btnSearch, 40)
+    }
 
     private fun setupCategoryRV(){
         val categoryList = listOf(
@@ -197,7 +204,8 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
             override fun onItemClicked(data: RestaurantModel) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra("restaurantId", data.restaurantId)
-                startActivity(intent)
+                val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.slide_in_right, R.anim.stay_in_place)
+                startActivity(intent, options.toBundle())
             }
         })
 
@@ -205,7 +213,8 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
             override fun onItemClicked(data: RestaurantModel) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra("restaurantId", data.restaurantId)
-                startActivity(intent)
+                val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.slide_in_right, R.anim.stay_in_place)
+                startActivity(intent, options.toBundle())
             }
         })
     }

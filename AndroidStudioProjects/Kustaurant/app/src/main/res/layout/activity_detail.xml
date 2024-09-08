@@ -42,7 +42,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/back_btn_info"
-                android:paddingVertical="11dp"
                 android:src="@drawable/ic_back_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/gl_top_start"
@@ -52,19 +51,8 @@
                 android:id="@+id/detail_iv_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:contentDescription="@string/search_btn_info"
                 android:src="@drawable/ic_search_white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/detail_iv_alarm"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/detail_iv_alarm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/alarm_btn_info"
-                android:src="@drawable/ic_alarm_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/gl_top_end"
                 app:layout_constraintTop_toTopOf="parent" />

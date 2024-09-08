@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 오른쪽에서 왼쪽 슬라이드-->
+<!-- 진입용 애니메이션 입니다.-->
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:fromXDelta="100%"
+        android:toXDelta="0%"
+        android:duration="100"/>
+</set>

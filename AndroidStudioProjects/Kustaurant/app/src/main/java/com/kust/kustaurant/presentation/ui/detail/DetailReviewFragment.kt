@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
@@ -94,6 +95,9 @@ class DetailReviewFragment : Fragment() {
                 binding.detailBtnRecent.visibility = View.GONE
                 binding.detailBtnPopular.visibility = View.GONE
                 binding.detailClReviewNone.visibility = View.VISIBLE
+                Glide.with(requireContext())
+                    .load(R.drawable.ic_baby_cow)
+                    .into(binding.detailIvNone)
                 setNoneHeight()
             } else {
                 reviewAdapter.submitList(commentData) {
@@ -239,27 +243,27 @@ class DetailReviewFragment : Fragment() {
             // RecyclerView의 전체 내용 높이 계산
             val recyclerHeight = binding.detailRvReview.computeVerticalScrollRange()
 
-            // 버튼들의 높이 계산 (예시에서는 버튼 2개의 높이를 합산)
+            // 버튼들의 높이 계산
             val buttonsHeight = binding.detailBtnPopular.height + binding.detailBtnRecent.height
 
             // 전체 뷰의 높이는 RecyclerView 높이 + 버튼 높이
             val totalHeight = recyclerHeight + buttonsHeight
 
-            // RecyclerView 레이아웃 파라미터 업데이트
+            // RecyclerView 파라미터 업데이트
             val params = binding.detailRvReview.layoutParams
             params.height = totalHeight
             binding.detailRvReview.layoutParams = params
 
-            // 부모 뷰 또는 연관된 뷰의 높이를 조절해야 할 경우
+            // 부모 뷰 조절
             (activity as? DetailActivity)?.setViewPagerHeight(totalHeight)
         }
     }
 
     private fun setNoneHeight() {
         val params = binding.detailClReviewNone.layoutParams
-        params.height = 700
+        params.height = 1000
         binding.detailClReviewNone.layoutParams = params
 
-        (activity as? DetailActivity)?.setViewPagerHeight(700)
+        (activity as? DetailActivity)?.setViewPagerHeight(1000)
     }
 }
