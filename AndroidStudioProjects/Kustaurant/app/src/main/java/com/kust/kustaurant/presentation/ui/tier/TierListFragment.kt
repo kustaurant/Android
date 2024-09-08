@@ -4,6 +4,9 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +27,7 @@ class TierListFragment : Fragment() {
     private val viewModel: TierViewModel by activityViewModels()
     private lateinit var tierAdapter: TierListAdapter
     private val allTierData = mutableListOf<TierRestaurant>()
-    private var recyclerViewState: Parcelable?= null
+    private var recyclerViewState: Parcelable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +36,13 @@ class TierListFragment : Fragment() {
         binding = FragmentTierListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        if ((viewModel.selectedMenus.value ?: emptySet()) == setOf("") &&
+            (viewModel.selectedSituations.value ?: emptySet()) == setOf("") &&
+            (viewModel.selectedLocations.value ?: emptySet()) == setOf("")
+        ) {
+            viewModel.applyFilters(setOf("ALL"), setOf("ALL"), setOf("ALL"), 0)
+        }
 
         setupRecyclerView()
 
@@ -70,13 +80,13 @@ class TierListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        tierAdapter = TierListAdapter()
+        tierAdapter = TierListAdapter(requireContext())
         binding.tierRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = tierAdapter
         }
 
-        tierAdapter.setOnItemClickListener(object : TierListAdapter.OnItemClickListener{
+        tierAdapter.setOnItemClickListener(object : TierListAdapter.OnItemClickListener {
             override fun onItemClicked(data: TierRestaurant) {
                 val intent = Intent(requireActivity(), DetailActivity::class.java)
                 val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.slide_in_right, R.anim.stay_in_place)
@@ -88,21 +98,29 @@ class TierListFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.tierRestaurantList.observe(viewLifecycleOwner) { tierList ->
-
-            if(viewModel.isSelectedCategoriesChanged.value == true) {
+            if (viewModel.isSelectedCategoriesChanged.value == true) {
                 allTierData.clear()
-                binding.tierRecyclerView.scrollToPosition(0)
                 Log.e("TIerList", "들옴")
             }
 
             Log.e("TierFragment", viewModel.isSelectedCategoriesChanged.toString())
 
             allTierData.addAll(tierList)
-            tierAdapter.submitList(allTierData.toList())
+            tierAdapter.submitList(allTierData.toList()) {
+                if (viewModel.isSelectedCategoriesChanged.value == true) {
+                    binding.tierRecyclerView.post {
+                        binding.tierRecyclerView.scrollToPosition(0)
+                    }
+                }
+            }
         }
 
         viewModel.isExpanded.observe(viewLifecycleOwner) { isExpanded ->
             tierAdapter.setExpanded(isExpanded)
+            val text = if (isExpanded) getString(R.string.small_btn_info) else getString(R.string.wide_btn_info)
+            val content = SpannableString(text)
+            content.setSpan(UnderlineSpan(), 0, text.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+            binding.tierTvToggleExtendReduce.text = content
         }
     }
 
@@ -120,11 +138,14 @@ class TierListFragment : Fragment() {
         if (recyclerViewState != null) {
             binding.tierRecyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
-    //viewModel.checkAndLoadBackendListData(TierViewModel.Companion.RestaurantState.NEXT_PAGE_LIST_DATA)
+        //viewModel.checkAndLoadBackendListData(TierViewModel.Companion.RestaurantState.NEXT_PAGE_LIST_DATA)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable("recyclerViewState", binding.tierRecyclerView.layoutManager?.onSaveInstanceState())
+        outState.putParcelable(
+            "recyclerViewState",
+            binding.tierRecyclerView.layoutManager?.onSaveInstanceState()
+        )
     }
 }

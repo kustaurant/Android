@@ -2,6 +2,7 @@ package com.kust.kustaurant.presentation.ui.tier
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -148,13 +148,11 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 else -> R.drawable.ic_rank_all
             }
             tierImageView.setImageResource(tierImageResource)
-            tierBottomSheet.findViewById<ConstraintLayout>(R.id.tier_cl_content).setOnClickListener {
+            tierBottomSheet.setOnClickListener {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra("restaurantId", tierRestaurant.restaurantId)
                 startActivity(intent)
             }
-
-
         }
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
@@ -173,7 +171,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 val polyline = PolylineOverlay().apply {
                     coords = line + line.first()
                     color = ContextCompat.getColor(requireContext(), R.color.polygon_line)
-                    width = 2
+                    width = 7
                     joinType = PolylineOverlay.LineJoin.Round
                     map = naverMap
                 }
@@ -181,7 +179,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
                 val polygon = PolygonOverlay().apply {
                     coords = line
-                    color = PolygonColors.POLYGON_COLOR_WITH_ALPHA
+                    color = PolygonColors.POLYGON_SELECTED
                     outlineWidth = 0
                     map = naverMap
                 }
@@ -196,7 +194,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 val polyline = PolylineOverlay().apply {
                     coords = line + line.first()
                     color = ContextCompat.getColor(requireContext(), R.color.polygon_line)
-                    width = 2
+                    width = 7
                     joinType = PolylineOverlay.LineJoin.Round
                     map = naverMap
                 }
@@ -205,7 +203,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
                 val polygon = PolygonOverlay().apply {
                     coords = line
-                    color = PolygonColors.POLYGON_COLOR_WITH_ALPHA
+                    color = PolygonColors.POLYGON_UNSELECTED
                     outlineWidth = 0
                     map = naverMap
                 }
@@ -306,6 +304,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     object PolygonColors {
-        const val POLYGON_COLOR_WITH_ALPHA = 0x7F43AB38
+        val POLYGON_SELECTED =  Color.argb(59, 67, 171, 56)
+        val POLYGON_UNSELECTED =  Color.argb(31, 67, 171, 56)
     }
 }

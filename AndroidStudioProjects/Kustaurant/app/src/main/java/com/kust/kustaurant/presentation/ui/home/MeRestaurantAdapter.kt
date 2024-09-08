@@ -2,6 +2,7 @@ package com.kust.kustaurant.presentation.ui.home
 
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -27,18 +28,25 @@ class MeRestaurantAdapter(var meRestaurantList: ArrayList<RestaurantModel>): Rec
             binding.homePosition.text = restaurant.restaurantPosition
             binding.homeName.text = restaurant.restaurantName
             binding.homeBenefit.text = restaurant.partnershipInfo
-            binding.homeStar.text = restaurant.restaurantScore.toString()
 
-            binding.homeIvStar.setColorFilter(
-                ContextCompat.getColor(binding.root.context, R.color.tier_3),
-                PorterDuff.Mode.SRC_IN
-            )
+            if (restaurant.restaurantScore == 0.0) {
+                binding.homeIvStar.visibility = View.INVISIBLE
+                binding.homeStar.text = "평가없음"
+            } else {
+                binding.homeStar.text = restaurant.restaurantScore.toString()
+                binding.homeIvStar.setColorFilter(
+                    ContextCompat.getColor(binding.root.context, R.color.tier_3),
+                    PorterDuff.Mode.SRC_IN
+                )
+                binding.homeIvStar.visibility = View.VISIBLE
+            }
 
             val tierDrawable = when(restaurant.mainTier){
                 1-> R.drawable.ic_rank_1
                 2-> R.drawable.ic_rank_2
                 3-> R.drawable.ic_rank_3
-                else -> R.drawable.ic_rank_1
+                4 -> R.drawable.ic_rank_4
+                else -> R.drawable.ic_rank_all
             }
 
             Glide.with(binding.root.context)

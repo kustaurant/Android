@@ -1,9 +1,11 @@
 package com.kust.kustaurant.presentation.ui.tier
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getString
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +18,7 @@ import com.kust.kustaurant.databinding.ItemRestaurantReductionBinding
 import com.kust.kustaurant.domain.model.TierRestaurant
 
 
-class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<TierRestaurant, RecyclerView.ViewHolder>(diffUtil) {
+class TierListAdapter(private val context: Context, private var isExpanded: Boolean = true) : ListAdapter<TierRestaurant, RecyclerView.ViewHolder>(diffUtil) {
     lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener{
@@ -67,8 +69,8 @@ class TierListAdapter(private var isExpanded: Boolean = true) : ListAdapter<Tier
             binding.tierTvRestaurantName.text = item.restaurantName
             binding.tierTvRestaurantDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
 
-            if(item.restaurantName.isBlank())
-                binding.tierTvRestaurantPartnershipInfo.text = R.string.restaurant_no_partnership_info.toString()
+            if(item.partnershipInfo.isBlank())
+                binding.tierTvRestaurantPartnershipInfo.text = getString(context, R.string.restaurant_no_partnership_info)
             else
                 binding.tierTvRestaurantPartnershipInfo.text =  item.partnershipInfo
 

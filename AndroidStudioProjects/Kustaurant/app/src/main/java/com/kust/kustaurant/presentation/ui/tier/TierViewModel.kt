@@ -32,13 +32,13 @@ class TierViewModel @Inject constructor(
     private val _mapData = MutableLiveData<TierMapData>()
     val mapData: LiveData<TierMapData> = _mapData
 
-    private val _selectedMenus = MutableLiveData<Set<String>>(setOf("전체"))
+    private val _selectedMenus = MutableLiveData<Set<String>>(setOf(""))
     val selectedMenus: LiveData<Set<String>> = _selectedMenus
 
-    private val _selectedSituations = MutableLiveData<Set<String>>(setOf("전체"))
+    private val _selectedSituations = MutableLiveData<Set<String>>(setOf(""))
     val selectedSituations: LiveData<Set<String>> = _selectedSituations
 
-    private val _selectedLocations = MutableLiveData<Set<String>>(setOf("전체"))
+    private val _selectedLocations = MutableLiveData<Set<String>>(setOf(""))
     val selectedLocations: LiveData<Set<String>> = _selectedLocations
 
     //티어 프래그먼트에서 보여줄 카테고리들
@@ -49,11 +49,7 @@ class TierViewModel @Inject constructor(
     val isSelectedCategoriesChanged: LiveData<Boolean> = _isSelectedCategoriesChanged
 
     //음식점 리스트 페이지를 관리하는 변수
-    private var tierListPage = 1
-
-    init {
-        loadRestaurantList(setOf("ALL"), setOf("ALL"), setOf("ALL"))
-    }
+    private var _tierListPage = 1
 
     fun toggleExpand() {
         _isExpanded.value = _isExpanded.value?.not()
@@ -69,7 +65,7 @@ class TierViewModel @Inject constructor(
                 CategoryIdMapper.mapMenus(menus),
                 CategoryIdMapper.mapSituations(situations),
                 CategoryIdMapper.mapLocations(locations),
-                tierListPage
+                _tierListPage
             )
 
             _tierRestaurantList.value = tierListData.map {
@@ -139,13 +135,13 @@ class TierViewModel @Inject constructor(
         tabIndex: Int
     ) {
         if (hasFilterChanged(menus, situations, locations)) {
-            tierListPage = 1
+            _tierListPage = 1
             setIsSelectedCategoriesChanged(true)
+            Log.e("TierViewModel", "applyFilters is called and hasFilter is True")
         } else {
             setIsSelectedCategoriesChanged(false)
-            tierListPage++
+            _tierListPage++
         }
-
 
         setSelectedTypes(menus)
         setSelectedSituations(situations)
@@ -191,9 +187,9 @@ class TierViewModel @Inject constructor(
             setIsSelectedCategoriesChanged(false)
 
             if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
-                tierListPage = 1
+                _tierListPage  = 1
             } else if (state == RestaurantState.NEXT_PAGE_LIST_DATA) {
-                tierListPage++
+                _tierListPage++
             }
 
             loadRestaurantList(

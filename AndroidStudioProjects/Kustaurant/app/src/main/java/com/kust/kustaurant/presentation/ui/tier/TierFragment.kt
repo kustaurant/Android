@@ -35,6 +35,13 @@ class TierFragment : Fragment() {
     ): View {
         _binding = FragmentTierBinding.inflate(inflater, container, false)
 
+        if ((viewModel.selectedMenus.value ?: emptySet()) == setOf("") &&
+            (viewModel.selectedSituations.value ?: emptySet()) == setOf("") &&
+            (viewModel.selectedLocations.value ?: emptySet()) == setOf("")
+        ) {
+            viewModel.applyFilters(setOf("전체"), setOf("전체"), setOf("전체"), 0)
+        }
+
         binding.tierIvSearch.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
@@ -78,6 +85,7 @@ class TierFragment : Fragment() {
                 binding.tierViewPager.currentItem = tab.position
                 handleTabSelected(tab.position)
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
@@ -95,7 +103,8 @@ class TierFragment : Fragment() {
     }
 
     private fun handleTabSelected(position: Int) {
-        val layoutParams = binding.tierSvSelectedCategory.layoutParams as ViewGroup.MarginLayoutParams
+        val layoutParams =
+            binding.tierSvSelectedCategory.layoutParams as ViewGroup.MarginLayoutParams
 
         if (position == 1) { // 지도 탭
             layoutParams.marginEnd = 0
@@ -146,7 +155,7 @@ class TierFragment : Fragment() {
                     TypedValue.COMPLEX_UNIT_DIP, 13f, resources.displayMetrics
                 ).toInt()
                 val paddingVertical = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 4f, resources.displayMetrics
+                    TypedValue.COMPLEX_UNIT_DIP, 5.9f, resources.displayMetrics
                 ).toInt()
                 setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
 
@@ -188,31 +197,11 @@ class TierFragment : Fragment() {
 
     private fun setupBackButton() {
         binding.btnBack.setOnClickListener {
-            // 백스택에 프래그먼트가 있는지 확인
-            if (parentFragmentManager.backStackEntryCount > 0) {
-                // 백스택에서 최근의 프래그먼트가 TierCategoryFragment인지 확인
-                val currentFragment = parentFragmentManager.findFragmentById(R.id.tier_fragment_container)
-                if (currentFragment is TierCategoryFragment) {
-                    // TierCategoryFragment가 있다면 먼저 뷰페이저를 보여줌
-                    showMainContent()
-                    parentFragmentManager.popBackStack() // TierCategoryFragment 제거
-                } else {
-                    // 그렇지 않으면 HomeFragment로 이동
-                    (requireActivity() as? MainActivity)?.let { mainActivity ->
-                        mainActivity.supportFragmentManager.beginTransaction()
-                            .replace(R.id.main_frm, HomeFragment())
-                            .commit()
-                        mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_home
-                    }
-                }
-            } else {
-                // 백스택에 프래그먼트가 없는 경우
-                (requireActivity() as? MainActivity)?.let { mainActivity ->
-                    mainActivity.supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, HomeFragment())
-                        .commit()
-                    mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_home
-                }
+            (requireActivity() as? MainActivity)?.let { mainActivity ->
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frm, HomeFragment())
+                    .commit()
+                mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_home
             }
         }
     }

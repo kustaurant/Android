@@ -52,7 +52,8 @@ class TierCategoryFragment : Fragment() {
         }
 
         binding.tierLocationInfo.setOnClickListener {
-              val tierFragment = requireActivity().supportFragmentManager.fragments.find { it is TierFragment } as? TierFragment
+            val tierFragment =
+                requireActivity().supportFragmentManager.fragments.find { it is TierFragment } as? TierFragment
 
             if (tierFragment != null) {
                 tierFragment.showMainContent()
@@ -72,16 +73,21 @@ class TierCategoryFragment : Fragment() {
             }
         }
 
-
-
-
-
         fromTabIndex = arguments?.getInt("fromTabIndex") ?: 0
 
         // 현재 선택된 필터 값들을 적용
-        updateToggleGroupSelection(binding.tierToggleTypeGroup, viewModel.selectedMenus.value ?: setOf())
-        updateToggleGroupSelection(binding.tierToggleSituationGroup, viewModel.selectedSituations.value ?: setOf())
-        updateToggleGroupSelection(binding.tierToggleLocationGroup, viewModel.selectedLocations.value ?: setOf())
+        updateToggleGroupSelection(
+            binding.tierToggleTypeGroup,
+            viewModel.selectedMenus.value ?: setOf()
+        )
+        updateToggleGroupSelection(
+            binding.tierToggleSituationGroup,
+            viewModel.selectedSituations.value ?: setOf()
+        )
+        updateToggleGroupSelection(
+            binding.tierToggleLocationGroup,
+            viewModel.selectedLocations.value ?: setOf()
+        )
 
         // 초기 상태에서 적용하기 버튼 상태 업데이트
         updateApplyButtonState()
@@ -98,12 +104,22 @@ class TierCategoryFragment : Fragment() {
         for (i in 0 until toggleGroup.childCount) {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
             toggleButton.setOnCheckedChangeListener { _, isChecked ->
-                if(isChecked)
-                    toggleButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
+                if (isChecked)
+                    toggleButton.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.signature_1
+                        )
+                    )
                 else
-                    toggleButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.cement_4))
+                    toggleButton.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.cement_4
+                        )
+                    )
 
-                if (isChecked && toggleButton.text.toString() == "전체") {
+                if (( isChecked && toggleButton.text.toString() == "전체" ) || ( isChecked && toggleButton.text.toString() == "제휴업체" )) {
                     clearOtherToggles(toggleGroup, toggleButton)
                 } else if (isChecked && hasOtherTogglesSelected(toggleGroup)) {
                     clearTotalToggle(toggleGroup)
@@ -150,16 +166,28 @@ class TierCategoryFragment : Fragment() {
         val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
         val selectedLocation = getSelectedTogglesText(binding.tierToggleLocationGroup)
 
-        val hasChanges = viewModel.hasFilterChanged(selectedType, selectedSituation, selectedLocation)
-        val isAnyGroupSelected = selectedType.isNotEmpty() && selectedSituation.isNotEmpty() && selectedLocation.isNotEmpty()
+        val hasChanges =
+            viewModel.hasFilterChanged(selectedType, selectedSituation, selectedLocation)
+        val isAnyGroupSelected =
+            selectedType.isNotEmpty() && selectedSituation.isNotEmpty() && selectedLocation.isNotEmpty()
 
         binding.tierBtnApply.isEnabled = hasChanges && isAnyGroupSelected
         if (binding.tierBtnApply.isEnabled) {
             binding.tierBtnApply.setBackgroundResource(R.drawable.btn_tier_category_apply_active)
-            binding.tierBtnApply.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.tierBtnApply.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
         } else {
             binding.tierBtnApply.setBackgroundResource(R.drawable.btn_tier_category_apply_inactive)
-            binding.tierBtnApply.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
+            binding.tierBtnApply.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.cement_4
+                )
+            )
         }
     }
 
@@ -186,7 +214,7 @@ class TierCategoryFragment : Fragment() {
     private fun clearTotalToggle(toggleGroup: ViewGroup) {
         for (i in 0 until toggleGroup.childCount) {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
-            if (toggleButton.text.toString() == "전체") {
+            if (toggleButton.text.toString() == "전체" || toggleButton.text.toString() == "제휴업체") {
                 toggleButton.isChecked = false
             }
         }
@@ -195,7 +223,7 @@ class TierCategoryFragment : Fragment() {
     private fun hasOtherTogglesSelected(toggleGroup: ViewGroup): Boolean {
         for (i in 0 until toggleGroup.childCount) {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
-            if (toggleButton.isChecked && toggleButton.text.toString() != "전체") {
+            if ((toggleButton.isChecked && toggleButton.text.toString() != "전체") || (toggleButton.isChecked && toggleButton.text.toString() != "제휴업체")) {
                 return true
             }
         }
@@ -218,8 +246,8 @@ class TierCategoryFragment : Fragment() {
         val htmlText = """
         식당의 티어는 여러분이 부여한 소중한 <font color="#43AB38">평가 점수</font>가 반영되어 결정됩니다!<br><br>
         평가는 각 식당의 상세 페이지에서 할 수 있으며, 점수는 <font color="#43AB38">5점 만점</font>입니다.<br><br>
-        식당에 대한 여러 <font color="#43AB38">평가의 평균 점수</font>가 가장 높은 식당 순으로 티어가 산출되어 우선적으로 노출됩니다!
-    """.trimIndent()
+        식당에 대한 <font color="#43AB38">평가의 평균 점수</font>로 티어가 산출됩니다.
+        """.trimIndent()
 
         tierInfoDescriptionTextView.text = Html.fromHtml(htmlText)
 

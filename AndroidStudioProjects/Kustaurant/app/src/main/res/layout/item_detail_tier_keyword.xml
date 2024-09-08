@@ -8,7 +8,7 @@
     android:layout_marginBottom="9dp"
     android:backgroundTint="@color/signature_1"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/all_radius_6_none">
+    android:background="@drawable/all_radius_6_cement4">
 
     <TextView
         android:id="@+id/tv_tier"
