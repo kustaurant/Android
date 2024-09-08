@@ -62,6 +62,16 @@
             app:layout_constraintTop_toTopOf="@id/tv_user_name"
             app:layout_constraintBottom_toBottomOf="@id/tv_user_name"/>
 
+        <FrameLayout
+            android:id="@+id/reply_fl_dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/reply_iv_dots"
+            app:layout_constraintEnd_toEndOf="@id/reply_iv_dots"
+            app:layout_constraintTop_toTopOf="@id/reply_iv_dots"
+            app:layout_constraintBottom_toBottomOf="@id/reply_iv_dots"
+            android:padding="15dp"/>
+
         <ImageView
             android:id="@+id/reply_iv_dots"
             android:layout_width="wrap_content"
@@ -91,6 +101,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_review"/>
 
+        <FrameLayout
+            android:id="@+id/fl_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/iv_like"
+            app:layout_constraintEnd_toEndOf="@id/iv_like"
+            app:layout_constraintTop_toTopOf="@id/iv_like"
+            app:layout_constraintBottom_toBottomOf="@id/iv_like"
+            android:padding="15dp"/>
+
         <TextView
             android:id="@+id/tv_like"
             android:layout_width="wrap_content"
@@ -110,6 +130,16 @@
             app:layout_constraintStart_toEndOf="@id/tv_like"
             app:layout_constraintTop_toTopOf="@id/iv_like"
             app:layout_constraintBottom_toBottomOf="@id/iv_like"/>
+
+        <FrameLayout
+            android:id="@+id/fl_hate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/iv_hate"
+            app:layout_constraintEnd_toEndOf="@id/iv_hate"
+            app:layout_constraintTop_toTopOf="@id/iv_hate"
+            app:layout_constraintBottom_toBottomOf="@id/iv_hate"
+            android:padding="15dp"/>
 
         <TextView
             android:id="@+id/tv_hate"

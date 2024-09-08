@@ -5,5 +5,6 @@ data class MyCommunityListResponse(
     val postTitle: String,
     val postBody: String,
     val likeCount: Int,
-    val commentCount: Int
+    val commentCount: Int,
+    val timeAgo: String
 )

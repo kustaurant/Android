@@ -62,13 +62,7 @@ class DetailReviewFragment : Fragment() {
         }
 
         observeViewModel()
-        initTouchExtension()
         viewModel.loadCommentData(restaurantId, popularity)
-    }
-
-    private fun initTouchExtension() {
-//        TouchExtension.expandTouchArea(binding.homeTopbar, binding.btnSearch, 40)
-
     }
 
 
@@ -101,12 +95,17 @@ class DetailReviewFragment : Fragment() {
             if (commentData.isEmpty()) {
                 binding.detailBtnRecent.visibility = View.GONE
                 binding.detailBtnPopular.visibility = View.GONE
+                binding.detailRvReview.visibility = View.GONE
                 binding.detailClReviewNone.visibility = View.VISIBLE
                 Glide.with(requireContext())
                     .load(R.drawable.ic_baby_cow)
                     .into(binding.detailIvNone)
                 setNoneHeight()
             } else {
+                binding.detailBtnRecent.visibility = View.VISIBLE
+                binding.detailBtnPopular.visibility = View.VISIBLE
+                binding.detailRvReview.visibility = View.VISIBLE
+                binding.detailClReviewNone.visibility = View.GONE
                 reviewAdapter.submitList(commentData) {
                     binding.detailRvReview.post {
                         setRecyclerViewHeight()

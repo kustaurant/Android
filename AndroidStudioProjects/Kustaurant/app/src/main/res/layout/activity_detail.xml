@@ -38,6 +38,16 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.95"/>
 
+            <FrameLayout
+                android:id="@+id/detail_fl_iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/detail_iv_back"
+                app:layout_constraintEnd_toEndOf="@id/detail_iv_back"
+                app:layout_constraintTop_toTopOf="@id/detail_iv_back"
+                app:layout_constraintBottom_toBottomOf="@id/detail_iv_back"
+                android:padding="20dp"/>
+
             <ImageView
                 android:id="@+id/detail_iv_back"
                 android:layout_width="wrap_content"
@@ -47,6 +57,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/gl_top_start"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/detail_fl_iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/detail_iv_search"
+                app:layout_constraintEnd_toEndOf="@id/detail_iv_search"
+                app:layout_constraintTop_toTopOf="@id/detail_iv_search"
+                app:layout_constraintBottom_toBottomOf="@id/detail_iv_search"
+                android:padding="20dp"/>
 
             <ImageView
                 android:id="@+id/detail_iv_search"

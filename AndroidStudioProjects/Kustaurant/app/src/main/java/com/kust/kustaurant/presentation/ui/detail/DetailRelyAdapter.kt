@@ -39,7 +39,7 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
     inner class ViewHolder(val binding : ItemDetailReviewReplyBinding) : RecyclerView.ViewHolder(binding.root){
 
         init {
-            binding.replyIvDots.setOnClickListener { view ->
+            binding.replyFlDots.setOnClickListener { view ->
                 showPopupWindow(view)
             }
         }
@@ -129,10 +129,10 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
             Glide.with(context)
                 .load(item.commentIconImgUrl)
                 .into(binding.ivUserImage)
-            binding.ivLike.setOnClickListener {
+            binding.flLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
             }
-            binding.ivHate.setOnClickListener {
+            binding.flHate.setOnClickListener {
                 itemClickListener.onDisLikeClicked(item.commentId, absoluteAdapterPosition)
             }
 

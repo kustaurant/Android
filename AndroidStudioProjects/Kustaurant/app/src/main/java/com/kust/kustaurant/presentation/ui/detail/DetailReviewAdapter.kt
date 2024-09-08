@@ -41,11 +41,11 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
 
     inner class ViewHolder(val binding: ItemDetailReviewBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.detailIvDots.setOnClickListener { view ->
+            binding.detailFlDots.setOnClickListener { view ->
                 showPopupWindow(view)
             }
 
-            binding.ivComment.setOnClickListener {
+            binding.flComment.setOnClickListener {
                 showDialog()
             }
         }
@@ -176,10 +176,10 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
                 binding.detailIvPhoto.setImageDrawable(null)
             }
 
-            binding.ivLike.setOnClickListener {
+            binding.flLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
             }
-            binding.ivHate.setOnClickListener {
+            binding.flHate.setOnClickListener {
                 itemClickListener.onDisLikeClicked(item.commentId, absoluteAdapterPosition)
             }
 

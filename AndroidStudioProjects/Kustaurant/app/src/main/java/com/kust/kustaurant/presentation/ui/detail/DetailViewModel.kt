@@ -77,13 +77,19 @@ class DetailViewModel @Inject constructor(
 
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
-            val getDetailData = getDetailDataUseCase(restaurantId)
-            _detailData.value = getDetailData
-            _menuData.value = getDetailData.restaurantMenuList.map{
-                MenuData(it.menuId, it.menuName, it.menuPrice, it.naverType, it.menuImgUrl)
+            try {
+                val getDetailData = getDetailDataUseCase(restaurantId)
+                _detailData.value = getDetailData
+                _menuData.value = getDetailData.restaurantMenuList.map {
+                    MenuData(it.menuId, it.menuName, it.menuPrice, it.naverType, it.menuImgUrl)
+                }
+                _tierData.value = TierInfoData(
+                    getDetailData.restaurantCuisineImgUrl, getDetailData.restaurantCuisine,
+                    getDetailData.mainTier, getDetailData.situationList
+                )
+            } catch (e : Exception) {
+                Log.e("DetailViewModel", "Failed to load detail data", e)
             }
-            _tierData.value = TierInfoData(getDetailData.restaurantCuisineImgUrl, getDetailData.restaurantCuisine,
-                getDetailData.mainTier, getDetailData.situationList)
         }
     }
 
@@ -101,8 +107,12 @@ class DetailViewModel @Inject constructor(
 
     fun loadEvaluateData(restaurantId: Int){
         viewModelScope.launch {
-            val getDetailData = getDetailDataUseCase(restaurantId)
-            _detailData.value = getDetailData
+            try {
+                val getDetailData = getDetailDataUseCase(restaurantId)
+                _detailData.value = getDetailData
+            } catch (e: Exception){
+                Log.e("DetailViewModel", "Failed to load evaluation data", e)
+            }
         }
     }
 
@@ -146,8 +156,12 @@ class DetailViewModel @Inject constructor(
 
     fun loadMyEvaluationData(restaurantId: Int){
         viewModelScope.launch {
-            val evaluationData = getEvaluationDataUseCase(restaurantId)
-            _evaluationData.postValue(evaluationData)
+            try {
+                val evaluationData = getEvaluationDataUseCase(restaurantId)
+                _evaluationData.postValue(evaluationData)
+            } catch (e : Exception){
+                Log.e("DetailViewModel", "Failed to MyloadEvaluation", e)
+            }
         }
     }
 

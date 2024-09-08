@@ -39,9 +39,9 @@ class EvaluateKeyWordAdapter(private val keywords: ArrayList<String>) : Recycler
 
     override fun getItemCount(): Int = keywords.size
 
-    fun setSelectedKeywords(selectedIndices: List<Int>) {
+    fun setSelectedKeywords(selectedIndices: List<Int>?) {
         selectedPositions.indices.forEach { index ->
-            selectedPositions[index] = (index +1) in selectedIndices
+            selectedPositions[index] = selectedIndices?.contains((index +1)) == true
         }
         notifyDataSetChanged()
     }
