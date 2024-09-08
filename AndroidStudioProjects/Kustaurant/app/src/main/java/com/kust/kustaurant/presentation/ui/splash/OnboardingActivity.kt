@@ -7,24 +7,19 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.BuildConfig
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
-import com.kust.kustaurant.databinding.ActivityOnboardingBinding
-import com.kakao.sdk.common.KakaoSdk
-import com.kakao.sdk.user.UserApiClient
 import com.kust.kustaurant.data.saveAccessToken
 import com.kust.kustaurant.data.saveId
+import com.kust.kustaurant.databinding.ActivityOnboardingBinding
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class OnboardingActivity : AppCompatActivity() {
@@ -94,8 +89,13 @@ class OnboardingActivity : AppCompatActivity() {
             // sharedpreference를 통해 accesstoken 저장
             saveAccessToken(this, newAccessToken)
             val intent = Intent(this@OnboardingActivity, MainActivity::class.java)
+
+            //액티비티 스택제거
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
             startActivity(intent)
-            finish()
         }
 
 //        // kakao 로그인

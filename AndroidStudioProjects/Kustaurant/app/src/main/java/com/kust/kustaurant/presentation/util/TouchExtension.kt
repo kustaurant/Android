@@ -17,6 +17,7 @@ object TouchExtension {
             rect.bottom += extraPadding
             rect.left -= extraPadding
             rect.right += extraPadding
+
             val touchDelegate = TouchDelegate(rect, iconView)
             (iconView.parent as? View)?.touchDelegate = touchDelegate
         }

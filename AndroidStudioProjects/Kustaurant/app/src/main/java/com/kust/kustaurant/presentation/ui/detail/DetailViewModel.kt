@@ -77,13 +77,19 @@ class DetailViewModel @Inject constructor(
 
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
-            val getDetailData = getDetailDataUseCase(restaurantId)
-            _detailData.value = getDetailData
-            _menuData.value = getDetailData.restaurantMenuList.map{
-                MenuData(it.menuId, it.menuName, it.menuPrice, it.naverType, it.menuImgUrl)
+            try {
+                val getDetailData = getDetailDataUseCase(restaurantId)
+                _detailData.value = getDetailData
+                _menuData.value = getDetailData.restaurantMenuList.map {
+                    MenuData(it.menuId, it.menuName, it.menuPrice, it.naverType, it.menuImgUrl)
+                }
+                _tierData.value = TierInfoData(
+                    getDetailData.restaurantCuisineImgUrl, getDetailData.restaurantCuisine,
+                    getDetailData.mainTier, getDetailData.situationList
+                )
+            } catch (e : Exception) {
+                Log.e("DetailViewModel", "Failed to load detail data", e)
             }
-            _tierData.value = TierInfoData(getDetailData.restaurantCuisineImgUrl, getDetailData.restaurantCuisine,
-                getDetailData.mainTier, getDetailData.situationList)
         }
     }
 
@@ -101,8 +107,12 @@ class DetailViewModel @Inject constructor(
 
     fun loadEvaluateData(restaurantId: Int){
         viewModelScope.launch {
-            val getDetailData = getDetailDataUseCase(restaurantId)
-            _detailData.value = getDetailData
+            try {
+                val getDetailData = getDetailDataUseCase(restaurantId)
+                _detailData.value = getDetailData
+            } catch (e: Exception){
+                Log.e("DetailViewModel", "Failed to load evaluation data", e)
+            }
         }
     }
 
@@ -146,8 +156,12 @@ class DetailViewModel @Inject constructor(
 
     fun loadMyEvaluationData(restaurantId: Int){
         viewModelScope.launch {
-            val evaluationData = getEvaluationDataUseCase(restaurantId)
-            _evaluationData.postValue(evaluationData)
+            try {
+                val evaluationData = getEvaluationDataUseCase(restaurantId)
+                _evaluationData.postValue(evaluationData)
+            } catch (e : Exception){
+                Log.e("DetailViewModel", "Failed to MyloadEvaluation", e)
+            }
         }
     }
 
@@ -206,45 +220,65 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun postCommentLike(restaurantId: Int, commentId: Int, position: Int) {
+    fun postCommentLike(restaurantId: Int, commentId: Int) {
         viewModelScope.launch {
             try {
                 val response = postCommentLikeUseCase(restaurantId, commentId)
-                updateLocalCommentData(response, position)
+                updateCommentData(response, commentId)
             } catch (e: Exception) {
                 Log.e("DetailViewModel", "Failed to post comment like", e)
             }
         }
     }
 
-    fun postCommentDisLike(restaurantId: Int, commentId: Int, position: Int) {
+    fun postCommentDisLike(restaurantId: Int, commentId: Int) {
         viewModelScope.launch {
             try {
                 val response = postCommentDisLikeUseCase(restaurantId, commentId)
-                updateLocalCommentData(response, position)
+                updateCommentData(response, commentId)
             } catch (e: Exception) {
                 Log.e("DetailViewModel", "Failed to post comment dislike", e)
             }
         }
     }
 
-    private fun updateLocalCommentData(response: CommentLikeResponse, position: Int) {
+    private fun updateCommentData(response: CommentLikeResponse, commentId: Int) {
         _reviewData.value?.let { currentReviews ->
-            val updatedReviews = currentReviews.toMutableList()
-            val currentComment = updatedReviews[position]
+            // 기존 reviewData를 MutableList로 나열
+            val updatedReviews = currentReviews.map { review ->
 
-            val updatedComment = currentComment.copy(
-                commentLikeStatus = response.commentLikeStatus,
-                commentLikeCount = response.commentLikeCount,
-                commentDislikeCount = response.commentDislikeCount
-            )
+                // commentId가 일치하면 review 데이터를 업데이트
+                val updatedComment = if (review.commentId == commentId) {
+                    review.copy(
+                        commentLikeStatus = response.commentLikeStatus,
+                        commentLikeCount = response.commentLikeCount,
+                        commentDislikeCount = response.commentDislikeCount
+                    )
+                } else {
+                    // commentId가 일치하지 않으면 대댓글을 업데이트
+                    val updatedReplies = review.commentReplies?.map { reply ->
 
-            updatedReviews[position] = updatedComment
+                        if (reply.commentId == commentId) {
+                            reply.copy(
+                                commentLikeStatus = response.commentLikeStatus,
+                                commentLikeCount = response.commentLikeCount,
+                                commentDislikeCount = response.commentDislikeCount
+                            )
+                        } else {
+                            // 대댓글 까지 일치하지 않으면 그대로 반환
+                            reply
+                        }
+                    }
+                    // 업데이트한 reply Data 를 reviewData로 복사
+                    review.copy(commentReplies = updatedReplies)
+                }
+
+                // 업데이트된 댓글, 대댓글 반환
+                updatedComment
+            }
+            // 변경된 reviewData를 LiveData에 업데이트
             _reviewData.postValue(updatedReviews)
-            _itemUpdateIndex.postValue(position)
         }
     }
-
-
 
 }

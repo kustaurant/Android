@@ -13,9 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.R
@@ -42,7 +40,6 @@ class EvaluateActivity : AppCompatActivity() {
 
         restaurantId = intent.getIntExtra("restaurantId", 1)
         val isEvaluated = intent.getBooleanExtra("isEvaluated", false)
-        Log.d("restaurantId", restaurantId.toString())
         viewModel.loadEvaluateData(restaurantId)
 
         if(isEvaluated){
@@ -175,9 +172,6 @@ class EvaluateActivity : AppCompatActivity() {
             Log.d("taejung", keywords.toString())
             val imageUrl = (binding.ivPlusPhoto.tag as? Uri)  // 이미지 URI 저장을 위한 방법 중 하나
             viewModel.postEvaluationData(this , restaurantId, rating.toDouble(), comment, keywords, imageUrl)
-            val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("restaurantId", restaurantId)
-            startActivity(intent)
             finish()
         }
     }

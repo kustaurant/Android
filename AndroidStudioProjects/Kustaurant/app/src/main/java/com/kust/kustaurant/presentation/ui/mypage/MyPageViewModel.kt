@@ -151,6 +151,13 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    fun loadMyPostData(){
+        viewModelScope.launch {
+            val myCommunityListData = getMyCommunityListUseCase()
+            _myCommunityData.postValue(myCommunityListData)
+        }
+    }
+
     fun postFeedBackData(comment: String){
         viewModelScope.launch {
             try {

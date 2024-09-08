@@ -143,7 +143,7 @@ class MyPageFragment : Fragment() {
 
                     val intent = Intent(requireContext(), StartActivity::class.java)
                     startActivity(intent)
-                    requireActivity().finish()
+                    onDestroy()
                 }
                 "fail" -> {
                     // 로그아웃 실패 시 처리
@@ -166,7 +166,7 @@ class MyPageFragment : Fragment() {
                     clearUserData()
                     val intent = Intent(requireContext(), StartActivity::class.java)
                     startActivity(intent)
-                    requireActivity().finish()
+                    onDestroy()
                 }
                 "fail" -> {
                     Toast.makeText(requireContext(), "회원탈퇴 실패: 다시 시도해주세요.", Toast.LENGTH_SHORT).show()

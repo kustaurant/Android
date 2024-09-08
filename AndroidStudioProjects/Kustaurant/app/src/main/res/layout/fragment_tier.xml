@@ -72,7 +72,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/back_btn_info"
-                android:padding="8dp"
                 android:src="@drawable/btn_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

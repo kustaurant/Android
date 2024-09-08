@@ -48,7 +48,6 @@ class DetailActivity : AppCompatActivity() {
         initSearch()
         changeTopBar()
         initFavorite(restaurantId)
-        initTouchExtension()
 
         viewModel.detailData.observe(this) { detailData ->
             if (detailData.partnershipInfo == null){
@@ -81,17 +80,13 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun initSearch() {
-        binding.detailIvSearch.setOnClickListener {
+        binding.detailFlIvSearch.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
 
         }
     }
 
-    private fun initTouchExtension() {
-        TouchExtension.expandTouchArea(binding.detailClTopBar, binding.detailIvBack, 40)
-        TouchExtension.expandTouchArea(binding.detailClTopBar, binding.detailIvSearch, 40)
-    }
 
     private fun initFavorite(restaurantId : Int) {
         binding.detailClFavorite.setOnClickListener {
@@ -102,7 +97,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.detailIvBack.setOnClickListener {
+        binding.detailFlIvBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
             overridePendingTransition(R.anim.stay_in_place, R.anim.slide_out_right)
         }

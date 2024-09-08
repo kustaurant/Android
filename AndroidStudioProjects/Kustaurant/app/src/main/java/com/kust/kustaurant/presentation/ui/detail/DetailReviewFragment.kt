@@ -20,6 +20,7 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
+import com.kust.kustaurant.presentation.util.TouchExtension
 
 class DetailReviewFragment : Fragment() {
     lateinit var binding : FragmentDetailReviewBinding
@@ -94,12 +95,17 @@ class DetailReviewFragment : Fragment() {
             if (commentData.isEmpty()) {
                 binding.detailBtnRecent.visibility = View.GONE
                 binding.detailBtnPopular.visibility = View.GONE
+                binding.detailRvReview.visibility = View.GONE
                 binding.detailClReviewNone.visibility = View.VISIBLE
                 Glide.with(requireContext())
                     .load(R.drawable.ic_baby_cow)
                     .into(binding.detailIvNone)
                 setNoneHeight()
             } else {
+                binding.detailBtnRecent.visibility = View.VISIBLE
+                binding.detailBtnPopular.visibility = View.VISIBLE
+                binding.detailRvReview.visibility = View.VISIBLE
+                binding.detailClReviewNone.visibility = View.GONE
                 reviewAdapter.submitList(commentData) {
                     binding.detailRvReview.post {
                         setRecyclerViewHeight()
@@ -155,13 +161,13 @@ class DetailReviewFragment : Fragment() {
 
             override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId, position)
+                    viewModel.postCommentLike(restaurantId, commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentDisLike(restaurantId, commentId, position)
+                    viewModel.postCommentDisLike(restaurantId, commentId)
                 }
             }
         })
@@ -184,13 +190,13 @@ class DetailReviewFragment : Fragment() {
 
             override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId, position)
+                    viewModel.postCommentLike(restaurantId, commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentDisLike(restaurantId, commentId, position)
+                    viewModel.postCommentDisLike(restaurantId, commentId)
                 }
             }
         }

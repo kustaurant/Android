@@ -64,6 +64,16 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_user_name"
         android:text="30초전"/>
 
+    <FrameLayout
+        android:id="@+id/detail_fl_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/detail_iv_dots"
+        app:layout_constraintEnd_toEndOf="@id/detail_iv_dots"
+        app:layout_constraintTop_toTopOf="@id/detail_iv_dots"
+        app:layout_constraintBottom_toBottomOf="@id/detail_iv_dots"
+        android:padding="15dp"/>
+
     <ImageView
         android:id="@+id/detail_iv_dots"
         android:layout_width="wrap_content"
@@ -104,6 +114,16 @@
         app:layout_constraintTop_toBottomOf="@id/detail_cv_photo"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <FrameLayout
+        android:id="@+id/fl_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/iv_like"
+        app:layout_constraintEnd_toEndOf="@id/iv_like"
+        app:layout_constraintTop_toTopOf="@id/iv_like"
+        app:layout_constraintBottom_toBottomOf="@id/iv_like"
+        android:padding="15dp"/>
+
     <ImageView
         android:id="@+id/iv_like"
         android:layout_width="wrap_content"
@@ -122,6 +142,16 @@
         app:layout_constraintBottom_toBottomOf="@id/iv_like"
         android:layout_marginStart="4dp"
         android:text="1233"/>
+
+    <FrameLayout
+        android:id="@+id/fl_hate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/iv_hate"
+        app:layout_constraintEnd_toEndOf="@id/iv_hate"
+        app:layout_constraintTop_toTopOf="@id/iv_hate"
+        app:layout_constraintBottom_toBottomOf="@id/iv_hate"
+        android:padding="15dp"/>
 
     <ImageView
         android:id="@+id/iv_hate"
@@ -142,6 +172,16 @@
         app:layout_constraintBottom_toBottomOf="@id/iv_like"
         android:layout_marginStart="4dp"
         android:text="1233"/>
+
+    <FrameLayout
+        android:id="@+id/fl_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/iv_comment"
+        app:layout_constraintEnd_toEndOf="@id/iv_comment"
+        app:layout_constraintTop_toTopOf="@id/iv_comment"
+        app:layout_constraintBottom_toBottomOf="@id/iv_comment"
+        android:padding="15dp"/>
 
     <ImageView
         android:id="@+id/iv_comment"

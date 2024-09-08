@@ -50,7 +50,7 @@ interface MyPageApi {
     suspend fun getMyCommunityCommentData(
     ) : List<MyCommentResponse>
 
-    @GET("/api/v1/mypage")
+    @GET("/api/v1/auth/mypage")
     suspend fun getMyPageData(
     ) : MyPageResponse
 }
