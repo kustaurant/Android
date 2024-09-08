@@ -96,17 +96,21 @@ class TierListFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.tierRestaurantList.observe(viewLifecycleOwner) { tierList ->
-
             if (viewModel.isSelectedCategoriesChanged.value == true) {
                 allTierData.clear()
-                binding.tierRecyclerView.scrollToPosition(0)
                 Log.e("TIerList", "들옴")
             }
 
             Log.e("TierFragment", viewModel.isSelectedCategoriesChanged.toString())
 
             allTierData.addAll(tierList)
-            tierAdapter.submitList(allTierData.toList())
+            tierAdapter.submitList(allTierData.toList()) {
+                if (viewModel.isSelectedCategoriesChanged.value == true) {
+                    binding.tierRecyclerView.post {
+                        binding.tierRecyclerView.scrollToPosition(0)
+                    }
+                }
+            }
         }
 
         viewModel.isExpanded.observe(viewLifecycleOwner) { isExpanded ->

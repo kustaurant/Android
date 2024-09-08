@@ -34,11 +34,11 @@ class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestauran
         if (position == highlightedPosition) {
             val drawable = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
-                setStroke(2, ContextCompat.getColor(holder.context, R.color.signature_1))
+                setStroke(4, ContextCompat.getColor(holder.context, R.color.signature_1))
                 cornerRadius = 30f
             }
             holder.imageView.background = drawable
-            holder.imageView.setPadding(2)
+            holder.imageView.setPadding(4)
         } else {
             holder.imageView.background = null
             holder.imageView.setPadding(0, 0, 0, 0)

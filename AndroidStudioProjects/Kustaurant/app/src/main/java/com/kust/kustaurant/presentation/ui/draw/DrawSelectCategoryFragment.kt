@@ -2,6 +2,7 @@ package com.kust.kustaurant.presentation.ui.draw
 
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
 import androidx.fragment.app.activityViewModels
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentDrawSelectCategoryBinding
@@ -241,7 +241,14 @@ class DrawSelectCategoryFragment : Fragment() {
             drawable.shape = GradientDrawable.RECTANGLE
             drawable.setStroke(4, ContextCompat.getColor(requireContext(), R.color.signature_1))
             drawable.cornerRadius = 15f
-            view.setPadding(4)
+
+            val paddingHorizontal = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 13f, resources.displayMetrics
+            ).toInt()
+            val paddingVertical = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 5.9f, resources.displayMetrics
+            ).toInt()
+            view.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
             view.background = drawable
         } else {
             view.setBackgroundResource(R.drawable.all_radius_15_none)

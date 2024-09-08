@@ -49,7 +49,7 @@ class TierViewModel @Inject constructor(
     val isSelectedCategoriesChanged: LiveData<Boolean> = _isSelectedCategoriesChanged
 
     //음식점 리스트 페이지를 관리하는 변수
-    private var tierListPage = 1
+    private var _tierListPage = 1
 
     fun toggleExpand() {
         _isExpanded.value = _isExpanded.value?.not()
@@ -65,7 +65,7 @@ class TierViewModel @Inject constructor(
                 CategoryIdMapper.mapMenus(menus),
                 CategoryIdMapper.mapSituations(situations),
                 CategoryIdMapper.mapLocations(locations),
-                tierListPage
+                _tierListPage
             )
 
             _tierRestaurantList.value = tierListData.map {
@@ -135,12 +135,12 @@ class TierViewModel @Inject constructor(
         tabIndex: Int
     ) {
         if (hasFilterChanged(menus, situations, locations)) {
-            tierListPage = 1
+            _tierListPage = 1
             setIsSelectedCategoriesChanged(true)
             Log.e("TierViewModel", "applyFilters is called and hasFilter is True")
         } else {
             setIsSelectedCategoriesChanged(false)
-            tierListPage++
+            _tierListPage++
         }
 
         setSelectedTypes(menus)
@@ -187,9 +187,9 @@ class TierViewModel @Inject constructor(
             setIsSelectedCategoriesChanged(false)
 
             if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
-                tierListPage = 1
+                _tierListPage  = 1
             } else if (state == RestaurantState.NEXT_PAGE_LIST_DATA) {
-                tierListPage++
+                _tierListPage++
             }
 
             loadRestaurantList(

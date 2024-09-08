@@ -40,6 +40,8 @@
                 android:id="@+id/tier_toggle_location_group"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:fadingEdgeLength="30dp"
+                android:requiresFadingEdge="horizontal"
                 android:gravity="center_vertical">
 
                 <ToggleButton

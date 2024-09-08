@@ -111,9 +111,9 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/tier_gl_start"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/top_bar"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -140,7 +140,7 @@
             app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
             app:layout_constraintStart_toStartOf="@id/tier_gl_start"
             app:layout_constraintTop_toBottomOf="@id/top_bar">
-
+.
             <ImageView
                 android:id="@+id/tier_iv_category_btn"
                 android:layout_width="32dp"

@@ -19,7 +19,7 @@
         android:layout_marginStart="6dp"
         android:paddingVertical="12dp"
         android:paddingHorizontal="10dp"
-        android:background="@drawable/all_radius_6_none"
+        android:background="@drawable/all_radius_6_cement4"
         android:backgroundTint="@color/cement_2"
         app:layout_constraintStart_toEndOf="@id/iv_reply"
         app:layout_constraintEnd_toEndOf="parent"

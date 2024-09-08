@@ -4,8 +4,9 @@
     android:layout_height="match_parent" >
     <ImageView
         android:id="@+id/draw_iv_image_Restaurant"
-        android:layout_width="289dp"
-        android:layout_height="289dp"
+        android:layout_width="291dp"
+        android:layout_height="291dp"
+        android:padding="2dp"
         android:background="@drawable/all_radius_30_none"
         android:scaleType="centerCrop"
         android:layout_gravity="center_horizontal"
