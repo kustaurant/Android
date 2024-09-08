@@ -11,27 +11,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.model.HomeResponse
 import com.kust.kustaurant.databinding.FragmentHomeBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
+import com.kust.kustaurant.presentation.ui.tier.TierFragment
+import com.kust.kustaurant.presentation.ui.tier.TierViewModel
 import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var meRestaurantList: ArrayList<RestaurantModel>
     private lateinit var topRestaurantList: ArrayList<RestaurantModel>
     private lateinit var meRestaurantadapter: MeRestaurantAdapter
     private lateinit var topRestaurantadapter: TopRestaurantAdapter
     private val homeViewModel: HomeViewModel by viewModels()
+    private val tierViewModel: TierViewModel by activityViewModels()
 
     private var imageUrls = listOf<String>()
     private lateinit var autoScrollHandler: Handler
@@ -69,11 +74,77 @@ class HomeFragment : Fragment() {
 
         return binding.root
     }
+    
+    override fun onCategoryItemClick(category: String) {
+        when (category) {
+            "전체" -> {
+                tierViewModel.applyFilters(setOf("전체"), setOf("전체"), setOf("전체"), 0)
+            }
+            "한식" -> {
+                tierViewModel.applyFilters(setOf("한식"), setOf("전체"), setOf("전체"), 0)
+            }
+            "일식" -> {
+                tierViewModel.applyFilters(setOf("일식"), setOf("전체"), setOf("전체"), 0)
+            }
+            "중식" -> {
+                tierViewModel.applyFilters(setOf("중식"), setOf("전체"), setOf("전체"), 0)
+            }
+            "양식" -> {
+                tierViewModel.applyFilters(setOf("양식"), setOf("전체"), setOf("전체"), 0)
+            }
+            "아시안" -> {
+                tierViewModel.applyFilters(setOf("아시안"), setOf("전체"), setOf("전체"), 0)
+            }
+            "고기" -> {
+                tierViewModel.applyFilters(setOf("고기"), setOf("전체"), setOf("전체"), 0)
+            }
+            "해산물" -> {
+                tierViewModel.applyFilters(setOf("해산물"), setOf("전체"), setOf("전체"), 0)
+            }
+            "치킨" -> {
+                tierViewModel.applyFilters(setOf("치킨"), setOf("전체"), setOf("전체"), 0)
+            }
+            "햄버거/피자" -> {
+                tierViewModel.applyFilters(setOf("햄버거/피자"), setOf("전체"), setOf("전체"), 0)
+            }
+            "분식" -> {
+                tierViewModel.applyFilters(setOf("분식"), setOf("전체"), setOf("전체"), 0)
+            }
+            "술집" -> {
+                tierViewModel.applyFilters(setOf("술집"), setOf("전체"), setOf("전체"), 0)
+            }
+            "카페/디저트" -> {
+                tierViewModel.applyFilters(setOf("카페/디저트"), setOf("전체"), setOf("전체"), 0)
+            }
+            "베이커리" -> {
+                tierViewModel.applyFilters(setOf("베이커리"), setOf("전체"), setOf("전체"), 0)
+            }
+            "샐러드" -> {
+                tierViewModel.applyFilters(setOf("샐러드"), setOf("전체"), setOf("전체"), 0)
+            }
+            "제휴업체" -> {
+                tierViewModel.applyFilters(setOf("제휴업체"), setOf("전체"), setOf("전체"), 0)
+            }
+            else -> {
+                tierViewModel.applyFilters(setOf("전체"), setOf("전체"), setOf("전체"), 0)
+            }
+        }
 
+        // TierFragment로 전환
+        val fragment = TierFragment()
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, fragment)
+            .addToBackStack(null)
+            .commit()
+
+        // 네비게이션 바 상태 업데이트
+        (requireActivity() as? MainActivity)?.let { mainActivity ->
+            mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_rank
+        }
+    }
     private fun initTouchExtension() {
         TouchExtension.expandTouchArea(binding.homeTopbar, binding.btnSearch, 40)
     }
-
 
     private fun setupCategoryRV(){
         val categoryList = listOf(
@@ -95,7 +166,7 @@ class HomeFragment : Fragment() {
             CategoryItem(R.drawable.img_category_benefit, "제휴업체"),
         )
 
-        categoryAdapter = CategoryAdapter(categoryList)
+        categoryAdapter = CategoryAdapter(categoryList, this)
         binding.categoryRecyclerView.apply {
             val spanCount = 4
             val spacing = 10

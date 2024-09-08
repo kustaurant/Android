@@ -28,20 +28,20 @@
 
         <HorizontalScrollView
             android:id="@+id/draw_sv_select_type"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
             android:scrollbars="none"
-            app:layout_constraintDimensionRatio="360:35"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/draw_tv_select_info"
-            tools:layout_height="35dp">
+            app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
+            app:layout_constraintStart_toStartOf="@id/draw_gl_start"
+            app:layout_constraintTop_toBottomOf="@id/draw_tv_select_info">
 
             <LinearLayout
                 android:id="@+id/tier_toggle_location_group"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:fadingEdgeLength="30dp"
+                android:requiresFadingEdge="horizontal"
                 android:gravity="center_vertical">
 
                 <ToggleButton

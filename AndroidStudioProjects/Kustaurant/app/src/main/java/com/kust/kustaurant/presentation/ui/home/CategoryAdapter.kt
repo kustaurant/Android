@@ -10,13 +10,29 @@ import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 
 data class CategoryItem(val imageResId: Int, val text: String)
-class CategoryAdapter(private val categoryList: List<CategoryItem>) :
+class CategoryAdapter(private val categoryList: List<CategoryItem>,
+                      private val itemClickListener: CategoryItemClickListener) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+
+    interface CategoryItemClickListener {
+        fun onCategoryItemClick(category: String)
+    }
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.category_image)
         val textView: TextView = itemView.findViewById(R.id.category_text)
+
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val categoryItem = categoryList[position]
+                    itemClickListener.onCategoryItemClick(categoryItem.text) // 클릭 이벤트 전달
+                }
+            }
+        }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context)

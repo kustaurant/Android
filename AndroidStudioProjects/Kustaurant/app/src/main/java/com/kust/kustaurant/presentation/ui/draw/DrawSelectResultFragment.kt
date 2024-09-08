@@ -166,7 +166,7 @@ class DrawSelectResultFragment : Fragment() {
 
                 if (currentPage < adapter.itemCount) {
                     viewPager.setCurrentItem(currentPage++, true)
-                    handler?.postDelayed(this, 2000L / adapter.itemCount)
+                    handler?.postDelayed(this, 3000L / adapter.itemCount)
                     displaySelectedRestaurantInfo(restaurantList[currentPage - 1])
                 } else {
                     // 애니메이션 종료 후, 중앙에 선택된 음식점 배치
@@ -177,7 +177,7 @@ class DrawSelectResultFragment : Fragment() {
 
                         val roundedScore = selected.restaurantScore?.let {
                             floor(it * 2) / 2
-                        } ?: 0.0
+                        } ?: "평가 없음"
 
                         binding.drawTvRestaurantScore.text = roundedScore.toString()
                         binding.drawTvRestaurantPartnershipInfo.text = selected.partnershipInfo?: "제휴 해당사항 없음"
