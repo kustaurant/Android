@@ -24,7 +24,7 @@ class CategoryAdapter(private val categoryList: List<CategoryItem>,
 
         init {
             itemView.setOnClickListener {
-                val position = adapterPosition
+                val position = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val categoryItem = categoryList[position]
                     itemClickListener.onCategoryItemClick(categoryItem.text) // 클릭 이벤트 전달

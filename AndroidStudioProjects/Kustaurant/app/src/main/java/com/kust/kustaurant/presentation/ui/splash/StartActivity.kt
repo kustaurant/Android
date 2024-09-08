@@ -51,8 +51,14 @@ class StartActivity : AppCompatActivity() {
             // sharedpreference를 통해 accesstoken 저장
             saveAccessToken(this, newAccessToken)
             val intent = Intent(this@StartActivity, MainActivity::class.java)
+
+            // 액티비티 스택 제거
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
             startActivity(intent)
-            finish()
+
         }
 
 //        // kakao 로그인
