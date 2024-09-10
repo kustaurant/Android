@@ -25,7 +25,7 @@ class MyTermsUseActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.termsUseBtnBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

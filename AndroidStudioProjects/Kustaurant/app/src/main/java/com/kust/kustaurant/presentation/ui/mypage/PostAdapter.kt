@@ -33,6 +33,7 @@ class PostAdapter(val context: Context) : ListAdapter<MyCommunityListResponse, P
             binding.myTvPostCategory.text = item.postCategory
             binding.myTvPostTitle.text = item.postTitle
             binding.myTvPostTime.text = item.timeAgo
+            binding.myTvPostBody.text = item.postBody
             binding.myTvPostLike.text = item.likeCount.toString()
             binding.myTvPostComment.text = item.commentCount.toString()
 

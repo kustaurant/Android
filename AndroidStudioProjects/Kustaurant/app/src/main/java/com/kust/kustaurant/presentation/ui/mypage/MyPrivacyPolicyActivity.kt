@@ -25,7 +25,7 @@ class MyPrivacyPolicyActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.privacyBtnBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

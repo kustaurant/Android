@@ -75,8 +75,9 @@ class MyPageFragment : Fragment() {
             binding.myTvOpinion to MyOpinionActivity::class.java,
             binding.myTvNotification to MyNotificationActivity::class.java,
             binding.myTvPrivatePolicy to MyPrivacyPolicyActivity::class.java,
-            binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
-            binding.myTvFixAlliance to MyFixAllActivity::class.java,
+            // 점주 인증, 제휴는 추후 업데이트
+//            binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
+//            binding.myTvFixAlliance to MyFixAllActivity::class.java,
             binding.myTvLogOut to null,
             binding.myTvWithdrawal to null
         )

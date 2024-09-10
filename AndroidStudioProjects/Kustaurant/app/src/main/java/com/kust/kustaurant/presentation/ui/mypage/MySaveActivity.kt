@@ -38,7 +38,7 @@ class MySaveActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.saveBtnBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

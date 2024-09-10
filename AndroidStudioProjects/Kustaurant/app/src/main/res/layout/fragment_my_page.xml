@@ -389,7 +389,7 @@
                     app:layout_constraintTop_toBottomOf="@id/my_view_owner_certificate"
                     android:fontFamily="@font/pretendard_regular"
                     android:textSize="15sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/cement_4"
                     android:paddingVertical="14dp"
                     android:text="점주 인증하기"/>
 
@@ -409,7 +409,7 @@
                     app:layout_constraintTop_toBottomOf="@id/my_view_fix_alliance_top"
                     android:fontFamily="@font/pretendard_regular"
                     android:textSize="15sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/cement_4"
                     android:paddingVertical="14dp"
                     android:text="제휴 정보 수정하기"/>
 

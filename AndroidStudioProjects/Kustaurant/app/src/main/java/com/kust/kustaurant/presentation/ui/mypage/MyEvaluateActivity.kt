@@ -34,7 +34,7 @@ class MyEvaluateActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.myBtnEvaluateBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
