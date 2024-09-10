@@ -20,7 +20,6 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
-import com.kust.kustaurant.presentation.util.TouchExtension
 
 class DetailReviewFragment : Fragment() {
     lateinit var binding : FragmentDetailReviewBinding

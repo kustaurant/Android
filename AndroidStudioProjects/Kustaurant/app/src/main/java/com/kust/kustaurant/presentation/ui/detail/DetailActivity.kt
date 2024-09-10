@@ -20,7 +20,6 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
-import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 
