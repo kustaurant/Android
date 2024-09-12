@@ -39,7 +39,14 @@ class DetailActivity : AppCompatActivity() {
 
         val restaurantId = intent.getIntExtra("restaurantId", 346)
         Log.d("restaurantId", restaurantId.toString())
-        viewModel.loadDetailData(restaurantId)
+
+        val accessToken = getAccessToken(this)
+        if (accessToken == null) {
+            viewModel.loadAnonDetailData(restaurantId)
+        } else {
+            viewModel.loadDetailData(restaurantId)
+        }
+
 
         initBack()
         initTierRecyclerView()
@@ -88,7 +95,7 @@ class DetailActivity : AppCompatActivity() {
 
 
     private fun initFavorite(restaurantId : Int) {
-        binding.detailClFavorite.setOnClickListener {
+        binding.detailFlFavorite.setOnClickListener {
             checkToken {
                 viewModel.postFavoriteToggle(restaurantId)
             }

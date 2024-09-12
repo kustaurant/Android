@@ -22,6 +22,11 @@ interface DetailApi {
         @Path("restaurantId") restaurantId : Int
     ) : DetailDataResponse
 
+    @GET("/api/v1/auth/restaurants/{restaurantId}")
+    suspend fun getAnonDetailData(
+        @Path("restaurantId") restaurantId : Int
+    ) : DetailDataResponse
+
     @GET("/api/v1/restaurants/{restaurantId}/comments")
     suspend fun getCommentData(
         @Path("restaurantId") restaurantId: Int,

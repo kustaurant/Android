@@ -561,6 +561,16 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <FrameLayout
+                android:id="@+id/detail_fl_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/detail_cl_favorite"
+                app:layout_constraintEnd_toEndOf="@id/detail_cl_favorite"
+                app:layout_constraintTop_toTopOf="@id/detail_cl_favorite"
+                app:layout_constraintBottom_toBottomOf="@id/detail_cl_favorite"
+                android:padding="20dp"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/detail_cl_favorite"
                 android:layout_width="0dp"

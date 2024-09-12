@@ -166,6 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/item_category"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"

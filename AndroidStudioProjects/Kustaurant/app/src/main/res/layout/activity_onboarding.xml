@@ -107,31 +107,32 @@
         app:layout_constraintEnd_toEndOf="@id/gl_end"
         android:layout_marginBottom="20dp"/>
 
-    <ImageView
-        android:id="@+id/onboarding_iv_kakao"
-        android:layout_width="58dp"
-        android:layout_height="58dp"
-        android:src="@drawable/img_kakao_logo"
-        app:layout_constraintStart_toStartOf="@id/gl_start"
-        app:layout_constraintEnd_toEndOf="@id/gl_end"
-        app:layout_constraintBottom_toTopOf="@id/onboarding_tv_skip"
-        android:layout_marginBottom="15dp"
-        android:layout_marginEnd="80dp"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/onboarding_iv_kakao"-->
+<!--        android:layout_width="58dp"-->
+<!--        android:layout_height="58dp"-->
+<!--        android:src="@drawable/img_kakao_logo"-->
+<!--        app:layout_constraintStart_toStartOf="@id/gl_start"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/gl_end"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/onboarding_tv_skip"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        android:layout_marginEnd="80dp"/>-->
 
     <ImageView
         android:id="@+id/onboarding_iv_naver"
         android:layout_width="58dp"
         android:layout_height="58dp"
         android:src="@drawable/img_naver_logo"
-        app:layout_constraintStart_toEndOf="@id/onboarding_iv_kakao"
-        app:layout_constraintTop_toTopOf="@id/onboarding_iv_kakao"
-        android:layout_marginStart="20dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/onboarding_tv_skip"
+        android:layout_marginBottom="15dp"/>
     
     <View
         android:id="@+id/onboarding_divider1"
         android:layout_width="107dp"
         android:layout_height="2dp"
-        app:layout_constraintBottom_toTopOf="@id/onboarding_iv_kakao"
+        app:layout_constraintBottom_toTopOf="@id/onboarding_iv_naver"
         app:layout_constraintEnd_toStartOf="@id/onboarding_tv_login"
         app:layout_constraintStart_toStartOf="@id/gl_start"
         android:background="@color/cement_3"
