@@ -21,9 +21,9 @@ class Onboarding4Fragment : Fragment() {
         return binding.root
     }
 
-    private fun loadImage(){
+    private fun loadImage() {
         Glide.with(requireContext())
-            .load(R.drawable.img_onboarding4)
+            .load("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/on-boarding/on4.png")
             .into(binding.onboarding4Iv)
     }
 }

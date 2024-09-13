@@ -23,7 +23,7 @@ class Onboarding3Fragment : Fragment() {
 
     private fun loadImage(){
         Glide.with(requireContext())
-            .load(R.drawable.img_onboarding3)
+            .load("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/on-boarding/on3.png")
             .into(binding.onboarding3Iv)
     }
 }
