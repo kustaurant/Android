@@ -8,19 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentCommunityBinding
+import com.kust.kustaurant.databinding.FragmentCommunityBlankBinding
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 
 class CommunityBlankFragment : Fragment() {
-    lateinit var binding : FragmentCommunityBinding
+    lateinit var binding : FragmentCommunityBlankBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCommunityBinding.inflate(layoutInflater)
+        binding = FragmentCommunityBlankBinding.inflate(layoutInflater)
 
         initSearch()
-        return inflater.inflate(R.layout.fragment_community_blank, container, false)
+        return binding.root
     }
 
     private fun initSearch() {

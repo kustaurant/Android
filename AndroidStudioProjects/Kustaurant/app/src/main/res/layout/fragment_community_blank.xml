@@ -31,13 +31,16 @@
         app:layout_constraintStart_toStartOf="@id/gl_start"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/community_iv_back"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/back_btn_info"
-            android:src="@drawable/btn_back"
+            android:fontFamily="@font/pretendard_semibold"
+            android:text="커뮤니티"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,7 +75,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/top_bar"/>
 
+    <TextView
+        android:id="@+id/tv_blank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="업데이트 될 예정입니다!"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/iv_blank"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <ImageView
+        android:id="@+id/iv_blank"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_gray_logo"
