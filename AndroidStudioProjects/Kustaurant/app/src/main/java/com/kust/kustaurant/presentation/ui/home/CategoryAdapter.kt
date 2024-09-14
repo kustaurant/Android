@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 
-data class CategoryItem(val imageResId: Int, val text: String)
+data class CategoryItem(val imageResId: String, val text: String)
 class CategoryAdapter(private val categoryList: List<CategoryItem>,
                       private val itemClickListener: CategoryItemClickListener) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
