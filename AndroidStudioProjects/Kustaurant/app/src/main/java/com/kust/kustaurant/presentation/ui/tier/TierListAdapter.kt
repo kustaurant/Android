@@ -101,7 +101,7 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
     inner class ReducedViewHolder(private val binding: ItemRestaurantReductionBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: TierRestaurant) {
-            binding.tierTvRestaurantId.text = (position + 1).toString()
+            binding.tierTvRestaurantId.text = if(item.restaurantRanking == 0) "-" else item.restaurantRanking.toString()
             binding.tierTvRestaurantName.text = item.restaurantName
             binding.tierTvRestaurantDetails.text = "${item.restaurantCuisine} | ${item.restaurantPosition}"
 
