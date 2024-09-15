@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat.getString
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -122,6 +124,25 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
             // Set visibility for favorite and evaluation icons
             binding.tierIvRestaurantFavoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
             binding.tierIvRestaurantEvaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
+
+            val parentLayout = itemView as ConstraintLayout
+
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(parentLayout)
+
+            if (item.isFavorite) {
+                constraintSet.connect(
+                    binding.tierIvRestaurantEvaluationImg.id, ConstraintSet.END,
+                    binding.tierIvRestaurantFavoriteImg.id, ConstraintSet.START, 8
+                )
+            } else {
+                constraintSet.connect(
+                    binding.tierIvRestaurantEvaluationImg.id, ConstraintSet.END,
+                    ConstraintSet.PARENT_ID, ConstraintSet.END, 0
+                )
+            }
+
+            constraintSet.applyTo(parentLayout)
 
             binding.tierClRestaurant.setOnClickListener {
                 itemClickListener.onItemClicked(item)
