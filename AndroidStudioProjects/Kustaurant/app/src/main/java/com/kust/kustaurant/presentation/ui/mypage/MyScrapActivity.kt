@@ -21,7 +21,7 @@ class MyScrapActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.scrapBtnBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

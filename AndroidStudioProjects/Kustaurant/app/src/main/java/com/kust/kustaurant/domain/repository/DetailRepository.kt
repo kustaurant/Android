@@ -15,6 +15,10 @@ interface DetailRepository {
         restaurantId : Int
     ): DetailDataResponse
 
+    suspend fun getAnonDetailData(
+        restaurantId : Int
+    ): DetailDataResponse
+
     suspend fun getCommentData(
         restaurantId: Int, sort: String
     ) : List<CommentDataResponse>

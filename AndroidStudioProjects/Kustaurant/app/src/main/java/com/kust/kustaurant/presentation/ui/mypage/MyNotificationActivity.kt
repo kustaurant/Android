@@ -24,7 +24,7 @@ class MyNotificationActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.notiBtnBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

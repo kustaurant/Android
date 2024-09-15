@@ -39,7 +39,7 @@ class MyPostActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.myBtnEvaluateBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

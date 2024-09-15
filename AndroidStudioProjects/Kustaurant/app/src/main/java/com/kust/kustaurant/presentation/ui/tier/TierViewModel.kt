@@ -61,30 +61,35 @@ class TierViewModel @Inject constructor(
         locations: Set<String>
     ) {
         viewModelScope.launch {
-            val tierListData = getTierRestaurantListUseCase(
-                CategoryIdMapper.mapMenus(menus),
-                CategoryIdMapper.mapSituations(situations),
-                CategoryIdMapper.mapLocations(locations),
-                _tierListPage
-            )
-
-            _tierRestaurantList.value = tierListData.map {
-                TierRestaurant(
-                    restaurantId = it.restaurantId,
-                    restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
-                    restaurantName = it.restaurantName,
-                    restaurantCuisine = it.restaurantCuisine,
-                    restaurantPosition = it.restaurantPosition,
-                    restaurantImgUrl = it.restaurantImgUrl,
-                    mainTier = it.mainTier,
-                    partnershipInfo = it.partnershipInfo ?: "",
-                    isFavorite = it.isFavorite,
-                    x = it.x.toDouble(),
-                    y = it.y.toDouble(),
-                    isEvaluated = it.isEvaluated,
-                    restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() }
-                        ?: 0.0
+            try {
+                val tierListData = getTierRestaurantListUseCase(
+                    CategoryIdMapper.mapMenus(menus),
+                    CategoryIdMapper.mapSituations(situations),
+                    CategoryIdMapper.mapLocations(locations),
+                    _tierListPage
                 )
+
+                _tierRestaurantList.value = tierListData.map {
+                    TierRestaurant(
+                        restaurantId = it.restaurantId,
+                        restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
+                        restaurantName = it.restaurantName,
+                        restaurantCuisine = it.restaurantCuisine,
+                        restaurantPosition = it.restaurantPosition,
+                        restaurantImgUrl = it.restaurantImgUrl,
+                        mainTier = it.mainTier,
+                        partnershipInfo = it.partnershipInfo ?: "",
+                        isFavorite = it.isFavorite,
+                        x = it.x.toDouble(),
+                        y = it.y.toDouble(),
+                        isEvaluated = it.isEvaluated,
+                        restaurantScore = it.restaurantScore?.toDoubleOrNull()
+                            ?.takeIf { !it.isNaN() }
+                            ?: 0.0
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("티어 뷰모델", "loadRestaurantList Error", e)
             }
         }
     }
@@ -95,12 +100,16 @@ class TierViewModel @Inject constructor(
         locations: Set<String>
     ) {
         viewModelScope.launch {
-            val tierMapData = getTierRestaurantMapUseCase(
-                CategoryIdMapper.mapMenus(menus),
-                CategoryIdMapper.mapSituations(situations),
-                CategoryIdMapper.mapLocations(locations)
-            )
-            _mapData.value = tierMapData
+            try {
+                val tierMapData = getTierRestaurantMapUseCase(
+                    CategoryIdMapper.mapMenus(menus),
+                    CategoryIdMapper.mapSituations(situations),
+                    CategoryIdMapper.mapLocations(locations)
+                )
+                _mapData.value = tierMapData
+            } catch (e : Exception) {
+                Log.e("티어 뷰모델", "loadRestaurantMap Error", e)
+            }
         }
     }
 

@@ -52,6 +52,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
+            <FrameLayout
+                android:id="@+id/my_fl_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/edit_btn_back"
+                app:layout_constraintEnd_toEndOf="@id/edit_btn_back"
+                app:layout_constraintTop_toTopOf="@id/edit_btn_back"
+                app:layout_constraintBottom_toBottomOf="@id/edit_btn_back"
+                android:padding="20dp"/>
+
             <ImageView
                 android:id="@+id/edit_btn_back"
                 android:layout_width="wrap_content"
@@ -134,6 +144,8 @@
             android:text="닉네임은 30일에 한번만 변경 가능합니다."
             app:layout_constraintTop_toBottomOf="@id/edit_cl_name"
             app:layout_constraintStart_toStartOf="@id/gl_info_start"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="15dp"
             android:textSize="12sp"
             android:textColor="@color/cement_4"/>
 
@@ -223,6 +235,18 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/edit_tv_phone_coupon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이벤트 쿠폰 수신을 위해 핸드폰 번호를 입력하세요"
+            app:layout_constraintTop_toBottomOf="@id/edit_cl_phone"
+            app:layout_constraintStart_toStartOf="@id/gl_info_start"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="15dp"
+            android:textSize="12sp"
+            android:textColor="@color/cement_4"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/btn_submit"

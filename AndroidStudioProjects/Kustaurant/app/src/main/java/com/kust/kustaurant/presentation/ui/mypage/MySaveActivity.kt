@@ -1,11 +1,13 @@
 package com.kust.kustaurant.presentation.ui.mypage
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kust.kustaurant.databinding.ActivityMySaveBinding
+import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import com.kust.kustaurant.presentation.ui.detail.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +40,7 @@ class MySaveActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.saveBtnBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }
@@ -48,5 +50,13 @@ class MySaveActivity : AppCompatActivity() {
         binding.saveRvRestaurant.adapter = saveRestaurantAdapter
         binding.saveRvRestaurant.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        saveRestaurantAdapter.setOnItemClickListener(object : SaveRestaurantAdapter.OnItemClickListener{
+            override fun onSaveClicked(restaurantId: Int) {
+                val intent = Intent(this@MySaveActivity, DetailActivity::class.java)
+                startActivity(intent)
+            }
+
+        })
     }
 }

@@ -49,6 +49,16 @@
 <!--            app:layout_constraintBottom_toBottomOf="parent"-->
 <!--            app:layout_constraintEnd_toEndOf="parent"/>-->
 
+        <FrameLayout
+            android:id="@+id/home_fl_iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/btn_search"
+            app:layout_constraintEnd_toEndOf="@id/btn_search"
+            app:layout_constraintTop_toTopOf="@id/btn_search"
+            app:layout_constraintBottom_toBottomOf="@id/btn_search"
+            android:padding="20dp"/>
+
         <ImageView
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"
@@ -156,6 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/item_category"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
