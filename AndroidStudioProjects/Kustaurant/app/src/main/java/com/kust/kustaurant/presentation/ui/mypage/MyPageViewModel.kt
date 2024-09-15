@@ -65,18 +65,25 @@ class MyPageViewModel @Inject constructor(
 
     fun loadMyPageData(){
         viewModelScope.launch {
-            val myPageData = getMyPageDataUseCase()
-            _myPageData.postValue(myPageData)
-            Log.d("mypage", myPageData.toString())
+            try {
+                val myPageData = getMyPageDataUseCase()
+                _myPageData.postValue(myPageData)
+            } catch (e : Exception){
+                Log.e("마이페이지 뷰모델", "loadMyPageData Error", e)
+            }
         }
     }
 
 
     fun loadMyProfileData() {
         viewModelScope.launch {
-            val myProfileData = getMyProfileDataUseCase()
-            originalProfileData = myProfileData
-            _myProfileData.value = myProfileData ?: MyProfileResponse("", "", "")
+            try {
+                val myProfileData = getMyProfileDataUseCase()
+                originalProfileData = myProfileData
+                _myProfileData.value = myProfileData ?: MyProfileResponse("", "", "")
+            } catch (e: Exception) {
+                Log.e("마이페이지 뷰모델", "loadMyProfileData Error", e)
+            }
         }
     }
 
@@ -125,36 +132,56 @@ class MyPageViewModel @Inject constructor(
 
     fun loadMyFavoriteData() {
         viewModelScope.launch {
-            val myFavoriteData = getMyFavoriteDataUseCase()
-            _myFavoriteData.postValue(myFavoriteData)
+            try {
+                val myFavoriteData = getMyFavoriteDataUseCase()
+                _myFavoriteData.postValue(myFavoriteData)
+            } catch (e : Exception){
+                Log.e("마이페이지 뷰모델", "loadMyFavoriteData Error", e)
+            }
         }
     }
 
     fun loadMyCommentData(){
         viewModelScope.launch {
-            val myCommentData = getMyCommunityCommentUseCase()
-            _myCommentData.postValue(myCommentData)
+            try {
+                val myCommentData = getMyCommunityCommentUseCase()
+                _myCommentData.postValue(myCommentData)
+            } catch (e:Exception){
+                Log.e("마이페이지 뷰모델", "loadMyCommentData Error", e)
+            }
         }
     }
 
     fun loadMyCommunityData(){
         viewModelScope.launch {
-            val myCommunityData = getMyCommunityListUseCase()
-            _myCommunityData.postValue(myCommunityData)
+            try {
+                val myCommunityData = getMyCommunityListUseCase()
+                _myCommunityData.postValue(myCommunityData)
+            } catch (e : Exception){
+                Log.e("마이페이지 뷰모델", "loadMyCommunityData Error", e)
+            }
         }
     }
 
     fun loadMyEvaluateData(){
         viewModelScope.launch {
-            val myEvaluateData = getMyEvaluateDataUseCase()
-            _myEvaluateData.postValue(myEvaluateData)
+            try {
+                val myEvaluateData = getMyEvaluateDataUseCase()
+                _myEvaluateData.postValue(myEvaluateData)
+            } catch (e : Exception) {
+                Log.e("마이페이지 뷰모델", "loadMyEvaluateData Error", e)
+            }
         }
     }
 
     fun loadMyPostData(){
         viewModelScope.launch {
-            val myCommunityListData = getMyCommunityListUseCase()
-            _myCommunityData.postValue(myCommunityListData)
+            try {
+                val myCommunityListData = getMyCommunityListUseCase()
+                _myCommunityData.postValue(myCommunityListData)
+            } catch (e : Exception){
+                Log.e("마이페이지 뷰모델", "loadMyPostData Error", e)
+            }
         }
     }
 
@@ -163,7 +190,7 @@ class MyPageViewModel @Inject constructor(
             try {
                 postMyFeedBackUseCase(comment)
             } catch (e: Exception){
-                Log.e("feedback error", e.toString())
+                Log.e("마이페이지 뷰모델", "postFeedBackData Error", e)
             }
         }
     }
