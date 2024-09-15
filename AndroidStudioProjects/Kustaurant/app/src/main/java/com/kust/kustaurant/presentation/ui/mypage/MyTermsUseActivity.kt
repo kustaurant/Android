@@ -1,6 +1,10 @@
 package com.kust.kustaurant.presentation.ui.mypage
 
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.View
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,8 +25,22 @@ class MyTermsUseActivity : AppCompatActivity() {
     }
 
     private fun initTermsUse() {
+        binding.termsUseWvTerms.webViewClient = object : WebViewClient() {
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                binding.termsUseLaLoading.visibility = View.VISIBLE
+                binding.termsUseWvTerms.visibility = View.GONE
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                binding.termsUseLaLoading.visibility = View.GONE
+                binding.termsUseWvTerms.visibility = View.VISIBLE
+            }
+        }
         binding.termsUseWvTerms.loadUrl("https://kustaurant.com/terms_of_use")
     }
+
 
     private fun initBack() {
         binding.myFlBack.setOnClickListener {
