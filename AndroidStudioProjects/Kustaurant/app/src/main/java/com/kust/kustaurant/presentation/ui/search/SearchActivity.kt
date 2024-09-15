@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -71,6 +72,15 @@ class SearchActivity : AppCompatActivity() {
     private fun setupListeners() {
         binding.searchBtnBack.setOnClickListener {
             finish()
+        }
+
+        binding.searchEt.setOnEditorActionListener {_,actionId,_ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                performSearch()
+                true
+            }else{
+                false
+            }
         }
 
         binding.searchEt.setOnTouchListener { v, event ->

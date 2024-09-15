@@ -25,7 +25,7 @@ class Onboarding2Fragment : Fragment(R.layout.fragment_onboarding2) {
 
     private fun loadImage(){
         Glide.with(requireContext())
-            .load(R.drawable.img_onboarding2)
+            .load("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/on-boarding/on2.png")
             .into(binding.onboarding2Iv)
     }
 }

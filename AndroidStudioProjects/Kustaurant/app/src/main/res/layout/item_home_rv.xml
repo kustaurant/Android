@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_RV"
     android:layout_width="190dp"
-    android:layout_height="195dp"
+    android:layout_height="215dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/home_cuisine"
         app:layout_constraintTop_toTopOf="@id/home_cuisine"
-        android:text="  ㅣ  "
+        android:text=" ㅣ "
         android:textSize="12sp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/cement_6"/>
@@ -100,7 +100,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/home_cuisine"
         app:layout_constraintTop_toBottomOf="@id/home_name"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:text="제휴 : "
         android:textSize="13sp"
         android:fontFamily="@font/pretendard_regular"
@@ -108,12 +107,11 @@
 
     <TextView
         android:id="@+id/home_benefit"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/home_benefit_tv"
         app:layout_constraintTop_toTopOf="@id/home_benefit_tv"
-        app:layout_constraintBottom_toBottomOf="@id/home_benefit_tv"
-        android:text="어디대 학생증 제시시 ..."
+        android:text="어디대 학생증 제시시 10시 이후 주먹밥이나 계란찜 서비스"
         android:textSize="13sp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/cement_4"/>

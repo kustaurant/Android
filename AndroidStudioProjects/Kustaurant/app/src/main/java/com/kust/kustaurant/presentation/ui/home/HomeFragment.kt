@@ -142,22 +142,22 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
 
     private fun setupCategoryRV(){
         val categoryList = listOf(
-            CategoryItem(R.drawable.img_category_all, "전체"),
-            CategoryItem(R.drawable.img_category_korea, "한식"),
-            CategoryItem(R.drawable.img_category_japan, "일식"),
-            CategoryItem(R.drawable.img_category_china, "중식"),
-            CategoryItem(R.drawable.img_category_western, "양식"),
-            CategoryItem(R.drawable.img_category_asian, "아시안"),
-            CategoryItem(R.drawable.img_category_meat, "고기"),
-            CategoryItem(R.drawable.img_category_seafood, "해산물"),
-            CategoryItem(R.drawable.img_category_chicken, "치킨"),
-            CategoryItem(R.drawable.img_category_hamburger_pizza, "햄버거/피자"),
-            CategoryItem(R.drawable.img_category_tteokbokki, "분식"),
-            CategoryItem(R.drawable.img_category_beer, "술집"),
-            CategoryItem(R.drawable.img_category_cafe, "카페/디저트"),
-            CategoryItem(R.drawable.img_category_bakery, "베이커리"),
-            CategoryItem(R.drawable.img_category_salad, "샐러드"),
-            CategoryItem(R.drawable.img_category_benefit, "제휴업체"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/전체.png", "전체"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/한식.png", "한식"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/일식.png", "일식"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/중식.png", "중식"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/양식.png", "양식"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/아시안.png", "아시안"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/고기.png", "고기"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/해산물.png", "해산물"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/치킨.png", "치킨"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/햄버거피자.png", "햄버거/피자"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/분식.png", "분식"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/술집.png", "술집"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/카페디저트.png", "카페/디저트"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/베이커리.png", "베이커리"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/샐러드.png", "샐러드"),
+            CategoryItem("https://kustaurant.s3.ap-northeast-2.amazonaws.com/common/cuisine-icon/제휴업체.png", "제휴업체"),
         )
 
         categoryAdapter = CategoryAdapter(categoryList, this)

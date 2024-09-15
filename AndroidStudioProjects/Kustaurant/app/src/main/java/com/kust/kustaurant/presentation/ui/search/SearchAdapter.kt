@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -51,17 +53,27 @@ class SearchAdapter(private var restaurantList: List<SearchRestaurant>) : Recycl
         holder.restaurantName.text = restaurant.restaurantName
         holder.restaurantDetails.text = "${restaurant.restaurantCuisine} | ${restaurant.restaurantPosition}"
 
+        holder.restaurantFavoriteImage.visibility = if (restaurant.isFavorite) View.VISIBLE else View.GONE
+        holder.restaurantEvaluationImage.visibility = if (restaurant.isEvaluated) View.VISIBLE else View.GONE
+
+        val parentLayout = holder.itemView as ConstraintLayout
+
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(parentLayout)
+
         if (restaurant.isFavorite) {
-            holder.restaurantFavoriteImage.visibility = View.VISIBLE
+            constraintSet.connect(
+                holder.restaurantEvaluationImage.id, ConstraintSet.END,
+                holder.restaurantFavoriteImage.id, ConstraintSet.START, 8
+            )
         } else {
-            holder.restaurantFavoriteImage.visibility = View.GONE
+            constraintSet.connect(
+                holder.restaurantEvaluationImage.id, ConstraintSet.END,
+                ConstraintSet.PARENT_ID, ConstraintSet.END, 0
+            )
         }
 
-        if (restaurant.isEvaluated) {
-            holder.restaurantEvaluationImage.visibility = View.VISIBLE
-        } else {
-            holder.restaurantEvaluationImage.visibility = View.GONE
-        }
+        constraintSet.applyTo(parentLayout)
 
         when (restaurant.mainTier) {
             1 -> holder.restaurantTierImage.setImageResource(R.drawable.ic_rank_1)

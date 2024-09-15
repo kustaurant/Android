@@ -63,7 +63,9 @@
             android:hint="검색어를 입력하세요"
             android:textSize="14sp"
             android:fontFamily="@font/pretendard_regular"
-            android:drawableRight="@drawable/img_search_gray"/>
+            android:drawableRight="@drawable/img_search_gray"
+            android:imeOptions="actionSearch"
+            android:inputType="text"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
