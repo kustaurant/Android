@@ -19,12 +19,12 @@ class MyPrivacyPolicyActivity : AppCompatActivity() {
         binding = ActivityMyPrivacyPolicyBinding.inflate(layoutInflater)
 
         initBack()
-        initNotification()
+        initPrivacy()
 
         setContentView(binding.root)
     }
 
-    private fun initNotification() {
+    private fun initPrivacy() {
         binding.privacyWvNotification.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
