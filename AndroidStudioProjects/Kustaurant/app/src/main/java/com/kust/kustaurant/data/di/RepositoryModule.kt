@@ -32,7 +32,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-
     @Binds
     @Singleton
     abstract fun bindMapRepository(
@@ -81,7 +80,6 @@ abstract class RepositoryModule {
     abstract fun bindGoodByeRepository(
         goodByeRepository: GoodByeRepositoryImpl
     ): GoodByeRepository
-
 
     @Binds
     @Singleton

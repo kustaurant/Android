@@ -55,6 +55,7 @@ class DrawViewModel @Inject constructor(
                 val mappedLocations = selectedLocations.value?.let { CategoryIdMapper.mapLocations(it) }
 
                 if (mappedMenus != null && mappedLocations != null) {
+                    Log.d("DrawViewModel", "$mappedMenus $mappedLocations")
                     val drawRestaurantsListData = getDrawRestaurantUseCase(
                         mappedMenus,
                         mappedLocations

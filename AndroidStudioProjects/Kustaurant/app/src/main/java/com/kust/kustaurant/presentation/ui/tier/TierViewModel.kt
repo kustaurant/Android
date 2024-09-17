@@ -29,6 +29,9 @@ class TierViewModel @Inject constructor(
     private val _tierRestaurantList = MutableLiveData<List<TierRestaurant>>()
     val tierRestaurantList: LiveData<List<TierRestaurant>> = _tierRestaurantList
 
+    private val _allTierData = MutableLiveData<List<TierRestaurant>>()
+    val allTierData: LiveData<List<TierRestaurant>> = _allTierData
+
     private val _mapData = MutableLiveData<TierMapData>()
     val mapData: LiveData<TierMapData> = _mapData
 

@@ -100,7 +100,7 @@ class TierListFragment : Fragment() {
         viewModel.tierRestaurantList.observe(viewLifecycleOwner) { tierList ->
             if (viewModel.isSelectedCategoriesChanged.value == true) {
                 allTierData.clear()
-                Log.e("TIerList", "들옴")
+                Log.e("TierList", "들옴")
             }
 
             Log.e("TierFragment", viewModel.isSelectedCategoriesChanged.toString())
@@ -108,6 +108,7 @@ class TierListFragment : Fragment() {
             allTierData.addAll(tierList)
             tierAdapter.submitList(allTierData.toList()) {
                 if (viewModel.isSelectedCategoriesChanged.value == true) {
+                    Log.e("TierFragment", "submitList불림")
                     binding.tierRecyclerView.post {
                         binding.tierRecyclerView.scrollToPosition(0)
                     }

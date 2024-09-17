@@ -1,8 +1,10 @@
 package com.kust.kustaurant.presentation.ui.tier
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +36,9 @@ class TierFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTierBinding.inflate(inflater, container, false)
+
+
+        Log.d("TierFragment", "ViewModel instance: ${viewModel.hashCode()}")
 
         if ((viewModel.selectedMenus.value ?: emptySet()) == setOf("") &&
             (viewModel.selectedSituations.value ?: emptySet()) == setOf("") &&
@@ -67,6 +72,7 @@ class TierFragment : Fragment() {
         }
         updateCategoryLinearLayout(setOf("전체"))
     }
+
 
     private fun initTouchExtension() {
         TouchExtension.expandTouchArea(binding.topBar, binding.btnBack, 40)
@@ -121,22 +127,20 @@ class TierFragment : Fragment() {
 
     private fun setupCategoryButton() {
         binding.tierIvCategoryBtn.setOnClickListener {
-            hideMainContent()
+            val selectedMenus = viewModel.selectedMenus.value ?: emptySet()
+            val selectedSituations = viewModel.selectedSituations.value ?: emptySet()
+            val selectedLocations = viewModel.selectedLocations.value ?: emptySet()
 
-            val currentTabIndex = binding.tierViewPager.currentItem
-            val fragment = TierCategoryFragment().apply {
-                arguments = Bundle().apply {
-                    putInt("fromTabIndex", currentTabIndex)
-                }
+            Log.e("TierCategoryActivity", "Selected Menus: $selectedMenus")
+            Log.e("TierCategoryActivity", "Selected Situations: $selectedSituations")
+            Log.e("TierCategoryActivity", "Selected Locations: $selectedLocations")
+
+            val intent = Intent(requireContext(), TierCategoryActivity::class.java).apply {
+                putStringArrayListExtra("selectedMenus", ArrayList(selectedMenus))
+                putStringArrayListExtra("selectedSituations", ArrayList(selectedSituations))
+                putStringArrayListExtra("selectedLocations", ArrayList(selectedLocations))
             }
-
-            binding.tierTvCategoryText.text = "카테고리"
-            binding.tierTvCategoryText.visibility = View.VISIBLE
-
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.tier_fragment_container, fragment)
-                .addToBackStack(null)
-                .commit()
+            startActivityForResult(intent, CATEGORY_UPDATE_REQUEST_CODE)
         }
     }
 
@@ -183,12 +187,6 @@ class TierFragment : Fragment() {
         }
     }
 
-    private fun hideMainContent() {
-        binding.tierViewPager.visibility = View.GONE
-        binding.tierTabLayout.visibility = View.GONE
-        binding.tierClMiddleBar.visibility = View.GONE
-    }
-
     private fun observeViewModel() {
         viewModel.selectedCategories.observe(viewLifecycleOwner) { categories ->
             updateCategoryLinearLayout(categories)
@@ -209,5 +207,23 @@ class TierFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CATEGORY_UPDATE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            data?.let { intent ->
+                val selectedMenus = intent.getStringArrayListExtra("selectedMenus")?.toSet() ?: emptySet()
+                val selectedSituations = intent.getStringArrayListExtra("selectedSituations")?.toSet() ?: emptySet()
+                val selectedLocations = intent.getStringArrayListExtra("selectedLocations")?.toSet() ?: emptySet()
+                val fromTabIndex = intent.getIntExtra("fromTabIndex", 0)
+
+                viewModel.applyFilters(selectedMenus, selectedSituations, selectedLocations, fromTabIndex)
+            }
+        }
+    }
+
+    companion object {
+        private const val CATEGORY_UPDATE_REQUEST_CODE = 1220
     }
 }

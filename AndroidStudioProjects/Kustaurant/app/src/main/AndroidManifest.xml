@@ -50,6 +50,9 @@
             android:name=".presentation.ui.mypage.MyFixAllActivity"
             android:exported="false" />
         <activity
+            android:name=".presentation.ui.tier.TierCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>

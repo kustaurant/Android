@@ -156,7 +156,7 @@ class DrawSelectResultFragment : Fragment() {
 
         handler = Handler(Looper.getMainLooper())
         runnable = object : Runnable {
-            var currentPage = 0
+            var currentPage = adapter.itemCount - 1
             override fun run() {
                 // Fragment가 아직 활성 상태인지 확인
                 if (!isAdded || view == null || _binding == null) {
@@ -164,10 +164,10 @@ class DrawSelectResultFragment : Fragment() {
                     return
                 }
 
-                if (currentPage < adapter.itemCount) {
-                    viewPager.setCurrentItem(currentPage++, true)
-                    handler?.postDelayed(this, 3000L / adapter.itemCount)
-                    displaySelectedRestaurantInfo(restaurantList[currentPage - 1])
+                if (currentPage >= 0) {
+                    viewPager.setCurrentItem(currentPage--, true)
+                    handler?.postDelayed(this, 1700L / adapter.itemCount)
+                    displaySelectedRestaurantInfo(restaurantList[currentPage + 1])
                 } else {
                     // 애니메이션 종료 후, 중앙에 선택된 음식점 배치
                     viewModel.selectedRestaurant.value?.let { selected ->

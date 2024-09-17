@@ -32,6 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
             android:scrollbars="none"
+            android:fadingEdgeLength="30dp"
+            android:requiresFadingEdge="horizontal"
             app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
             app:layout_constraintStart_toStartOf="@id/draw_gl_start"
             app:layout_constraintTop_toBottomOf="@id/draw_tv_select_info">
@@ -40,8 +42,6 @@
                 android:id="@+id/tier_toggle_location_group"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:fadingEdgeLength="30dp"
-                android:requiresFadingEdge="horizontal"
                 android:gravity="center_vertical">
 
                 <ToggleButton
@@ -636,7 +636,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="제휴"
+                        android:text="제휴업체"
                         android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
