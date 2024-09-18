@@ -56,13 +56,7 @@ class TierListFragment : Fragment() {
 
                 // 스크롤이 끝에 도달했는지 확인
                 if (!recyclerView.canScrollVertically(1)) {
-                    // 최하단에서 다시 스크롤할 때 호출할 코드
-                    viewModel.applyFilters(
-                        viewModel.selectedMenus.value ?: emptySet(),
-                        viewModel.selectedSituations.value ?: emptySet(),
-                        viewModel.selectedLocations.value ?: emptySet(),
-                        0
-                    )
+                    viewModel.checkAndLoadBackendListData(TierViewModel.Companion.RestaurantState.NEXT_PAGE_LIST_DATA)
                 }
             }
         })
@@ -97,22 +91,21 @@ class TierListFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.tierRestaurantList.observe(viewLifecycleOwner) { tierList ->
+        viewModel.allTierRestaurantList.observe(viewLifecycleOwner) { tierList ->
             if (viewModel.isSelectedCategoriesChanged.value == true) {
                 allTierData.clear()
-                Log.e("TierList", "들옴")
             }
 
             Log.e("TierFragment", viewModel.isSelectedCategoriesChanged.toString())
 
             allTierData.addAll(tierList)
             tierAdapter.submitList(allTierData.toList()) {
-                if (viewModel.isSelectedCategoriesChanged.value == true) {
-                    Log.e("TierFragment", "submitList불림")
-                    binding.tierRecyclerView.post {
-                        binding.tierRecyclerView.scrollToPosition(0)
-                    }
-                }
+//                if (viewModel.isSelectedCategoriesChanged.value == true) {
+//                    Log.e("TierFragment", "submitList불림")
+//                    binding.tierRecyclerView.post {
+//                        binding.tierRecyclerView.scrollToPosition(0)
+//                    }
+//                }
             }
         }
 

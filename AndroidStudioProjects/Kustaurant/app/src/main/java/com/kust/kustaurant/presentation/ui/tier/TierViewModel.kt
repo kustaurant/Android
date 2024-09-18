@@ -14,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class TierViewModel @Inject constructor(
     private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
@@ -26,11 +25,11 @@ class TierViewModel @Inject constructor(
     private val _isExpanded = MutableLiveData<Boolean>(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
 
+    private val _allTierRestaurantList = MutableLiveData<List<TierRestaurant>>()
+    val allTierRestaurantList: LiveData<List<TierRestaurant>> = _allTierRestaurantList
+
     private val _tierRestaurantList = MutableLiveData<List<TierRestaurant>>()
     val tierRestaurantList: LiveData<List<TierRestaurant>> = _tierRestaurantList
-
-    private val _allTierData = MutableLiveData<List<TierRestaurant>>()
-    val allTierData: LiveData<List<TierRestaurant>> = _allTierData
 
     private val _mapData = MutableLiveData<TierMapData>()
     val mapData: LiveData<TierMapData> = _mapData
@@ -89,8 +88,15 @@ class TierViewModel @Inject constructor(
                         ?: 0.0
                 )
             }
+            if(_tierListPage == 1)
+                _allTierRestaurantList.value = emptyList()
+
+            val updatedList = _allTierRestaurantList.value.orEmpty() + _tierRestaurantList.value.orEmpty()
+
+            _allTierRestaurantList.postValue(updatedList)
         }
     }
+
 
     private fun loadRestaurantMap(
         menus: Set<String>,
@@ -186,21 +192,19 @@ class TierViewModel @Inject constructor(
         val selectedSelectedSituations = selectedSituations.value ?: emptySet()
         val selectedSelectedLocations = selectedLocations.value ?: emptySet()
 
-        if (_isSelectedCategoriesChanged.value == true) {
-            setIsSelectedCategoriesChanged(false)
 
-            if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
-                _tierListPage  = 1
-            } else if (state == RestaurantState.NEXT_PAGE_LIST_DATA) {
-                _tierListPage++
-            }
+        if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
+            _tierListPage  = 1
+        } else if (state == RestaurantState.NEXT_PAGE_LIST_DATA) {
+            _tierListPage++
+        }
 
+        if(!(state == RestaurantState.NEXT_PAGE_LIST_DATA && tierRestaurantList.value == emptyList<TierRestaurant>()))
             loadRestaurantList(
                 selectedTypesValue,
                 selectedSelectedSituations,
                 selectedSelectedLocations
             )
-        }
     }
 
     fun checkAndLoadBackendMapData() {
@@ -218,7 +222,6 @@ class TierViewModel @Inject constructor(
             )
         }
     }
-
 
     private fun updateSelectedCategories() {
         val selectedTypesValue = selectedMenus.value ?: emptySet()
@@ -245,7 +248,6 @@ class TierViewModel @Inject constructor(
                 currentSituations != selectedSituations.value ||
                 currentLocations != selectedLocations.value)
     }
-
 
     companion object {
         enum class RestaurantState {

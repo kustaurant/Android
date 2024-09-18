@@ -190,6 +190,10 @@ class TierCategoryActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+
+        binding.tierInfo.setOnClickListener {
+            showPopup()
+        }
     }
 
     private fun updateInitialSelection() {
