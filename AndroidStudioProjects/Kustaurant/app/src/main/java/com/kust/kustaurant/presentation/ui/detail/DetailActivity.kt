@@ -49,6 +49,7 @@ class DetailActivity : AppCompatActivity() {
             viewModel.loadDetailData(restaurantId)
         }
 
+        initEvaluate()
         initBack()
         initTierRecyclerView()
         initNaverLink()
@@ -62,14 +63,14 @@ class DetailActivity : AppCompatActivity() {
     private fun initLoading() {
         binding.detailLaLoading.visibility = View.VISIBLE
         binding.detailLaLoading.playAnimation()
-        binding.svDetail.visibility = View.GONE
+        binding.detailClEntire.visibility = View.GONE
     }
 
     private fun loadData() {
         viewModel.detailData.observe(this) { detailData ->
             binding.detailLaLoading.visibility = View.GONE
             binding.detailLaLoading.cancelAnimation()
-            binding.svDetail.visibility = View.VISIBLE
+            binding.detailClEntire.visibility = View.VISIBLE
 
             if (detailData.partnershipInfo == null){
                 binding.detailClAlliance.visibility = View.GONE
@@ -93,7 +94,6 @@ class DetailActivity : AppCompatActivity() {
             if (detailData != null) {
                 Handler(Looper.getMainLooper()).postDelayed({
                     initTabView()
-                    initEvaluate()
                 }, 100) // 100ms 후에 실행
             }
         }

@@ -24,8 +24,8 @@ android {
         applicationId = "com.kust.kustaurant"
         minSdk = 26
         targetSdk = 34
-        versionCode = 7
-        versionName = "0.1.4"
+        versionCode = 10
+        versionName = "0.1.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
