@@ -36,7 +36,8 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initLoading()
+        initEvaluate()
+        initBack()
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -49,8 +50,6 @@ class DetailActivity : AppCompatActivity() {
             viewModel.loadDetailData(restaurantId)
         }
 
-        initEvaluate()
-        initBack()
         initTierRecyclerView()
         initNaverLink()
         initSearch()
@@ -60,18 +59,9 @@ class DetailActivity : AppCompatActivity() {
         loadData()
     }
 
-    private fun initLoading() {
-        binding.detailLaLoading.visibility = View.VISIBLE
-        binding.detailLaLoading.playAnimation()
-        binding.detailClEntire.visibility = View.GONE
-    }
-
     private fun loadData() {
         viewModel.detailData.observe(this) { detailData ->
-            binding.detailLaLoading.visibility = View.GONE
-            binding.detailLaLoading.cancelAnimation()
-            binding.detailClEntire.visibility = View.VISIBLE
-
+            binding.tvToNaver.visibility = View.VISIBLE
             if (detailData.partnershipInfo == null){
                 binding.detailClAlliance.visibility = View.GONE
             }
