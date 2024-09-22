@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 if (backPressedTime + TIME_INTERVAL > System.currentTimeMillis()) {
                     finish()
                 } else {
-                    Toast.makeText(this@MainActivity, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "뒤로가기를 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
                 }
                 backPressedTime = System.currentTimeMillis()
             } else {
