@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.kust.kustaurant.presentation.ui.community.CommunityViewModel" />
+            type="com.kust.kustaurant.presentation.ui.community.CommunityPostDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -116,6 +116,7 @@
                         android:src="@drawable/ic_baby_cow" />
 
                     <TextView
+                        android:id="@+id/community_tv_post_user"
                         android:layout_width="63dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="3dp"
@@ -135,6 +136,7 @@
                         android:contentDescription="@string/community_post_img_info" />
 
                     <TextView
+                        android:id="@+id/community_tv_time_ago"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"

@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.MainActivity
@@ -56,6 +55,9 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
         autoScrollRunnable = Runnable {
             // 아무 것도 안 함, 실제 로직은 setupViewPager에서 설정
         }
+
+        Log.d("TierFragment", "ViewModel instance: ${tierViewModel.hashCode()}")
+
 
         setupRecyclerViews()
         Log.d("token", getAccessToken(requireContext()).toString())

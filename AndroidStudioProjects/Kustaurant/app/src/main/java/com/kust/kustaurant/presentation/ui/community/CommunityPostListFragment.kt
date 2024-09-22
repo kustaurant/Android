@@ -1,6 +1,5 @@
 package com.kust.kustaurant.presentation.ui.community
 
-import android.content.Intent
 import android.widget.TextView
 import android.os.Bundle
 import android.util.Log
@@ -15,31 +14,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kust.kustaurant.R
-import com.kust.kustaurant.databinding.FragmentCommunityBoardListBinding
+import com.kust.kustaurant.databinding.FragmentCommunityPostListBinding
 import com.kust.kustaurant.domain.model.CommunityPost
-import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 
 class CommunityPostListFragment : Fragment() {
-
-    private var _binding: FragmentCommunityBoardListBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: FragmentCommunityPostListBinding
     private val viewModel: CommunityViewModel by activityViewModels()
-    private lateinit var adapter: CommunityPostListAdapter
+    private lateinit var commuAdapter: CommunityPostListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = CommunityPostListAdapter()
-        adapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener{
-            override fun onItemClicked(data: CommunityPost) {
-                viewModel.loadCommunityPostDetail(data.postId)
-                val intent = Intent(requireActivity(), CommunityPostDetailActivity::class.java)
-                intent.putExtra("postId", data.postId)
-                startActivity(intent)
-            }
-        })
-
-        setupUI()
         setupObservers()
 
         // 초기 데이터 로드
@@ -50,9 +34,27 @@ class CommunityPostListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCommunityBoardListBinding.inflate(inflater, container, false)
+        binding = FragmentCommunityPostListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        commuAdapter = CommunityPostListAdapter()
+        binding.communityRecyclerView.apply{
+            layoutManager = LinearLayoutManager(context)
+            adapter = commuAdapter
+        }
+
+        commuAdapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener{
+            override fun onItemClicked(data: CommunityPost) {
+//                Log.e("CommuItemClicked", data.postId.toString())
+//                val intent = Intent(requireActivity(), CommunityPostDetailActivity::class.java)
+//                intent.putExtra("postId", data.postId)
+//                startActivity(intent)
+            }
+        })
+
+        setupUI()
+
         return binding.root
     }
 
@@ -79,9 +81,6 @@ class CommunityPostListFragment : Fragment() {
                 return view
             }
         }
-
-        binding.communityRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.communityRecyclerView.adapter = adapter
 
         binding.communitySpinnerBoard.adapter = spinnerAdapter
 
@@ -118,7 +117,6 @@ class CommunityPostListFragment : Fragment() {
                 }
             }
         }
-
 
         binding.communityTogglePopularSort.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -166,18 +164,13 @@ class CommunityPostListFragment : Fragment() {
             binding.communitySrl.isRefreshing = false
         }
 
-        adapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener{
-            override fun onItemClicked(data: CommunityPost) {
-                val intent = Intent(requireActivity(), DetailActivity::class.java)
-                intent.putExtra("restaurantId", data.postId)
-                startActivity(intent)
-            }
-        })
+
     }
 
     private fun setupObservers() {
         viewModel.communityPosts.observe(viewLifecycleOwner) { posts ->
-            adapter.submitList(posts)
+            commuAdapter.submitList(posts)
+            binding.communityRecyclerView.scrollToPosition(0)
         }
 
         viewModel.postCategory.observe(viewLifecycleOwner) { category ->
@@ -194,12 +187,9 @@ class CommunityPostListFragment : Fragment() {
         viewModel.sort.observe(viewLifecycleOwner) { sort ->
             binding.communityToggleLastestSort.isChecked = sort == "recent"
             binding.communityTogglePopularSort.isChecked = sort == "popular"
+
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
 

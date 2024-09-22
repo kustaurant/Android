@@ -14,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class TierViewModel @Inject constructor(
     private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
@@ -25,6 +24,9 @@ class TierViewModel @Inject constructor(
 
     private val _isExpanded = MutableLiveData<Boolean>(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
+
+    private val _allTierRestaurantList = MutableLiveData<List<TierRestaurant>>()
+    val allTierRestaurantList: LiveData<List<TierRestaurant>> = _allTierRestaurantList
 
     private val _tierRestaurantList = MutableLiveData<List<TierRestaurant>>()
     val tierRestaurantList: LiveData<List<TierRestaurant>> = _tierRestaurantList
@@ -55,11 +57,18 @@ class TierViewModel @Inject constructor(
         _isExpanded.value = _isExpanded.value?.not()
     }
 
-    private fun loadRestaurantList(
+   private fun loadRestaurantList(
         menus: Set<String>,
         situations: Set<String>,
         locations: Set<String>
     ) {
+        var JH_flag = false
+        /*
+         * 정책 사항 : 제휴업체 대상인 경우 티어 이미지를 노출하지 않도록 한다.
+         */
+        if (menus.elementAt(0) == "제휴업체")
+            JH_flag = true
+
         viewModelScope.launch {
             try {
                 val tierListData = getTierRestaurantListUseCase(
@@ -77,7 +86,7 @@ class TierViewModel @Inject constructor(
                         restaurantCuisine = it.restaurantCuisine,
                         restaurantPosition = it.restaurantPosition,
                         restaurantImgUrl = it.restaurantImgUrl,
-                        mainTier = it.mainTier,
+                        mainTier = if (JH_flag) -1 else it.mainTier,
                         partnershipInfo = it.partnershipInfo ?: "",
                         isFavorite = it.isFavorite,
                         x = it.x.toDouble(),
@@ -88,11 +97,20 @@ class TierViewModel @Inject constructor(
                             ?: 0.0
                     )
                 }
+                if (_tierListPage == 1)
+                    _allTierRestaurantList.value = emptyList()
+
+                val updatedList =
+                    _allTierRestaurantList.value.orEmpty() + _tierRestaurantList.value.orEmpty()
+
+                _allTierRestaurantList.postValue(updatedList)
+
             } catch (e: Exception) {
                 Log.e("티어 뷰모델", "loadRestaurantList Error", e)
             }
         }
     }
+
 
     private fun loadRestaurantMap(
         menus: Set<String>,
@@ -192,21 +210,18 @@ class TierViewModel @Inject constructor(
         val selectedSelectedSituations = selectedSituations.value ?: emptySet()
         val selectedSelectedLocations = selectedLocations.value ?: emptySet()
 
-        if (_isSelectedCategoriesChanged.value == true) {
-            setIsSelectedCategoriesChanged(false)
+        if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
+            _tierListPage  = 1
+        } else if (state == RestaurantState.NEXT_PAGE_LIST_DATA) {
+            _tierListPage++
+        }
 
-            if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
-                _tierListPage  = 1
-            } else if (state == RestaurantState.NEXT_PAGE_LIST_DATA) {
-                _tierListPage++
-            }
-
+        if(!(state == RestaurantState.NEXT_PAGE_LIST_DATA && tierRestaurantList.value == emptyList<TierRestaurant>()))
             loadRestaurantList(
                 selectedTypesValue,
                 selectedSelectedSituations,
                 selectedSelectedLocations
             )
-        }
     }
 
     fun checkAndLoadBackendMapData() {
@@ -224,7 +239,6 @@ class TierViewModel @Inject constructor(
             )
         }
     }
-
 
     private fun updateSelectedCategories() {
         val selectedTypesValue = selectedMenus.value ?: emptySet()
@@ -251,7 +265,6 @@ class TierViewModel @Inject constructor(
                 currentSituations != selectedSituations.value ||
                 currentLocations != selectedLocations.value)
     }
-
 
     companion object {
         enum class RestaurantState {

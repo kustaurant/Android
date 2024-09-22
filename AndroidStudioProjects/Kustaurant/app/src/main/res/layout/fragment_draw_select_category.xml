@@ -4,658 +4,677 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.kust.kustaurant.presentation.ui.draw.DrawViewModel" />
     </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.draw.DrawSelectCategoryFragment">
 
-        <TextView
-            android:id="@+id/draw_tv_select_info"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="26dp"
-            android:text="@string/draw_random_detail_info"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@id/draw_sv_select_type"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <HorizontalScrollView
-            android:id="@+id/draw_sv_select_type"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:scrollbars="none"
-            app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
-            app:layout_constraintStart_toStartOf="@id/draw_gl_start"
-            app:layout_constraintTop_toBottomOf="@id/draw_tv_select_info">
-
-            <LinearLayout
-                android:id="@+id/tier_toggle_location_group"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:fadingEdgeLength="30dp"
-                android:requiresFadingEdge="horizontal"
-                android:gravity="center_vertical">
-
-                <ToggleButton
-                    android:id="@+id/draw_toggle_location_ALL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="전체"
-                    android:textOn="전체" />
-
-                <ToggleButton
-                    android:id="@+id/draw_toggle_location_L1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="건입~중문"
-                    android:textOn="건입~중문" />
-
-                <ToggleButton
-                    android:id="@+id/draw_toggle_location_L2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="중문~어대"
-                    android:textOn="중문~어대" />
-
-                <ToggleButton
-                    android:id="@+id/draw_toggle_location_L3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="후문"
-                    android:textOn="후문" />
-
-                <ToggleButton
-                    android:id="@+id/draw_toggle_location_L4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="정문"
-                    android:textOn="정문" />
-
-                <ToggleButton
-                    android:id="@+id/draw_toggle_location_L5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/btn_toggle_background"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/cement_4"
-                    android:textOff="구의역"
-                    android:textOn="구의역" />
-            </LinearLayout>
-        </HorizontalScrollView>
-
-
-        <!-- Start Guideline -->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/draw_gl_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05" />
-
-        <!-- End Guideline -->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/draw_gl_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/draw_cl_menu_group"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            app:layout_constraintDimensionRatio="360:375"
-            app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
-            app:layout_constraintStart_toStartOf="@id/draw_gl_start"
-            app:layout_constraintTop_toBottomOf="@id/draw_sv_select_type">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/home_category_cl1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/home_btn_all"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
+                <!-- Start Guideline -->
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/draw_gl_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintGuide_percent="0.05" />
 
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_all" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="전체"
-                        android:textColor="@color/black"
-                        android:textSize="11sp"
-                        android:textStyle="" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/home_btn_korea"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
+                <!-- End Guideline -->
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/draw_gl_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@id/home_btn_japan"
-                    app:layout_constraintStart_toEndOf="@id/home_btn_all"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintGuide_percent="0.95" />
 
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_korea" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="한식"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/home_btn_japan"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@id/home_btn_china"
-                    app:layout_constraintStart_toEndOf="@id/home_btn_korea"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_japan" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="일식"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/home_btn_china"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
+                <TextView
+                    android:id="@+id/draw_tv_select_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="26dp"
+                    android:text="@string/draw_random_detail_info"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toTopOf="@id/draw_sv_select_type"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_china" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="중식"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/home_category_cl2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/home_category_cl3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/home_category_cl1">
-
-                <LinearLayout
-                    android:id="@+id/home_btn_western"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_western" />
+                <HorizontalScrollView
+                    android:id="@+id/draw_sv_select_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:fadingEdgeLength="30dp"
+                    android:requiresFadingEdge="horizontal"
+                    android:scrollbars="none"
+                    app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
+                    app:layout_constraintStart_toStartOf="@id/draw_gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/draw_tv_select_info">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/tier_toggle_location_group"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical">
+
+                        <ToggleButton
+                            android:id="@+id/draw_toggle_location_ALL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/btn_toggle_background"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="4dp"
+                            android:textColor="@color/cement_4"
+                            android:textOff="전체"
+                            android:textOn="전체" />
+
+                        <ToggleButton
+                            android:id="@+id/draw_toggle_location_L1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/btn_toggle_background"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="4dp"
+                            android:textColor="@color/cement_4"
+                            android:textOff="건입~중문"
+                            android:textOn="건입~중문" />
+
+                        <ToggleButton
+                            android:id="@+id/draw_toggle_location_L2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/btn_toggle_background"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="4dp"
+                            android:textColor="@color/cement_4"
+                            android:textOff="중문~어대"
+                            android:textOn="중문~어대" />
+
+                        <ToggleButton
+                            android:id="@+id/draw_toggle_location_L3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/btn_toggle_background"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="4dp"
+                            android:textColor="@color/cement_4"
+                            android:textOff="후문"
+                            android:textOn="후문" />
+
+                        <ToggleButton
+                            android:id="@+id/draw_toggle_location_L4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/btn_toggle_background"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="4dp"
+                            android:textColor="@color/cement_4"
+                            android:textOff="정문"
+                            android:textOn="정문" />
+
+                        <ToggleButton
+                            android:id="@+id/draw_toggle_location_L5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/btn_toggle_background"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="4dp"
+                            android:textColor="@color/cement_4"
+                            android:textOff="구의역"
+                            android:textOn="구의역" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/draw_cl_menu_group"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    app:layout_constraintDimensionRatio="360:375"
+                    app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
+                    app:layout_constraintStart_toStartOf="@id/draw_gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/draw_sv_select_type">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/home_category_cl1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="양식"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:orientation="horizontal"
+                        android:paddingBottom="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/home_btn_all"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/home_btn_asian"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@id/home_btn_meat"
-                    app:layout_constraintStart_toEndOf="@id/home_btn_western"
-                    app:layout_constraintTop_toTopOf="parent">
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_all" />
 
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_asian" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="전체"
+                                android:textColor="@color/black"
+                                android:textSize="11sp"
+                                android:textStyle="" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_korea"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/home_btn_japan"
+                            app:layout_constraintStart_toEndOf="@id/home_btn_all"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_korea" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="한식"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_japan"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/home_btn_china"
+                            app:layout_constraintStart_toEndOf="@id/home_btn_korea"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_japan" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="일식"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_china"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_china" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="중식"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/home_category_cl2"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="아시안"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:layout_marginTop="11dp"
+                        android:orientation="horizontal"
+                        android:paddingBottom="2dp"
+                        app:layout_constraintBottom_toTopOf="@id/home_category_cl3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/home_category_cl1">
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/home_btn_western"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/home_btn_meat"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@id/home_btn_seafood"
-                    app:layout_constraintStart_toEndOf="@id/home_btn_asian"
-                    app:layout_constraintTop_toTopOf="parent">
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_western" />
 
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_meat" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="양식"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_asian"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/home_btn_meat"
+                            app:layout_constraintStart_toEndOf="@id/home_btn_western"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_asian" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="아시안"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_meat"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/home_btn_seafood"
+                            app:layout_constraintStart_toEndOf="@id/home_btn_asian"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_meat" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="고기"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_seafood"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_seafood" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="중식"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/home_category_cl3"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="고기"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:layout_marginTop="11dp"
+                        android:orientation="horizontal"
+                        android:paddingBottom="2dp"
+                        app:layout_constraintBottom_toTopOf="@id/home_category_cl4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/home_category_cl2">
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/home_btn_chicken"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/home_btn_seafood"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_chicken" />
 
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_seafood" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="치킨"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_hamburger_pizza"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/home_btn_tteokbokki"
+                            app:layout_constraintStart_toEndOf="@id/home_btn_chicken"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_hamburger_pizza" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="햄버거/피자"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_tteokbokki"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/home_btn_beer"
+                            app:layout_constraintStart_toEndOf="@id/home_btn_hamburger_pizza"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_tteokbokki" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="분식"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_beer"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_beer" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="술집"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/home_category_cl4"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="중식"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:layout_marginTop="11dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/home_category_cl3">
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/home_btn_cafe"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingBottom="2dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_cafe" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="카페/디저트"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_bakery"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/home_btn_salad"
+                            app:layout_constraintStart_toEndOf="@id/home_btn_cafe"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_bakery" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="베이커리"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_salad"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toStartOf="@id/home_btn_benefit"
+                            app:layout_constraintStart_toEndOf="@id/home_btn_bakery"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_salad" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="샐러드"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/home_btn_benefit"
+                            android:layout_width="73dp"
+                            android:layout_height="85dp"
+                            android:background="@drawable/all_radius_15_none"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/img_category_benefit" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="제휴업체"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/draw_btn_draw_random_restaurants"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/all_radius_100"
+                    android:backgroundTint="@color/signature_1"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="랜덤 뽑기"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
+                    app:layout_constraintStart_toStartOf="@id/draw_gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/draw_cl_menu_group" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/home_category_cl3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/home_category_cl4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/home_category_cl2">
-
-                <LinearLayout
-                    android:id="@+id/home_btn_chicken"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_chicken" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="치킨"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/home_btn_hamburger_pizza"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@id/home_btn_tteokbokki"
-                    app:layout_constraintStart_toEndOf="@id/home_btn_chicken"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_hamburger_pizza" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="햄버거/피자"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/home_btn_tteokbokki"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@id/home_btn_beer"
-                    app:layout_constraintStart_toEndOf="@id/home_btn_hamburger_pizza"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_tteokbokki" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="분식"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/home_btn_beer"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_beer" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="술집"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/home_category_cl4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/home_category_cl3"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <LinearLayout
-                    android:id="@+id/home_btn_cafe"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_cafe" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="카페/디저트"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/home_btn_bakery"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@id/home_btn_salad"
-                    app:layout_constraintStart_toEndOf="@id/home_btn_cafe"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_bakery" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="베이커리"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/home_btn_salad"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@id/home_btn_benefit"
-                    app:layout_constraintStart_toEndOf="@id/home_btn_bakery"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_salad" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="샐러드"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/home_btn_benefit"
-                    android:layout_width="73dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/all_radius_15_none"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/img_category_benefit" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="제휴"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <Button
-            android:id="@+id/draw_btn_draw_random_restaurants"
-            android:layout_width="0dp"
-            android:layout_height="52dp"
-            android:layout_marginTop="27dp"
-            android:background="@drawable/all_radius_100"
-            android:backgroundTint="@color/signature_1"
-            android:text="랜덤 뽑기"
-            android:fontFamily="@font/pretendard_semibold"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@id/draw_gl_start"
-            app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
-            app:layout_constraintTop_toBottomOf="@id/draw_cl_menu_group" />
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

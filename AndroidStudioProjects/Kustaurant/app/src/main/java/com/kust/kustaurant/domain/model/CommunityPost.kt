@@ -10,7 +10,9 @@ data class CommunityPost(
     val updatedAt: String?,
     val likeCount: Int,
     val user: User,
-    val postCommentList: List<CommunityPostComment>
+    val postCommentList: List<CommunityPostComment>,
+    val timeAgo : String,
+    val commentCount : Int,
 )
 
 data class User(
