@@ -84,7 +84,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text='@{viewModel.myPageData.nickname != null ? viewModel.myPageData.nickname : "로그인 후 이용해주세요"}' />
 
-
                 <ImageView
                     android:id="@+id/my_iv_edit"
                     android:layout_width="wrap_content"
@@ -94,6 +93,18 @@
                     app:layout_constraintStart_toEndOf="@id/my_tv_name"
                     app:layout_constraintTop_toTopOf="@id/my_tv_name"
                     app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
+
+                <FrameLayout
+                    android:id="@+id/my_fl_log_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:elevation="100dp"
+                    app:layout_constraintStart_toStartOf="@id/my_iv_log_in"
+                    app:layout_constraintEnd_toEndOf="@id/my_iv_log_in"
+                    app:layout_constraintTop_toTopOf="@id/my_iv_log_in"
+                    app:layout_constraintBottom_toBottomOf="@id/my_iv_log_in"
+                    android:paddingHorizontal="20dp"/>
 
                 <ImageView
                     android:id="@+id/my_iv_log_in"
@@ -184,7 +195,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
-                        android:textColor="@color/white"
+                        android:textColor="@color/cement_4"
                         app:layout_constraintTop_toTopOf="parent"
                         android:text="내 게시글"
                         app:layout_constraintStart_toStartOf="parent"
@@ -197,7 +208,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:fontFamily="@font/pretendard_bold"
-                        android:textColor="@color/white"
+                        android:textColor="@color/cement_4"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -258,7 +269,7 @@
                     app:layout_constraintTop_toBottomOf="@id/my_view_community_comment_top"
                     android:fontFamily="@font/pretendard_regular"
                     android:textSize="15sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/cement_4"
                     android:paddingVertical="14dp"
                     android:text="커뮤니티 댓글 단 글"/>
 
@@ -278,7 +289,7 @@
                     app:layout_constraintTop_toBottomOf="@id/my_view_community_scrap_top"
                     android:fontFamily="@font/pretendard_regular"
                     android:textSize="15sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/cement_4"
                     android:paddingVertical="14dp"
                     android:text="커뮤니티 스크랩"/>
 
@@ -378,7 +389,7 @@
                     app:layout_constraintTop_toBottomOf="@id/my_view_owner_certificate"
                     android:fontFamily="@font/pretendard_regular"
                     android:textSize="15sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/cement_4"
                     android:paddingVertical="14dp"
                     android:text="점주 인증하기"/>
 
@@ -398,7 +409,7 @@
                     app:layout_constraintTop_toBottomOf="@id/my_view_fix_alliance_top"
                     android:fontFamily="@font/pretendard_regular"
                     android:textSize="15sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/cement_4"
                     android:paddingVertical="14dp"
                     android:text="제휴 정보 수정하기"/>
 

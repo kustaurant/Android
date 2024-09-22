@@ -24,7 +24,6 @@ import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import com.kust.kustaurant.presentation.ui.tier.TierFragment
 import com.kust.kustaurant.presentation.ui.tier.TierViewModel
-import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,12 +66,10 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
             updateUI(response)
         }
 
-        binding.btnSearch.setOnClickListener {
+        binding.homeFlIvSearch.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
-
-        initTouchExtension()
 
         return binding.root
     }
@@ -143,9 +140,6 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
         (requireActivity() as? MainActivity)?.let { mainActivity ->
             mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_rank
         }
-    }
-    private fun initTouchExtension() {
-        TouchExtension.expandTouchArea(binding.homeTopbar, binding.btnSearch, 40)
     }
 
     private fun setupCategoryRV(){

@@ -65,7 +65,7 @@
 
     <TextView
         android:id="@+id/tier_tv_restaurant_Id"
-        android:layout_width="28dp"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
         android:text="@{restaurant.restaurantCnt}"
         android:textColor="@color/signature_2"
@@ -75,7 +75,7 @@
         app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_img"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="6dp"
-        tools:text="1" />
+        tools:text="100" />
 
     <TextView
         android:id="@+id/tier_tv_restaurant_Name"
@@ -89,6 +89,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/tier_tv_restaurant_Id"
         app:layout_constraintTop_toTopOf="@id/tier_tv_restaurant_Id"
+        android:layout_marginStart="5dp"
         tools:text="식당 이름 입니다." />
 
     <TextView

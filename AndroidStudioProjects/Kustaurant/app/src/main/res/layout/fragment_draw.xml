@@ -80,6 +80,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:contentDescription="@string/search_btn_info" />
+
+                <FrameLayout
+                    android:id="@+id/draw_fl_iv_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/btn_search"
+                    app:layout_constraintEnd_toEndOf="@id/btn_search"
+                    app:layout_constraintTop_toTopOf="@id/btn_search"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_search"
+                    android:padding="20dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Container for fragment replacement -->

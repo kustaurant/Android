@@ -20,6 +20,10 @@ class DetailRepositoryImpl @Inject constructor(
         return detailApi.getDetailData(restaurantId)
     }
 
+    override suspend fun getAnonDetailData(restaurantId: Int) : DetailDataResponse{
+        return detailApi.getAnonDetailData(restaurantId)
+    }
+
     override suspend fun getCommentData(restaurantId: Int, sort: String) : List<CommentDataResponse>{
         return detailApi.getCommentData(restaurantId, sort)
     }

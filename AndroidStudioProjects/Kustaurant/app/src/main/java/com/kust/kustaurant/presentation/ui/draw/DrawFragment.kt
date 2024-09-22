@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.kust.kustaurant.R
@@ -31,7 +32,7 @@ class DrawFragment : Fragment() {
                 .commit()
         }
 
-        val btnSearch: ImageView = view.findViewById(R.id.btn_search)
+        val btnSearch: FrameLayout = view.findViewById(R.id.draw_fl_iv_search)
         btnSearch.setOnClickListener {
             val intent = Intent(activity, SearchActivity::class.java)
             startActivity(intent)

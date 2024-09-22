@@ -20,7 +20,6 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
-import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -29,31 +28,43 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var tierInfoAdapter: DetailTierInfoAdapter
+    private var restaurantId = 0
     private var isEvaluated = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        initEvaluate()
+        initBack()
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        restaurantId = intent.getIntExtra("restaurantId", 346)
 
-        val restaurantId = intent.getIntExtra("restaurantId", 346)
-        Log.d("restaurantId", restaurantId.toString())
-        viewModel.loadDetailData(restaurantId)
+        val accessToken = getAccessToken(this)
+        if (accessToken == null) {
+            viewModel.loadAnonDetailData(restaurantId)
+        } else {
+            viewModel.loadDetailData(restaurantId)
+        }
 
-        initBack()
         initTierRecyclerView()
         initNaverLink()
         initSearch()
         changeTopBar()
-        initFavorite(restaurantId)
+        initFavorite()
 
+        loadData()
+    }
+
+    private fun loadData() {
         viewModel.detailData.observe(this) { detailData ->
+            binding.tvToNaver.visibility = View.VISIBLE
             if (detailData.partnershipInfo == null){
                 binding.detailClAlliance.visibility = View.GONE
             }
-
             if (detailData.isEvaluated){
                 binding.detailIvEvaluateCheck.visibility = View.VISIBLE
             }
@@ -72,8 +83,7 @@ class DetailActivity : AppCompatActivity() {
 
             if (detailData != null) {
                 Handler(Looper.getMainLooper()).postDelayed({
-                    initTabView(restaurantId)
-                    initEvaluate(restaurantId)
+                    initTabView()
                 }, 100) // 100ms 후에 실행
             }
         }
@@ -88,8 +98,8 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    private fun initFavorite(restaurantId : Int) {
-        binding.detailClFavorite.setOnClickListener {
+    private fun initFavorite() {
+        binding.detailFlFavorite.setOnClickListener {
             checkToken {
                 viewModel.postFavoriteToggle(restaurantId)
             }
@@ -137,7 +147,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    private fun initEvaluate(restaurantId : Int) {
+    private fun initEvaluate() {
         binding.btnEvaluate.setOnClickListener {
             checkToken{
                 val intent = Intent(this, EvaluateActivity::class.java)
@@ -167,7 +177,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun initTabView(restaurantId: Int) {
+    private fun initTabView() {
         viewModel.tabList.observe(this) { tabs ->
             binding.vpMenuReview.adapter = MeReVPAdapter(this, restaurantId)
             TabLayoutMediator(binding.tlMenuReview, binding.vpMenuReview) { tab, position ->

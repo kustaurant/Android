@@ -46,6 +46,7 @@ class MyPageFragment : Fragment() {
         } else {
             binding.myIvEdit.visibility = View.GONE
             binding.myIvLogIn.visibility = View.VISIBLE
+            binding.myFlLogIn.visibility = View.VISIBLE
             binding.myIvUser.setImageResource(R.drawable.ic_none_user)
             initLogIn()
             disableButtons()
@@ -65,17 +66,18 @@ class MyPageFragment : Fragment() {
     private fun initButtons() {
         val buttonActions = mapOf(
             binding.myClEvaluateCount to MyEvaluateActivity::class.java,
-            binding.myClPostCount to MyPostActivity::class.java,
+//            binding.myClPostCount to MyPostActivity::class.java,
             binding.myClUserInfo to MyEditActivity::class.java,
             binding.myTvSave to MySaveActivity::class.java,
-            binding.myTvCommunityComment to MyCommentActivity::class.java,
-            binding.myTvCommunityScrap to MyScrapActivity::class.java,
+//            binding.myTvCommunityComment to MyCommentActivity::class.java,
+//            binding.myTvCommunityScrap to MyScrapActivity::class.java,
             binding.myTvTermsUse to MyTermsUseActivity::class.java,
             binding.myTvOpinion to MyOpinionActivity::class.java,
             binding.myTvNotification to MyNotificationActivity::class.java,
             binding.myTvPrivatePolicy to MyPrivacyPolicyActivity::class.java,
-            binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
-            binding.myTvFixAlliance to MyFixAllActivity::class.java,
+            // 점주 인증, 제휴는 추후 업데이트
+//            binding.myTvOwnerCertificate to MyCertificateActivity::class.java,
+//            binding.myTvFixAlliance to MyFixAllActivity::class.java,
             binding.myTvLogOut to null,
             binding.myTvWithdrawal to null
         )

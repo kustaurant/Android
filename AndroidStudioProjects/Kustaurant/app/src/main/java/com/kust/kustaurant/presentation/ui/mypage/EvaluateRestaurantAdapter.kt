@@ -43,8 +43,8 @@ class EvaluateRestaurantAdapter(val context: Context) : ListAdapter<MyEvaluateRe
             binding.myRvGrade.adapter = gradeAdapter
             binding.myRvGrade.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
 
-            binding.myIvGoDetail.setOnClickListener {
-                itemClickListener.onEvaluateClicked(restaurantId = 510)
+            binding.myClEvaluate.setOnClickListener {
+                itemClickListener.onEvaluateClicked(item.restaurantId)
             }
 
         }

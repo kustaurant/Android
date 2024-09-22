@@ -19,6 +19,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.databinding.ActivityEvaluateBinding
+import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,8 +55,16 @@ class EvaluateActivity : AppCompatActivity() {
         initPhotoPicker()
         initPlusPhoto()
         initRatingBar()
+        initSearch()
         submitEvaluate()
         setContentView(binding.root)
+    }
+
+    private fun initSearch() {
+        binding.evaluateFlIvSearch.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun observeViewModel() {
@@ -80,7 +89,7 @@ class EvaluateActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.evaluateIvBack.setOnClickListener {
+        binding.evaluateFlIvBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
 
         }

@@ -57,51 +57,57 @@ class TierViewModel @Inject constructor(
         _isExpanded.value = _isExpanded.value?.not()
     }
 
-    private fun loadRestaurantList(
+   private fun loadRestaurantList(
         menus: Set<String>,
         situations: Set<String>,
         locations: Set<String>
     ) {
-
         var JH_flag = false
         /*
          * 정책 사항 : 제휴업체 대상인 경우 티어 이미지를 노출하지 않도록 한다.
          */
-        if(menus.elementAt(0) == "제휴업체")
+        if (menus.elementAt(0) == "제휴업체")
             JH_flag = true
 
         viewModelScope.launch {
-            val tierListData = getTierRestaurantListUseCase(
-                CategoryIdMapper.mapMenus(menus),
-                CategoryIdMapper.mapSituations(situations),
-                CategoryIdMapper.mapLocations(locations),
-                _tierListPage
-            )
-
-            _tierRestaurantList.value = tierListData.map {
-                TierRestaurant(
-                    restaurantId = it.restaurantId,
-                    restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
-                    restaurantName = it.restaurantName,
-                    restaurantCuisine = it.restaurantCuisine,
-                    restaurantPosition = it.restaurantPosition,
-                    restaurantImgUrl = it.restaurantImgUrl,
-                    mainTier = if (JH_flag) -1 else it.mainTier,
-                    partnershipInfo = it.partnershipInfo ?: "",
-                    isFavorite = it.isFavorite,
-                    x = it.x.toDouble(),
-                    y = it.y.toDouble(),
-                    isEvaluated = it.isEvaluated,
-                    restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() }
-                        ?: 0.0
+            try {
+                val tierListData = getTierRestaurantListUseCase(
+                    CategoryIdMapper.mapMenus(menus),
+                    CategoryIdMapper.mapSituations(situations),
+                    CategoryIdMapper.mapLocations(locations),
+                    _tierListPage
                 )
+
+                _tierRestaurantList.value = tierListData.map {
+                    TierRestaurant(
+                        restaurantId = it.restaurantId,
+                        restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
+                        restaurantName = it.restaurantName,
+                        restaurantCuisine = it.restaurantCuisine,
+                        restaurantPosition = it.restaurantPosition,
+                        restaurantImgUrl = it.restaurantImgUrl,
+                        mainTier = if (JH_flag) -1 else it.mainTier,
+                        partnershipInfo = it.partnershipInfo ?: "",
+                        isFavorite = it.isFavorite,
+                        x = it.x.toDouble(),
+                        y = it.y.toDouble(),
+                        isEvaluated = it.isEvaluated,
+                        restaurantScore = it.restaurantScore?.toDoubleOrNull()
+                            ?.takeIf { !it.isNaN() }
+                            ?: 0.0
+                    )
+                }
+                if (_tierListPage == 1)
+                    _allTierRestaurantList.value = emptyList()
+
+                val updatedList =
+                    _allTierRestaurantList.value.orEmpty() + _tierRestaurantList.value.orEmpty()
+
+                _allTierRestaurantList.postValue(updatedList)
+
+            } catch (e: Exception) {
+                Log.e("티어 뷰모델", "loadRestaurantList Error", e)
             }
-            if(_tierListPage == 1)
-                _allTierRestaurantList.value = emptyList()
-
-            val updatedList = _allTierRestaurantList.value.orEmpty() + _tierRestaurantList.value.orEmpty()
-
-            _allTierRestaurantList.postValue(updatedList)
         }
     }
 
@@ -112,12 +118,16 @@ class TierViewModel @Inject constructor(
         locations: Set<String>
     ) {
         viewModelScope.launch {
-            val tierMapData = getTierRestaurantMapUseCase(
-                CategoryIdMapper.mapMenus(menus),
-                CategoryIdMapper.mapSituations(situations),
-                CategoryIdMapper.mapLocations(locations)
-            )
-            _mapData.value = tierMapData
+            try {
+                val tierMapData = getTierRestaurantMapUseCase(
+                    CategoryIdMapper.mapMenus(menus),
+                    CategoryIdMapper.mapSituations(situations),
+                    CategoryIdMapper.mapLocations(locations)
+                )
+                _mapData.value = tierMapData
+            } catch (e : Exception) {
+                Log.e("티어 뷰모델", "loadRestaurantMap Error", e)
+            }
         }
     }
 

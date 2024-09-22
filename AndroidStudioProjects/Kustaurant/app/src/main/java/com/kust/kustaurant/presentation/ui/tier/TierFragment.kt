@@ -20,7 +20,6 @@ import com.google.android.material.tabs.TabLayout
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.presentation.ui.home.HomeFragment
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
-import com.kust.kustaurant.presentation.util.TouchExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,7 +46,7 @@ class TierFragment : Fragment() {
             viewModel.applyFilters(setOf("전체"), setOf("전체"), setOf("전체"), 0)
         }
 
-        binding.tierIvSearch.setOnClickListener {
+        binding.tierFlIvSearch.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
@@ -62,7 +61,6 @@ class TierFragment : Fragment() {
         setupCategoryButton()
         setupBackButton()
         observeViewModel()
-        initTouchExtension()
 
         viewModel.filterApplied.observe(viewLifecycleOwner) { applied ->
             if (applied) {
@@ -71,14 +69,13 @@ class TierFragment : Fragment() {
             }
         }
         updateCategoryLinearLayout(setOf("전체"))
-    }
-
+    } 
 
     private fun initTouchExtension() {
         TouchExtension.expandTouchArea(binding.topBar, binding.btnBack, 40)
         TouchExtension.expandTouchArea(binding.topBar, binding.tierIvSearch, 40)
     }
-
+ 
     private fun setupViewPager() {
         pagerAdapter = TierPagerAdapter(this)
         binding.tierViewPager.adapter = pagerAdapter

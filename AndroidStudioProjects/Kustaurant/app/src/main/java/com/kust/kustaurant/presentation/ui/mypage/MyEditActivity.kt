@@ -99,7 +99,7 @@ class MyEditActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.editBtnBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

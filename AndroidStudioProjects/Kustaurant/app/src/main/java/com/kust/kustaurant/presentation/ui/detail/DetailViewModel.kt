@@ -14,6 +14,7 @@ import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.domain.usecase.detail.DeleteCommentDataUseCase
+import com.kust.kustaurant.domain.usecase.detail.GetAnonDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetEvaluationDataUseCase
@@ -36,6 +37,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getDetailDataUseCase: GetDetailDataUseCase,
+    private val getAnonDetailDataUseCase: GetAnonDetailDataUseCase,
     private val getCommentDataUseCase: GetCommentDataUseCase,
     private val postCommentDataUseCase: PostCommentDataUseCase,
     private val postFavoriteToggleUseCase: PostFavoriteToggleUseCase,
@@ -75,6 +77,24 @@ class DetailViewModel @Inject constructor(
     val evaluationComplete = MutableLiveData<Boolean>()
     private var currentSort = "popularity"
 
+    fun loadAnonDetailData(restaurantId : Int) {
+        viewModelScope.launch {
+            try {
+                val getDetailData = getAnonDetailDataUseCase(restaurantId)
+                _detailData.value = getDetailData
+                _menuData.value = getDetailData.restaurantMenuList.map {
+                    MenuData(it.menuId, it.menuName, it.menuPrice, it.naverType, it.menuImgUrl)
+                }
+                _tierData.value = TierInfoData(
+                    getDetailData.restaurantCuisineImgUrl, getDetailData.restaurantCuisine,
+                    getDetailData.mainTier, getDetailData.situationList
+                )
+            } catch (e : Exception) {
+                Log.e("디테일 뷰모델", "loadAnonDetailData Error", e)
+            }
+        }
+    }
+
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
             try {
@@ -88,7 +108,7 @@ class DetailViewModel @Inject constructor(
                     getDetailData.mainTier, getDetailData.situationList
                 )
             } catch (e : Exception) {
-                Log.e("DetailViewModel", "Failed to load detail data", e)
+                Log.e("디테일 뷰모델", "loadDetailData Error", e)
             }
         }
     }
@@ -100,7 +120,7 @@ class DetailViewModel @Inject constructor(
                 val getCommentData = getCommentDataUseCase(restaurantId, sort)
                 _reviewData.postValue(getCommentData.toList())
             } catch (e: Exception){
-                Log.e("CommentLoad", "Failed to load comment", e)
+                Log.e("디테일 뷰모델", "loadCommentData Error", e)
             }
         }
     }
@@ -111,7 +131,7 @@ class DetailViewModel @Inject constructor(
                 val getDetailData = getDetailDataUseCase(restaurantId)
                 _detailData.value = getDetailData
             } catch (e: Exception){
-                Log.e("DetailViewModel", "Failed to load evaluation data", e)
+                Log.e("디테일 뷰모델", "loadEvaluateData Error", e)
             }
         }
     }
@@ -122,7 +142,7 @@ class DetailViewModel @Inject constructor(
                 postCommentDataUseCase(restaurantId, commentId, inputText)
                 loadCommentData(restaurantId, currentSort)
             } catch (e: Exception) {
-                Log.e("CommentPost", "Failed to post comment", e)
+                Log.e("디테일 뷰모델", "postCommentData Error", e)
             }
         }
     }
@@ -140,7 +160,7 @@ class DetailViewModel @Inject constructor(
                     _detailData.postValue(updatedDetailData)
                 }
             } catch (e: Exception) {
-                Log.e("DetailViewModel", "Failed to toggle favorite", e)
+                Log.e("디테일 뷰모델", "postFavoriteToggle Error", e)
             }
         }
     }
@@ -160,7 +180,7 @@ class DetailViewModel @Inject constructor(
                 val evaluationData = getEvaluationDataUseCase(restaurantId)
                 _evaluationData.postValue(evaluationData)
             } catch (e : Exception){
-                Log.e("DetailViewModel", "Failed to MyloadEvaluation", e)
+                Log.e("디테일 뷰모델", "loadMyEvaluationData Error", e)
             }
         }
     }
@@ -183,7 +203,7 @@ class DetailViewModel @Inject constructor(
                 postEvaluationDataUseCase(restaurantId, ratingPart, keywordParts, commentPart, imagePart)
                 evaluationComplete.value = true
             } catch (e: Exception) {
-                Log.e("DetailViewModel", "Failed to post evaluation", e)
+                Log.e("디테일 뷰모델", "postEvaluationData Error", e)
             }
         }
     }
@@ -204,7 +224,7 @@ class DetailViewModel @Inject constructor(
                 deleteCommentDataUseCase(restaurantId, commentId)
                 loadCommentData(restaurantId, currentSort)
             } catch (e: Exception) {
-                Log.e("DetailViewModel", "Failed to delete comment", e)
+                Log.e("디테일 뷰모델", "getFileFromUri Error", e)
             }
         }
     }
@@ -216,7 +236,7 @@ class DetailViewModel @Inject constructor(
                 postCommentReportUseCase(restaurantId, commentId)
             }
         } catch (e: Exception){
-            Log.d("DetailViewModel", "post report", e)
+            Log.d("디테일 뷰모델", "postCommentReport Error", e)
         }
     }
 
@@ -226,7 +246,7 @@ class DetailViewModel @Inject constructor(
                 val response = postCommentLikeUseCase(restaurantId, commentId)
                 updateCommentData(response, commentId)
             } catch (e: Exception) {
-                Log.e("DetailViewModel", "Failed to post comment like", e)
+                Log.e("디테일 뷰모델", "postCommentLike Error", e)
             }
         }
     }
@@ -237,7 +257,7 @@ class DetailViewModel @Inject constructor(
                 val response = postCommentDisLikeUseCase(restaurantId, commentId)
                 updateCommentData(response, commentId)
             } catch (e: Exception) {
-                Log.e("DetailViewModel", "Failed to post comment dislike", e)
+                Log.e("디테일 뷰모델", "postCommentDisLike Error", e)
             }
         }
     }

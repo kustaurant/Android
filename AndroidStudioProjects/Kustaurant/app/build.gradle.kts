@@ -24,8 +24,8 @@ android {
         applicationId = "com.kust.kustaurant"
         minSdk = 26
         targetSdk = 34
-        versionCode = 4
-        versionName = "0.1.1"
+        versionCode = 13
+        versionName = "0.1.10"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -119,5 +119,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
     implementation("androidx.activity:activity-ktx:1.5.0")
+
+    implementation ("com.airbnb.android:lottie:6.5.2")
+    implementation(kotlin("script-runtime"))
+
 
 }

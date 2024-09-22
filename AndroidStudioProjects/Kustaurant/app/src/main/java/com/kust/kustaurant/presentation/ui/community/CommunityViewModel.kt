@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.community
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -64,7 +65,7 @@ class CommunityViewModel @Inject constructor(
                     _page.value = page.value?.plus(1)
                 }
             } catch (e: Exception) {
-                // 에러 처리
+                Log.e("커뮤니티 뷰모델", "loadCommunityPosts Error", e)
             } finally {
                 // 기타 처리
             }
@@ -78,11 +79,11 @@ class CommunityViewModel @Inject constructor(
                 val rankings = getCommunityRankingListUseCase(sort)
                 _communityRanking.value = rankings
             } catch (e: Exception) {
-                // 에러 처리
+                Log.e("커뮤니티 뷰모델", "loadCommunityRanking Error", e)
             }
         }
-    }
-
+    } 
+    
     fun resetPageAndLoad() {
         _page.value = 0
         isLastPage = false
