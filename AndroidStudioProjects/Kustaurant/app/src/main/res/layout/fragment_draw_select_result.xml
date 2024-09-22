@@ -6,195 +6,212 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.draw.DrawSelectResultFragment">
 
-    <TextView
-        android:id="@+id/draw_selected_tv_clickable_info"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:fontFamily="@font/pretendard_regular"
-        android:gravity="center"
-        android:text="@string/draw_selected_category_result_clickable_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/draw_viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="27dp"
-        app:layout_constraintDimensionRatio="360:280"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/draw_selected_tv_clickable_info"
-        tools:layout_height="290dp"
-        app:layout_constraintBottom_toTopOf="@id/draw_tv_restaurant_menu"/>
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/draw_tv_restaurant_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_semibold"
-        android:gravity="center"
-        android:text=""
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/draw_viewPager"
-        tools:text="일식" />
-
-    <TextView
-        android:id="@+id/draw_tv_restaurant_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:fontFamily="@font/pretendard_bold"
-        android:gravity="center"
-        android:text=""
-        android:textColor="@color/black"
-        android:textSize="21sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_menu"
-        tools:text="호야초밥 참치 본점" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/draw_cl_restaurant_score"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_name">
-
-        <LinearLayout
-            android:id="@+id/draw_ll_score_img_group"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/draw_tv_restaurant_score"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingBottom="10dp">
 
-            <ImageView
-                android:id="@+id/draw_iv_star_1"
+            <TextView
+                android:id="@+id/draw_selected_tv_clickable_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_regular"
+                android:gravity="center"
+                android:text="@string/draw_selected_category_result_clickable_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/draw_viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="27dp"
+                app:layout_constraintBottom_toTopOf="@id/draw_tv_restaurant_menu"
+                app:layout_constraintDimensionRatio="360:293"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/draw_selected_tv_clickable_info"
+                tools:layout_height="290dp" />
+
+            <TextView
+                android:id="@+id/draw_tv_restaurant_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/pretendard_semibold"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/draw_viewPager"
+                tools:text="일식" />
+
+            <TextView
+                android:id="@+id/draw_tv_restaurant_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="21sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_menu"
+                tools:text="호야초밥 참치 본점" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/draw_cl_restaurant_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_name">
+
+                <LinearLayout
+                    android:id="@+id/draw_ll_score_img_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/draw_tv_restaurant_score"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/draw_iv_star_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/draw_restaurant_star_img_info"
+                        tools:src="@drawable/ic_star_full" />
+
+                    <ImageView
+                        android:id="@+id/draw_iv_star_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/draw_restaurant_star_img_info"
+                        tools:src="@drawable/ic_star_full" />
+
+                    <ImageView
+                        android:id="@+id/draw_iv_star_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/draw_restaurant_star_img_info"
+                        tools:src="@drawable/ic_star_full" />
+
+                    <ImageView
+                        android:id="@+id/draw_iv_star_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/draw_restaurant_star_img_info"
+                        tools:src="@drawable/ic_star_full" />
+
+                    <ImageView
+                        android:id="@+id/draw_iv_star_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/draw_restaurant_star_img_info"
+                        tools:src="@drawable/ic_star_full" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/draw_tv_restaurant_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8.5dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/draw_ll_score_img_group"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="4.5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/draw_tv_restaurant_partnership_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14.5dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:maxLines="3"
+                android:minHeight="20dp"
+                android:text=""
+                android:textColor="@color/top_gray"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/draw_cl_restaurant_score"
+                app:layout_constraintWidth_percent="0.65"
+                tools:text="이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용" />
+
+            <Button
+                android:id="@+id/draw_btn_category_reset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/draw_restaurant_star_img_info"
-                tools:src="@drawable/ic_star_full" />
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="6.5dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/all_radius_100_none"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/pretendard_medium"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingStart="16dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="7dp"
+                android:text="카테고리 재설정"
+                android:textColor="@color/signature_1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/draw_btn_retry"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info" />
 
-            <ImageView
-                android:id="@+id/draw_iv_star_2"
+            <Button
+                android:id="@+id/draw_btn_retry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/draw_restaurant_star_img_info"
-                tools:src="@drawable/ic_star_full" />
-
-            <ImageView
-                android:id="@+id/draw_iv_star_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/draw_restaurant_star_img_info"
-                tools:src="@drawable/ic_star_full" />
-
-            <ImageView
-                android:id="@+id/draw_iv_star_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/draw_restaurant_star_img_info"
-                tools:src="@drawable/ic_star_full" />
-
-            <ImageView
-                android:id="@+id/draw_iv_star_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/draw_restaurant_star_img_info"
-                tools:src="@drawable/ic_star_full" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/draw_tv_restaurant_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8.5dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:gravity="center"
-            android:text=""
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/draw_ll_score_img_group"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="4.5" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/draw_tv_restaurant_partnership_info"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14.5dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/pretendard_medium"
-        android:gravity="center"
-        android:maxLines="3"
-        android:text=""
-        android:textColor="@color/top_gray"
-        android:textSize="18sp"
-        android:minHeight="85dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/draw_cl_restaurant_score"
-        app:layout_constraintWidth_percent="0.65"
-        tools:text="이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용" />
-
-    <Button
-        android:id="@+id/draw_btn_category_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="6.5dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/all_radius_100_none"
-        android:backgroundTint="@color/white"
-        android:fontFamily="@font/pretendard_medium"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        android:paddingStart="16dp"
-        android:paddingTop="7dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="7dp"
-        android:text="카테고리 재설정"
-        android:textColor="@color/signature_1"
-        android:layout_marginTop="14dp"
-        app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info"
-        app:layout_constraintEnd_toStartOf="@id/draw_btn_retry"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/draw_btn_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6.5dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/all_radius_100_none"
-        android:backgroundTint="@color/signature_1"
-        android:drawableStart="@drawable/ic_retry"
-        android:fontFamily="@font/pretendard_medium"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        android:paddingStart="16dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="4dp"
-        android:text="다시 뽑기"
-        android:textColor="@color/white"
-        android:layout_marginTop="14dp"
-        app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/draw_btn_category_reset" />
-
+                android:layout_marginStart="6.5dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/all_radius_100_none"
+                android:backgroundTint="@color/signature_1"
+                android:drawableStart="@drawable/ic_retry"
+                android:fontFamily="@font/pretendard_medium"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingStart="16dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="4dp"
+                android:text="다시 뽑기"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/draw_btn_category_reset"
+                app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

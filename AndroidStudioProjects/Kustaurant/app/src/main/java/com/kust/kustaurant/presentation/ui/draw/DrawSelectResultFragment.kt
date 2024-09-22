@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +19,11 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.DrawRestaurantData
 import com.kust.kustaurant.databinding.FragmentDrawSelectResultBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.floor
 
@@ -32,6 +36,7 @@ class DrawSelectResultFragment : Fragment() {
     private var handler: Handler? = null
     private var runnable: Runnable? = null
     val binding get() = _binding!!
+    private val animationScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDrawSelectResultBinding.inflate(inflater, container, false)
@@ -65,11 +70,6 @@ class DrawSelectResultFragment : Fragment() {
         binding.drawTvRestaurantName.text = restaurant.restaurantName
         binding.drawTvRestaurantMenu.text = restaurant.restaurantCuisine
 
-        binding.drawViewPager.setOnClickListener {
-            val intent = Intent(requireContext(), DetailActivity::class.java)
-            intent.putExtra("restaurantId",viewModel.selectedRestaurant.value!!.restaurantId)
-            startActivity(intent)
-        }
     }
 
     private fun setupViewPager() {
@@ -148,54 +148,40 @@ class DrawSelectResultFragment : Fragment() {
 
     }
 
-    private fun startAnimation() {
+    private fun startAnimation() = animationScope.launch {
         disableButtons() // 애니메이션 시작 시 버튼 비활성화
-        // 텍스트뷰의 alpha 애니메이션 추가
         val textView = binding.drawSelectedTvClickableInfo
         textView.alpha = 0f
 
-        handler = Handler(Looper.getMainLooper())
-        runnable = object : Runnable {
-            var currentPage = adapter.itemCount - 1
-            override fun run() {
-                // Fragment가 아직 활성 상태인지 확인
-                if (!isAdded || view == null || _binding == null) {
-                    handler?.removeCallbacks(this) // 핸들러에서 콜백 제거
-                    return
-                }
+        var currentPage = adapter.itemCount - 1
+        while (currentPage >= 0) {
+            if (!isAdded) return@launch  // Fragment가 아직 활성 상태인지 확인
 
-                if (currentPage >= 0) {
-                    viewPager.setCurrentItem(currentPage--, true)
-                    handler?.postDelayed(this, 1700L / adapter.itemCount)
-                    displaySelectedRestaurantInfo(restaurantList[currentPage + 1])
-                } else {
-                    // 애니메이션 종료 후, 중앙에 선택된 음식점 배치
-                    viewModel.selectedRestaurant.value?.let { selected ->
-                        val selectedIndex = restaurantList.indexOf(selected)
-                        viewPager.setCurrentItem(selectedIndex, true)
-                        displaySelectedRestaurantInfo(selected)
-
-                        val roundedScore = selected.restaurantScore?.let {
-                            floor(it * 2) / 2
-                        } ?: "평가 없음"
-
-                        binding.drawTvRestaurantScore.text = roundedScore.toString()
-                        binding.drawTvRestaurantPartnershipInfo.text = selected.partnershipInfo?: "제휴 해당사항 없음"
-
-                        updateStarRating(selected.restaurantScore?: 0.0)
-                        binding.drawLlScoreImgGroup.visibility = View.VISIBLE
-
-                        highlightCenterImage()
-                        enableButtons()
-
-                        val fadeIn = ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f)
-                        fadeIn.duration = 500
-                        fadeIn.start()
-                    }
-                }
-            }
+            viewPager.setCurrentItem(currentPage, true)
+            delay(1700L / adapter.itemCount)
+            displaySelectedRestaurantInfo(restaurantList[currentPage])
+            currentPage--
         }
-        handler?.post(runnable!!)
+
+        // 애니메이션 종료 후, 중앙에 선택된 음식점 배치
+        viewModel.selectedRestaurant.value?.let { selected ->
+            val selectedIndex = restaurantList.indexOf(selected)
+            viewPager.setCurrentItem(selectedIndex, true)
+            displaySelectedRestaurantInfo(selected)
+
+            val roundedScore = selected.restaurantScore?.let { floor(it * 2) / 2 } ?: "평가 없음"
+            binding.drawTvRestaurantScore.text = roundedScore.toString()
+            binding.drawTvRestaurantPartnershipInfo.text = selected.partnershipInfo ?: "제휴 해당사항 없음"
+            updateStarRating(selected.restaurantScore ?: 0.0)
+            binding.drawLlScoreImgGroup.visibility = View.VISIBLE
+
+            highlightCenterImage()
+            enableButtons()
+
+            val fadeIn = ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f)
+            fadeIn.duration = 500
+            fadeIn.start()
+        }
     }
 
     private fun disableButtons() {
@@ -203,6 +189,8 @@ class DrawSelectResultFragment : Fragment() {
         binding.drawBtnRetry.isClickable = false
         binding.drawBtnCategoryReset.alpha = 0.5f
         binding.drawBtnRetry.alpha = 0.5f
+
+        binding.drawViewPager.setOnClickListener(null)
     }
 
     private fun enableButtons() {
@@ -210,14 +198,17 @@ class DrawSelectResultFragment : Fragment() {
         binding.drawBtnRetry.isClickable = true
         binding.drawBtnCategoryReset.alpha = 1.0f
         binding.drawBtnRetry.alpha = 1.0f
+
+        binding.drawViewPager.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("restaurantId",viewModel.selectedRestaurant.value!!.restaurantId)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
-        handler?.removeCallbacks(runnable!!)
-        handler = null
-        runnable = null
+        animationScope.cancel()  // 코루틴 취소
         _binding = null
     }
 }

@@ -85,6 +85,7 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
                 2 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_2)
                 3 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_3)
                 4 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_4)
+                -1 -> binding.tierIvRestaurantTierImg.visibility = View.GONE
                 else -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_all)
             }
 
@@ -96,7 +97,6 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
             }
         }
     }
-
 
     inner class ReducedViewHolder(private val binding: ItemRestaurantReductionBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -116,10 +116,10 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
                 2 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_2)
                 3 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_3)
                 4 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_4)
+                -1 -> binding.tierIvRestaurantTierImg.visibility = View.GONE
                 else -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_all)
             }
 
-            // Set visibility for favorite and evaluation icons
             binding.tierIvRestaurantFavoriteImg.visibility = if (item.isFavorite) View.VISIBLE else View.GONE
             binding.tierIvRestaurantEvaluationImg.visibility = if (item.isEvaluated) View.VISIBLE else View.GONE
 
@@ -128,7 +128,6 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
             }
         }
     }
-
 
     companion object {
         private const val VIEW_TYPE_EXPANDED = 0

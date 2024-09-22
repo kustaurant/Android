@@ -5,6 +5,7 @@
     android:id="@+id/tier_cl_restaurant"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
     android:layout_marginTop="9dp"
     android:layout_marginBottom="9dp">
 
@@ -97,7 +98,7 @@
             android:src="@drawable/ic_community_divider" />
 
         <TextView
-            android:id="@+id/community_tv_created_date"
+            android:id="@+id/community_tv_time_ago"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -121,7 +122,7 @@
 
 
         <TextView
-            android:id="@+id/community_tv_post_like_cnt"
+            android:id="@+id/community_tv_like_cnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -138,7 +139,7 @@
 
 
         <TextView
-            android:id="@+id/community_tv_post_chat_cnt"
+            android:id="@+id/community_tv_comment_cnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"

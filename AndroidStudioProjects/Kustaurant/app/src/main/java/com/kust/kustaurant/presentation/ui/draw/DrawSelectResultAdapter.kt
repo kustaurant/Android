@@ -2,6 +2,7 @@ package com.kust.kustaurant.presentation.ui.draw
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,11 +35,22 @@ class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestauran
         if (position == highlightedPosition) {
             val drawable = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
-                setStroke(4, ContextCompat.getColor(holder.context, R.color.signature_1))
+
+                // dp를 px로 변환
+                val strokeWidth = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    3f, // 스트로크 너비 2dp
+                    holder.itemView.context.resources.displayMetrics
+                ).toInt()
+
+                setStroke(strokeWidth, ContextCompat.getColor(holder.itemView.context, R.color.signature_1))
                 cornerRadius = 30f
             }
+
             holder.imageView.background = drawable
-            holder.imageView.setPadding(4)
+
+            holder.imageView.setPadding(3)
+
         } else {
             holder.imageView.background = null
             holder.imageView.setPadding(0, 0, 0, 0)

@@ -62,6 +62,14 @@ class TierViewModel @Inject constructor(
         situations: Set<String>,
         locations: Set<String>
     ) {
+
+        var JH_flag = false
+        /*
+         * 정책 사항 : 제휴업체 대상인 경우 티어 이미지를 노출하지 않도록 한다.
+         */
+        if(menus.elementAt(0) == "제휴업체")
+            JH_flag = true
+
         viewModelScope.launch {
             val tierListData = getTierRestaurantListUseCase(
                 CategoryIdMapper.mapMenus(menus),
@@ -78,7 +86,7 @@ class TierViewModel @Inject constructor(
                     restaurantCuisine = it.restaurantCuisine,
                     restaurantPosition = it.restaurantPosition,
                     restaurantImgUrl = it.restaurantImgUrl,
-                    mainTier = it.mainTier,
+                    mainTier = if (JH_flag) -1 else it.mainTier,
                     partnershipInfo = it.partnershipInfo ?: "",
                     isFavorite = it.isFavorite,
                     x = it.x.toDouble(),
@@ -191,7 +199,6 @@ class TierViewModel @Inject constructor(
         val selectedTypesValue = selectedMenus.value ?: emptySet()
         val selectedSelectedSituations = selectedSituations.value ?: emptySet()
         val selectedSelectedLocations = selectedLocations.value ?: emptySet()
-
 
         if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
             _tierListPage  = 1

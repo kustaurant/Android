@@ -2,6 +2,7 @@ package com.kust.kustaurant.presentation.ui.draw
 
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -96,8 +97,7 @@ class DrawSelectCategoryFragment : Fragment() {
                         // Change the text color to active
                         toggleButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
 
-                        if (toggleButton.text.toString() == "전체") {
-                            // "전체" is selected, so deselect all others
+                        if (toggleButton.text.toString() == "전체" || toggleButton.text.toString() == "제휴업체") {
                             clearOtherToggles(toggleGroup, toggleButton)
                         }
                     } else {
@@ -106,7 +106,7 @@ class DrawSelectCategoryFragment : Fragment() {
                     }
 
                     // Ensure "전체" is deselected if any other button is selected
-                    if (isChecked && toggleButton.text.toString() != "전체") {
+                    if (isChecked && (toggleButton.text.toString() != "전체" || toggleButton.text.toString() != "제휴업체")) {
                         clearTotalToggle(toggleGroup)
                     }
                 }
@@ -114,7 +114,6 @@ class DrawSelectCategoryFragment : Fragment() {
         }
     }
 
-    // "전체"가 선택된 경우 나머지 버튼을 모두 해제
     private fun clearOtherToggles(toggleGroup: ViewGroup, selectedToggle: ToggleButton) {
         toggleGroup.post {
             for (i in 0 until toggleGroup.childCount) {
@@ -194,7 +193,7 @@ class DrawSelectCategoryFragment : Fragment() {
         view.isSelected = isSelected
         applyMenuToggleUI(view, isSelected)
 
-        if ((menuText == "전체" || menuText == "제휴") && isSelected) {
+        if ((menuText == "전체" || menuText == "제휴업체") && isSelected) {
             // "전체" 또는 "제휴"가 선택되었을 때 다른 모든 메뉴 선택 해제
             selectedMenus.clear()
             selectedMenus.add(menuText)
@@ -202,9 +201,9 @@ class DrawSelectCategoryFragment : Fragment() {
         } else {
             if (isSelected) {
                 // "전체" 또는 "제휴"가 이미 선택되었으면 해제하고 다른 메뉴 선택
-                if (selectedMenus.contains("전체") || selectedMenus.contains("제휴")) {
+                if (selectedMenus.contains("전체") || selectedMenus.contains("제휴업체")) {
                     selectedMenus.remove("전체")
-                    selectedMenus.remove("제휴")
+                    selectedMenus.remove("제휴업체")
                     deselectSpecialMenuToggles() // "전체"와 "제휴" 해제
                 }
                 selectedMenus.add(menuText)
@@ -214,7 +213,7 @@ class DrawSelectCategoryFragment : Fragment() {
         }
     }
 
-    // "전체" 또는 "제휴"가 선택되었을 때 다른 메뉴 해제
+    // "전체" 또는 "제휴업체"가 선택되었을 때 다른 메뉴 해제
     private fun deselectOtherMenusToggle(excludeView: LinearLayout) {
         allMenuViews.filter { it != excludeView }.forEach { menuView ->
             menuView.isSelected = false
@@ -222,7 +221,7 @@ class DrawSelectCategoryFragment : Fragment() {
         }
     }
 
-    // "전체" 또는 "제휴" 버튼 해제
+    // "전체" 또는 "제휴업체" 버튼 해제
     private fun deselectSpecialMenuToggles() {
         val totalMenuView = binding.homeBtnAll
         val benefitMenuView = binding.homeBtnBenefit
@@ -236,10 +235,25 @@ class DrawSelectCategoryFragment : Fragment() {
 
     private fun applyMenuToggleUI(view: View, isSelected: Boolean) {
         if (isSelected) {
-            val drawable = GradientDrawable()
-            drawable.shape = GradientDrawable.RECTANGLE
-            drawable.setStroke(4, ContextCompat.getColor(requireContext(), R.color.signature_1))
-            drawable.cornerRadius = 15f
+            val drawable = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+
+                // Convert dp to px for stroke width and corner radius
+                val strokeWidth = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    1.2f,
+                    view.context.resources.displayMetrics
+                ).toInt()
+
+                val cornerRadius = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    15f,
+                    view.context.resources.displayMetrics
+                )
+
+                setStroke(strokeWidth, ContextCompat.getColor(view.context, R.color.signature_1))
+                this.cornerRadius = cornerRadius
+            }
 
             view.background = drawable
         } else {

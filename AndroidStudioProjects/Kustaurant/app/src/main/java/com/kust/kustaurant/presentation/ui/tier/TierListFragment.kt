@@ -99,14 +99,7 @@ class TierListFragment : Fragment() {
             Log.e("TierFragment", viewModel.isSelectedCategoriesChanged.toString())
 
             allTierData.addAll(tierList)
-            tierAdapter.submitList(allTierData.toList()) {
-//                if (viewModel.isSelectedCategoriesChanged.value == true) {
-//                    Log.e("TierFragment", "submitList불림")
-//                    binding.tierRecyclerView.post {
-//                        binding.tierRecyclerView.scrollToPosition(0)
-//                    }
-//                }
-            }
+            tierAdapter.submitList(allTierData.toList())
         }
 
         viewModel.isExpanded.observe(viewLifecycleOwner) { isExpanded ->
@@ -127,12 +120,10 @@ class TierListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.e("TierFragment", "onResume is called")
 
         if (recyclerViewState != null) {
             binding.tierRecyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
-        //viewModel.checkAndLoadBackendListData(TierViewModel.Companion.RestaurantState.NEXT_PAGE_LIST_DATA)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

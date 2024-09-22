@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kust.kustaurant.domain.model.CommunityPost
 import com.kust.kustaurant.domain.model.CommunityRanking
-import com.kust.kustaurant.domain.usecase.community.GetCommunityPostDetailUseCase
 import com.kust.kustaurant.domain.usecase.community.GetCommunityPostListUseCase
 import com.kust.kustaurant.domain.usecase.community.GetCommunityRankingListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +16,6 @@ import javax.inject.Inject
 class CommunityViewModel @Inject constructor(
     private val getCommunityPostListUseCase: GetCommunityPostListUseCase,
     private val getCommunityRankingListUseCase: GetCommunityRankingListUseCase,
-    private val getCommunityPostDetailUseCase: GetCommunityPostDetailUseCase,
 
     ) : ViewModel() {
     private val _postCategory = MutableLiveData<String>("all")
@@ -84,18 +82,6 @@ class CommunityViewModel @Inject constructor(
             }
         }
     }
-
-    fun loadCommunityPostDetail(postId: Int) {
-        viewModelScope.launch {
-            try {
-                _communityPostDetail.value = getCommunityPostDetailUseCase(postId)
-            } catch (e: Exception) {
-                // 에러 처리
-            }
-        }
-    }
-
-
 
     fun resetPageAndLoad() {
         _page.value = 0
