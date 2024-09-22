@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kustaurant</string>
+    <string name="app_name">쿠스토랑</string>
 
     <!-- TierFragment -->
     <string name="wide_btn_info"><u>크게 보기</u></string>
