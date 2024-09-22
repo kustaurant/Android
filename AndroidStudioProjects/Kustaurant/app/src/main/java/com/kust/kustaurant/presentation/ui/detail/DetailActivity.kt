@@ -67,6 +67,7 @@ class DetailActivity : AppCompatActivity() {
             }
             if (detailData.isEvaluated){
                 binding.detailIvEvaluateCheck.visibility = View.VISIBLE
+                binding.detailTvEvaluate.text = "다시 평가하기"
             }
 
             binding.detailClFavorite.isSelected = detailData.isFavorite

@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
                 backPressedTime = System.currentTimeMillis()
             } else {
                 supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment(), "home").commit()
+                binding.mainNavigation.selectedItemId = R.id.menu_home
             }
         }
 

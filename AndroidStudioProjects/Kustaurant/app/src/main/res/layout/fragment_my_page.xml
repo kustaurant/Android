@@ -94,24 +94,12 @@
                     app:layout_constraintTop_toTopOf="@id/my_tv_name"
                     app:layout_constraintBottom_toBottomOf="@id/my_tv_name"/>
 
-                <FrameLayout
-                    android:id="@+id/my_fl_log_in"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:elevation="100dp"
-                    app:layout_constraintStart_toStartOf="@id/my_iv_log_in"
-                    app:layout_constraintEnd_toEndOf="@id/my_iv_log_in"
-                    app:layout_constraintTop_toTopOf="@id/my_iv_log_in"
-                    app:layout_constraintBottom_toBottomOf="@id/my_iv_log_in"
-                    android:paddingHorizontal="20dp"/>
-
                 <ImageView
                     android:id="@+id/my_iv_log_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_go_log_in"
-                    android:layout_marginStart="10dp"
+                    android:paddingHorizontal="10dp"
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@id/my_tv_name"
                     app:layout_constraintTop_toTopOf="@id/my_tv_name"
