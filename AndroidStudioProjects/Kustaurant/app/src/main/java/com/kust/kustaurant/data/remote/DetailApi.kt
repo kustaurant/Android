@@ -58,7 +58,7 @@ interface DetailApi {
         @Part evaluationSituations: List<MultipartBody.Part>,
         @Part("evaluationComment") evaluationComment: RequestBody?,
         @Part newImage: MultipartBody.Part?
-    ) : DetailDataResponse
+    ) : List<CommentDataResponse>
 
     @DELETE("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}")
     suspend fun deleteCommentData(

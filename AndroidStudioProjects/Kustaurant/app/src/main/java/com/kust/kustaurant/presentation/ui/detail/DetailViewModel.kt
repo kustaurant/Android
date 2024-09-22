@@ -193,15 +193,15 @@ class DetailViewModel @Inject constructor(
                 val keywordParts = keywords.map { keyword ->
                     MultipartBody.Part.createFormData("evaluationSituations", keyword.toString())
                 }
-                Log.d("taejung", keywords.toString())
                 val imagePart: MultipartBody.Part? = imageUri?.let { uri ->
                     val file = getFileFromUri(context, uri)
                     val requestFile = file?.asRequestBody("image/jpg".toMediaTypeOrNull())
                     MultipartBody.Part.createFormData("newImage", file?.name, requestFile!!)
-
                 }
-                postEvaluationDataUseCase(restaurantId, ratingPart, keywordParts, commentPart, imagePart)
+                val commentData = postEvaluationDataUseCase(restaurantId, ratingPart, keywordParts, commentPart, imagePart)
+                Log.d("commentData", comment.toString())
                 evaluationComplete.value = true
+                _reviewData.postValue(commentData.toList())
             } catch (e: Exception) {
                 Log.e("디테일 뷰모델", "postEvaluationData Error", e)
             }
