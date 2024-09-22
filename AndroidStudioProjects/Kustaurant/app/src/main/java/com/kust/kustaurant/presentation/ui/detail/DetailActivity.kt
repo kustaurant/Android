@@ -14,6 +14,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.kust.kustaurant.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kust.kustaurant.R
@@ -67,6 +68,7 @@ class DetailActivity : AppCompatActivity() {
             }
             if (detailData.isEvaluated){
                 binding.detailIvEvaluateCheck.visibility = View.VISIBLE
+                binding.detailTvEvaluate.text = "다시 평가하기"
             }
 
             binding.detailClFavorite.isSelected = detailData.isFavorite
@@ -184,5 +186,20 @@ class DetailActivity : AppCompatActivity() {
                 tab.text = tabs[position]
             }.attach()
         }
+
+        // 리뷰 갱신 코드
+//        binding.tlMenuReview.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab) {
+//                when (tab.position) {
+//                    1 -> viewModel.loadCommentData(restaurantId, "popularity")
+//                }
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab) {}
+//
+//            override fun onTabReselected(tab: TabLayout.Tab) {
+//                onTabSelected(tab)
+//            }
+//        })
     }
 }

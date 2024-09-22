@@ -46,7 +46,7 @@ class DetailRepositoryImpl @Inject constructor(
         evaluationSituations: List<MultipartBody.Part>,
         evaluationComment: RequestBody?,
         newImage: MultipartBody.Part?
-    ): DetailDataResponse {
+    ): List<CommentDataResponse> {
         return detailApi.postEvaluationData(
             restaurantId,
             evaluationScore,

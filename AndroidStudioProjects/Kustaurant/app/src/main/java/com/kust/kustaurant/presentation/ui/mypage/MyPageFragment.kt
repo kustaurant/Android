@@ -46,7 +46,6 @@ class MyPageFragment : Fragment() {
         } else {
             binding.myIvEdit.visibility = View.GONE
             binding.myIvLogIn.visibility = View.VISIBLE
-            binding.myFlLogIn.visibility = View.VISIBLE
             binding.myIvUser.setImageResource(R.drawable.ic_none_user)
             initLogIn()
             disableButtons()
@@ -59,7 +58,6 @@ class MyPageFragment : Fragment() {
         binding.myIvLogIn.setOnClickListener {
             val intent = Intent(requireContext(), StartActivity::class.java)
             startActivity(intent)
-            onDestroy()
         }
     }
 

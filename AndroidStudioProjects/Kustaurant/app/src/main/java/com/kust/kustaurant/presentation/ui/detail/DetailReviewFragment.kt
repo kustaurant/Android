@@ -114,19 +114,9 @@ class DetailReviewFragment : Fragment() {
         }
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("life","review start")
-    }
-
-
     override fun onResume() {
         super.onResume()
-        Log.d("life","review resume")
         viewModel.loadCommentData(restaurantId, popularity)
-        Log.d("reviewData", viewModel.loadCommentData(restaurantId, popularity).toString())
-
     }
 
     private fun initRecyclerView() {
