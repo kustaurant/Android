@@ -35,7 +35,8 @@
             android:id="@+id/home_iv_logo"
             android:layout_width="126dp"
             android:layout_height="33dp"
-            android:src="@drawable/img_logo"
+            android:src="@drawable/img_kustaurant_green"
+            android:scaleType="fitCenter"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -181,8 +182,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_TOP_cl"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="360:50"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/home_select_category_cl"
                 app:layout_constraintStart_toStartOf="@id/gl_start2"
                 app:layout_constraintEnd_toEndOf="@id/gl_end2"
@@ -224,12 +224,12 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/home_TOP_rv"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             tools:listitem="@layout/item_home_rv"
                             app:layout_constraintStart_toStartOf="parent"
@@ -241,8 +241,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_ME_cl"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="360:50"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/home_TOP"
                 app:layout_constraintStart_toStartOf="@id/gl_start2"
                 app:layout_constraintEnd_toEndOf="@id/gl_end2"

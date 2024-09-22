@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_RV"
     android:layout_width="190dp"
-    android:layout_height="215dp"
+    android:layout_height="235dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -111,7 +111,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/home_benefit_tv"
         app:layout_constraintTop_toTopOf="@id/home_benefit_tv"
-        android:text="어디대 학생증 제시시 10시 이후 주먹밥이나 계란찜 서비스"
+        android:text="어디대 학생증 제시시 10시 이후 주먹밥이나 계란찜 서비스를 드립니다"
         android:textSize="13sp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/cement_4"/>
