@@ -17,8 +17,13 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface DetailApi {
-    @GET("/api/v1/restaurants/{restaurantId}")
+    @GET("/api/v1/auth/restaurants/{restaurantId}")
     suspend fun getDetailData(
+        @Path("restaurantId") restaurantId : Int
+    ) : DetailDataResponse
+
+    @GET("/api/v1/restaurants/{restaurantId}")
+    suspend fun getAnonDetailData(
         @Path("restaurantId") restaurantId : Int
     ) : DetailDataResponse
 
@@ -53,7 +58,7 @@ interface DetailApi {
         @Part evaluationSituations: List<MultipartBody.Part>,
         @Part("evaluationComment") evaluationComment: RequestBody?,
         @Part newImage: MultipartBody.Part?
-    ) : DetailDataResponse
+    ) : List<CommentDataResponse>
 
     @DELETE("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}")
     suspend fun deleteCommentData(

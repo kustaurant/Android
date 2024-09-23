@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,7 +29,7 @@ class HomeViewModel @Inject constructor(
                 val response = getHomeDataUseCase.invoke()
                 _homeResponse.postValue(response)
             } catch (e: Exception) {
-                // 에러 처리
+                Log.e("홈 뷰모델", "getHomeData Error", e)
             }
         }
     }

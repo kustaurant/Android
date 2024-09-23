@@ -50,7 +50,7 @@ class MyOpinionActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.opinionBtnBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

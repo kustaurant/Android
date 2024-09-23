@@ -14,13 +14,15 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/tier_iv_restaurant_img"
             android:layout_width="98dp"
             android:layout_height="74dp"
             android:contentDescription="@string/restaurant_img_info"
             android:paddingEnd="24dp"
             android:scaleType="centerCrop"
+            app:strokeColor="@null"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
             android:src="@drawable/img_default_restaurant"
             app:layout_constraintBottom_toTopOf="@+id/tier_divider"
             app:layout_constraintStart_toStartOf="parent"

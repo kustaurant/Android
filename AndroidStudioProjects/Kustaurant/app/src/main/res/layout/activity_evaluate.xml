@@ -47,6 +47,16 @@
                 app:layout_constraintStart_toStartOf="@id/gl_start"
                 app:layout_constraintEnd_toEndOf="@id/gl_end">
 
+                <FrameLayout
+                    android:id="@+id/evaluate_fl_iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/evaluate_iv_back"
+                    app:layout_constraintEnd_toEndOf="@id/evaluate_iv_back"
+                    app:layout_constraintTop_toTopOf="@id/evaluate_iv_back"
+                    app:layout_constraintBottom_toBottomOf="@id/evaluate_iv_back"
+                    android:padding="20dp"/>
+
                 <ImageView
                     android:id="@+id/evaluate_iv_back"
                     android:layout_width="wrap_content"
@@ -66,6 +76,16 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
+
+                <FrameLayout
+                    android:id="@+id/evaluate_fl_iv_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/evaluate_iv_search"
+                    app:layout_constraintEnd_toEndOf="@id/evaluate_iv_search"
+                    app:layout_constraintTop_toTopOf="@id/evaluate_iv_search"
+                    app:layout_constraintBottom_toBottomOf="@id/evaluate_iv_search"
+                    android:padding="20dp"/>
 
                 <ImageView
                     android:id="@+id/evaluate_iv_search"

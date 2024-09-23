@@ -46,6 +46,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <FrameLayout
+            android:id="@+id/my_fl_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/terms_use_btn_back"
+            app:layout_constraintEnd_toEndOf="@id/terms_use_btn_back"
+            app:layout_constraintTop_toTopOf="@id/terms_use_btn_back"
+            app:layout_constraintBottom_toBottomOf="@id/terms_use_btn_back"
+            android:padding="20dp"/>
+
         <ImageView
             android:id="@+id/terms_use_btn_back"
             android:layout_width="wrap_content"
@@ -65,5 +75,15 @@
         app:layout_constraintTop_toBottomOf="@id/terms_use_cl_top_bar"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/terms_use_la_loading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="120dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintTop_toBottomOf="@id/terms_use_cl_top_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_rawRes="@raw/loading"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

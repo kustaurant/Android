@@ -289,6 +289,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/signature_1"
                         android:textSize="12sp"
+                        android:visibility="invisible"
                         android:layout_marginTop="14dp"
                         app:layout_constraintStart_toStartOf="@id/gl_info_start"
                         app:layout_constraintTop_toBottomOf="@id/ll_store_time"
@@ -547,6 +548,7 @@
                 app:layout_constraintWidth_percent="0.72">
 
                 <TextView
+                    android:id="@+id/detail_tv_evaluate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/detail_to_evaluate"
@@ -560,6 +562,16 @@
                     app:layout_constraintEnd_toEndOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/detail_fl_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/detail_cl_favorite"
+                app:layout_constraintEnd_toEndOf="@id/detail_cl_favorite"
+                app:layout_constraintTop_toTopOf="@id/detail_cl_favorite"
+                app:layout_constraintBottom_toBottomOf="@id/detail_cl_favorite"
+                android:padding="20dp"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/detail_cl_favorite"
@@ -617,6 +629,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>

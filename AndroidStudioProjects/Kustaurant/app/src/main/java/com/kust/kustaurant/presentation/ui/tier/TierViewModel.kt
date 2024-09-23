@@ -57,7 +57,7 @@ class TierViewModel @Inject constructor(
         _isExpanded.value = _isExpanded.value?.not()
     }
 
-    private fun loadRestaurantList(
+   private fun loadRestaurantList(
         menus: Set<String>,
         situations: Set<String>,
         locations: Set<String>
@@ -118,12 +118,16 @@ class TierViewModel @Inject constructor(
         locations: Set<String>
     ) {
         viewModelScope.launch {
-            val tierMapData = getTierRestaurantMapUseCase(
-                CategoryIdMapper.mapMenus(menus),
-                CategoryIdMapper.mapSituations(situations),
-                CategoryIdMapper.mapLocations(locations)
-            )
-            _mapData.value = tierMapData
+            try {
+                val tierMapData = getTierRestaurantMapUseCase(
+                    CategoryIdMapper.mapMenus(menus),
+                    CategoryIdMapper.mapSituations(situations),
+                    CategoryIdMapper.mapLocations(locations)
+                )
+                _mapData.value = tierMapData
+            } catch (e : Exception) {
+                Log.e("티어 뷰모델", "loadRestaurantMap Error", e)
+            }
         }
     }
 

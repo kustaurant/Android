@@ -14,6 +14,16 @@ import com.kust.kustaurant.presentation.ui.detail.MenuData
 
 class SaveRestaurantAdapter(val context: Context) : ListAdapter<MyFavoriteResponse, SaveRestaurantAdapter.ViewHolder>(diffUtil) {
 
+    private lateinit var itemClickListener : OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onSaveClicked(restaurantId : Int)
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+        itemClickListener = onItemClickListener
+    }
+
     inner class ViewHolder(val binding : ItemMySaveBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : MyFavoriteResponse){
             Glide.with(context)
@@ -29,6 +39,10 @@ class SaveRestaurantAdapter(val context: Context) : ListAdapter<MyFavoriteRespon
                 3 -> binding.saeIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_3)
                 4 -> binding.saeIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_4)
                 else -> binding.saeIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_all)
+            }
+
+            binding.myClSave.setOnClickListener {
+                itemClickListener.onSaveClicked(item.restaurantId)
             }
         }
     }

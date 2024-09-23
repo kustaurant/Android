@@ -19,6 +19,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.databinding.ActivityEvaluateBinding
+import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +28,7 @@ class EvaluateActivity : AppCompatActivity() {
     private lateinit var keyWordAdapter: EvaluateKeyWordAdapter
     private var keyWordList: ArrayList<String> = arrayListOf()
     private lateinit var ratingBar: RatingBar
+    private var isEvaluated = false
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
     private var restaurantId = 1
@@ -39,11 +41,12 @@ class EvaluateActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         restaurantId = intent.getIntExtra("restaurantId", 1)
-        val isEvaluated = intent.getBooleanExtra("isEvaluated", false)
+        isEvaluated = intent.getBooleanExtra("isEvaluated", false)
         viewModel.loadEvaluateData(restaurantId)
 
         if(isEvaluated){
            viewModel.loadMyEvaluationData(restaurantId)
+            binding.btnSubmit.text = "다시 평가하기"
         }
 
         observeViewModel()
@@ -54,8 +57,16 @@ class EvaluateActivity : AppCompatActivity() {
         initPhotoPicker()
         initPlusPhoto()
         initRatingBar()
+        initSearch()
         submitEvaluate()
         setContentView(binding.root)
+    }
+
+    private fun initSearch() {
+        binding.evaluateFlIvSearch.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun observeViewModel() {
@@ -80,7 +91,7 @@ class EvaluateActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.evaluateIvBack.setOnClickListener {
+        binding.evaluateFlIvBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
 
         }
@@ -173,6 +184,14 @@ class EvaluateActivity : AppCompatActivity() {
             val imageUrl = (binding.ivPlusPhoto.tag as? Uri)  // 이미지 URI 저장을 위한 방법 중 하나
             viewModel.postEvaluationData(this , restaurantId, rating.toDouble(), comment, keywords, imageUrl)
             finish()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(isEvaluated){
+            viewModel.loadMyEvaluationData(restaurantId)
+            binding.btnSubmit.text = "다시 평가하기"
         }
     }
 }

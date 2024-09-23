@@ -29,7 +29,7 @@ class MyCommentActivity : AppCompatActivity() {
     }
 
     private fun initBack() {
-        binding.commentBtnBack.setOnClickListener {
+        binding.myFlBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

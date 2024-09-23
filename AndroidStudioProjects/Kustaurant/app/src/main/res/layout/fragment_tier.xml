@@ -92,7 +92,16 @@
                 app:tabGravity="fill"
                 app:tabMode="fixed"/>
 
-            <!-- Search Button -->
+            <FrameLayout
+                android:id="@+id/tier_fl_iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/tier_iv_search"
+                app:layout_constraintEnd_toEndOf="@id/tier_iv_search"
+                app:layout_constraintTop_toTopOf="@id/tier_iv_search"
+                app:layout_constraintBottom_toBottomOf="@id/tier_iv_search"
+                android:padding="20dp"/>
+
             <ImageView
                 android:id="@+id/tier_iv_search"
                 android:layout_width="wrap_content"

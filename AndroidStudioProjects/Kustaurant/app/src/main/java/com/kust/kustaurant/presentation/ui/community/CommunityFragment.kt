@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.community
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.kust.kustaurant.databinding.FragmentCommunityBinding
-import com.kust.kustaurant.presentation.util.TouchExtension
+import com.kust.kustaurant.presentation.ui.search.SearchActivity
 
 class CommunityFragment  : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
@@ -30,11 +31,14 @@ class CommunityFragment  : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
         setupTabLayout()
-        initTouchExtension()
+        initSearch()
     }
 
-    private fun initTouchExtension() {
-        TouchExtension.expandTouchArea(binding.communityClEntireParent, binding.topBar, 40)
+    private fun initSearch() {
+        binding.communityFlIvSearch.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupViewPager() {

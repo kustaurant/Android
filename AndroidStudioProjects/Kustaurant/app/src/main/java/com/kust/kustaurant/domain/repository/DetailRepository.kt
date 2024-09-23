@@ -15,6 +15,10 @@ interface DetailRepository {
         restaurantId : Int
     ): DetailDataResponse
 
+    suspend fun getAnonDetailData(
+        restaurantId : Int
+    ): DetailDataResponse
+
     suspend fun getCommentData(
         restaurantId: Int, sort: String
     ) : List<CommentDataResponse>
@@ -37,7 +41,7 @@ interface DetailRepository {
         evaluationSituations: List<MultipartBody.Part>,
         evaluationComment: RequestBody?,
         newImage: MultipartBody.Part?
-    ) : DetailDataResponse
+    ) : List<CommentDataResponse>
 
     suspend fun deleteCommentData(
         restaurantId: Int,
