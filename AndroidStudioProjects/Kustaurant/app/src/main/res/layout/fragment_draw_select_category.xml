@@ -16,33 +16,34 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.draw.DrawSelectCategoryFragment">
 
+        <!-- Start Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/draw_gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <!-- End Guideline -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/draw_gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
         <ScrollView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
+            app:layout_constraintStart_toStartOf="@id/draw_gl_start"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <!-- Start Guideline -->
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/draw_gl_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.05" />
-
-                <!-- End Guideline -->
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/draw_gl_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.95" />
 
                 <TextView
                     android:id="@+id/draw_tv_select_info"
@@ -64,8 +65,8 @@
                     android:fadingEdgeLength="30dp"
                     android:requiresFadingEdge="horizontal"
                     android:scrollbars="none"
-                    app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
-                    app:layout_constraintStart_toStartOf="@id/draw_gl_start"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/draw_tv_select_info">
 
                     <LinearLayout
@@ -178,8 +179,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="26dp"
                     app:layout_constraintDimensionRatio="360:375"
-                    app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
-                    app:layout_constraintStart_toStartOf="@id/draw_gl_start"
+                    android:padding="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/draw_sv_select_type">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -658,6 +660,7 @@
                                 android:textSize="11sp" />
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
@@ -671,9 +674,9 @@
                     android:text="랜덤 뽑기"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="@id/draw_gl_end"
-                    app:layout_constraintStart_toStartOf="@id/draw_gl_start"
-                    app:layout_constraintTop_toBottomOf="@id/draw_cl_menu_group" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/draw_cl_menu_group"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
