@@ -182,7 +182,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_TOP_cl"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="360:50"
                 app:layout_constraintTop_toBottomOf="@id/home_select_category_cl"
                 app:layout_constraintStart_toStartOf="@id/gl_start2"
                 app:layout_constraintEnd_toEndOf="@id/gl_end2"
@@ -241,7 +242,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_ME_cl"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="360:50"
                 app:layout_constraintTop_toBottomOf="@id/home_TOP"
                 app:layout_constraintStart_toStartOf="@id/gl_start2"
                 app:layout_constraintEnd_toEndOf="@id/gl_end2"
