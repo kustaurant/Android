@@ -71,11 +71,6 @@ class TierFragment : Fragment() {
         updateCategoryLinearLayout(setOf("전체"))
     } 
 
-    private fun initTouchExtension() {
-        TouchExtension.expandTouchArea(binding.topBar, binding.btnBack, 40)
-        TouchExtension.expandTouchArea(binding.topBar, binding.tierIvSearch, 40)
-    }
- 
     private fun setupViewPager() {
         pagerAdapter = TierPagerAdapter(this)
         binding.tierViewPager.adapter = pagerAdapter

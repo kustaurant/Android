@@ -211,12 +211,12 @@ class TierViewModel @Inject constructor(
         val selectedSelectedLocations = selectedLocations.value ?: emptySet()
 
         if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
-            _tierListPage  = 1
+            _tierListPage = 1
         } else if (state == RestaurantState.NEXT_PAGE_LIST_DATA) {
             _tierListPage++
         }
 
-        if(!(state == RestaurantState.NEXT_PAGE_LIST_DATA && tierRestaurantList.value == emptyList<TierRestaurant>()))
+        if (!(state == RestaurantState.NEXT_PAGE_LIST_DATA && tierRestaurantList.value == emptyList<TierRestaurant>()))
             loadRestaurantList(
                 selectedTypesValue,
                 selectedSelectedSituations,
