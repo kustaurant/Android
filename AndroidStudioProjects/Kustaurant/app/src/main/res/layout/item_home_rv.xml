@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@id/home_imgurl"
         app:layout_constraintStart_toStartOf="parent"
         android:text="일식"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/cement_6"
         android:layout_marginTop="8dp"/>
@@ -46,7 +46,7 @@
         app:layout_constraintStart_toEndOf="@id/home_cuisine"
         app:layout_constraintTop_toTopOf="@id/home_cuisine"
         android:text=" ㅣ "
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/cement_6"/>
 
@@ -57,7 +57,7 @@
         app:layout_constraintStart_toEndOf="@id/home_divider"
         app:layout_constraintTop_toTopOf="@id/home_cuisine"
         android:text="중문 ~ 어대"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/cement_6"/>
 
@@ -78,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/home_cuisine"
         android:text=" 4.5"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:layout_marginEnd="2dp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/top_gray"/>
@@ -90,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@id/home_cuisine"
         app:layout_constraintStart_toStartOf="@id/home_cuisine"
         android:text="호야초밥 참치 본점"
-        android:textSize="15sp"
+        android:textSize="15dp"
         android:fontFamily="@font/pretendard_medium"
         android:textColor="@color/cement_6"/>
 
@@ -101,7 +101,7 @@
         app:layout_constraintStart_toStartOf="@id/home_cuisine"
         app:layout_constraintTop_toBottomOf="@id/home_name"
         android:text="제휴 : "
-        android:textSize="13sp"
+        android:textSize="13dp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/cement_4"/>
 
@@ -112,7 +112,7 @@
         app:layout_constraintStart_toEndOf="@id/home_benefit_tv"
         app:layout_constraintTop_toTopOf="@id/home_benefit_tv"
         android:text="어디대 학생증 제시시 10시 이후 주먹밥이나 계란찜 서비스를 드립니다"
-        android:textSize="13sp"
+        android:textSize="13dp"
         android:fontFamily="@font/pretendard_regular"
         android:textColor="@color/cement_4"/>
 

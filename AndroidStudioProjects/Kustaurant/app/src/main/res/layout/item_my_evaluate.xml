@@ -42,7 +42,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/my_rv_grade"
-            android:textSize="16sp"
+            android:textSize="16dp"
             android:layout_marginStart="12dp"
             android:text="가츠시 건대점"
             android:fontFamily="@font/pretendard_semibold"
@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@id/my_cv_evaluate_restaurant"
         android:text="그냥저냥 괜찮음 신선함 덜느끼함 맛있음"
         android:fontFamily="@font/pretendard_regular"
-        android:textSize="14sp"
+        android:textSize="14dp"
         android:textColor="@color/cement_6"
         android:layout_marginTop="10dp"/>
 

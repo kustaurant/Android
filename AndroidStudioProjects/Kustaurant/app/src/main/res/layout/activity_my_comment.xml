@@ -33,7 +33,7 @@
                 android:gravity="center"
                 android:text="커뮤니티 댓글 단 글"
                 android:textColor="@color/black"
-                android:textSize="17sp"
+                android:textSize="17dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

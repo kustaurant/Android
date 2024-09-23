@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="B특호야"
             android:textColor="@color/cement_5"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:fontFamily="@font/pretendard_regular"
             android:layout_marginBottom="3dp"/>
 
@@ -47,7 +47,7 @@
             android:fontFamily="@font/pretendard_regular"
             android:textColor="@color/cement_6"
             android:text="29,000원"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:layout_marginTop="3dp"/>
 
     </LinearLayout>

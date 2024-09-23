@@ -57,7 +57,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/cement_7"
-                android:textSize="11sp"
+                android:textSize="11dp"
                 tools:text="닉네임" />
 
             <ImageView
@@ -75,7 +75,7 @@
                 android:gravity="center"
                 android:text=""
                 android:textColor="@color/cement_7"
-                android:textSize="11sp"
+                android:textSize="11dp"
                 tools:text="1일전" />
         </LinearLayout>
 
@@ -111,7 +111,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/signature_1"
-                android:textSize="11sp"
+                android:textSize="11dp"
                 tools:text="123" />
 
             <ImageView
@@ -128,7 +128,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/cement_4"
-                android:textSize="11sp"
+                android:textSize="11dp"
                 tools:text="123" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
