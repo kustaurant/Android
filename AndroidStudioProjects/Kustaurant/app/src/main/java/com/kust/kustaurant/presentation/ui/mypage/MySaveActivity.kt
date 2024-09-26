@@ -54,6 +54,7 @@ class MySaveActivity : AppCompatActivity() {
         saveRestaurantAdapter.setOnItemClickListener(object : SaveRestaurantAdapter.OnItemClickListener{
             override fun onSaveClicked(restaurantId: Int) {
                 val intent = Intent(this@MySaveActivity, DetailActivity::class.java)
+                intent.putExtra("restaurantId", restaurantId)
                 startActivity(intent)
             }
 
