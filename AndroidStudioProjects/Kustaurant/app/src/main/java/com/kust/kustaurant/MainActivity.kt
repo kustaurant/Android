@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // AppUpdateManager 인스턴스 생성 및 업데이트 검사 실행
+        val updateManager = AppUpdateManager(this)
+        updateManager.checkForUpdates()
+
         onBackPressedDispatcher.addCallback(this) {
             val currentFragment = supportFragmentManager.findFragmentById(R.id.main_frm)
             if (currentFragment is HomeFragment) {
@@ -54,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.menu_community -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, CommunityBlankFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.main_frm, CommunityFragment()).commit()
                     return@setOnItemSelectedListener true
                 }
                 R.id.menu_mypage -> {
