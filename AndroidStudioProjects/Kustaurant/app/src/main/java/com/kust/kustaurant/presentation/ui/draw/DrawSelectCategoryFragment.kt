@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ToggleButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.kust.kustaurant.R
@@ -22,7 +23,7 @@ class DrawSelectCategoryFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel : DrawViewModel by activityViewModels()
     private var selectedMenus = mutableSetOf<String>("전체")
-    private lateinit var allMenuViews: List<LinearLayout>
+    private lateinit var allMenuViews: List<ConstraintLayout>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -178,17 +179,17 @@ class DrawSelectCategoryFragment : Fragment() {
     }
 
     private fun initMenuClickListeners() {
-        allMenuViews.forEach { linearLayout ->
-            linearLayout.setOnClickListener {
-                val textView = linearLayout.getChildAt(1) as? TextView
+        allMenuViews.forEach { constraintLayout ->
+            constraintLayout.setOnClickListener {
+                val textView = constraintLayout.getChildAt(1) as? TextView
                 textView?.let { tv ->
                     val menuText = tv.text.toString()
-                    setupToggleMenuSelection(menuText, linearLayout)
+                    setupToggleMenuSelection(menuText, constraintLayout)
                 }
             }
         }
     }
-    private fun setupToggleMenuSelection(menuText: String, view: LinearLayout) {
+    private fun setupToggleMenuSelection(menuText: String, view: ConstraintLayout) {
         val isSelected = !view.isSelected
         view.isSelected = isSelected
         applyMenuToggleUI(view, isSelected)
@@ -214,7 +215,7 @@ class DrawSelectCategoryFragment : Fragment() {
     }
 
     // "전체" 또는 "제휴업체"가 선택되었을 때 다른 메뉴 해제
-    private fun deselectOtherMenusToggle(excludeView: LinearLayout) {
+    private fun deselectOtherMenusToggle(excludeView: ConstraintLayout) {
         allMenuViews.filter { it != excludeView }.forEach { menuView ->
             menuView.isSelected = false
             applyMenuToggleUI(menuView, false)
