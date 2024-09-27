@@ -21,7 +21,7 @@
         android:paddingBottom="3dp"
         android:text=""
         android:textColor="@color/cement_7"
-        android:textSize="11sp"
+        android:textSize="11dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="자유게시판" />
@@ -38,7 +38,7 @@
         android:singleLine="true"
         android:text="@{restaurant.restaurantName}"
         android:textColor="@color/community_post_title"
-        android:textSize="15sp"
+        android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/community_iv_board_img"
         app:layout_constraintStart_toStartOf="parent"

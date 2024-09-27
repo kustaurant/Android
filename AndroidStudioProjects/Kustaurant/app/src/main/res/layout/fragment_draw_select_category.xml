@@ -33,7 +33,7 @@
             app:layout_constraintGuide_percent="0.95" />
 
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -175,13 +175,11 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/draw_cl_menu_group"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginTop="26dp"
                     app:layout_constraintDimensionRatio="360:375"
                     android:padding="2dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/draw_sv_select_type">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -194,10 +192,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_all"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -207,25 +207,35 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_all"
                                 android:src="@drawable/img_category_all" />
 
                             <TextView
+                                android:id="@+id/draw_tv_all"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="전체"
                                 android:textColor="@color/black"
                                 android:textSize="11sp"
+                                android:layout_marginBottom="3dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:textStyle="" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_korea"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -235,24 +245,34 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_korea"
                                 android:src="@drawable/img_category_korea" />
 
                             <TextView
+                                android:id="@+id/draw_tv_korea"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginBottom="3dp"
                                 android:text="한식"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_japan"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -262,24 +282,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_japan"
                                 android:src="@drawable/img_category_japan" />
 
                             <TextView
+                                android:id="@+id/draw_tv_japan"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="일식"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginBottom="3dp"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_china"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -288,19 +317,26 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_china"
                                 android:src="@drawable/img_category_china" />
 
                             <TextView
+                                android:id="@+id/draw_tv_china"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="중식"
+                                android:layout_marginBottom="3dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -315,10 +351,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/home_category_cl1">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_western"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -328,24 +366,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_western"
                                 android:src="@drawable/img_category_western" />
 
                             <TextView
+                                android:id="@+id/draw_tv_western"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:text="양식"
+                                android:layout_marginBottom="3dp"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_asian"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -355,24 +402,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_asian"
                                 android:src="@drawable/img_category_asian" />
 
                             <TextView
+                                android:id="@+id/draw_tv_asian"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:text="아시안"
+                                android:layout_marginBottom="3dp"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_meat"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -382,24 +438,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_meat"
                                 android:src="@drawable/img_category_meat" />
 
                             <TextView
+                                android:id="@+id/draw_tv_meat"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:text="고기"
+                                android:layout_marginBottom="3dp"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_seafood"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.2"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -408,19 +473,26 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_seafood"
                                 android:src="@drawable/img_category_seafood" />
 
                             <TextView
+                                android:id="@+id/draw_tv_seafood"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:text="중식"
+                                android:layout_marginBottom="3dp"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -435,10 +507,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/home_category_cl2">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_chicken"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -448,24 +522,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_chicken"
                                 android:src="@drawable/img_category_chicken" />
 
                             <TextView
+                                android:id="@+id/draw_tv_chicken"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:text="치킨"
+                                android:layout_marginBottom="3dp"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_hamburger_pizza"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -475,24 +558,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_hamburger"
                                 android:src="@drawable/img_category_hamburger_pizza" />
 
                             <TextView
+                                android:id="@+id/draw_tv_hamburger"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:text="햄버거/피자"
+                                android:layout_marginBottom="3dp"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_tteokbokki"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -502,24 +594,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_tteokbokki"
                                 android:src="@drawable/img_category_tteokbokki" />
 
                             <TextView
+                                android:id="@+id/draw_tv_tteokbokki"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="분식"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:textColor="@color/black"
+                                android:layout_marginBottom="3dp"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_beer"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -528,18 +629,25 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_beer"
+                                android:layout_marginHorizontal="6dp"
                                 android:src="@drawable/img_category_beer" />
 
                             <TextView
+                                android:id="@+id/draw_tv_beer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:text="술집"
+                                android:layout_marginBottom="3dp"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -553,10 +661,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/home_category_cl3">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_cafe"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -567,24 +677,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_cafe"
                                 android:src="@drawable/img_category_cafe" />
 
                             <TextView
+                                android:id="@+id/draw_tv_cafe"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:text="카페/디저트"
+                                android:layout_marginBottom="3dp"
                                 android:textColor="@color/black"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_bakery"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -594,24 +713,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_bakery"
+                                android:layout_marginHorizontal="6dp"
                                 android:src="@drawable/img_category_bakery" />
 
                             <TextView
+                                android:id="@+id/draw_tv_bakery"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="베이커리"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:textColor="@color/black"
+                                android:layout_marginBottom="3dp"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_salad"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -621,24 +749,33 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginHorizontal="6dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_salad"
                                 android:src="@drawable/img_category_salad" />
 
                             <TextView
+                                android:id="@+id/draw_tv_salad"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="샐러드"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:textColor="@color/black"
+                                android:layout_marginBottom="3dp"
                                 android:textSize="11sp" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/home_btn_benefit"
-                            android:layout_width="73dp"
-                            android:layout_height="85dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintWidth_percent="0.21"
+                            app:layout_constraintDimensionRatio="75:83"
                             android:background="@drawable/all_radius_15_none"
                             android:clickable="true"
                             android:gravity="center"
@@ -647,18 +784,25 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
+                                app:layout_constraintBottom_toTopOf="@id/draw_tv_benefit"
+                                android:layout_marginHorizontal="6dp"
                                 android:src="@drawable/img_category_benefit" />
 
                             <TextView
+                                android:id="@+id/draw_tv_benefit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 android:text="제휴업체"
                                 android:textColor="@color/black"
+                                android:layout_marginBottom="3dp"
                                 android:textSize="11sp" />
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

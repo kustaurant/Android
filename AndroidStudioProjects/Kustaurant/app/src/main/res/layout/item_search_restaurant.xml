@@ -71,7 +71,7 @@
         android:singleLine="true"
         android:text="@{restaurant.restaurantName}"
         android:textColor="#323232"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/search_iv_restaurant_img"
         app:layout_constraintTop_toTopOf="parent"

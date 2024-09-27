@@ -53,7 +53,7 @@
                     android:fontFamily="@font/pretendard_semibold"
                     android:text="@string/draw_random_top_info"
                     android:textColor="@color/black"
-                    android:textSize="17sp"
+                    android:textSize="17dp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

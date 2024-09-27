@@ -22,7 +22,7 @@
         android:paddingBottom="3dp"
         android:text=""
         android:textColor="@color/cement_7"
-        android:textSize="11sp"
+        android:textSize="11dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="자유게시판" />
@@ -38,7 +38,7 @@
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="@color/community_post_title"
-        android:textSize="15sp"
+        android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/community_iv_post_img"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
         android:singleLine="true"
         android:text="@{restaurant.restaurantName}"
         android:textColor="@color/community_post_title"
-        android:textSize="15sp"
+        android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@id/community_iv_post_img"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/community_tv_post_title"
@@ -86,7 +86,7 @@
             android:layout_marginStart="3dp"
             android:text=""
             android:textColor="@color/cement_7"
-            android:textSize="11sp"
+            android:textSize="11dp"
             tools:text="닉네임" />
 
         <ImageView
@@ -104,7 +104,7 @@
             android:gravity="center"
             android:text=""
             android:textColor="@color/cement_7"
-            android:textSize="11sp"
+            android:textSize="11dp"
             tools:text="1일전" />
 
         <ImageView
@@ -128,7 +128,7 @@
             android:layout_marginStart="4dp"
             android:fontFamily="@font/pretendard_medium"
             android:textColor="@color/signature_1"
-            android:textSize="11sp"
+            android:textSize="11dp"
             tools:text="123" />
 
         <ImageView
@@ -145,7 +145,7 @@
             android:layout_marginStart="4dp"
             android:fontFamily="@font/pretendard_medium"
             android:textColor="@color/cement_4"
-            android:textSize="11sp"
+            android:textSize="11dp"
             tools:text="123" />
     </LinearLayout>
 

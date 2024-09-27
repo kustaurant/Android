@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 
-data class CategoryItem(val imageResId: String, val text: String)
+data class CategoryItem(val imageResId: Int, val text: String)
 class CategoryAdapter(private val categoryList: List<CategoryItem>,
                       private val itemClickListener: CategoryItemClickListener) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
@@ -42,9 +42,7 @@ class CategoryAdapter(private val categoryList: List<CategoryItem>,
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val categoryItem = categoryList[position]
-        Glide.with(holder.itemView.context)
-            .load(categoryItem.imageResId)
-            .into(holder.imageView)
+        holder.imageView.setImageResource(categoryItem.imageResId)
         holder.textView.text = categoryItem.text
     }
 
