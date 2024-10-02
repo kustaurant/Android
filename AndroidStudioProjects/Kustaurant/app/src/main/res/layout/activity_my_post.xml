@@ -33,7 +33,7 @@
                 android:gravity="center"
                 android:text="내 게시글"
                 android:textColor="@color/black"
-                android:textSize="17sp"
+                android:textSize="17dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="26dp"
-                android:textSize="17sp"
+                android:textSize="17dp"
                 android:fontFamily="@font/pretendard_semibold"
                 android:textColor="@color/cement_4"
                 android:text="아직 작성한 게시글이 없어요"/>

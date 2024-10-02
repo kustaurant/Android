@@ -57,7 +57,7 @@
             android:gravity="center"
             android:text="@string/tier_popup_title"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
+            android:textSize="17dp"
             android:textStyle="bold" />
 
         <View
@@ -79,7 +79,7 @@
             android:fontFamily="@font/pretendard_regular"
             android:text=""
             android:textColor="@color/cement_5"
-            android:textSize="14sp"
+            android:textSize="14dp"
             tools:text="식당의 티어는 여러분이 부여한 소중한 평가 점수가 반영되어 결정됩니다! 평가는 각 식당의 상세 페이지에서 할 수 있으며, 점수는 5점 만점입니다. 식당에 대한 평가의 평균 점수로 티어가 산출됩니다" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

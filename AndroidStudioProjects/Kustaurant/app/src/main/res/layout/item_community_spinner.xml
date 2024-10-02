@@ -5,4 +5,4 @@
     android:layout_height="wrap_content"
     android:padding="8dp"
     android:textColor="@color/signature_1"
-    android:textSize="14sp" />
+    android:textSize="14dp" />
