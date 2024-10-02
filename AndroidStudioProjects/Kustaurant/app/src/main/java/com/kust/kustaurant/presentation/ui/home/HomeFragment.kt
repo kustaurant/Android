@@ -3,6 +3,7 @@ package com.kust.kustaurant.presentation.ui.home
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
@@ -170,6 +172,32 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
 
             addItemDecoration(CategorySpaceDecoration(spanCount, spacingInPx))
             adapter = categoryAdapter
+        }
+    }
+
+    class CategorySpaceDecoration(private val spanCount: Int, private val spacing: Int) :
+        RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(
+            outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+        ) {
+            val position = parent.getChildAdapterPosition(view) // 아이템 위치
+            val column = position % spanCount // 아이템의 열 위치
+
+            // 왼쪽 여백 설정
+            if (column > 0) { // 첫 번째 열이 아닌 경우에만 왼쪽 여백 추가
+                outRect.left = spacing / 2
+            }
+
+            // 오른쪽 여백 설정
+            if (column < spanCount - 1) { // 마지막 열이 아닌 경우에만 오른쪽 여백 추가
+                outRect.right = spacing / 2
+            }
+
+            // 상단 여백 설정
+            if (position >= spanCount) { // 첫 번째 줄이 아닌 경우에만 상단 여백 추가
+                outRect.top = spacing
+            }
         }
     }
 
