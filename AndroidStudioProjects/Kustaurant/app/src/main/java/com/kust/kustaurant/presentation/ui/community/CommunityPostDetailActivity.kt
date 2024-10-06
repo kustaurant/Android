@@ -64,8 +64,8 @@ class CommunityPostDetailActivity : AppCompatActivity() {
     }
 
     private fun setupCommentsRecyclerView(commentList: List<CommunityPostComment>) {
-        //val commentAdapter = CommentAdapter(commentList)
-        //binding.commentsRecyclerView.layoutManager = LinearLayoutManager(this)
-        //binding.commentsRecyclerView.adapter = commentAdapter
+//        val commentAdapter = CommentAdapter(commentList)
+//        binding.commentsRecyclerView.layoutManager = LinearLayoutManager(this)
+//        binding.commentsRecyclerView.adapter = commentAdapter
     }
 }

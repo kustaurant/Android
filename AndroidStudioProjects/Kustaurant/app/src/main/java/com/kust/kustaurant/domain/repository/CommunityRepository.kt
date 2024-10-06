@@ -15,6 +15,6 @@ interface CommunityRepository {
     ): List<CommunityRanking>
 
     suspend fun getCommunityPostDetailData(
-        postId: Int
+        postId: Int,
     ): CommunityPost
 }

@@ -28,7 +28,7 @@ class CommunityPostDetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _communityPostDetail.value = getCommunityPostDetailUseCase(postId)
-                Log.e("Community", _communityPostDetail.value.toString())
+                Log.e("CommunityPostDetailViewModel", _communityPostDetail.value.toString())
 
             } catch (e: Exception) {
             }

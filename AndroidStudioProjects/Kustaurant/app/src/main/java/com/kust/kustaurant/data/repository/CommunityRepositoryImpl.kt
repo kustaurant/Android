@@ -20,6 +20,6 @@ class CommunityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCommunityPostDetailData(postId: Int): CommunityPost {
-        return communityApi.getCommunityPostDetailData(postId)
+        return communityApi.getCommunityPostDetailData(postId, "recent")
     }
 }

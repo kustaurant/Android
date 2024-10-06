@@ -77,7 +77,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/alarm_btn_info"
-                android:src="@drawable/ic_bell_badge"
+                android:src="@drawable/ic_dots"
+                app:tint="@color/black"
+                android:backgroundTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -223,3 +225,4 @@
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+

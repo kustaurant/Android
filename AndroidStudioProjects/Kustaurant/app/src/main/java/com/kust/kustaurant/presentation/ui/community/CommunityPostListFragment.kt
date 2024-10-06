@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.community
 
+import android.content.Intent
 import android.widget.TextView
 import android.os.Bundle
 import android.util.Log
@@ -27,7 +28,7 @@ class CommunityPostListFragment : Fragment() {
         setupObservers()
 
         // 초기 데이터 로드
-        viewModel.resetPageAndLoad()
+        viewModel.getCommunityPostList(PostLoadState.POST_FIRST_PAGE, "recent")
     }
 
     override fun onCreateView(
@@ -46,10 +47,10 @@ class CommunityPostListFragment : Fragment() {
 
         commuAdapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener{
             override fun onItemClicked(data: CommunityPost) {
-//                Log.e("CommuItemClicked", data.postId.toString())
-//                val intent = Intent(requireActivity(), CommunityPostDetailActivity::class.java)
-//                intent.putExtra("postId", data.postId)
-//                startActivity(intent)
+                Log.e("CommuItemClicked", data.postId.toString())
+                val intent = Intent(requireActivity(), CommunityPostDetailActivity::class.java)
+                intent.putExtra("postId", data.postId)
+                startActivity(intent)
             }
         })
 
@@ -96,15 +97,13 @@ class CommunityPostListFragment : Fragment() {
                 }
                 viewModel.onPostCategoryChanged(selectedBoard)
             }
-
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
         binding.communityToggleLastestSort.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                // 최신순 정렬 버튼이 체크됨
-                viewModel.onSortChanged("recent")
-
+                viewModel.updateSortAndLoadPosts("recent")
+                binding.communityRecyclerView.scrollToPosition(0)
                 binding.communityTogglePopularSort.isChecked = false
                 buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
             } else {
@@ -112,7 +111,6 @@ class CommunityPostListFragment : Fragment() {
                 if (!binding.communityTogglePopularSort.isChecked) {
                     buttonView.isChecked = true
                 } else {
-                    // 체크가 해제될 경우 텍스트 색상을 기본 색상으로 변경
                     buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
                 }
             }
@@ -120,8 +118,8 @@ class CommunityPostListFragment : Fragment() {
 
         binding.communityTogglePopularSort.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                // 인기순 정렬 버튼이 체크됨
-                viewModel.onSortChanged("popular")
+                viewModel.updateSortAndLoadPosts("popular")
+                binding.communityRecyclerView.scrollToPosition(0)
                 binding.communityToggleLastestSort.isChecked = false
                 buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
             } else {
@@ -129,30 +127,21 @@ class CommunityPostListFragment : Fragment() {
                 if (!binding.communityToggleLastestSort.isChecked) {
                     buttonView.isChecked = true
                 } else {
-                    // 체크가 해제될 경우 텍스트 색상을 기본 색상으로 변경
                     buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
                 }
             }
         }
 
-        // RecyclerView 스크롤 리스너 설정
         binding.communityRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                val totalItemCount = layoutManager.itemCount
-
-                if (lastVisibleItemPosition == totalItemCount - 1) {
+                if (!recyclerView.canScrollVertically(1)) {
                     val postCategory = viewModel.postCategory.value
                     val sort = viewModel.sort.value
-                    val page = viewModel.page.value
 
-                    if (postCategory.isNullOrEmpty() || sort.isNullOrEmpty() || page == null) {
-                        Log.e("CommunityPostListFragment", "Error: Missing parameters - postCategory: $postCategory, sort: $sort, page: $page")
-                    } else {
-                        viewModel.loadCommunityPosts(postCategory, page, sort)
+                    if (!postCategory.isNullOrEmpty() && !sort.isNullOrEmpty()) {
+                        viewModel.getCommunityPostList(PostLoadState.POST_NEXT_PAGE, sort)
                     }
                 }
             }
@@ -160,17 +149,19 @@ class CommunityPostListFragment : Fragment() {
 
         // SwipeRefreshLayout 새로고침 이벤트 처리
         binding.communitySrl.setOnRefreshListener {
-            viewModel.resetPageAndLoad()
+
+            viewModel.getCommunityPostList(
+                PostLoadState.POST_FIRST_PAGE,
+                viewModel.sort.value!!
+            )
+
             binding.communitySrl.isRefreshing = false
         }
-
-
     }
 
     private fun setupObservers() {
         viewModel.communityPosts.observe(viewLifecycleOwner) { posts ->
             commuAdapter.submitList(posts)
-            binding.communityRecyclerView.scrollToPosition(0)
         }
 
         viewModel.postCategory.observe(viewLifecycleOwner) { category ->
@@ -187,9 +178,13 @@ class CommunityPostListFragment : Fragment() {
         viewModel.sort.observe(viewLifecycleOwner) { sort ->
             binding.communityToggleLastestSort.isChecked = sort == "recent"
             binding.communityTogglePopularSort.isChecked = sort == "popular"
-
         }
     }
-
+    companion object {
+        enum class PostLoadState {
+            POST_FIRST_PAGE,
+            POST_NEXT_PAGE,
+        }
+    }
 }
 
