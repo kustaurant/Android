@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.community
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -35,27 +36,63 @@ class CommunityPostDetailActivity : AppCompatActivity() {
         setupObservers()
         setupBackButton()
     }
-
     private fun setupObservers() {
-        // CommunityPost 데이터를 관찰하여 UI 업데이트
         viewModel.communityPostDetail.observe(this) { postDetail ->
             postDetail?.let { post ->
                 binding.communityTvActivityPostInfo.text = post.postCategory
                 binding.communityTvActivityPostInfo.text = post.postTitle
                 binding.communityTvPostUser.text = post.user.userNickname
                 binding.communityTvTimeAgo.text = post.timeAgo
-                //binding.likeCountTextView.text = post.likeCount.toString()
+                binding.communityTvVisitCnt.text = post.postVisitCount
+                binding.communityTvLikeCnt.text = post.likeCount.toString()
+                binding.communityTvCommentsCnt.text = post.commentCount.toString()
+                binding.communityTvTimeAgo.text = post.timeAgo
 
-                // Glide 사용하여 이미지 로드
+                binding.communityTvBtnPostLike.text = post.likeCount.toString()
+                binding.communityTvBtnScrapLike.text = post.scrapCount.toString()
+
+                loadPostBodyToWebView(post.postBody)
+
+                // 사용자 아이콘 이미지 로드
                 Glide.with(this)
                     .load(post.user.rankImg)
                     .into(binding.communityIvUserIcon)
 
-                // 댓글 목록도 업데이트 가능 (RecyclerView로 설정)
+                // 댓글 목록 업데이트
                 setupCommentsRecyclerView(post.postCommentList)
             }
         }
     }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun loadPostBodyToWebView(postBody: String) {
+        val webView = binding.communityWvMiddleContent
+        webView.settings.javaScriptEnabled = false
+
+        // CSS를 추가하여 WebView 내용이 화면 너비에 맞게 조정되도록 함
+        val htmlContent = """
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body { 
+                    font-family: sans-serif; 
+                    line-height: 1.5; 
+                    word-wrap: break-word; 
+                    background: rgba(234, 234, 234, 0.1); /* 10% 투명도의 #EAEAEA(cement_2) */
+                }
+                img { max-width: 100%; height: auto; }
+            </style>
+        </head>
+        <body>
+            $postBody
+        </body>
+        </html>
+    """.trimIndent()
+
+        webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
+    }
+
 
     private fun setupBackButton() {
         binding.btnBack.setOnClickListener {

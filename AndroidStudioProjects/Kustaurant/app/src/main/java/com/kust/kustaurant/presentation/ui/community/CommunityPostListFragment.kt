@@ -28,7 +28,7 @@ class CommunityPostListFragment : Fragment() {
         setupObservers()
 
         // 초기 데이터 로드
-        viewModel.getCommunityPostList(PostLoadState.POST_FIRST_PAGE, "recent")
+        //viewModel.getCommunityPostList(PostLoadState.POST_FIRST_PAGE, "recent")
     }
 
     override fun onCreateView(

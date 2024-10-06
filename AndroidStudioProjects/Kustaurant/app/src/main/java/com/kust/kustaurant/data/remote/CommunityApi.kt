@@ -21,7 +21,6 @@ interface CommunityApi {
 
     @GET("/api/v1/community/{postId}")
     suspend fun getCommunityPostDetailData(
-        @Path("commentId") postId : Int,
-        @Query("sort") sort : String,
+        @Path("postId") postId : Int,
     ) : CommunityPost
 }

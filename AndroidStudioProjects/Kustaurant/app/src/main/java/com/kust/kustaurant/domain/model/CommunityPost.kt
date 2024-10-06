@@ -13,6 +13,11 @@ data class CommunityPost(
     val postCommentList: List<CommunityPostComment>,
     val timeAgo : String,
     val commentCount : Int,
+    val postPhotoImgUrl : String,
+    val postVisitCount : String,
+    val postScrapList : List<ScrapUser>,
+    val scrapCount: Int,
+    val likeUserList : List<ScrapUser>
 )
 
 data class User(
@@ -25,7 +30,32 @@ data class User(
 data class CommunityPostComment(
     val commentId: Int,
     val commentBody: String,
+    val status : String,
     val user: User,
     val likeCount: Int,
-    val dislikeCount: Int
+    val dislikeCount: Int,
+    val createdAt : String,
+    val updatedAt : String,
+    val repliesList : List<CommunityPostComment>,
+    val timeAgo : String,
 )
+
+data class ScrapUser(
+    val userId: Int,
+    val providerId: String,
+    //val accessToken: String,
+    //val refreshToken: String,
+    //val userPassword: String?,
+    val userEmail: String,
+    val phoneNumber: String,
+    val userNickname: String,
+    val status: String,
+    val createdAt: String,
+    val updatedAt: String,
+    val loginApi: String,
+    //val userRole: String,
+    //val roleKey: String,
+    val rankImg: String
+)
+
+

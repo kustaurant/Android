@@ -40,10 +40,6 @@ class CommunityViewModel @Inject constructor(
     private val _rankingSortType = MutableLiveData<String>("")
     val rankingSortType: LiveData<String> = _rankingSortType
 
-    init {
-        loadCommunityPosts("all", 0, "recent")
-    }
-
     fun loadCommunityPosts(postCategory: String, currentPage: Int, sort: String) {
         if (isLastPage) return
 
@@ -61,9 +57,11 @@ class CommunityViewModel @Inject constructor(
                     val currentPosts = _communityPosts.value.orEmpty() + newPosts
                     _communityPosts.postValue(currentPosts)
 
-                    //Log.e("CommunityViewModel", "${newPosts.size},   isLast = $isLastPage, page = ${currentPage}")
 
                 }
+
+                Log.e("CommunityViewModel", "${newPosts.size},   isLast = $isLastPage, page = ${currentPage}")
+
             } catch (e: Exception) {
                 Log.e("CommunityViewModel", "loadCommunityPosts Error", e)
             } finally {  }
