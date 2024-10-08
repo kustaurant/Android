@@ -8,7 +8,9 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,11 +19,10 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
 import com.kust.kustaurant.domain.model.CommunityPostComment
 
-class CommunityReplyAdapter(val context : Context) : ListAdapter<CommunityPostComment, CommunityReplyAdapter.ViewHolder>(
+class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapter<CommunityPostComment, CommunityPostDetailCommentReplyAdapter.ViewHolder>(
     diffUtil) {
 
     private lateinit var itemClickListener : OnItemClickListener
-
 
     interface OnItemClickListener {
         fun onReportClicked(commentId: Int)
@@ -43,28 +44,28 @@ class CommunityReplyAdapter(val context : Context) : ListAdapter<CommunityPostCo
         }
 
         private fun showPopupWindow(anchorView: View) {
-//            val inflater = LayoutInflater.from(context)
-//            val layoutRes = if (getItem(absoluteAdapterPosition).isCommentMine) {
-//                R.layout.popup_review_only_delete
-//            } else {
-//                R.layout.popup_review_only_report
-//            }
-//            val popupView = inflater.inflate(layoutRes, null)
-//            val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
-//
-//            if(layoutRes == R.layout.popup_review_only_report){
-//                popupView.findViewById<ConstraintLayout>(R.id.cl_report).setOnClickListener {
-//                    showReportDialog()
-//                    popupWindow.dismiss()
-//                }
-//            } else {
-//                popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
-//                    itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).commentId)
-//                    popupWindow.dismiss()
-//                }
-//            }
-//
-//            popupWindow.showAsDropDown(anchorView)
+            val inflater = LayoutInflater.from(context)
+            val layoutRes = if (getItem(absoluteAdapterPosition).isCommentMine) {
+                R.layout.popup_review_only_delete
+            } else {
+                R.layout.popup_review_only_report
+            }
+            val popupView = inflater.inflate(layoutRes, null)
+            val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+
+            if(layoutRes == R.layout.popup_review_only_report){
+                popupView.findViewById<ConstraintLayout>(R.id.cl_report).setOnClickListener {
+                    showReportDialog()
+                    popupWindow.dismiss()
+                }
+            } else {
+                popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
+                    itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).commentId)
+                    popupWindow.dismiss()
+                }
+            }
+
+            popupWindow.showAsDropDown(anchorView)
         }
 
         private fun showReportDialog() {
@@ -96,37 +97,32 @@ class CommunityReplyAdapter(val context : Context) : ListAdapter<CommunityPostCo
             }
         }
 
-        fun getLikeIconResource(likeStatus: Int): Int {
+        fun getLikeIconResource(likeStatus: Boolean): Int {
             return when(likeStatus) {
-                1 -> R.drawable.ic_like_true
-                0 -> R.drawable.ic_like_false
-                -1 -> R.drawable.ic_like_false
-                else -> R.drawable.ic_like_false
+                true -> R.drawable.ic_like_true
+                false -> R.drawable.ic_like_false
             }
         }
 
-        fun getDislikeIconResource(likeStatus: Int): Int {
+        fun getDislikeIconResource(likeStatus: Boolean): Int {
             return when(likeStatus) {
-                1 -> R.drawable.ic_dislike_false
-                0 -> R.drawable.ic_dislike_false
-                -1 -> R.drawable.ic_dislike_true
-                else -> R.drawable.ic_dislike_false
+                true -> R.drawable.ic_dislike_true
+                false -> R.drawable.ic_dislike_false
             }
         }
 
-
-        fun bind(item : CommunityPostComment){
-//            binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
-//            binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
-
+        fun bind(item: CommunityPostComment) {
+            binding.ivLike.setImageResource(getLikeIconResource(item.isLiked))
+            binding.ivHate.setImageResource(getDislikeIconResource(item.isDisliked))
             binding.tvUserName.text = item.user.userNickname
             binding.tvReview.text = item.commentBody
             binding.tvLike.text = item.likeCount.toString()
             binding.tvHate.text = item.dislikeCount.toString()
             binding.tvReviewTime.text = item.timeAgo
             Glide.with(context)
-                //.load(item.commentIconImgUrl)
-                //.into(binding.ivUserImage)
+                .load(item.user.rankImg)
+                .into(binding.ivUserImage)
+
             binding.flLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
             }
@@ -136,12 +132,12 @@ class CommunityReplyAdapter(val context : Context) : ListAdapter<CommunityPostCo
 
         }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityReplyAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityPostDetailCommentReplyAdapter.ViewHolder {
         val binding = ItemDetailReviewReplyBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CommunityReplyAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CommunityPostDetailCommentReplyAdapter.ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

@@ -122,7 +122,7 @@
 
                     <TextView
                         android:id="@+id/community_tv_post_user"
-                        android:layout_width="63dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="3dp"
                         android:ellipsize="end"
@@ -151,21 +151,35 @@
                         tools:text="1일전" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/community_tv_post_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+                    app:layout_constraintStart_toStartOf="@id/community_gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/community_ll_top_content"
+                    tools:text="게시글 제목입니다." />
+
                 <WebView
                     android:id="@+id/community_wv_middle_content"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
                     app:layout_constraintEnd_toEndOf="@id/community_gl_end"
                     app:layout_constraintStart_toStartOf="@id/community_gl_start"
-                    app:layout_constraintTop_toBottomOf="@id/community_ll_top_content"
+                    app:layout_constraintTop_toBottomOf="@id/community_tv_post_title"
                     tools:ignore="WebViewLayout" />
 
                 <!-- bottom -->
                 <LinearLayout
-                    android:layout_marginTop="29dp"
                     android:id="@+id/community_ll_bottom_content"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="29dp"
                     android:gravity="center|start"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="@id/community_gl_end"
@@ -260,7 +274,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/community_ll_btn_scrap_like"
+                            android:id="@+id/community_ll_btn_scrap"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:background="@drawable/all_radius_100"
@@ -293,12 +307,23 @@
                     android:id="@+id/community_v_bottom_guide_line"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
+                    android:layout_marginTop="18dp"
                     android:background="@color/cement_3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/community_ll_bottom_content" />
 
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/community_rv_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+                    app:layout_constraintStart_toStartOf="@id/community_gl_start"
+                    app:layout_constraintTop_toBottomOf="@id/community_v_bottom_guide_line"
+                    tools:listitem="@layout/item_detail_review" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

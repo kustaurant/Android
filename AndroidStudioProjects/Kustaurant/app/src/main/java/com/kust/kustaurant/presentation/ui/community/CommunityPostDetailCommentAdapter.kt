@@ -18,15 +18,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
-import com.kust.kustaurant.presentation.ui.detail.DetailGradeAdapter
-import com.kust.kustaurant.presentation.ui.detail.DetailRelyAdapter
+import com.kust.kustaurant.domain.model.CommunityPostComment
 
-class CommunityReviewAdapter(private val context: Context): ListAdapter<CommentDataResponse, CommunityReviewAdapter.ViewHolder>(diffUtil) {
+class CommunityPostDetailCommentAdapter(private val context: Context): ListAdapter<CommunityPostComment, CommunityPostDetailCommentAdapter.ViewHolder>(diffUtil) {
 
     private lateinit var itemClickListener : OnItemClickListener
-    var interactionListener: DetailRelyAdapter.OnItemClickListener? = null
+    var interactionListener: CommunityPostDetailCommentReplyAdapter.OnItemClickListener? = null
 
     interface OnItemClickListener {
         fun onReportClicked(commentId: Int)
@@ -135,48 +133,33 @@ class CommunityReviewAdapter(private val context: Context): ListAdapter<CommentD
             }
         }
 
-        fun getLikeIconResource(likeStatus: Int): Int {
+        private fun getLikeIconResource(likeStatus: Boolean): Int {
             return when(likeStatus) {
-                1 -> R.drawable.ic_like_true
-                0 -> R.drawable.ic_like_false
-                -1 -> R.drawable.ic_like_false
-                else -> R.drawable.ic_like_false
+                true -> R.drawable.ic_like_true
+                false -> R.drawable.ic_like_false
             }
         }
 
-        fun getDislikeIconResource(likeStatus: Int): Int {
+        private fun getDislikeIconResource(likeStatus: Boolean): Int {
             return when(likeStatus) {
-                1 -> R.drawable.ic_dislike_false
-                0 -> R.drawable.ic_dislike_false
-                -1 -> R.drawable.ic_dislike_true
-                else -> R.drawable.ic_dislike_false
+                true -> R.drawable.ic_dislike_true
+                false -> R.drawable.ic_dislike_false
             }
         }
 
-        fun bind(item: CommentDataResponse) {
-            binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
-            binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
-
-            binding.tvGrade.text = item.commentScore.toString()
-            binding.tvReviewTime.text = item.commentTime
-            binding.tvUserName.text = item.commentNickname
+        fun bind(item: CommunityPostComment) {
+            binding.ivLike.setImageResource(getLikeIconResource(item.isLiked))
+            binding.ivHate.setImageResource(getDislikeIconResource(item.isDisliked))
+            binding.rvGrade.visibility = View.GONE
+            binding.tvGrade.visibility = View.GONE
+            binding.tvReviewTime.text = item.timeAgo
+            binding.tvUserName.text = item.user.userNickname
             binding.tvReview.text = item.commentBody
-            binding.tvLike.text = item.commentLikeCount.toString()
-            binding.tvHate.text = item.commentDislikeCount.toString()
+            binding.tvLike.text = item.likeCount.toString()
+            binding.tvHate.text = item.dislikeCount.toString()
             Glide.with(context)
-                .load(item.commentIconImgUrl)
+                .load(item.user.rankImg)
                 .into(binding.ivUserImage)
-            if (item.commentImgUrl != null){
-                binding.detailCvPhoto.visibility = View.VISIBLE
-                Glide.with(context)
-                    .load(item.commentImgUrl)
-                    .into(binding.detailIvPhoto)
-            } else {
-                binding.detailCvPhoto.visibility = View.GONE
-                Glide.with(context)
-                    .clear(binding.detailIvPhoto)
-                binding.detailIvPhoto.setImageDrawable(null)
-            }
 
             binding.flLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
@@ -185,12 +168,8 @@ class CommunityReviewAdapter(private val context: Context): ListAdapter<CommentD
                 itemClickListener.onDisLikeClicked(item.commentId, absoluteAdapterPosition)
             }
 
-            val gradeAdapter = DetailGradeAdapter(item.commentScore)
-            binding.rvGrade.adapter = gradeAdapter
-            binding.rvGrade.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
-
-            val replyAdapter = DetailRelyAdapter(context).apply {
-                setOnItemClickListener(object : DetailRelyAdapter.OnItemClickListener{
+            val replyAdapter = CommunityPostDetailCommentReplyAdapter(context).apply {
+                setOnItemClickListener(object : CommunityPostDetailCommentReplyAdapter.OnItemClickListener{
                     override fun onReportClicked(commentId: Int) {
                         interactionListener?.onReportClicked(commentId)
                     }
@@ -209,30 +188,31 @@ class CommunityReviewAdapter(private val context: Context): ListAdapter<CommentD
 
                 })
             }
+
             binding.detailRvReply.adapter = replyAdapter
             binding.detailRvReply.layoutManager = LinearLayoutManager(binding.root.context)
-            replyAdapter.submitList(item.commentReplies)
+            replyAdapter.submitList(item.repliesList)
             replyAdapter.notifyItemChanged(absoluteAdapterPosition)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityReviewAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityPostDetailCommentAdapter.ViewHolder {
         val binding = ItemDetailReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CommunityReviewAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CommunityPostDetailCommentAdapter.ViewHolder, position: Int) {
         val item = getItem(position)
-        Log.d("DetailReviewAdapter", "Binding position $position: $item")
+        Log.d("CommunityPostDetailCommentReplyAdapter", "Binding position $position: $item")
         holder.bind(item)
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<CommentDataResponse>() {
-            override fun areItemsTheSame(oldItem: CommentDataResponse, newItem: CommentDataResponse): Boolean =
+        private val diffUtil = object : DiffUtil.ItemCallback<CommunityPostComment>() {
+            override fun areItemsTheSame(oldItem: CommunityPostComment, newItem: CommunityPostComment): Boolean =
                 oldItem.commentId == newItem.commentId
 
-            override fun areContentsTheSame(oldItem: CommentDataResponse, newItem: CommentDataResponse): Boolean =
+            override fun areContentsTheSame(oldItem: CommunityPostComment, newItem: CommunityPostComment): Boolean =
                 oldItem == newItem
         }
     }

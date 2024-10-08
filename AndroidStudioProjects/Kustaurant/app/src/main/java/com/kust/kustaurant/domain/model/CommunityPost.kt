@@ -38,6 +38,9 @@ data class CommunityPostComment(
     val updatedAt : String,
     val repliesList : List<CommunityPostComment>,
     val timeAgo : String,
+    val isDisliked : Boolean,
+    val isLiked : Boolean,
+    val isCommentMine : Boolean,
 )
 
 data class ScrapUser(

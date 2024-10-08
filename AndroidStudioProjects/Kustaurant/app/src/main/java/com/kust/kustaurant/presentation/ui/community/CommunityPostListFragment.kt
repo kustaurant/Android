@@ -1,14 +1,13 @@
 package com.kust.kustaurant.presentation.ui.community
 
-import android.content.Intent
-import android.widget.TextView
+
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,6 +17,7 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentCommunityPostListBinding
 import com.kust.kustaurant.domain.model.CommunityPost
 
+
 class CommunityPostListFragment : Fragment() {
     private lateinit var binding: FragmentCommunityPostListBinding
     private val viewModel: CommunityViewModel by activityViewModels()
@@ -26,9 +26,6 @@ class CommunityPostListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
-
-        // 초기 데이터 로드
-        //viewModel.getCommunityPostList(PostLoadState.POST_FIRST_PAGE, "recent")
     }
 
     override fun onCreateView(
@@ -40,17 +37,19 @@ class CommunityPostListFragment : Fragment() {
         binding.viewModel = viewModel
 
         commuAdapter = CommunityPostListAdapter()
-        binding.communityRecyclerView.apply{
+        binding.communityRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = commuAdapter
         }
 
-        commuAdapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener{
+        commuAdapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener {
             override fun onItemClicked(data: CommunityPost) {
-                Log.e("CommuItemClicked", data.postId.toString())
-                val intent = Intent(requireActivity(), CommunityPostDetailActivity::class.java)
-                intent.putExtra("postId", data.postId)
-                startActivity(intent)
+                viewModel.selectPost(data.postId)
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frm, CommunityPostDetailFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         })
 
@@ -67,15 +66,21 @@ class CommunityPostListFragment : Fragment() {
             resources.getStringArray(R.array.community_board_options)
         ) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_community_spinner, parent, false)
+                val view = convertView ?: LayoutInflater.from(context)
+                    .inflate(R.layout.item_community_spinner, parent, false)
                 val mainText = view.findViewById<TextView>(R.id.spinner_item_text)
                 mainText.text = getItem(position)
                 mainText.setTextColor(ContextCompat.getColor(context, R.color.signature_1))
                 return view
             }
 
-            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_community_spinner, parent, false)
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view = convertView ?: LayoutInflater.from(context)
+                    .inflate(R.layout.item_community_spinner, parent, false)
                 val mainText = view.findViewById<TextView>(R.id.spinner_item_text)
                 mainText.text = getItem(position)
                 mainText.setTextColor(ContextCompat.getColor(context, R.color.black))
@@ -86,32 +91,49 @@ class CommunityPostListFragment : Fragment() {
         binding.communitySpinnerBoard.adapter = spinnerAdapter
 
         // Spinner 선택 이벤트 처리
-        binding.communitySpinnerBoard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedBoard = when (position) {
-                    0 -> "all"
-                    1 -> "free"
-                    2 -> "column"
-                    3 -> "suggestion"
-                    else -> "all"
+        binding.communitySpinnerBoard.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedBoard = when (position) {
+                        0 -> "all"
+                        1 -> "free"
+                        2 -> "column"
+                        3 -> "suggestion"
+                        else -> "all"
+                    }
+                    viewModel.onPostCategoryChanged(selectedBoard)
                 }
-                viewModel.onPostCategoryChanged(selectedBoard)
+
+                override fun onNothingSelected(parent: AdapterView<*>) {}
             }
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
 
         binding.communityToggleLastestSort.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 viewModel.updateSortAndLoadPosts("recent")
                 binding.communityRecyclerView.scrollToPosition(0)
                 binding.communityTogglePopularSort.isChecked = false
-                buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
+                buttonView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.signature_1
+                    )
+                )
             } else {
                 // 이미 체크된 버튼을 다시 누를 경우 체크를 유지
                 if (!binding.communityTogglePopularSort.isChecked) {
                     buttonView.isChecked = true
                 } else {
-                    buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
+                    buttonView.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.cement_4
+                        )
+                    )
                 }
             }
         }
@@ -121,13 +143,23 @@ class CommunityPostListFragment : Fragment() {
                 viewModel.updateSortAndLoadPosts("popular")
                 binding.communityRecyclerView.scrollToPosition(0)
                 binding.communityToggleLastestSort.isChecked = false
-                buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
+                buttonView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.signature_1
+                    )
+                )
             } else {
                 // 이미 체크된 버튼을 다시 누를 경우 체크를 유지
                 if (!binding.communityToggleLastestSort.isChecked) {
                     buttonView.isChecked = true
                 } else {
-                    buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
+                    buttonView.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.cement_4
+                        )
+                    )
                 }
             }
         }
@@ -180,6 +212,7 @@ class CommunityPostListFragment : Fragment() {
             binding.communityTogglePopularSort.isChecked = sort == "popular"
         }
     }
+
     companion object {
         enum class PostLoadState {
             POST_FIRST_PAGE,

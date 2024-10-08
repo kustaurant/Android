@@ -35,10 +35,17 @@ class CommunityViewModel @Inject constructor(
     val communityPostDetail: LiveData<CommunityPost> = _communityPostDetail
 
     private var isLastPage = false
-    private var currentPage = 0; //Start from 0
+    private var currentPage = 0 //Start from 0
 
     private val _rankingSortType = MutableLiveData<String>("")
     val rankingSortType: LiveData<String> = _rankingSortType
+
+    private val _selectedPostDetailId = MutableLiveData<Int>()
+    val selectedPostDetailId: LiveData<Int> get() = _selectedPostDetailId
+
+    fun selectPost(postId: Int) {
+        _selectedPostDetailId.value = postId
+    }
 
     fun loadCommunityPosts(postCategory: String, currentPage: Int, sort: String) {
         if (isLastPage) return
