@@ -177,12 +177,11 @@
                 <!-- bottom -->
                 <LinearLayout
                     android:id="@+id/community_ll_bottom_content"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="29dp"
                     android:gravity="center|start"
                     android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="@id/community_gl_end"
                     app:layout_constraintStart_toStartOf="@id/community_gl_start"
                     app:layout_constraintTop_toBottomOf="@id/community_wv_middle_content">
 
@@ -239,67 +238,70 @@
                         android:textSize="12sp"
                         tools:text="2" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    app:layout_constraintEnd_toEndOf="@id/community_gl_end"
+                    app:layout_constraintTop_toBottomOf="@id/community_wv_middle_content">
+
                     <LinearLayout
+                        android:id="@+id/community_ll_btn_post_like"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end">
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/all_radius_100"
+                        android:clickable="true"
+                        android:gravity="center_vertical">
 
-
-                        <LinearLayout
-                            android:id="@+id/community_ll_btn_post_like"
+                        <ImageView
+                            android:id="@+id/community_iv_btn_post_like"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginEnd="6dp"
-                            android:background="@drawable/all_radius_100"
-                            android:clickable="true"
-                            android:gravity="center_vertical">
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:src="@drawable/ic_post_like_true" />
 
-                            <ImageView
-                                android:id="@+id/community_iv_btn_post_like"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="16dp"
-                                android:paddingTop="4dp"
-                                android:paddingBottom="4dp"
-                                android:src="@drawable/ic_post_like_true" />
-
-                            <TextView
-                                android:id="@+id/community_tv_btn_post_like"
-                                android:layout_width="wrap_content"
-                                android:layout_height="21dp"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="16dp"
-                                tools:text="999" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/community_ll_btn_scrap"
+                        <TextView
+                            android:id="@+id/community_tv_btn_post_like"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:background="@drawable/all_radius_100"
-                            android:clickable="true"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:id="@+id/community_iv_btn_scrap_like"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="16dp"
-                                android:paddingTop="4dp"
-                                android:paddingBottom="4dp"
-                                android:src="@drawable/ic_scrap_false" />
-
-                            <TextView
-                                android:id="@+id/community_tv_btn_scrap_like"
-                                android:layout_width="wrap_content"
-                                android:layout_height="21dp"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="16dp"
-                                tools:text="999" />
-                        </LinearLayout>
-
+                            android:layout_height="21dp"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="16dp"
+                            tools:text="999" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/community_ll_btn_scrap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@drawable/all_radius_100"
+                        android:clickable="true"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/community_iv_btn_scrap_like"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:src="@drawable/ic_scrap_false" />
+
+                        <TextView
+                            android:id="@+id/community_tv_btn_scrap_like"
+                            android:layout_width="wrap_content"
+                            android:layout_height="21dp"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="16dp"
+                            tools:text="999" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
 

@@ -17,11 +17,11 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentCommunityPostListBinding
 import com.kust.kustaurant.domain.model.CommunityPost
 
-
 class CommunityPostListFragment : Fragment() {
     private lateinit var binding: FragmentCommunityPostListBinding
     private val viewModel: CommunityViewModel by activityViewModels()
     private lateinit var commuAdapter: CommunityPostListAdapter
+    private var scrollPosition: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,6 +35,10 @@ class CommunityPostListFragment : Fragment() {
         binding = FragmentCommunityPostListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        if (viewModel.communityPosts.value == null || viewModel.communityPosts.value!!.isEmpty()) {
+            viewModel.getCommunityPostList(PostLoadState.POST_NEXT_PAGE, viewModel.sort.value!!)
+        }
 
         commuAdapter = CommunityPostListAdapter()
         binding.communityRecyclerView.apply {
@@ -212,6 +216,17 @@ class CommunityPostListFragment : Fragment() {
             binding.communityTogglePopularSort.isChecked = sort == "popular"
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        scrollPosition = (binding.communityRecyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (binding.communityRecyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(scrollPosition, 0)
+    }
+
 
     companion object {
         enum class PostLoadState {

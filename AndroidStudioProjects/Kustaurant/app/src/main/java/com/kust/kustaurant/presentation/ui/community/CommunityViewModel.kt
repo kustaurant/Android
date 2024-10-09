@@ -63,12 +63,7 @@ class CommunityViewModel @Inject constructor(
                 } else {
                     val currentPosts = _communityPosts.value.orEmpty() + newPosts
                     _communityPosts.postValue(currentPosts)
-
-
                 }
-
-                Log.e("CommunityViewModel", "${newPosts.size},   isLast = $isLastPage, page = ${currentPage}")
-
             } catch (e: Exception) {
                 Log.e("CommunityViewModel", "loadCommunityPosts Error", e)
             } finally {  }

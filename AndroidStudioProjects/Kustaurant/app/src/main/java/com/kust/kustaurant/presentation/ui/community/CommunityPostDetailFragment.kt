@@ -32,7 +32,7 @@ class CommunityPostDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCommunityPostDetailBinding.inflate(layoutInflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -72,7 +72,6 @@ class CommunityPostDetailFragment : Fragment() {
 
                 loadPostBodyToWebView(post.postBody)
 
-                //사용자 이미지 로드
                 Glide.with(this)
                     .load(post.user.rankImg)
                     .into(binding.communityIvUserIcon)
@@ -80,6 +79,7 @@ class CommunityPostDetailFragment : Fragment() {
                 CommuCommentAdapter.submitList(post.postCommentList)
             }
         }
+
 
         viewModel.isPostScrap.observe(viewLifecycleOwner) { result ->
             binding.communityTvBtnScrapLike.text = result.scrapCount.toString()
@@ -106,6 +106,8 @@ class CommunityPostDetailFragment : Fragment() {
                     .load(R.drawable.ic_post_like_true)
                     .into(binding.communityIvBtnPostLike)
         }
+
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -225,7 +227,6 @@ class CommunityPostDetailFragment : Fragment() {
                 }
             }
     }
-
 
     fun checkToken(action: () -> Unit) {
         val accessToken = getAccessToken(requireContext())

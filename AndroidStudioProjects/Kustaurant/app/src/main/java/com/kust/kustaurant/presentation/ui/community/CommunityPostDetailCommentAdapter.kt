@@ -21,9 +21,10 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
 import com.kust.kustaurant.domain.model.CommunityPostComment
 
-class CommunityPostDetailCommentAdapter(private val context: Context): ListAdapter<CommunityPostComment, CommunityPostDetailCommentAdapter.ViewHolder>(diffUtil) {
+class CommunityPostDetailCommentAdapter(private val context: Context) :
+    ListAdapter<CommunityPostComment, CommunityPostDetailCommentAdapter.ViewHolder>(diffUtil) {
 
-    private lateinit var itemClickListener : OnItemClickListener
+    private lateinit var itemClickListener: OnItemClickListener
     var interactionListener: CommunityPostDetailCommentReplyAdapter.OnItemClickListener? = null
 
     interface OnItemClickListener {
@@ -39,7 +40,8 @@ class CommunityPostDetailCommentAdapter(private val context: Context): ListAdapt
         itemClickListener = onItemClickListener
     }
 
-    inner class ViewHolder(val binding: ItemDetailReviewBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ItemDetailReviewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.detailFlDots.setOnClickListener { view ->
                 showPopupWindow(view)
@@ -87,9 +89,14 @@ class CommunityPostDetailCommentAdapter(private val context: Context): ListAdapt
                 R.layout.popup_review_only_report
             }
             val popupView = inflater.inflate(layoutRes, null)
-            val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+            val popupWindow = PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+            )
 
-            if(layoutRes == R.layout.popup_review_only_report){
+            if (layoutRes == R.layout.popup_review_only_report) {
                 popupView.findViewById<ConstraintLayout>(R.id.cl_report).setOnClickListener {
                     showReportDialog()
                     popupWindow.dismiss()
@@ -134,14 +141,14 @@ class CommunityPostDetailCommentAdapter(private val context: Context): ListAdapt
         }
 
         private fun getLikeIconResource(likeStatus: Boolean): Int {
-            return when(likeStatus) {
+            return when (likeStatus) {
                 true -> R.drawable.ic_like_true
                 false -> R.drawable.ic_like_false
             }
         }
 
         private fun getDislikeIconResource(likeStatus: Boolean): Int {
-            return when(likeStatus) {
+            return when (likeStatus) {
                 true -> R.drawable.ic_dislike_true
                 false -> R.drawable.ic_dislike_false
             }
@@ -155,8 +162,8 @@ class CommunityPostDetailCommentAdapter(private val context: Context): ListAdapt
             binding.tvReviewTime.text = item.timeAgo
             binding.tvUserName.text = item.user.userNickname
             binding.tvReview.text = item.commentBody
-            binding.tvLike.text = item.likeCount.toString()
-            binding.tvHate.text = item.dislikeCount.toString()
+            binding.tvLike.text = if(item.likeCount < 0) "0" else item.likeCount.toString()
+            binding.tvHate.text = if(item.dislikeCount < 0) "0" else item.dislikeCount.toString()
             Glide.with(context)
                 .load(item.user.rankImg)
                 .into(binding.ivUserImage)
@@ -169,7 +176,8 @@ class CommunityPostDetailCommentAdapter(private val context: Context): ListAdapt
             }
 
             val replyAdapter = CommunityPostDetailCommentReplyAdapter(context).apply {
-                setOnItemClickListener(object : CommunityPostDetailCommentReplyAdapter.OnItemClickListener{
+                setOnItemClickListener(object :
+                    CommunityPostDetailCommentReplyAdapter.OnItemClickListener {
                     override fun onReportClicked(commentId: Int) {
                         interactionListener?.onReportClicked(commentId)
                     }
@@ -196,24 +204,40 @@ class CommunityPostDetailCommentAdapter(private val context: Context): ListAdapt
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityPostDetailCommentAdapter.ViewHolder {
-        val binding = ItemDetailReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): CommunityPostDetailCommentAdapter.ViewHolder {
+        val binding =
+            ItemDetailReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CommunityPostDetailCommentAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: CommunityPostDetailCommentAdapter.ViewHolder,
+        position: Int
+    ) {
         val item = getItem(position)
         Log.d("CommunityPostDetailCommentReplyAdapter", "Binding position $position: $item")
         holder.bind(item)
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<CommunityPostComment>() {
-            override fun areItemsTheSame(oldItem: CommunityPostComment, newItem: CommunityPostComment): Boolean =
+        val diffUtil = object : DiffUtil.ItemCallback<CommunityPostComment>() {
+            override fun areItemsTheSame(
+                oldItem: CommunityPostComment,
+                newItem: CommunityPostComment
+            ): Boolean =
                 oldItem.commentId == newItem.commentId
 
-            override fun areContentsTheSame(oldItem: CommunityPostComment, newItem: CommunityPostComment): Boolean =
-                oldItem == newItem
+            override fun areContentsTheSame(
+                oldItem: CommunityPostComment,
+                newItem: CommunityPostComment
+            ): Boolean {
+                return oldItem.commentId == newItem.commentId &&
+                        oldItem.isLiked == newItem.isLiked &&
+                        oldItem.isDisliked == newItem.isDisliked
+            }
         }
     }
 }

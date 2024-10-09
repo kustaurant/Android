@@ -10,14 +10,14 @@ data class CommunityPost(
     val updatedAt: String?,
     val likeCount: Int,
     val user: User,
-    val postCommentList: List<CommunityPostComment>,
+    val postCommentList: List<CommunityPostComment>?,
     val timeAgo : String,
     val commentCount : Int,
-    val postPhotoImgUrl : String,
+    val postPhotoImgUrl : String?,
     val postVisitCount : String,
-    val postScrapList : List<ScrapUser>,
+    val postScrapList : List<ScrapUser>?,
     val scrapCount: Int,
-    val likeUserList : List<ScrapUser>
+    val likeUserList : List<ScrapUser>?
 )
 
 data class User(
@@ -35,7 +35,7 @@ data class CommunityPostComment(
     val likeCount: Int,
     val dislikeCount: Int,
     val createdAt : String,
-    val updatedAt : String,
+    val updatedAt : String?,
     val repliesList : List<CommunityPostComment>,
     val timeAgo : String,
     val isDisliked : Boolean,

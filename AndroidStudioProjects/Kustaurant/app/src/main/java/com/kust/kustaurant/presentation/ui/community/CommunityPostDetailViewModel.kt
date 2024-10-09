@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.data.model.CommunityPostCommentReactResponse
 import com.kust.kustaurant.data.model.CommunityPostLikeResponse
 import com.kust.kustaurant.data.model.CommunityPostScrapResponse
 import com.kust.kustaurant.domain.model.CommunityPost
@@ -50,8 +49,10 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val _commentReply = MutableLiveData<CommunityPostComment>()
     val commentReply: LiveData<CommunityPostComment> = _commentReply
 
-    private val _commentReact = MutableLiveData<Pair<Int, CommunityPostCommentReactResponse>>()
-    val commentReact: LiveData<Pair<Int, CommunityPostCommentReactResponse>> get() = _commentReact
+    private val _updatedCommentsPosition = MutableLiveData<Pair<List<CommunityPostComment>, Int>>()
+    val updatedCommentsPosition: LiveData<Pair<List<CommunityPostComment>, Int>> =
+        _updatedCommentsPosition
+
     fun loadCommunityPostDetail(postId: Int) {
         viewModelScope.launch {
             try {
@@ -95,63 +96,55 @@ class CommunityPostDetailViewModel @Inject constructor(
             }
         }
     }
-
-
     fun postCommentReact(commentId: Int, action: String) {
         viewModelScope.launch {
             try {
                 val response = postCommentReactUseCase(commentId, action)
 
-                _communityPostDetail.value?.let { postDetail ->
-                    val updatedComments = postDetail.postCommentList.toMutableList()
-                    var updatedPosition: Int? = null
-
-                    for ((index, comment) in updatedComments.withIndex()) {
-                        // 댓글 순회
+                _communityPostDetail.value?.let { currentPostDetail ->
+                    //댓글 순회
+                    val updatedComments = currentPostDetail.postCommentList?.map { comment ->
                         if (comment.commentId == commentId) {
-                            updatedComments[index] = comment.copy(
+                            comment.copy(
                                 likeCount = response.likeCount,
                                 dislikeCount = response.dislikeCount,
                                 isLiked = response.commentLikeStatus == 1,
-                                isDisliked = response.commentLikeStatus == -1
+                                isDisliked = response.commentLikeStatus == -1,
+                                updatedAt = comment.updatedAt
+
                             )
-                            updatedPosition = index
-                            break
-                        }
-
-                        // 대댓글 순회
-                        val updatedReplies = comment.repliesList.toMutableList()
-                        for ((replyIndex, reply) in updatedReplies.withIndex()) {
-                            if (reply.commentId == commentId) {
-                                updatedReplies[replyIndex] = reply.copy(
-                                    likeCount = response.likeCount,
-                                    dislikeCount = response.dislikeCount,
-                                    isLiked = response.commentLikeStatus == 1,
-                                    isDisliked = response.commentLikeStatus == -1
-                                )
-                                updatedComments[index] = comment.copy(repliesList = updatedReplies)
-                                updatedPosition = index
-                                break
+                        } else {
+                            //대댓글 순회
+                            val updatedReplies = comment.repliesList.map { reply ->
+                                if (reply.commentId == commentId) {
+                                    reply.copy(
+                                        likeCount = response.likeCount,
+                                        dislikeCount = response.dislikeCount,
+                                        isLiked = response.commentLikeStatus == 1,
+                                        isDisliked = response.commentLikeStatus == -1,
+                                        updatedAt = reply.updatedAt
+                                    )
+                                } else {
+                                    reply
+                                }
                             }
+                            comment.copy(repliesList = updatedReplies)
                         }
+                    }// 새로운 리스트로 변환하여 참조 변경
 
-                        if (updatedPosition != null) {
-                            break
-                        }
-                    }
+                    // 변경된 댓글 리스트를 반영한 새로운 PostDetail 객체 생성
+                    val updatedPostDetail = currentPostDetail.copy(postCommentList = updatedComments)
 
-                    //업데이트된 댓글 리스트를 _communityPostDetail에 반영
-                    _communityPostDetail.value = postDetail.copy(postCommentList = updatedComments)
-
-                    //변경 위치 반환
-                    updatedPosition?.let { it }
+                    // 변경된 객체를 LiveData에 설정하여 옵저버가 변경사항을 감지하도록 강제
+                    _communityPostDetail.postValue(updatedPostDetail)
                 }
-
             } catch (e: Exception) {
                 Log.e("CommunityPostDetailViewModel", "Error reacting to comment: $e")
             }
         }
     }
+
+
 
     fun deletePost(postId: Int) {
         viewModelScope.launch {

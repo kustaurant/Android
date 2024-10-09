@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,7 +19,7 @@ import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
 import com.kust.kustaurant.domain.model.CommunityPostComment
 
 class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapter<CommunityPostComment, CommunityPostDetailCommentReplyAdapter.ViewHolder>(
-    diffUtil) {
+    CommunityPostDetailCommentAdapter.diffUtil) {
 
     private lateinit var itemClickListener : OnItemClickListener
 
@@ -116,8 +115,8 @@ class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapte
             binding.ivHate.setImageResource(getDislikeIconResource(item.isDisliked))
             binding.tvUserName.text = item.user.userNickname
             binding.tvReview.text = item.commentBody
-            binding.tvLike.text = item.likeCount.toString()
-            binding.tvHate.text = item.dislikeCount.toString()
+            binding.tvLike.text = if(item.likeCount < 0) "0" else item.likeCount.toString()
+            binding.tvHate.text = if(item.dislikeCount < 0) "0" else item.dislikeCount.toString()
             binding.tvReviewTime.text = item.timeAgo
             Glide.with(context)
                 .load(item.user.rankImg)
@@ -139,15 +138,5 @@ class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapte
 
     override fun onBindViewHolder(holder: CommunityPostDetailCommentReplyAdapter.ViewHolder, position: Int) {
         holder.bind(getItem(position))
-    }
-
-    companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<CommunityPostComment>() {
-            override fun areItemsTheSame(oldItem: CommunityPostComment, newItem: CommunityPostComment): Boolean =
-                oldItem.commentId == newItem.commentId
-
-            override fun areContentsTheSame(oldItem: CommunityPostComment, newItem: CommunityPostComment): Boolean =
-                oldItem == newItem
-        }
     }
 }
