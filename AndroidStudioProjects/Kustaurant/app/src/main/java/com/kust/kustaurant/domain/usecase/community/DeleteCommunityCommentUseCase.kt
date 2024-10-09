@@ -5,10 +5,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PostCommunityPostDetailScrap @Inject constructor(
+class DeleteCommunityCommentUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
-) {
-//    suspend operator fun invoke(sort: String): List<CommunityRanking> {
-//        return communityRepository.getCommunityRankingListData(sort)
-//    }
+){
+    suspend operator fun invoke(commentId : Int) {
+        return communityRepository.deletePostComment(commentId)
+    }
 }

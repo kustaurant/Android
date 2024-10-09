@@ -5,7 +5,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PostCommunityPostDetailLike @Inject constructor(
+class DeleteCommunityPostUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
-) {
+){
+    suspend operator fun invoke(postId : Int) {
+        communityRepository.deletePost(postId)
+    }
 }

@@ -5,11 +5,11 @@ import android.content.Context
 import com.kust.kustaurant.data.remote.DetailApi
 import com.kust.kustaurant.data.remote.GoodByeApi
 import com.kust.kustaurant.data.remote.HomeApi
-import com.kust.kustaurant.data.remote.KustaurantApi
 import com.kust.kustaurant.data.remote.LogoutApi
 import com.kust.kustaurant.data.remote.NaverLoginApi
 import com.kust.kustaurant.data.remote.MyPageApi
 import com.kust.kustaurant.data.remote.SearchApi
+import com.kust.kustaurant.data.remote.TierApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,8 +57,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMapApi(retrofit: Retrofit): KustaurantApi {
-        return retrofit.create(KustaurantApi::class.java)
+    fun provideMapApi(retrofit: Retrofit): TierApi {
+        return retrofit.create(TierApi::class.java)
     }
 
     @Provides

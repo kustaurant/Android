@@ -1,7 +1,6 @@
 package com.kust.kustaurant.presentation.ui.community
 
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +47,6 @@ class CommunityPostListAdapter() :
 
             // 이미지가 있을 경우 Glide를 사용해 로드
             if (imageUrl != null) {
-                Log.d("Commnity", "들어옴 $imageUrl")
                 viewBinding.communityIvPostImg.visibility = View.VISIBLE
                 Glide.with(viewBinding.communityIvPostImg.context)
                     .load(imageUrl)

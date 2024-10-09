@@ -22,9 +22,6 @@ class CommunityViewModel @Inject constructor(
     private val _postCategory = MutableLiveData<String>("all")
     val postCategory: LiveData<String> = _postCategory
 
-    private val _page = MutableLiveData<Int>(0)
-    val page: LiveData<Int> = _page
-
     private val _sort = MutableLiveData<String>("recent")
     val sort: LiveData<String> = _sort
 
@@ -38,12 +35,16 @@ class CommunityViewModel @Inject constructor(
     val communityPostDetail: LiveData<CommunityPost> = _communityPostDetail
 
     private var isLastPage = false
+    private var currentPage = 0 //Start from 0
 
     private val _rankingSortType = MutableLiveData<String>("")
     val rankingSortType: LiveData<String> = _rankingSortType
 
-    init {
-        loadCommunityPosts("all", 0, "recent")
+    private val _selectedPostDetailId = MutableLiveData<Int>()
+    val selectedPostDetailId: LiveData<Int> get() = _selectedPostDetailId
+
+    fun selectPost(postId: Int) {
+        _selectedPostDetailId.value = postId
     }
 
     fun loadCommunityPosts(postCategory: String, currentPage: Int, sort: String) {
@@ -56,43 +57,61 @@ class CommunityViewModel @Inject constructor(
                     currentPage,
                     sort
                 )
+
                 if (newPosts.isEmpty()) {
                     isLastPage = true
                 } else {
-                    val currentPosts = communityPosts.value.orEmpty().toMutableList()
-                    currentPosts.addAll(newPosts)
-                    _communityPosts.value = currentPosts
-                    _page.value = page.value?.plus(1)
+                    val currentPosts = _communityPosts.value.orEmpty() + newPosts
+                    _communityPosts.postValue(currentPosts)
                 }
             } catch (e: Exception) {
-                Log.e("커뮤니티 뷰모델", "loadCommunityPosts Error", e)
-            } finally {
-                // 기타 처리
-            }
+                Log.e("CommunityViewModel", "loadCommunityPosts Error", e)
+            } finally {  }
         }
     }
 
-    // 랭킹 데이터를 로드하고 상위 3명과 나머지를 분리
-    fun loadCommunityRanking(sort: String) {
-        viewModelScope.launch {
-            try {
-                val rankings = getCommunityRankingListUseCase(sort)
-                _communityRanking.value = rankings
-            } catch (e: Exception) {
-                Log.e("커뮤니티 뷰모델", "loadCommunityRanking Error", e)
+    fun getCommunityPostList(state : CommunityPostListFragment.Companion.PostLoadState, sort : String) {
+        when(state) {
+            CommunityPostListFragment.Companion.PostLoadState.POST_FIRST_PAGE -> {
+                isLastPage = false
+                _sort.value = sort
+                currentPage = 0
+                _communityPosts.value = emptyList()
+            }
+            CommunityPostListFragment.Companion.PostLoadState.POST_NEXT_PAGE -> {
+                currentPage++
             }
         }
-    } 
-    
-    fun resetPageAndLoad() {
-        _page.value = 0
-        isLastPage = false
-        _communityPosts.value = emptyList()
-        loadCommunityPosts(
-            postCategory.value ?: "all",
-            page.value ?: 0,
-            sort.value ?: "recent"
-        )
+
+        loadCommunityPosts(_postCategory.value!!, currentPage, _sort.value!!)
+    }
+
+    fun updateSortAndLoadPosts(newSort: String) {
+        if (_sort.value != newSort) {
+            getCommunityPostList(CommunityPostListFragment.Companion.PostLoadState.POST_FIRST_PAGE, newSort)
+        }
+    }
+
+    fun onPostCategoryChanged(newCategory: String) {
+        _postCategory.value = newCategory
+        getCommunityPostList(
+            CommunityPostListFragment.Companion.PostLoadState.POST_FIRST_PAGE,
+            _sort.value!!
+            )
+    }
+
+    /*
+     * From below,
+     * Related to CommunityPostRankingFragment
+     */
+    fun onRankingDataChanged(rankings: List<CommunityRanking>): Pair<List<CommunityRanking>, List<CommunityRanking>> {
+        return processRankingData(rankings)
+    }
+
+    private fun processRankingData(rankings: List<CommunityRanking>): Pair<List<CommunityRanking>, List<CommunityRanking>> {
+        val topRankers = rankings.take(3)
+        val remainingRankings = rankings.drop(3)
+        return Pair(topRankers, remainingRankings)
     }
 
     fun onSortTypeChanged(newSortType: String) {
@@ -102,23 +121,14 @@ class CommunityViewModel @Inject constructor(
         }
     }
 
-    fun onPostCategoryChanged(newCategory: String) {
-        _postCategory.value = newCategory
-        resetPageAndLoad()
-    }
-
-    fun onSortChanged(newSort: String) {
-        _sort.value = newSort
-        resetPageAndLoad()
-    }
-
-    fun onRankingDataChanged(rankings: List<CommunityRanking>): Pair<List<CommunityRanking>, List<CommunityRanking>> {
-        return processRankingData(rankings)
-    }
-
-    private fun processRankingData(rankings: List<CommunityRanking>): Pair<List<CommunityRanking>, List<CommunityRanking>> {
-        val topRankers = rankings.take(3)
-        val remainingRankings = rankings.drop(3)
-        return Pair(topRankers, remainingRankings)
+    fun loadCommunityRanking(sort: String) {
+        viewModelScope.launch {
+            try {
+                val rankings = getCommunityRankingListUseCase(sort)
+                _communityRanking.value = rankings
+            } catch (e: Exception) {
+                Log.e("CommunityViewModel", "loadCommunityRanking Error", e)
+            }
+        }
     }
 }

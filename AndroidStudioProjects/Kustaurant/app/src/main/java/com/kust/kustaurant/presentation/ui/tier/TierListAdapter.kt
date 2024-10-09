@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat.getString
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -19,16 +19,20 @@ import com.kust.kustaurant.databinding.ItemRestaurantExpandBinding
 import com.kust.kustaurant.databinding.ItemRestaurantReductionBinding
 import com.kust.kustaurant.domain.model.TierRestaurant
 
-
-class TierListAdapter(private val context: Context, private var isExpanded: Boolean = true) : ListAdapter<TierRestaurant, RecyclerView.ViewHolder>(diffUtil) {
+class TierListAdapter(private val context: Context, private var isExpanded: Boolean = true) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val asyncListDiffer = AsyncListDiffer(this, diffCallback)
     lateinit var itemClickListener: OnItemClickListener
 
-    interface OnItemClickListener{
-        fun onItemClicked(data : TierRestaurant)
+    interface OnItemClickListener {
+        fun onItemClicked(data: TierRestaurant)
     }
 
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         itemClickListener = onItemClickListener
+    }
+
+    fun submitList(list: List<TierRestaurant>) {
+        asyncListDiffer.submitList(list)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -38,6 +42,8 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
             notifyDataSetChanged()
         }
     }
+
+    override fun getItemCount(): Int = asyncListDiffer.currentList.size
 
     override fun getItemViewType(position: Int): Int {
         return if (isExpanded) VIEW_TYPE_EXPANDED else VIEW_TYPE_REDUCED
@@ -58,7 +64,7 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItem(position)
+        val item = asyncListDiffer.currentList[position]
         when (holder) {
             is ExpandedViewHolder -> holder.bind(item)
             is ReducedViewHolder -> holder.bind(item)
@@ -154,7 +160,7 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
         private const val VIEW_TYPE_EXPANDED = 0
         private const val VIEW_TYPE_REDUCED = 1
 
-        val diffUtil = object : DiffUtil.ItemCallback<TierRestaurant>() {
+        private val diffCallback = object : DiffUtil.ItemCallback<TierRestaurant>() {
             override fun areItemsTheSame(oldItem: TierRestaurant, newItem: TierRestaurant): Boolean {
                 return oldItem.restaurantId == newItem.restaurantId
             }
