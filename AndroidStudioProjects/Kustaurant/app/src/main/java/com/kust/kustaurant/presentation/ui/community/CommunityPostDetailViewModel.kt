@@ -95,26 +95,25 @@ class CommunityPostDetailViewModel @Inject constructor(
                 Log.e("CommunityPostDetailViewModel", "From postCommentReply, Error msg is $e")
             }
         }
-    }
-    fun postCommentReact(commentId: Int, action: String) {
+    }fun postCommentReact(commentId: Int, action: String) {
         viewModelScope.launch {
             try {
                 val response = postCommentReactUseCase(commentId, action)
 
                 _communityPostDetail.value?.let { currentPostDetail ->
-                    //댓글 순회
-                    val updatedComments = currentPostDetail.postCommentList?.map { comment ->
+                    // 댓글 순회
+                    val updatedCommentList = currentPostDetail.postCommentList?.map { comment ->
                         if (comment.commentId == commentId) {
+                            // 댓글이 업데이트된 경우
                             comment.copy(
                                 likeCount = response.likeCount,
                                 dislikeCount = response.dislikeCount,
                                 isLiked = response.commentLikeStatus == 1,
                                 isDisliked = response.commentLikeStatus == -1,
                                 updatedAt = comment.updatedAt
-
                             )
                         } else {
-                            //대댓글 순회
+                            // 대댓글 순회
                             val updatedReplies = comment.repliesList.map { reply ->
                                 if (reply.commentId == commentId) {
                                     reply.copy(
@@ -128,12 +127,13 @@ class CommunityPostDetailViewModel @Inject constructor(
                                     reply
                                 }
                             }
+                            // 대댓글 리스트의 참조를 명확하게 변경하여 LiveData가 이를 감지하도록 함
                             comment.copy(repliesList = updatedReplies)
                         }
-                    }// 새로운 리스트로 변환하여 참조 변경
+                    }
 
                     // 변경된 댓글 리스트를 반영한 새로운 PostDetail 객체 생성
-                    val updatedPostDetail = currentPostDetail.copy(postCommentList = updatedComments)
+                    val updatedPostDetail = currentPostDetail.copy(postCommentList = updatedCommentList)
 
                     // 변경된 객체를 LiveData에 설정하여 옵저버가 변경사항을 감지하도록 강제
                     _communityPostDetail.postValue(updatedPostDetail)
@@ -143,6 +143,7 @@ class CommunityPostDetailViewModel @Inject constructor(
             }
         }
     }
+
 
 
 
@@ -156,11 +157,11 @@ class CommunityPostDetailViewModel @Inject constructor(
         }
     }
 
-    fun deleteComment(commentId: Int) {
+    fun deleteComment(postId : Int, commentId: Int) {
         viewModelScope.launch {
             try {
                 deleteCommentUseCase(commentId)
-                //TODO 반환된 요소만 제거 후 다시 로드 필요
+                loadCommunityPostDetail(postId)
             } catch (e: Exception) {
                 Log.e("CommunityPostDetailViewModel", "From deleteComment, Error msg is $e")
             }

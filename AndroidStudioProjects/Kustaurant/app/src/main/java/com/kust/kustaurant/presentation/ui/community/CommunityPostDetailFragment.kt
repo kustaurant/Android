@@ -29,6 +29,7 @@ class CommunityPostDetailFragment : Fragment() {
     private val viewModel: CommunityPostDetailViewModel by activityViewModels()
     private lateinit var CommuCommentAdapter: CommunityPostDetailCommentAdapter
     private val getSelectedPostDetailId: CommunityViewModel by activityViewModels()
+    private var postId : Int  = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,6 +53,7 @@ class CommunityPostDetailFragment : Fragment() {
     private fun setupObservers() {
         getSelectedPostDetailId.selectedPostDetailId.observe(viewLifecycleOwner) { postId ->
             postId?.let {
+                this.postId = postId
                 viewModel.loadCommunityPostDetail(it)
             }
         }
@@ -80,7 +82,6 @@ class CommunityPostDetailFragment : Fragment() {
             }
         }
 
-
         viewModel.isPostScrap.observe(viewLifecycleOwner) { result ->
             binding.communityTvBtnScrapLike.text = result.scrapCount.toString()
 
@@ -106,8 +107,6 @@ class CommunityPostDetailFragment : Fragment() {
                     .load(R.drawable.ic_post_like_true)
                     .into(binding.communityIvBtnPostLike)
         }
-
-
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -149,10 +148,10 @@ class CommunityPostDetailFragment : Fragment() {
             }
         }
         binding.communityLlBtnPostLike.setOnClickListener {
-            viewModel.postPostLike(getSelectedPostDetailId.selectedPostDetailId.value!!)
+            viewModel.postPostLike(postId)
         }
         binding.communityLlBtnScrap.setOnClickListener {
-            viewModel.postPostDetailScrap(getSelectedPostDetailId.selectedPostDetailId.value!!)
+            viewModel.postPostDetailScrap(postId)
         }
     }
 
@@ -173,7 +172,7 @@ class CommunityPostDetailFragment : Fragment() {
 
             override fun onDeleteClicked(commentId: Int) {
                 checkToken {
-                    //viewModel.deleteCommentData(restaurantId, commentId)
+                    viewModel.deleteComment(postId, commentId)
                     Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -208,7 +207,7 @@ class CommunityPostDetailFragment : Fragment() {
 
                 override fun onDeleteClicked(commentId: Int) {
                     checkToken {
-                        // viewModel.deleteCommentData(restaurantId, commentId)
+                        viewModel.deleteComment(postId, commentId)
                         Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT)
                             .show()
                     }
