@@ -30,33 +30,32 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val deletePostUseCase: DeleteCommunityPostUseCase,
     private val deleteCommentUseCase: DeleteCommunityCommentUseCase,
 
-
     //private val postpostImageUploadUseCase
     //private val patchPostModify
 ) : ViewModel() {
     private val _communityPostDetail = MutableLiveData<CommunityPost>()
     val communityPostDetail: LiveData<CommunityPost> = _communityPostDetail
 
-    private val _postLike = MutableLiveData<Boolean>(true)
-    val postLike: LiveData<Boolean> = _postLike
+    private val _postMine = MutableLiveData<Boolean>(true)
+    val postMine: LiveData<Boolean> = _postMine
 
-    private val _isPostScrap = MutableLiveData<CommunityPostScrapResponse>()
-    val isPostScrap: LiveData<CommunityPostScrapResponse> = _isPostScrap
+    private val _postDelete = MutableLiveData<Boolean>(false)
+    val postDelete: LiveData<Boolean> = _postDelete
 
-    private val _isPostLike = MutableLiveData<CommunityPostLikeResponse>()
-    val isPostLike: LiveData<CommunityPostLikeResponse> = _isPostLike
+    private val _postScrapInfo = MutableLiveData<CommunityPostScrapResponse>()
+    val postScrapInfo: LiveData<CommunityPostScrapResponse> = _postScrapInfo
+
+    private val _postLikeInfo = MutableLiveData<CommunityPostLikeResponse>()
+    val postLikeInfo: LiveData<CommunityPostLikeResponse> = _postLikeInfo
 
     private val _commentReply = MutableLiveData<CommunityPostComment>()
     val commentReply: LiveData<CommunityPostComment> = _commentReply
-
-    private val _updatedCommentsPosition = MutableLiveData<Pair<List<CommunityPostComment>, Int>>()
-    val updatedCommentsPosition: LiveData<Pair<List<CommunityPostComment>, Int>> =
-        _updatedCommentsPosition
 
     fun loadCommunityPostDetail(postId: Int) {
         viewModelScope.launch {
             try {
                 _communityPostDetail.value = getCommunityPostDetail(postId)
+                _postMine.value =  _communityPostDetail.value!!.isPostMine
             } catch (e: Exception) {
                 Log.e(
                     "CommunityPostDetailViewModel",
@@ -69,7 +68,7 @@ class CommunityPostDetailViewModel @Inject constructor(
     fun postPostDetailScrap(postId: Int) {
         viewModelScope.launch {
             try {
-                _isPostScrap.value = postPostScrap(postId)
+                _postScrapInfo.value = postPostScrap(postId)
             } catch (e: Exception) {
                 Log.e("CommunityPostDetailViewModel", "From postPostDetailScrap, Error msg is $e")
             }
@@ -79,7 +78,7 @@ class CommunityPostDetailViewModel @Inject constructor(
     fun postPostLike(postId: Int) {
         viewModelScope.launch {
             try {
-                _isPostLike.value = postPostLikeUseCase(postId)
+                _postLikeInfo.value = postPostLikeUseCase(postId)
             } catch (e: Exception) {
                 Log.e("CommunityPostDetailViewModel", "From postPostLike, Error msg is $e")
             }
@@ -91,11 +90,13 @@ class CommunityPostDetailViewModel @Inject constructor(
             try {
                 _commentReply.value =
                     postCreateCommentReplyUseCase(content, postId, parentCommentId)
+                loadCommunityPostDetail(postId.toInt())
             } catch (e: Exception) {
                 Log.e("CommunityPostDetailViewModel", "From postCommentReply, Error msg is $e")
             }
         }
-    }fun postCommentReact(commentId: Int, action: String) {
+    }
+    fun postCommentReact(commentId: Int, action: String) {
         viewModelScope.launch {
             try {
                 val response = postCommentReactUseCase(commentId, action)
@@ -139,18 +140,16 @@ class CommunityPostDetailViewModel @Inject constructor(
                     _communityPostDetail.postValue(updatedPostDetail)
                 }
             } catch (e: Exception) {
-                Log.e("CommunityPostDetailViewModel", "Error reacting to comment: $e")
+                Log.e("CommunityPostDetailViewModel", "From postCommentReact, Error reacting to comment: $e")
             }
         }
     }
-
-
-
 
     fun deletePost(postId: Int) {
         viewModelScope.launch {
             try {
                 deletePostUseCase(postId)
+                _postDelete.value = true
             } catch (e: Exception) {
                 Log.e("CommunityPostDetailViewModel", "From deletePost, Error msg is $e")
             }
@@ -166,5 +165,9 @@ class CommunityPostDetailViewModel @Inject constructor(
                 Log.e("CommunityPostDetailViewModel", "From deleteComment, Error msg is $e")
             }
         }
+    }
+
+    fun resetPostDelete() {
+        _postDelete.value = false
     }
 }

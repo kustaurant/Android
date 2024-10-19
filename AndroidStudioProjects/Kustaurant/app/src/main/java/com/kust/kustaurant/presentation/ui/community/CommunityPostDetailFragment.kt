@@ -7,12 +7,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.PopupWindow
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -28,7 +31,7 @@ class CommunityPostDetailFragment : Fragment() {
     private lateinit var binding: FragmentCommunityPostDetailBinding
     private val viewModel: CommunityPostDetailViewModel by activityViewModels()
     private lateinit var CommuCommentAdapter: CommunityPostDetailCommentAdapter
-    private val getSelectedPostDetailId: CommunityViewModel by activityViewModels()
+    private val parentViewModel: CommunityViewModel by activityViewModels()
     private var postId : Int  = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +51,16 @@ class CommunityPostDetailFragment : Fragment() {
 
         setupButton()
         setupObservers()
+
+        binding.communityLlBtnPostLike.background = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 100f
+            setStroke(1, ContextCompat.getColor(requireContext(), R.color.signature_1))
+        }
     }
 
     private fun setupObservers() {
-        getSelectedPostDetailId.selectedPostDetailId.observe(viewLifecycleOwner) { postId ->
+        parentViewModel.selectedPostDetailId.observe(viewLifecycleOwner) { postId ->
             postId?.let {
                 this.postId = postId
                 viewModel.loadCommunityPostDetail(it)
@@ -82,30 +91,20 @@ class CommunityPostDetailFragment : Fragment() {
             }
         }
 
-        viewModel.isPostScrap.observe(viewLifecycleOwner) { result ->
+        viewModel.postScrapInfo.observe(viewLifecycleOwner) { result ->
             binding.communityTvBtnScrapLike.text = result.scrapCount.toString()
-
-            if (result.status == 1)
-                Glide.with(this)
-                    .load(R.drawable.ic_scrap_false)
-                    .into(binding.communityIvBtnScrapLike)
-            else
-                Glide.with(this)
-                    .load(R.drawable.ic_scrap_false)
-                    .into(binding.communityIvBtnScrapLike)
         }
 
-        viewModel.isPostLike.observe(viewLifecycleOwner) { result ->
+        viewModel.postLikeInfo.observe(viewLifecycleOwner) { result ->
             binding.communityTvBtnPostLike.text = result.likeCount.toString()
+        }
 
-            if (result.status == 1)
-                Glide.with(this)
-                    .load(R.drawable.ic_post_like_true)
-                    .into(binding.communityIvBtnPostLike)
-            else
-                Glide.with(this)
-                    .load(R.drawable.ic_post_like_true)
-                    .into(binding.communityIvBtnPostLike)
+        viewModel.postDelete.observe(viewLifecycleOwner) {result ->
+            if(result) {
+                requireActivity().supportFragmentManager.popBackStack()
+
+                viewModel.resetPostDelete()
+            }
         }
     }
 
@@ -153,6 +152,32 @@ class CommunityPostDetailFragment : Fragment() {
         binding.communityLlBtnScrap.setOnClickListener {
             viewModel.postPostDetailScrap(postId)
         }
+
+        binding.communityIvPostDetailDots.setOnClickListener { view ->
+            if(viewModel.postMine.value!!) {
+                showPopupWindow(view)
+            }
+        }
+    }
+
+    private fun showPopupWindow(anchorView: View) {
+        val inflater = LayoutInflater.from(context)
+        val layoutRes = R.layout.popup_review_only_delete
+
+        val popupView = inflater.inflate(layoutRes, null)
+        val popupWindow = PopupWindow(
+            popupView,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
+            viewModel.deletePost(postId)
+            popupWindow.dismiss()
+        }
+
+        popupWindow.showAsDropDown(anchorView)
     }
 
     private fun initRecyclerView() {
@@ -262,7 +287,7 @@ class CommunityPostDetailFragment : Fragment() {
         btnSubmit.setOnClickListener {
             val inputText = etInput.text.toString()
             if (inputText.isNotBlank()) {
-                viewModel.postCreateCommentReply(inputText, getSelectedPostDetailId.selectedPostDetailId.value.toString(), commentId.toString())
+                viewModel.postCreateCommentReply(inputText, parentViewModel.selectedPostDetailId.value.toString(), commentId.toString())
                 bottomSheetDialog.dismiss()
                 Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
             } else {

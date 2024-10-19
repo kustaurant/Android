@@ -266,6 +266,8 @@ class TierViewModel @Inject constructor(
                 currentLocations != selectedLocations.value)
     }
 
+
+
     companion object {
         enum class RestaurantState {
             RELOAD_RESTAURANT_LIST_DATA,
