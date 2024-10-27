@@ -286,6 +286,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_japan"
                                 android:src="@drawable/img_category_japan" />
 
@@ -321,6 +322,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_china"
                                 android:src="@drawable/img_category_china" />
 
@@ -370,6 +372,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_western"
                                 android:src="@drawable/img_category_western" />
 
@@ -406,6 +409,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_asian"
                                 android:src="@drawable/img_category_asian" />
 
@@ -442,6 +446,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_meat"
                                 android:src="@drawable/img_category_meat" />
 
@@ -477,6 +482,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_seafood"
                                 android:src="@drawable/img_category_seafood" />
 
@@ -526,6 +532,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_chicken"
                                 android:src="@drawable/img_category_chicken" />
 
@@ -562,6 +569,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_hamburger"
                                 android:src="@drawable/img_category_hamburger_pizza" />
 
@@ -598,6 +606,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_tteokbokki"
                                 android:src="@drawable/img_category_tteokbokki" />
 
@@ -634,6 +643,7 @@
                                 android:layout_marginTop="5dp"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_beer"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 android:src="@drawable/img_category_beer" />
 
                             <TextView
@@ -681,6 +691,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_cafe"
                                 android:src="@drawable/img_category_cafe" />
 
@@ -718,6 +729,7 @@
                                 android:layout_marginTop="5dp"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_bakery"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 android:src="@drawable/img_category_bakery" />
 
                             <TextView
@@ -753,6 +765,7 @@
                                 android:layout_height="0dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_salad"
                                 android:src="@drawable/img_category_salad" />
 
@@ -789,6 +802,7 @@
                                 android:layout_marginTop="5dp"
                                 app:layout_constraintBottom_toTopOf="@id/draw_tv_benefit"
                                 android:layout_marginHorizontal="6dp"
+                                app:layout_constraintTop_toTopOf="parent"
                                 android:src="@drawable/img_category_benefit" />
 
                             <TextView
