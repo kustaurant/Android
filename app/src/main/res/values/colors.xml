@@ -2,4 +2,38 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- 지도 색 관련 -->
+    <color name="polygon">#3943AB38</color>
+    <color name="polygon_line">#43AB38</color>
+
+    <!-- 시그니처 -->
+    <color name="signature_1">#43AB38</color>
+    <color name="signature_2">#046B40</color>
+
+    <!-- 시멘트 -->
+    <color name="cement_1">#FFFFFF</color>
+    <color name="cement_2">#EAEAEA</color>
+    <color name="cement_3">#E0E0E0</color>
+    <color name="cement_4">#AAAAAA</color>
+    <color name="cement_5">#666666</color>
+    <color name="cement_6">#323232</color>
+    <color name="cement_7">#7C7C7C</color>
+
+    <!-- 티어 -->
+    <color name="tier_1">#0093FF</color>
+    <color name="tier_2">#01BAA6</color>
+    <color name="tier_3">#FFB900</color>
+    <color name="tier_4">#9BA5B0</color>
+
+    <!-- 카테고리 -->
+    <color name="cate_selected">#DDF0DB</color>
+
+    <!-- 커뮤니티 -->
+    <color name="community_post_title">#353535</color>
+
+
+    <!--홈 -->
+    <color name="top_gray">#838383</color>
+    <color name="category_gray">#F5F5F5</color>
 </resources>

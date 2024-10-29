@@ -1,20 +1,43 @@
+import java.util.Properties
+
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.hilt.android)
+    kotlin("kapt")
 }
 
+val properties = Properties()
+file("../local.properties").inputStream().use{ properties.load(it) }
+
 android {
-    namespace = "com.example.kuit2_mealplanb"
-    compileSdk = 33
+    namespace = "com.kust.kustaurant"
+    compileSdk = 34
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+        buildConfig = true
+    }
 
     defaultConfig {
-        applicationId = "com.example.kuit2_mealplanb"
-        minSdk = 33
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = "com.kust.kustaurant"
+        minSdk = 26
+        targetSdk = 34
+        versionCode = 19
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // 네이버 로그인
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"${properties["naver_client_id"]}\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${properties["naver_client_secret"]}\"")
+
+        // 카카오 로그인
+        buildConfigField("String", "KAKAO_NATIVE_KEY", "\"${properties["kakao_native_key"]}\"")
+        buildConfigField("String", "KAKAO_REST_API_KEY", "\"${properties["kakao_rest_api_key"]}\"")
+
+        manifestPlaceholders["KAKAO_NATIVE_KEY"] = properties["kakao_manifest_native_key"].toString()
     }
 
     buildTypes {
@@ -26,22 +49,82 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+
+    packaging {
+        resources {
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/NOTICE.md"
+        }
     }
 }
 
-dependencies {
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
+}
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+dependencies {
+    // sticky scollview
+    implementation(libs.sticky.scroll.view)
+
+    // Naver 지도
+    implementation(libs.naver.maps)
+
+    // by viewModels() 사용
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+
+    // ViewModelProvider 사용
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.oauth) // 네이버 로그인
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.v2.user) // 카카오 로그인
+    kapt(libs.hilt.android.compiler)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.urlconnection)
+
+    implementation(libs.androidx.databinding.compiler)
+
+    implementation(libs.google.material)
+
+    implementation (libs.flexbox)
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.glide)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    //MVVM Lifecycle JetPack 라이브러리
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
+    implementation("androidx.activity:activity-ktx:1.5.0")
+
+    implementation("com.google.android.play:app-update:2.1.0")
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
+
+    implementation ("com.airbnb.android:lottie:6.5.2")
+    implementation(kotlin("script-runtime"))
+
+
 }
