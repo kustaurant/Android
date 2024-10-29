@@ -1,13 +1,13 @@
 package com.kust.kustaurant.presentation.ui.community
 
-import android.widget.TextView
+
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,9 +25,6 @@ class CommunityPostListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
-
-        // 초기 데이터 로드
-        viewModel.resetPageAndLoad()
     }
 
     override fun onCreateView(
@@ -39,17 +36,19 @@ class CommunityPostListFragment : Fragment() {
         binding.viewModel = viewModel
 
         commuAdapter = CommunityPostListAdapter()
-        binding.communityRecyclerView.apply{
+        binding.communityRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = commuAdapter
         }
 
-        commuAdapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener{
+        commuAdapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener {
             override fun onItemClicked(data: CommunityPost) {
-//                Log.e("CommuItemClicked", data.postId.toString())
-//                val intent = Intent(requireActivity(), CommunityPostDetailActivity::class.java)
-//                intent.putExtra("postId", data.postId)
-//                startActivity(intent)
+                viewModel.selectPost(data.postId)
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frm, CommunityPostDetailFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         })
 
@@ -66,15 +65,21 @@ class CommunityPostListFragment : Fragment() {
             resources.getStringArray(R.array.community_board_options)
         ) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_community_spinner, parent, false)
+                val view = convertView ?: LayoutInflater.from(context)
+                    .inflate(R.layout.item_community_spinner, parent, false)
                 val mainText = view.findViewById<TextView>(R.id.spinner_item_text)
                 mainText.text = getItem(position)
                 mainText.setTextColor(ContextCompat.getColor(context, R.color.signature_1))
                 return view
             }
 
-            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_community_spinner, parent, false)
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view = convertView ?: LayoutInflater.from(context)
+                    .inflate(R.layout.item_community_spinner, parent, false)
                 val mainText = view.findViewById<TextView>(R.id.spinner_item_text)
                 mainText.text = getItem(position)
                 mainText.setTextColor(ContextCompat.getColor(context, R.color.black))
@@ -85,74 +90,89 @@ class CommunityPostListFragment : Fragment() {
         binding.communitySpinnerBoard.adapter = spinnerAdapter
 
         // Spinner 선택 이벤트 처리
-        binding.communitySpinnerBoard.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedBoard = when (position) {
-                    0 -> "all"
-                    1 -> "free"
-                    2 -> "column"
-                    3 -> "suggestion"
-                    else -> "all"
+        binding.communitySpinnerBoard.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedBoard = when (position) {
+                        0 -> "all"
+                        1 -> "free"
+                        2 -> "column"
+                        3 -> "suggestion"
+                        else -> "all"
+                    }
+                    viewModel.onPostCategoryChanged(selectedBoard)
                 }
-                viewModel.onPostCategoryChanged(selectedBoard)
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
+                override fun onNothingSelected(parent: AdapterView<*>) {}
+            }
 
         binding.communityToggleLastestSort.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                // 최신순 정렬 버튼이 체크됨
-                viewModel.onSortChanged("recent")
-
+                viewModel.updateSortAndLoadPosts("recent")
+                binding.communityRecyclerView.scrollToPosition(0)
                 binding.communityTogglePopularSort.isChecked = false
-                buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
+                buttonView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.signature_1
+                    )
+                )
             } else {
                 // 이미 체크된 버튼을 다시 누를 경우 체크를 유지
                 if (!binding.communityTogglePopularSort.isChecked) {
                     buttonView.isChecked = true
                 } else {
-                    // 체크가 해제될 경우 텍스트 색상을 기본 색상으로 변경
-                    buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
+                    buttonView.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.cement_4
+                        )
+                    )
                 }
             }
         }
 
         binding.communityTogglePopularSort.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                // 인기순 정렬 버튼이 체크됨
-                viewModel.onSortChanged("popular")
+                viewModel.updateSortAndLoadPosts("popular")
+                binding.communityRecyclerView.scrollToPosition(0)
                 binding.communityToggleLastestSort.isChecked = false
-                buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
+                buttonView.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.signature_1
+                    )
+                )
             } else {
                 // 이미 체크된 버튼을 다시 누를 경우 체크를 유지
                 if (!binding.communityToggleLastestSort.isChecked) {
                     buttonView.isChecked = true
                 } else {
-                    // 체크가 해제될 경우 텍스트 색상을 기본 색상으로 변경
-                    buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
+                    buttonView.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.cement_4
+                        )
+                    )
                 }
             }
         }
 
-        // RecyclerView 스크롤 리스너 설정
         binding.communityRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                val totalItemCount = layoutManager.itemCount
-
-                if (lastVisibleItemPosition == totalItemCount - 1) {
+                if (!recyclerView.canScrollVertically(1)) {
                     val postCategory = viewModel.postCategory.value
                     val sort = viewModel.sort.value
-                    val page = viewModel.page.value
 
-                    if (postCategory.isNullOrEmpty() || sort.isNullOrEmpty() || page == null) {
-                        Log.e("CommunityPostListFragment", "Error: Missing parameters - postCategory: $postCategory, sort: $sort, page: $page")
-                    } else {
-                        viewModel.loadCommunityPosts(postCategory, page, sort)
+                    if (!postCategory.isNullOrEmpty() && !sort.isNullOrEmpty()) {
+                        viewModel.getCommunityPostList(PostLoadState.POST_NEXT_PAGE, sort)
                     }
                 }
             }
@@ -160,17 +180,19 @@ class CommunityPostListFragment : Fragment() {
 
         // SwipeRefreshLayout 새로고침 이벤트 처리
         binding.communitySrl.setOnRefreshListener {
-            viewModel.resetPageAndLoad()
+
+            viewModel.getCommunityPostList(
+                PostLoadState.POST_FIRST_PAGE,
+                viewModel.sort.value!!
+            )
+
             binding.communitySrl.isRefreshing = false
         }
-
-
     }
 
     private fun setupObservers() {
         viewModel.communityPosts.observe(viewLifecycleOwner) { posts ->
             commuAdapter.submitList(posts)
-            binding.communityRecyclerView.scrollToPosition(0)
         }
 
         viewModel.postCategory.observe(viewLifecycleOwner) { category ->
@@ -187,9 +209,13 @@ class CommunityPostListFragment : Fragment() {
         viewModel.sort.observe(viewLifecycleOwner) { sort ->
             binding.communityToggleLastestSort.isChecked = sort == "recent"
             binding.communityTogglePopularSort.isChecked = sort == "popular"
-
         }
     }
-
+    companion object {
+        enum class PostLoadState {
+            POST_FIRST_PAGE,
+            POST_NEXT_PAGE,
+        }
+    }
 }
 

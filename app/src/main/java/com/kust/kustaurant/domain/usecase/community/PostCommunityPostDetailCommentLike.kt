@@ -5,7 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PostCommunityPostDetailCommentLike @Inject constructor(
+class PostCommunityPostDetailCommentLikeUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
 ) {
 //    suspend operator fun invoke(sort: String): List<CommunityRanking> {

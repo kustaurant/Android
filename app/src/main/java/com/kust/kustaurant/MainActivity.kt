@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.kust.kustaurant.databinding.ActivityMainBinding
-import com.kust.kustaurant.presentation.ui.community.CommunityBlankFragment
 import com.kust.kustaurant.presentation.ui.community.CommunityFragment
 import com.kust.kustaurant.presentation.ui.draw.DrawFragment
 import com.kust.kustaurant.presentation.ui.home.HomeFragment

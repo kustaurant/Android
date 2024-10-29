@@ -6,7 +6,7 @@ import com.kust.kustaurant.data.model.TierMapDataResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface KustaurantApi {
+interface TierApi {
     @GET("/api/v1/tier/map")
     suspend fun getTierMapList(
         @Query("cuisines") cuisines: String,
