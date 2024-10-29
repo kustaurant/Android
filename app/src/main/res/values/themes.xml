@@ -1,9 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.KUIT2MealplanB" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Kustaurant" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!--        <item name="android:windowTranslucentStatus">true</item>-->
     </style>
 
-    <style name="Theme.KUIT2MealplanB" parent="Base.Theme.KUIT2MealplanB" />
+    <style name="Theme.Kustaurant" parent="Base.Theme.Kustaurant" />
 </resources>
