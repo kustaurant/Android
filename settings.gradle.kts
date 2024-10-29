@@ -1,6 +1,12 @@
 pluginManagement {
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -10,8 +16,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://repository.map.naver.com/archive/maven")
+        maven("https://devrepo.kakao.com/nexus/content/groups/public/")
+        maven("https://jitpack.io") //kotli dsl
     }
 }
 
-rootProject.name = "KUIT2-MealplanB"
+rootProject.name = "Kustaurant"
 include(":app")
