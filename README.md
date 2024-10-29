@@ -6,7 +6,7 @@
 </p>
 
 ## Download
-<a href="https://play.google.com/store/apps/details?id=your.app.id">
+<a href="https://play.google.com/store/apps/details?id=com.kust.kustaurant">
   <img src="https://github.com/user-attachments/assets/a5565eeb-a4d9-4a65-ad40-b4a3ba83283d" alt="AndroidLink" width="300"/>
 </a>
 
