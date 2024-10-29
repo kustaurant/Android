@@ -3,12 +3,12 @@ package com.kust.kustaurant.data.repository
 import com.kust.kustaurant.data.mapper.toTierMapData
 import com.kust.kustaurant.data.model.RestaurantResponse
 import com.kust.kustaurant.data.model.TierMapData
-import com.kust.kustaurant.data.remote.KustaurantApi
+import com.kust.kustaurant.data.remote.TierApi
 import com.kust.kustaurant.domain.repository.TierRepository
 import javax.inject.Inject
 
 class TierRepositoryImpl @Inject constructor(
-    private val kustaurantApi: KustaurantApi
+    private val tierApi: TierApi
 ) : TierRepository {
     override suspend fun getRestaurantList(
         cuisines: String,
@@ -16,7 +16,7 @@ class TierRepositoryImpl @Inject constructor(
         locations: String,
         page: Int
     ): List<RestaurantResponse> {
-        return kustaurantApi.getRestaurantList(cuisines, situations, locations, page)
+        return tierApi.getRestaurantList(cuisines, situations, locations, page)
     }
 
     override suspend fun getRestaurantMapList(
@@ -24,6 +24,6 @@ class TierRepositoryImpl @Inject constructor(
         situations: String,
         locations: String
     ): TierMapData {
-        return kustaurantApi.getTierMapList(cuisines, situations, locations).toTierMapData()
+        return tierApi.getTierMapList(cuisines, situations, locations).toTierMapData()
     }
 }

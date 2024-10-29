@@ -118,9 +118,6 @@
         <activity
             android:name=".presentation.ui.detail.DetailActivity"
             android:exported="true" />
-        <activity
-            android:name=".presentation.ui.community.CommunityPostDetailActivity"
-            android:exported="true" />
     </application>
 
 </manifest>
