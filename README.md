@@ -36,5 +36,24 @@
   - ViewModel
   - Lifecycle
 
+## Contributor
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/92737123?v=4" width="200" height="200" alt="김태정"/><br>
+      <a href="https://github.com/imtaejugkim">김태정</a>
+    </td>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/105851903?v=4" width="200" height="200" alt="송민서"/><br>
+      <a href="https://github.com/MinseoSONG">송민서</a>
+    </td>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/62642155?v=4" width="200" height="200" alt="조정범"/><br>
+      <a href="https://github.com/BeomBeom2">조정범</a>
+    </td>
+  </tr>
+</table>
+
+
 ## Contact Us
 .
