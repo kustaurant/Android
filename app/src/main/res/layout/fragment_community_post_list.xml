@@ -48,8 +48,8 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/item_community_spinner_background"
-                android:spinnerMode="dropdown"
                 android:paddingEnd="14dp"
+                android:spinnerMode="dropdown"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -114,5 +114,25 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <Button
+            android:id="@+id/commu_btn_write_post"
+            android:layout_width="104dp"
+            android:layout_height="37dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="@color/signature_1"
+            android:baselineAlignBottom="true"
+            android:drawableEnd="@drawable/ic_write_post"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/pretendard_regular"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="글쓰기"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/community_gl_end" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
