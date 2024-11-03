@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.kust.kustaurant.presentation.ui.community.CommunityPostDetailViewModel" />
+            type="com.kust.kustaurant.presentation.ui.community.CommunityPostWriteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,6 +117,7 @@
                     android:paddingTop="4dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="4dp"
+                    android:clickable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 

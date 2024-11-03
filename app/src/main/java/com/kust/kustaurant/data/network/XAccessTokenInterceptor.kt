@@ -1,10 +1,9 @@
-package com.kust.kustaurant.data.di
+package com.kust.kustaurant.data.network
 
 import android.content.Context
 import android.util.Log
 import com.kust.kustaurant.data.getAccessToken
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
 
 class XAccessTokenInterceptor(val context: Context) : Interceptor {

@@ -27,6 +27,15 @@ class CommunityRepositoryImpl @Inject constructor(
         return communityApi.getCommunityPostDetailData(postId)
     }
 
+    override suspend fun postCommunityPostCreate(
+        title: String,
+        postCategory: String,
+        content: String,
+        imageFile: String
+    ): CommunityPostCommentReactResponse {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun postCommunityPostDetailScrap(postId: Int): CommunityPostScrapResponse {
         return communityApi.postCommunityPostDetailScrap(postId)
     }

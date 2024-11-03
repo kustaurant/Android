@@ -1,7 +1,9 @@
-package com.kust.kustaurant.data.di
+package com.kust.kustaurant.di.network
 
 import com.kust.kustaurant.data.remote.CommunityApi
 import android.content.Context
+import com.kust.kustaurant.data.network.TokenAuthenticator
+import com.kust.kustaurant.data.network.XAccessTokenInterceptor
 import com.kust.kustaurant.data.remote.DetailApi
 import com.kust.kustaurant.data.remote.GoodByeApi
 import com.kust.kustaurant.data.remote.HomeApi

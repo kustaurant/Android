@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- Android 13(API 33) 이상에서 이미지를 읽기 위한 권한 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- Android 12(API 32) 이하에서 이미지를 읽기 위한 권한 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+
 
     <application
         android:name=".presentation.KustaurantApplication"
@@ -117,9 +121,6 @@
 
         <activity
             android:name=".presentation.ui.detail.DetailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.ui.community.CommunityPostDetailActivity"
             android:exported="true" />
     </application>
 

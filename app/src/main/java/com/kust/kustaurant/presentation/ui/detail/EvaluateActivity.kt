@@ -32,7 +32,7 @@ class EvaluateActivity : AppCompatActivity() {
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
     private var restaurantId = 1
-    private val REQ_GALLERY = 1001
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -193,5 +193,9 @@ class EvaluateActivity : AppCompatActivity() {
             viewModel.loadMyEvaluationData(restaurantId)
             binding.btnSubmit.text = "다시 평가하기"
         }
+    }
+
+    companion object {
+        const val REQ_GALLERY = 1001
     }
 }

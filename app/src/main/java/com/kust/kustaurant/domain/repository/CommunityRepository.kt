@@ -22,6 +22,13 @@ interface CommunityRepository {
         postId: Int,
     ): CommunityPost
 
+    suspend fun postCommunityPostCreate(
+        title : String,
+        postCategory : String,
+        content : String,
+        imageFile : String,
+    ) : CommunityPostCommentReactResponse
+
     suspend fun postCommunityPostDetailScrap(
         postId : Int,
     ) : CommunityPostScrapResponse

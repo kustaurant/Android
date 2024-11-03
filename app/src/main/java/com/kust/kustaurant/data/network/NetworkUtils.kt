@@ -1,4 +1,4 @@
-package com.kust.kustaurant.data.di
+package com.kust.kustaurant.data.network
 
 import retrofit2.HttpException
 import java.net.SocketTimeoutException

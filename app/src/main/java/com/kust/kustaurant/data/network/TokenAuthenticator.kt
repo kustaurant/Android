@@ -1,14 +1,10 @@
-package com.kust.kustaurant.data.di
+package com.kust.kustaurant.data.network
 
 import android.content.Context
 import android.util.Log
 import com.kust.kustaurant.data.getAccessToken
-import com.kust.kustaurant.data.model.LoginResponse
-import com.kust.kustaurant.data.remote.NewAccessTokenApi
 import com.kust.kustaurant.data.saveAccessToken
-import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request

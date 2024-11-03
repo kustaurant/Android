@@ -1,6 +1,7 @@
 package com.kust.kustaurant.presentation.ui.community
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +15,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentCommunityPostListBinding
 import com.kust.kustaurant.domain.model.CommunityPost
+import com.kust.kustaurant.presentation.ui.splash.StartActivity
 
 class CommunityPostListFragment : Fragment() {
     private lateinit var binding: FragmentCommunityPostListBinding
@@ -40,17 +43,6 @@ class CommunityPostListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = commuAdapter
         }
-
-        commuAdapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener {
-            override fun onItemClicked(data: CommunityPost) {
-                viewModel.selectPost(data.postId)
-
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frm, CommunityPostDetailFragment())
-                    .addToBackStack(null)
-                    .commit()
-            }
-        })
 
         setupUI()
 
@@ -113,6 +105,17 @@ class CommunityPostListFragment : Fragment() {
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
 
+        commuAdapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener {
+            override fun onItemClicked(data: CommunityPost) {
+                viewModel.selectPost(data.postId)
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frm, CommunityPostDetailFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
+        })
+
         binding.communityToggleLastestSort.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 viewModel.updateSortAndLoadPosts("recent")
@@ -164,6 +167,16 @@ class CommunityPostListFragment : Fragment() {
                 }
             }
         }
+
+        binding.commuBtnWritePost.setOnClickListener {
+            checkToken {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frm, CommunityPostWriteFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
+
 
         binding.communityRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -224,6 +237,16 @@ class CommunityPostListFragment : Fragment() {
         })
     }
 
+    fun checkToken(action: () -> Unit) {
+        val accessToken = getAccessToken(requireContext())
+        if (accessToken == null) {
+            val intent = Intent(requireContext(), StartActivity::class.java)
+            startActivity(intent)
+        } else {
+            action()
+        }
+    }
+
     private fun setupObservers() {
         viewModel.communityPosts.observe(viewLifecycleOwner) { posts ->
             commuAdapter.submitList(posts)
@@ -245,6 +268,7 @@ class CommunityPostListFragment : Fragment() {
             binding.communityTogglePopularSort.isChecked = sort == "popular"
         }
     }
+
     companion object {
         enum class PostLoadState {
             POST_FIRST_PAGE,
