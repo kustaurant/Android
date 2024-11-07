@@ -1,26 +1,28 @@
 package com.kust.kustaurant.presentation.ui.community
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import android.text.Editable
-import android.text.SpannableStringBuilder
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.JavascriptInterface
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +40,8 @@ class CommunityPostWriteFragment : Fragment() {
     private lateinit var binding: FragmentCommunityPostWriteBinding
     private val viewModel: CommunityPostWriteViewModel by activityViewModels()
     private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
+    private var cursorPosition: Int = 0 // 커서 위치를 추적할 변수
+    private var textChangeJob: Job? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +50,7 @@ class CommunityPostWriteFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        initWebView()
         initPhotoPicker()
         setupUI()
 
@@ -58,59 +63,74 @@ class CommunityPostWriteFragment : Fragment() {
         setupObservers()
     }
 
-    private fun setupUI() {
-        binding.llSelectPostSort.setOnClickListener { showPopupWindow() }
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun initWebView() {
+        binding.etPostContent.settings.javaScriptEnabled = true
+        binding.etPostContent.addJavascriptInterface(JSInterface(), "JSInterface")
 
+        // 페이지가 로드될 때 커서 위치 추적 JavaScript 코드 설정
+        binding.etPostContent.evaluateJavascript("""
+        document.addEventListener("selectionchange", function() {
+            var selection = window.getSelection();
+            var cursorPosition = selection.anchorOffset;
+            JSInterface.onGetCursorPosition(cursorPosition);
+        });
+    """.trimIndent(), null)
+    }
+
+    private fun setupUI() {
+        // Bold button for RichEditor
         binding.ivBold.setOnClickListener {
-            val start = binding.etPostContent.selectionStart
-            val end = binding.etPostContent.selectionEnd
-            Log.d("ivBold", "$start $end")
-            if (start != end) {  // 텍스트가 선택된 경우에만 적용
-                Log.d("ivBold", "if문 들옴")
-                viewModel.applyBold(start, end)
+            binding.etPostContent.setBold()
+        }
+
+        // Undo/Redo functionality
+        binding.ivGoBack.setOnClickListener { binding.etPostContent.undo() }
+        binding.ivGoForward.setOnClickListener { binding.etPostContent.redo() }
+
+        // Image selection
+        binding.ivSelectImg.setOnClickListener {
+            binding.etPostContent.evaluateJavascript(
+                "JSInterface.onGetCursorPosition(window.getSelection().anchorOffset);",
+                null
+            )
+            selectGallery()
+        }
+
+        // Listen for HTML content changes
+        binding.etPostContent.setOnTextChangeListener { html ->
+            textChangeJob?.cancel()
+            textChangeJob = lifecycleScope.launch {
+                delay(300) // 300ms debounce
+                viewModel.updateContentFromHtml(html)
             }
         }
 
-        binding.ivGoBack.setOnClickListener { viewModel.undo() }
-        binding.ivGoForward.setOnClickListener { viewModel.redo() }
-        binding.ivSelectImg.setOnClickListener { selectGallery() }
+        binding.etPostContent.setOnFocusChangeListener { _, hasFocus ->
+                viewModel.onFocusChanged(hasFocus)
+        }
 
-        binding.etPostTitle.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        // Observe post sort selection
+        binding.llSelectPostSort.setOnClickListener { showPopupWindow() }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.updateTitle(s.toString())
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
-        binding.etPostContent.addTextChangedListener(object : TextWatcher {
-            private var debounceJob: Job? = null
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                debounceJob?.cancel()
-                debounceJob = lifecycleScope.launch {
-                    delay(500)
-                    viewModel.updateContent(SpannableStringBuilder(s))
-                }
-            }
-        })
+        // Title update listener
+        binding.etPostTitle.addTextChangedListener { text ->
+            viewModel.updateTitle(text.toString())
+        }
     }
 
     private fun initPhotoPicker() {
-        photoPickerLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                    result.data?.data?.let { uri: Uri ->
-                        val cursorPosition = binding.etPostContent.selectionStart
-                        viewModel.insertImage(uri, cursorPosition)
-                    }
+        photoPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                result.data?.data?.let { uri ->
+                    val newCursorPos = viewModel.insertImageAtCursor(uri.toString(), cursorPosition)
+                    // JavaScript로 새로운 커서 위치 설정
+                    binding.etPostContent.evaluateJavascript(
+                        "window.getSelection().collapse(null, $newCursorPos);", null
+                    )
                 }
             }
+        }
     }
 
     private fun selectGallery() {
@@ -194,11 +214,23 @@ class CommunityPostWriteFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.postContent.observe(viewLifecycleOwner) { newContent ->
-            if (binding.etPostContent.text.toString() != newContent.toString()) {
-                val currentScrollY = binding.etPostContent.scrollY
-                binding.etPostContent.setText(newContent, TextView.BufferType.SPANNABLE)
-                binding.etPostContent.scrollY = currentScrollY
+        viewModel.hintVisible.observe(viewLifecycleOwner) { isVisible ->
+            Log.d("CommuPostView", "${binding.etPostContent.html}}")
+            Log.d("CommuPostView", "isVisible is $isVisible")
+            if (isVisible && !binding.etPostContent.hasFocus()) {
+                //!binding.etPostContent.hasFocus() 조건을 추가한 이유 : etPostContent에서 글자를 썻다가 지울경우 Hint가 바로 나오기 때문에.
+                binding.etPostContent.html = getString(R.string.community_post_write_info)
+                binding.etPostContent.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_3))
+            } else if (binding.etPostContent.html == getString(R.string.community_post_write_info)) {
+
+                binding.etPostContent.html = ""
+                binding.etPostContent.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            }
+        }
+
+        viewModel.postContentHtml.observe(viewLifecycleOwner) { htmlContent ->
+            if (binding.etPostContent.html != htmlContent) {
+                binding.etPostContent.html = htmlContent
             }
         }
 
@@ -216,6 +248,21 @@ class CommunityPostWriteFragment : Fragment() {
             }
 
             binding.tvFinish.backgroundTintList = ColorStateList.valueOf(color)
+        }
+    }
+
+    // JSInterface 클래스 정의
+    inner class JSInterface {
+        @JavascriptInterface
+        fun onGetCursorPosition(position: Int) {
+            // JavaScript에서 가져온 커서 위치를 Android의 cursorPosition에 저장
+            cursorPosition = position
+            Log.d("CommuPostWriteFragment", "Cursor position updated to: $cursorPosition")
+        }
+
+        @JavascriptInterface
+        fun insertImageAtCursor(imageUri: String) {
+            viewModel.insertImageAtCursor(imageUri, cursorPosition)
         }
     }
 }

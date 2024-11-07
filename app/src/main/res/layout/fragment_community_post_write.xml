@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -39,7 +39,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- TextView for Centered Text -->
             <TextView
                 android:id="@+id/community_tv_activity_post_info"
                 android:layout_width="wrap_content"
@@ -63,7 +62,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/back_btn_info"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:src="@drawable/btn_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,9 +94,9 @@
             android:nestedScrollingEnabled="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ll_bottom_group"
             app:layout_constraintEnd_toEndOf="@id/gl_end"
             app:layout_constraintStart_toStartOf="@id/gl_start"
-            app:layout_constraintBottom_toTopOf="@id/ll_bottom_group"
             app:layout_constraintTop_toBottomOf="@id/community_cl_top_bar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -111,13 +110,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="19dp"
                     android:background="@drawable/all_radius_100_signature_1"
+                    android:clickable="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="16dp"
                     android:paddingTop="4dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="4dp"
-                    android:clickable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -160,6 +159,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_post_title" />
 
+                <jp.wasabeef.richeditor.RichEditor
+                    android:id="@+id/et_post_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="top|start"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title_divider"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+<!--
                 <EditText
                     android:id="@+id/et_post_content"
                     android:layout_width="match_parent"
@@ -173,7 +186,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title_divider" />
-
+-->
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
@@ -194,36 +207,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
+                android:contentDescription="@string/community_post_select_img_description"
                 android:padding="5dp"
-                android:src="@drawable/ic_select_img"
-                android:contentDescription="@string/community_post_select_img_description" />
+                android:src="@drawable/ic_select_img" />
 
             <ImageView
                 android:id="@+id/iv_go_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
+                android:contentDescription="@string/community_post_go_back_description"
                 android:padding="5dp"
-                android:src="@drawable/ic_go_back"
-                android:contentDescription="@string/community_post_go_back_description" />
+                android:src="@drawable/ic_go_back" />
 
             <ImageView
                 android:id="@+id/iv_go_forward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
+                android:contentDescription="@string/community_post_go_forward_description"
                 android:padding="5dp"
-                android:src="@drawable/ic_go_forward"
-                android:contentDescription="@string/community_post_go_forward_description" />
+                android:src="@drawable/ic_go_forward" />
 
             <ImageView
                 android:id="@+id/iv_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
+                android:contentDescription="@string/community_post_bold_description"
                 android:padding="5dp"
-                android:src="@drawable/ic_word_bold"
-                android:contentDescription="@string/community_post_bold_description" />
+                android:src="@drawable/ic_word_bold" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

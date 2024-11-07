@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.2"
+agp = "8.2.0"
 flexbox = "3.0.0"
 kotlin = "1.9.23"
 coreKtx = "1.13.1"
@@ -29,6 +29,7 @@ kotlinxCoroutinesAndroid = "1.9.0-RC"
 oauthJdk8 = "5.9.1"
 v2User = "2.10.0"
 stickyScrollView = "1.0.3"
+richeditorAndroid = "2.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,6 +60,7 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 oauth-jdk8 = { group = "com.navercorp.nid", name = "oauth-jdk8", version.ref = "oauthJdk8" }
 v2-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "v2User" }
 sticky-scroll-view = { module = "com.github.amarjain07:StickyScrollView", version.ref = "stickyScrollView" }
+richeditor-android = { group = "jp.wasabeef", name = "richeditor-android", version.ref = "richeditorAndroid" }
 
 
 [plugins]
