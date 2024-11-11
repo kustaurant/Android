@@ -3,45 +3,59 @@ package com.kust.kustaurant.data.repository
 import com.kust.kustaurant.data.model.CommunityPostCommentReactResponse
 import com.kust.kustaurant.data.model.CommunityPostLikeResponse
 import com.kust.kustaurant.data.model.CommunityPostScrapResponse
+import com.kust.kustaurant.data.model.CommunityPostUploadImageResponse
 import com.kust.kustaurant.data.remote.CommunityApi
 import com.kust.kustaurant.domain.model.CommunityPost
 import com.kust.kustaurant.domain.model.CommunityPostComment
 import com.kust.kustaurant.domain.model.CommunityRanking
 import com.kust.kustaurant.domain.repository.CommunityRepository
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class CommunityRepositoryImpl @Inject constructor(
     private val communityApi : CommunityApi
 ) : CommunityRepository {
-    override suspend fun getCommunityPostListData(postCategory: String, page: Int, sort: String): List<CommunityPost> {
+    override suspend fun getPostListData(postCategory: String, page: Int, sort: String): List<CommunityPost> {
         return communityApi.getCommunityPostListData(postCategory, page, sort)
     }
 
-    override suspend fun getCommunityRankingListData(
+    override suspend fun getRankingListData(
         sort: String
     ): List<CommunityRanking> {
         return communityApi.getCommunityRankingListData(sort)
     }
 
-    override suspend fun getCommunityPostDetailData(postId: Int): CommunityPost {
+    override suspend fun getPostDetailData(postId: Int): CommunityPost {
         return communityApi.getCommunityPostDetailData(postId)
     }
 
-    override suspend fun postCommunityPostCreate(
+    override suspend fun postPostCreate(
         title: String,
         postCategory: String,
         content: String,
-        imageFile: String
-    ): CommunityPostCommentReactResponse {
-        TODO("Not yet implemented")
+    ): CommunityPost {
+        return communityApi.postPostCreate(title, postCategory, content, null )
     }
 
-    override suspend fun postCommunityPostDetailScrap(postId: Int): CommunityPostScrapResponse {
+    override suspend fun postUploadImage(image: MultipartBody.Part): CommunityPostUploadImageResponse {
+        return communityApi.postCommunityUploadImage(image)
+    }
+
+    override suspend fun postPostDetailScrap(postId: Int): CommunityPostScrapResponse {
         return communityApi.postCommunityPostDetailScrap(postId)
     }
 
-    override suspend fun postCommunityPostDetailLike(postId: Int): CommunityPostLikeResponse {
+    override suspend fun postPostDetailLike(postId: Int): CommunityPostLikeResponse {
         return communityApi.postCommunityPostDetailLike(postId)
+    }
+
+    override suspend fun patchPostModify(
+        postId: String,
+        title: String,
+        postCategory: String,
+        content: String
+    ) {
+        return communityApi.patchPostModify(postId, title, postCategory, content, null )
     }
 
     override suspend fun postCommunityPostCommentReply(

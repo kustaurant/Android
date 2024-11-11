@@ -152,9 +152,12 @@ class CommunityPostDetailViewModel @Inject constructor(
                 _postDelete.value = true
             } catch (e: Exception) {
                 Log.e("CommunityPostDetailViewModel", "From deletePost, Error msg is $e")
+                _postDelete.value = false
             }
         }
     }
+
+
 
     fun deleteComment(postId : Int, commentId: Int) {
         viewModelScope.launch {

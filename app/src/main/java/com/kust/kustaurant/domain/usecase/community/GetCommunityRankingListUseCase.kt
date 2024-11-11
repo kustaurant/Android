@@ -10,6 +10,6 @@ class GetCommunityRankingListUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
 ) {
     suspend operator fun invoke(sort: String): List<CommunityRanking> {
-        return communityRepository.getCommunityRankingListData(sort)
+        return communityRepository.getRankingListData(sort)
     }
 }

@@ -10,6 +10,6 @@ class GetCommunityPostListUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
 ) {
     suspend operator fun invoke(postCategory: String, page: Int, sort: String): List<CommunityPost> {
-        return communityRepository.getCommunityPostListData(postCategory, page, sort)
+        return communityRepository.getPostListData(postCategory, page, sort)
     }
 }

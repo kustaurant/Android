@@ -101,7 +101,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -159,7 +159,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_post_title" />
 
-                <jp.wasabeef.richeditor.RichEditor
+                <WebView
                     android:id="@+id/et_post_content"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"

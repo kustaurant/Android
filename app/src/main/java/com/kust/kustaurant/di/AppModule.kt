@@ -1,7 +1,7 @@
 package com.kust.kustaurant.di
 
 import android.content.Context
-import com.kust.kustaurant.presentation.ui.community.ImageSpanHelper
+import com.kust.kustaurant.presentation.ui.community.ImageUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ import dagger.hilt.components.SingletonComponent
 object AppModule {
 
     @Provides
-    fun provideImageSpanHelper(@ApplicationContext context: Context): ImageSpanHelper {
-        return ImageSpanHelper(context)
+    fun provideImageUtil(@ApplicationContext context: Context): ImageUtil {
+        return ImageUtil(context)
     }
 }

@@ -1,15 +1,15 @@
 package com.kust.kustaurant.domain.usecase.community
 
-import com.kust.kustaurant.domain.model.CommunityPost
 import com.kust.kustaurant.domain.repository.CommunityRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
 @Singleton
-class GetCommunityPostDetailUseCase @Inject constructor(
+class PatchPostModifyUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
-) {
-    suspend operator fun invoke(postId : Int): CommunityPost {
-        return communityRepository.getPostDetailData(postId)
+){
+    suspend operator fun invoke(postId: String, title : String, postCategory : String, content : String,) {
+        return communityRepository.patchPostModify(postId, title, postCategory, content)
     }
 }

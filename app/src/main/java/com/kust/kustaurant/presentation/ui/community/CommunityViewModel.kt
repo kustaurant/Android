@@ -19,7 +19,7 @@ class CommunityViewModel @Inject constructor(
     private val getCommunityRankingListUseCase: GetCommunityRankingListUseCase,
 
     ) : ViewModel() {
-    private val _postCategory = MutableLiveData<String>("all")
+    private val _postCategory = MutableLiveData<String>("")
     val postCategory: LiveData<String> = _postCategory
 
     private val _sort = MutableLiveData<String>("recent")
@@ -31,23 +31,18 @@ class CommunityViewModel @Inject constructor(
     private val _communityRanking = MutableLiveData<List<CommunityRanking>>()
     val communityRanking: LiveData<List<CommunityRanking>> = _communityRanking
 
-    private val _communityPostDetail = MutableLiveData<CommunityPost>()
-    val communityPostDetail: LiveData<CommunityPost> = _communityPostDetail
-
     private var isLastPage = false
     private var currentPage = 0 //Start from 0
 
     private val _rankingSortType = MutableLiveData<String>("")
-    val rankingSortType: LiveData<String> = _rankingSortType
 
     private val _selectedPostDetailId = MutableLiveData<Int>()
     val selectedPostDetailId: LiveData<Int> get() = _selectedPostDetailId
-
     fun selectPost(postId: Int) {
         _selectedPostDetailId.value = postId
     }
 
-    fun loadCommunityPosts(postCategory: String, currentPage: Int, sort: String) {
+    private fun loadCommunityPosts(postCategory: String, currentPage: Int, sort: String) {
         if (isLastPage) return
 
         viewModelScope.launch {
@@ -93,11 +88,13 @@ class CommunityViewModel @Inject constructor(
     }
 
     fun onPostCategoryChanged(newCategory: String) {
-        _postCategory.value = newCategory
-        getCommunityPostList(
-            CommunityPostListFragment.Companion.PostLoadState.POST_FIRST_PAGE,
-            _sort.value!!
+        if(_postCategory.value != newCategory) {
+            _postCategory.value = newCategory
+            getCommunityPostList(
+                CommunityPostListFragment.Companion.PostLoadState.POST_FIRST_PAGE,
+                _sort.value!!
             )
+        }
     }
 
     /*
@@ -121,7 +118,7 @@ class CommunityViewModel @Inject constructor(
         }
     }
 
-    fun loadCommunityRanking(sort: String) {
+    private fun loadCommunityRanking(sort: String) {
         viewModelScope.launch {
             try {
                 val rankings = getCommunityRankingListUseCase(sort)

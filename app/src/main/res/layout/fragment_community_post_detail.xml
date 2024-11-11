@@ -60,14 +60,16 @@
                 android:id="@+id/community_iv_post_detailDots"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="6dp"
+                android:padding="10dp"
+                android:clickable="true"
                 android:backgroundTint="@color/black"
-                android:contentDescription="@string/alarm_btn_info"
                 android:src="@drawable/ic_dots"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black" />
+                app:tint="@color/black"
+                android:contentDescription="설정 버튼입니다." />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
