@@ -17,12 +17,42 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_modify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_modify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_regular"
+                android:text="수정하기"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_modify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="38dp"
+                android:backgroundTint="@color/cement_5"
+                android:background="@drawable/ic_write_post"
+                app:layout_constraintBottom_toBottomOf="@id/tv_modify"
+                app:layout_constraintStart_toEndOf="@id/tv_modify"
+                app:layout_constraintTop_toTopOf="@id/tv_modify" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/cl_modify" >
 
             <TextView
                 android:id="@+id/tv_delete"

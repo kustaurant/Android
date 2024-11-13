@@ -1,4 +1,4 @@
-package com.kust.kustaurant.data.di
+package com.kust.kustaurant.di.network
 
 import com.kust.kustaurant.data.repository.CommunityRepositoryImpl
 import com.kust.kustaurant.data.repository.DetailRepositoryImpl

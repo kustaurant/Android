@@ -5,11 +5,12 @@ import com.kust.kustaurant.domain.repository.CommunityRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
 @Singleton
-class GetCommunityPostDetailUseCase @Inject constructor(
+class PostCommunityPostCreateUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
-) {
-    suspend operator fun invoke(postId : Int): CommunityPost {
-        return communityRepository.getPostDetailData(postId)
+){
+    suspend operator fun invoke(title : String,  postCategory : String, content : String) : CommunityPost {
+        return communityRepository.postPostCreate(title, postCategory, content)
     }
 }

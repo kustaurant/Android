@@ -8,14 +8,19 @@ import com.bumptech.glide.Glide
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
+import android.opengl.Visibility
+import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -23,8 +28,10 @@ import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentCommunityPostDetailBinding
+import com.kust.kustaurant.databinding.PopupCommuPostDetailDotsBinding
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class CommunityPostDetailFragment : Fragment() {
@@ -32,7 +39,7 @@ class CommunityPostDetailFragment : Fragment() {
     private val viewModel: CommunityPostDetailViewModel by activityViewModels()
     private lateinit var CommuCommentAdapter: CommunityPostDetailCommentAdapter
     private val parentViewModel: CommunityViewModel by activityViewModels()
-    private var postId : Int  = 0
+    private var postId: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -99,13 +106,15 @@ class CommunityPostDetailFragment : Fragment() {
             binding.communityTvBtnPostLike.text = result.likeCount.toString()
         }
 
-        viewModel.postDelete.observe(viewLifecycleOwner) {result ->
-            if(result) {
-                requireActivity().supportFragmentManager.popBackStack()
+        viewModel.postDelete.observe(viewLifecycleOwner) { result ->
+            if (result) {
+                Toast.makeText(requireContext(), "게시글이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
 
                 viewModel.resetPostDelete()
+                requireActivity().supportFragmentManager.popBackStack()
             }
         }
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -138,14 +147,14 @@ class CommunityPostDetailFragment : Fragment() {
     }
 
     private fun setupButton() {
-        binding.btnBack.setOnClickListener {
-            (requireActivity() as? MainActivity)?.let { mainActivity ->
-                mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frm, CommunityPostListFragment())
-                    .commit()
-                mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_community
-            }
+        viewModel.postMine.value?.let{
+            binding.communityIvPostDetailDots.isVisible = viewModel.postMine.value!!
         }
+
+        binding.btnBack.setOnClickListener {
+            (requireActivity() as? MainActivity)?.supportFragmentManager?.popBackStack()
+        }
+
         binding.communityLlBtnPostLike.setOnClickListener {
             viewModel.postPostLike(postId)
         }
@@ -153,32 +162,48 @@ class CommunityPostDetailFragment : Fragment() {
             viewModel.postPostDetailScrap(postId)
         }
 
-        binding.communityIvPostDetailDots.setOnClickListener { view ->
-            if(viewModel.postMine.value!!) {
-                showPopupWindow(view)
+        binding.communityIvPostDetailDots.setOnClickListener {
+            Log.e("asd", "communityIvPostDetailDots ${viewModel.postMine.value!!}")
+            if (viewModel.postMine.value!!) {
+                showPopupWindow()
             }
         }
     }
 
-    private fun showPopupWindow(anchorView: View) {
-        val inflater = LayoutInflater.from(context)
-        val layoutRes = R.layout.popup_review_only_delete
-
-        val popupView = inflater.inflate(layoutRes, null)
+    private fun showPopupWindow() {
+        val popupBinding = PopupCommuPostDetailDotsBinding.inflate(layoutInflater)
         val popupWindow = PopupWindow(
-            popupView,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
+            popupBinding.root,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
             true
         )
 
-        popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
+        popupWindow.showAsDropDown(binding.communityIvPostDetailDots)
+
+        popupBinding.clDelete.setOnClickListener {
             viewModel.deletePost(postId)
             popupWindow.dismiss()
         }
 
-        popupWindow.showAsDropDown(anchorView)
+
+        popupBinding.clModify.setOnClickListener {
+            val postSummary = viewModel.communityPostDetail.value?.let {
+                CommunityPostSummary(
+                    it.postId, it.postTitle, it.postCategory, it.postBody
+                )
+            }
+            requireActivity().supportFragmentManager.popBackStack()
+
+            val intent = Intent(requireContext(), CommunityPostWriteActivity::class.java).apply {
+                putExtra("postSummary", postSummary)
+            }
+
+            popupWindow.dismiss()
+            startActivity(intent)
+        }
     }
+
 
     private fun initRecyclerView() {
         CommuCommentAdapter = CommunityPostDetailCommentAdapter(requireContext())
@@ -287,7 +312,11 @@ class CommunityPostDetailFragment : Fragment() {
         btnSubmit.setOnClickListener {
             val inputText = etInput.text.toString()
             if (inputText.isNotBlank()) {
-                viewModel.postCreateCommentReply(inputText, parentViewModel.selectedPostDetailId.value.toString(), commentId.toString())
+                viewModel.postCreateCommentReply(
+                    inputText,
+                    parentViewModel.selectedPostDetailId.value.toString(),
+                    commentId.toString()
+                )
                 bottomSheetDialog.dismiss()
                 Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
@@ -306,3 +335,12 @@ class CommunityPostDetailFragment : Fragment() {
     }
 
 }
+
+
+@Parcelize
+data class CommunityPostSummary(
+    val postId: Int,
+    val postTitle: String,
+    val postCategory: String,
+    val postBody: String
+) : Parcelable

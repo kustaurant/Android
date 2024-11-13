@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt.android)
     kotlin("kapt")
+    id("kotlin-parcelize")
 }
 
 val properties = Properties()
@@ -90,7 +91,9 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.oauth) // 네이버 로그인
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.v2.user) // 카카오 로그인
+    implementation(libs.v2.user)
+    implementation(libs.richeditor.android)
+    implementation(libs.richeditor.android) // 카카오 로그인
     kapt(libs.hilt.android.compiler)
 
     // Retrofit

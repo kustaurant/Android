@@ -30,6 +30,7 @@
     <string name="community_ranking_info">맛집 평가에 참여하고 랭킹에 올라보세요!</string>
     <string name="community_user_img_info">사용자가 지정한 아이콘입니다.</string>
     <string name="community_post_img_info">사용자가 올린 이미지 입니다.</string>
+    <string name="community_post_write_info">내용을 입력해주세요. 커뮤니티 이용 규칙에 의해 부적절한 게시물은 숨김, 삭제 처리될 수 있습니다.</string>
 
     <!-- DetailActivity  -->
     <string name="detail_to_naver"><u>네이버 지도로 이동하기</u></string>
@@ -79,4 +80,9 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="community_post_select_img_description">이미지를 첨부합니다.</string>
+    <string name="community_post_go_back_description">되돌리기 버튼입니다.</string>
+    <string name="community_post_go_forward_description">앞으로 되돌리기 버튼입니다.</string>
+    <string name="community_post_bold_description">드래그한 글자를 굵게 표시하는 버튼입니다.</string>
+
 </resources>

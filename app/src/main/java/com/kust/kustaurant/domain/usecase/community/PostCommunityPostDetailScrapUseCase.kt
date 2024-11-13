@@ -10,6 +10,6 @@ class PostCommunityPostDetailScrapUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
 ) {
     suspend operator fun invoke(postId: Int): CommunityPostScrapResponse {
-        return communityRepository.postCommunityPostDetailScrap(postId)
+        return communityRepository.postPostDetailScrap(postId)
     }
 }

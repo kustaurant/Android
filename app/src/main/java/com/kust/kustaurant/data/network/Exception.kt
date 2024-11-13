@@ -1,4 +1,4 @@
-package com.kust.kustaurant.data.di
+package com.kust.kustaurant.data.network
 
 class BadRequestException(
     override val message: String?
