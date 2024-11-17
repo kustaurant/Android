@@ -1,9 +1,11 @@
 package com.kust.kustaurant.data.network
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.saveAccessToken
+import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import okhttp3.Authenticator
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -24,6 +26,7 @@ class TokenAuthenticator(private val context: Context) : Authenticator {
                     .header("Authorization", "Bearer $newToken")
                     .build()
             } else {
+                handleLogout()
                 null
             }
         }
@@ -48,5 +51,17 @@ class TokenAuthenticator(private val context: Context) : Authenticator {
             Log.e("TokenAuthenticator", "Failed to refresh token: ${e.localizedMessage}")
         }
         return null
+    }
+
+    private fun handleLogout(){
+        context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE).edit().clear().apply()
+
+        val intent = Intent(context, StartActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+
+        context.startActivity(intent)
     }
 }
