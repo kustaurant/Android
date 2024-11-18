@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.kust.kustaurant.domain.usecase.community.PostCommunityPostCreateUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityUploadImageUseCase
 import com.kust.kustaurant.domain.usecase.community.PatchPostModifyUseCase
+import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -58,7 +59,7 @@ class CommunityPostWriteViewModel @Inject constructor(
         }
     }
 
-    fun setEditMode(postSummary: CommunityPostSummary?) {
+    fun setEditMode(postSummary: CommunityPostIntent?) {
         _isEditMode.value = postSummary?.postBody != null
     }
 
