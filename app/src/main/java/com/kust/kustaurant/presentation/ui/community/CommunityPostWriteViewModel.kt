@@ -29,7 +29,6 @@ class CommunityPostWriteViewModel @Inject constructor(
     private val _postTitle = MutableLiveData<String>()
     val postTitle: LiveData<String> get() = _postTitle
     private val _postContentHtml = MutableLiveData<String>()
-    val postContentHtml: LiveData<String> get() = _postContentHtml
     private val _postSort = MutableLiveData<String>()
     val postSort: LiveData<String> get() = _postSort
     private val _postSendReady = MutableLiveData<Boolean>()
@@ -137,8 +136,7 @@ class CommunityPostWriteViewModel @Inject constructor(
         // 빈 태그를 정규식으로 제거
         val content = _postContentHtml.value?.replace(Regex("<p><br></p>|<br>|<p></p>"), "")?.trim()
         val isContentNotEmpty = !content.isNullOrEmpty()
-
-        _postSendReady.value = !_postSort.value.isNullOrEmpty() &&
+         _postSendReady.value = !_postSort.value.isNullOrEmpty() &&
                 isContentNotEmpty &&
                 !_postTitle.value.isNullOrEmpty()
     }
