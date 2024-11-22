@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +26,6 @@ class TierFragment : Fragment() {
     private var _binding: FragmentTierBinding? = null
     private val viewModel: TierViewModel by activityViewModels()
     val binding get() = _binding!!
-
     private lateinit var pagerAdapter: TierPagerAdapter
 
     override fun onCreateView(
@@ -36,20 +34,8 @@ class TierFragment : Fragment() {
     ): View {
         _binding = FragmentTierBinding.inflate(inflater, container, false)
 
-
-        Log.d("TierFragment", "ViewModel instance: ${viewModel.hashCode()}")
-
-        if ((viewModel.selectedMenus.value ?: emptySet()) == setOf("") &&
-            (viewModel.selectedSituations.value ?: emptySet()) == setOf("") &&
-            (viewModel.selectedLocations.value ?: emptySet()) == setOf("")
-        ) {
-            viewModel.applyFilters(setOf("전체"), setOf("전체"), setOf("전체"), 0)
-        }
-
-        binding.tierFlIvSearch.setOnClickListener {
-            val intent = Intent(requireContext(), SearchActivity::class.java)
-            startActivity(intent)
-        }
+        initializeFilters()
+        setupButtons()
 
         return binding.root
     }
@@ -58,19 +44,18 @@ class TierFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
         setupTabLayout()
-        setupCategoryButton()
-        setupBackButton()
         observeViewModel()
-
-        viewModel.filterApplied.observe(viewLifecycleOwner) { applied ->
-            if (applied) {
-                showMainContent()
-                viewModel.resetFilterApplied()
-            }
-        }
-        updateCategoryLinearLayout(setOf("전체"))
     }
-    
+
+    private fun initializeFilters() {
+        if ((viewModel.selectedMenus.value ?: emptySet()) == setOf("") &&
+            (viewModel.selectedSituations.value ?: emptySet()) == setOf("") &&
+            (viewModel.selectedLocations.value ?: emptySet()) == setOf("")
+        ) {
+            viewModel.setCategory(setOf("전체"), setOf("전체"), setOf("전체"))
+        }
+    }
+
     private fun setupViewPager() {
         pagerAdapter = TierPagerAdapter(this)
         binding.tierViewPager.adapter = pagerAdapter
@@ -78,104 +63,55 @@ class TierFragment : Fragment() {
     }
 
     private fun setupTabLayout() {
-        binding.tierTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                binding.tierViewPager.currentItem = tab.position
-                handleTabSelected(tab.position)
-            }
+        with(binding.tierTabLayout) {
+            addTab(newTab().setText("티어표"))
+            addTab(newTab().setText("지도"))
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    binding.tierViewPager.currentItem = tab.position
+                    updateTabCategoryMargin(tab.position)
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab) {}
+                override fun onTabReselected(tab: TabLayout.Tab) {}
+            })
+        }
 
         binding.tierViewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                binding.tierTabLayout.selectTab(binding.tierTabLayout.getTabAt(position))
-                handleTabSelected(position)
+                binding.tierTabLayout.getTabAt(position)?.select()
+                updateTabCategoryMargin(position)
             }
         })
-
-        binding.tierTabLayout.addTab(binding.tierTabLayout.newTab().setText("티어표"))
-        binding.tierTabLayout.addTab(binding.tierTabLayout.newTab().setText("지도"))
     }
 
-    private fun handleTabSelected(position: Int) {
-        val layoutParams =
-            binding.tierSvSelectedCategory.layoutParams as ViewGroup.MarginLayoutParams
-
-        if (position == 1) { // 지도 탭
-            layoutParams.marginEnd = 0
-        } else { // 카테고리 탭
-            layoutParams.marginEnd = context?.let { 60.dpToPx(it) }!!
-        }
-
-        binding.tierSvSelectedCategory.layoutParams = layoutParams
+    private fun updateTabCategoryMargin(position: Int) {
+        val marginEnd = if (position == 1) 0 else requireContext().dpToPx(60)
+        binding.tierSvSelectedCategory.updateMarginEnd(marginEnd)
     }
 
-    fun Int.dpToPx(context: Context): Int {
-        return (this * context.resources.displayMetrics.density).toInt()
-    }
-
-    private fun setupCategoryButton() {
+    private fun setupButtons() {
         binding.tierIvCategoryBtn.setOnClickListener {
-            val selectedMenus = viewModel.selectedMenus.value ?: emptySet()
-            val selectedSituations = viewModel.selectedSituations.value ?: emptySet()
-            val selectedLocations = viewModel.selectedLocations.value ?: emptySet()
-
-            Log.e("TierCategoryActivity", "Selected Menus: $selectedMenus")
-            Log.e("TierCategoryActivity", "Selected Situations: $selectedSituations")
-            Log.e("TierCategoryActivity", "Selected Locations: $selectedLocations")
-
             val intent = Intent(requireContext(), TierCategoryActivity::class.java).apply {
-                putStringArrayListExtra("selectedMenus", ArrayList(selectedMenus))
-                putStringArrayListExtra("selectedSituations", ArrayList(selectedSituations))
-                putStringArrayListExtra("selectedLocations", ArrayList(selectedLocations))
+                putStringArrayListExtra("selectedMenus", ArrayList(viewModel.selectedMenus.value ?: emptySet()))
+                putStringArrayListExtra("selectedSituations", ArrayList(viewModel.selectedSituations.value ?: emptySet()))
+                putStringArrayListExtra("selectedLocations", ArrayList(viewModel.selectedLocations.value ?: emptySet()))
+                putExtra("fromTabIndex", binding.tierTabLayout.selectedTabPosition)
             }
             startActivityForResult(intent, CATEGORY_UPDATE_REQUEST_CODE)
         }
-    }
-
-    private fun updateCategoryLinearLayout(categories: Set<String>) {
-        binding.selectedCategoryLinearLayout.removeAllViews()
-
-        categories.forEach { category ->
-            val textView = TextView(context).apply {
-                text = category
-                setTextColor(ContextCompat.getColor(context, R.color.signature_1))
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-                background =
-                    ContextCompat.getDrawable(context, R.drawable.btn_tier_catetory_selected)
-
-                val paddingHorizontal = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 13f, resources.displayMetrics
-                ).toInt()
-                val paddingVertical = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 5.9f, resources.displayMetrics
-                ).toInt()
-                setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
-
-                layoutParams = ViewGroup.MarginLayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    val marginEndPx = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 7f, resources.displayMetrics
-                    ).toInt()
-                    marginEnd = marginEndPx
-                }
-            }
-            binding.selectedCategoryLinearLayout.addView(textView)
+        binding.tierFlIvSearch.setOnClickListener {
+            startActivity(Intent(requireContext(), SearchActivity::class.java))
         }
-    }
-
-    fun showMainContent() {
-        binding.tierTvCategoryText.visibility = View.GONE
-        binding.tierViewPager.visibility = View.VISIBLE
-        binding.tierTabLayout.visibility = View.VISIBLE
-        binding.tierClMiddleBar.visibility = View.VISIBLE
-        binding.tierViewPager.post {
-            pagerAdapter.refreshAllFragments()
+        binding.btnBack.setOnClickListener {
+            (requireActivity() as? MainActivity)?.let { mainActivity ->
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frm, HomeFragment())
+                    .commit()
+                mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_home
+            }
         }
     }
 
@@ -183,6 +119,51 @@ class TierFragment : Fragment() {
         viewModel.selectedCategories.observe(viewLifecycleOwner) { categories ->
             updateCategoryLinearLayout(categories)
         }
+    }
+
+    private fun updateCategoryLinearLayout(categories: Set<String>) {
+        binding.selectedCategoryLinearLayout.removeAllViews()
+        categories.forEach { category ->
+            binding.selectedCategoryLinearLayout.addView(createCategoryTextView(category))
+        }
+    }
+
+    private fun createCategoryTextView(category: String): TextView {
+        return TextView(requireContext()).apply {
+            text = category
+            setTextColor(ContextCompat.getColor(context, R.color.signature_1))
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+            background = ContextCompat.getDrawable(context, R.drawable.btn_tier_catetory_selected)
+            val paddingHorizontal = getPadding(13f)
+            val paddingVertical =  getPadding(5.9f)
+            setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
+            layoutParams = ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply { marginEnd = getPadding(7f) }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CATEGORY_UPDATE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            data?.let { handleCategoryActivityResult(it) }
+        }
+    }
+
+    private fun handleCategoryActivityResult(data: Intent) {
+        val selectedMenus = data.getStringArrayListExtra("selectedMenus")?.toSet() ?: emptySet()
+        val selectedSituations = data.getStringArrayListExtra("selectedSituations")?.toSet() ?: emptySet()
+        val selectedLocations = data.getStringArrayListExtra("selectedLocations")?.toSet() ?: emptySet()
+        val fromTabIndex = data.getIntExtra("fromTabIndex", 0)
+
+        viewModel.setCategory(selectedMenus, selectedSituations, selectedLocations)
+        viewModel.loadRestaurant(fromTabIndex)
     }
 
     private fun setupBackButton() {
@@ -196,23 +177,30 @@ class TierFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun showMainContent() {
+        binding.tierTvCategoryText.visibility = View.GONE
+        binding.tierViewPager.visibility = View.VISIBLE
+        binding.tierTabLayout.visibility = View.VISIBLE
+        binding.tierClMiddleBar.visibility = View.VISIBLE
+        binding.tierViewPager.post {
+            pagerAdapter.refreshAllFragments()
+        }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CATEGORY_UPDATE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            data?.let { intent ->
-                val selectedMenus = intent.getStringArrayListExtra("selectedMenus")?.toSet() ?: emptySet()
-                val selectedSituations = intent.getStringArrayListExtra("selectedSituations")?.toSet() ?: emptySet()
-                val selectedLocations = intent.getStringArrayListExtra("selectedLocations")?.toSet() ?: emptySet()
-                val fromTabIndex = intent.getIntExtra("fromTabIndex", 0)
+    private fun Context.dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
+    }
 
-                viewModel.applyFilters(selectedMenus, selectedSituations, selectedLocations, fromTabIndex)
-            }
-        }
+    private fun View.updateMarginEnd(marginEnd: Int) {
+        val params = layoutParams as ViewGroup.MarginLayoutParams
+        params.marginEnd = marginEnd
+        layoutParams = params
+    }
+
+    private fun getPadding(dp : Float): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics
+        ).toInt()
     }
 
     companion object {

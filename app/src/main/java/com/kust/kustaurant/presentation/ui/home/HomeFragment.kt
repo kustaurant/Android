@@ -58,8 +58,6 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
             // 아무 것도 안 함, 실제 로직은 setupViewPager에서 설정
         }
 
-        Log.d("TierFragment", "ViewModel instance: ${tierViewModel.hashCode()}")
-
 
         setupRecyclerViews()
         Log.d("token", getAccessToken(requireContext()).toString())
@@ -79,55 +77,55 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
     override fun onCategoryItemClick(category: String) {
         when (category) {
             "전체" -> {
-                tierViewModel.applyFilters(setOf("전체"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("전체"), setOf("전체"), setOf("전체"))
             }
             "한식" -> {
-                tierViewModel.applyFilters(setOf("한식"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("한식"), setOf("전체"), setOf("전체"))
             }
             "일식" -> {
-                tierViewModel.applyFilters(setOf("일식"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("일식"), setOf("전체"), setOf("전체"))
             }
             "중식" -> {
-                tierViewModel.applyFilters(setOf("중식"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("중식"), setOf("전체"), setOf("전체"))
             }
             "양식" -> {
-                tierViewModel.applyFilters(setOf("양식"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("양식"), setOf("전체"), setOf("전체"))
             }
             "아시안" -> {
-                tierViewModel.applyFilters(setOf("아시안"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("아시안"), setOf("전체"), setOf("전체"))
             }
             "고기" -> {
-                tierViewModel.applyFilters(setOf("고기"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("고기"), setOf("전체"), setOf("전체"))
             }
             "해산물" -> {
-                tierViewModel.applyFilters(setOf("해산물"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("해산물"), setOf("전체"), setOf("전체"))
             }
             "치킨" -> {
-                tierViewModel.applyFilters(setOf("치킨"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("치킨"), setOf("전체"), setOf("전체"))
             }
             "햄버거/피자" -> {
-                tierViewModel.applyFilters(setOf("햄버거/피자"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("햄버거/피자"), setOf("전체"), setOf("전체"))
             }
             "분식" -> {
-                tierViewModel.applyFilters(setOf("분식"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("분식"), setOf("전체"), setOf("전체"))
             }
             "술집" -> {
-                tierViewModel.applyFilters(setOf("술집"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("술집"), setOf("전체"), setOf("전체"))
             }
             "카페/디저트" -> {
-                tierViewModel.applyFilters(setOf("카페/디저트"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("카페/디저트"), setOf("전체"), setOf("전체"))
             }
             "베이커리" -> {
-                tierViewModel.applyFilters(setOf("베이커리"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("베이커리"), setOf("전체"), setOf("전체"))
             }
             "샐러드" -> {
-                tierViewModel.applyFilters(setOf("샐러드"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("샐러드"), setOf("전체"), setOf("전체"))
             }
             "제휴업체" -> {
-                tierViewModel.applyFilters(setOf("제휴업체"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("제휴업체"), setOf("전체"), setOf("전체"))
             }
             else -> {
-                tierViewModel.applyFilters(setOf("전체"), setOf("전체"), setOf("전체"), 0)
+                tierViewModel.setCategory(setOf("전체"), setOf("전체"), setOf("전체"))
             }
         }
 

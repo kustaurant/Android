@@ -33,7 +33,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TierMapFragment : Fragment(), OnMapReadyCallback {
-
     private lateinit var binding: FragmentTierMapBinding
     private val viewModel: TierViewModel by activityViewModels()
     private lateinit var naverMap: NaverMap
