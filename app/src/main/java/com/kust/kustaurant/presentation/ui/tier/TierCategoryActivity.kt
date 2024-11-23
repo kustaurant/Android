@@ -23,50 +23,74 @@ class TierCategoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTierCategorySelectBinding
     private var fromTabIndex: Int = 0
 
-    private var initialSelectedMenus: Set<String> = emptySet()
-    private var initialSelectedSituations: Set<String> = emptySet()
-    private var initialSelectedLocations: Set<String> = emptySet()
+    private val initialFilters: MutableMap<String, Set<String>> = mutableMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTierCategorySelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        fromTabIndex = intent.getIntExtra("fromTabIndex", 0)
-        initialSelectedMenus = intent.getStringArrayListExtra("selectedMenus")?.toSet() ?: emptySet()
-        initialSelectedSituations = intent.getStringArrayListExtra("selectedSituations")?.toSet() ?: emptySet()
-        initialSelectedLocations = intent.getStringArrayListExtra("selectedLocations")?.toSet() ?: emptySet()
-
+        initializeInitialFilters()
         setupToggleGroups()
         updateInitialSelection()
         setupClickListeners()
     }
 
+    private fun initializeInitialFilters() {
+        fromTabIndex = intent.getIntExtra("fromTabIndex", 0)
+        initialFilters["menus"] = intent.getStringArrayListExtra("selectedMenus")?.toSet() ?: emptySet()
+        initialFilters["situations"] = intent.getStringArrayListExtra("selectedSituations")?.toSet() ?: emptySet()
+        initialFilters["locations"] = intent.getStringArrayListExtra("selectedLocations")?.toSet() ?: emptySet()
+    }
 
     private fun setupToggleGroups() {
-        setupToggleGroup(binding.tierToggleTypeGroup)
-        setupToggleGroup(binding.tierToggleSituationGroup)
-        setupToggleGroup(binding.tierToggleLocationGroup)
+        listOf(
+            binding.tierToggleTypeGroup,
+            binding.tierToggleSituationGroup,
+            binding.tierToggleLocationGroup
+        ).forEach { toggleGroup ->
+            setupToggleGroup(toggleGroup)
+        }
     }
 
     private fun setupToggleGroup(toggleGroup: ViewGroup) {
         for (i in 0 until toggleGroup.childCount) {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
             toggleButton.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    toggleButton.setTextColor(ContextCompat.getColor(this, R.color.signature_1))
-                } else {
-                    toggleButton.setTextColor(ContextCompat.getColor(this, R.color.cement_4))
-                }
-
-                if ((isChecked && toggleButton.text.toString() == "전체") || (isChecked && toggleButton.text.toString() == "제휴업체")) {
-                    clearOtherToggles(toggleGroup, toggleButton)
-                } else if (isChecked && hasOtherTogglesSelected(toggleGroup)) {
-                    clearTotalToggle(toggleGroup)
-                }
-
+                updateToggleButtonStyle(toggleButton, isChecked)
+                handleToggleGroupState(toggleGroup, toggleButton, isChecked)
                 updateApplyButtonState()
             }
+        }
+    }
+
+    private fun updateToggleButtonStyle(toggleButton: ToggleButton, isChecked: Boolean) {
+        toggleButton.setTextColor(
+            ContextCompat.getColor(
+                this,
+                if (isChecked) R.color.signature_1 else R.color.cement_4
+            )
+        )
+    }
+
+    private fun handleToggleGroupState(
+        toggleGroup: ViewGroup,
+        selectedToggle: ToggleButton,
+        isChecked: Boolean
+    ) {
+        when {
+            isChecked && selectedToggle.text in listOf("전체", "제휴업체") -> clearOtherToggles(toggleGroup, selectedToggle)
+            isChecked && hasOtherTogglesSelected(toggleGroup) -> clearTotalToggle(toggleGroup)
+        }
+    }
+
+    private fun updateInitialSelection() {
+        mapOf(
+            binding.tierToggleTypeGroup to initialFilters["menus"],
+            binding.tierToggleSituationGroup to initialFilters["situations"],
+            binding.tierToggleLocationGroup to initialFilters["locations"]
+        ).forEach { (group, selection) ->
+            updateToggleGroupSelection(group, selection.orEmpty())
         }
     }
 
@@ -77,128 +101,99 @@ class TierCategoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun getSelectedTogglesText(toggleGroup: ViewGroup): Set<String> {
-        val selectedText = mutableSetOf<String>()
-        for (i in 0 until toggleGroup.childCount) {
-            val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
-            if (toggleButton.isChecked) {
-                selectedText.add(toggleButton.text.toString())
-            }
-        }
-        return selectedText
+    private fun getSelectedToggles(toggleGroup: ViewGroup): Set<String> {
+        return (0 until toggleGroup.childCount)
+            .map { toggleGroup.getChildAt(it) as ToggleButton }
+            .filter { it.isChecked }
+            .map { it.text.toString() }
+            .toSet()
     }
 
     private fun updateApplyButtonState() {
-        val selectedType = getSelectedTogglesText(binding.tierToggleTypeGroup)
-        val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
-        val selectedLocation = getSelectedTogglesText(binding.tierToggleLocationGroup)
+        val selectedFilters = mapOf(
+            "menus" to getSelectedToggles(binding.tierToggleTypeGroup),
+            "situations" to getSelectedToggles(binding.tierToggleSituationGroup),
+            "locations" to getSelectedToggles(binding.tierToggleLocationGroup)
+        )
 
-        val hasChanges = hasFilterChanged(selectedType, selectedSituation, selectedLocation)
-        val isAnyGroupSelected = selectedType.isNotEmpty() && selectedSituation.isNotEmpty() && selectedLocation.isNotEmpty()
-        val isDifferentFromInitial = selectedType != initialSelectedMenus ||
-                selectedSituation != initialSelectedSituations ||
-                selectedLocation != initialSelectedLocations
-
-        binding.tierBtnApply.isEnabled = hasChanges && isAnyGroupSelected && isDifferentFromInitial
-
-        if (binding.tierBtnApply.isEnabled) {
-            binding.tierBtnApply.setBackgroundResource(R.drawable.btn_tier_category_apply_active)
-            binding.tierBtnApply.setTextColor(ContextCompat.getColor(this, R.color.white))
-        } else {
-            binding.tierBtnApply.setBackgroundResource(R.drawable.btn_tier_category_apply_inactive)
-            binding.tierBtnApply.setTextColor(ContextCompat.getColor(this, R.color.cement_4))
+        val hasChanges = selectedFilters.any { (key, value) ->
+            value != initialFilters[key]
         }
-    }
 
-    private fun hasFilterChanged(
-        currentTypes: Set<String>,
-        currentSituations: Set<String>,
-        currentLocations: Set<String>
-    ): Boolean {
-        return (currentTypes != initialSelectedMenus ||
-                currentSituations != initialSelectedSituations ||
-                currentLocations != initialSelectedLocations)
+        val isAllGroupsSelected = selectedFilters.all { it.value.isNotEmpty() }
+
+        binding.tierBtnApply.isEnabled = hasChanges && isAllGroupsSelected
+        binding.tierBtnApply.apply {
+            setBackgroundResource(
+                if (isEnabled) R.drawable.btn_tier_category_apply_active
+                else R.drawable.btn_tier_category_apply_inactive
+            )
+            setTextColor(
+                ContextCompat.getColor(
+                    this@TierCategoryActivity,
+                    if (isEnabled) R.color.white else R.color.cement_4
+                )
+            )
+        }
     }
 
     private fun clearOtherToggles(toggleGroup: ViewGroup, selectedToggle: ToggleButton) {
         for (i in 0 until toggleGroup.childCount) {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
-            if (toggleButton != selectedToggle) {
-                toggleButton.isChecked = false
-            }
+            if (toggleButton != selectedToggle) toggleButton.isChecked = false
         }
     }
 
     private fun clearTotalToggle(toggleGroup: ViewGroup) {
         for (i in 0 until toggleGroup.childCount) {
             val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
-            if (toggleButton.text.toString() == "전체" || toggleButton.text.toString() == "제휴업체") {
-                toggleButton.isChecked = false
-            }
+            if (toggleButton.text in listOf("전체", "제휴업체")) toggleButton.isChecked = false
         }
     }
 
     private fun hasOtherTogglesSelected(toggleGroup: ViewGroup): Boolean {
-        for (i in 0 until toggleGroup.childCount) {
-            val toggleButton = toggleGroup.getChildAt(i) as ToggleButton
-            if ((toggleButton.isChecked && toggleButton.text.toString() != "전체") || (toggleButton.isChecked && toggleButton.text.toString() != "제휴업체")) {
-                return true
-            }
-        }
-        return false
-    }
-
-    private fun showPopup() {
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.popup_tier)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val tierInfoDescriptionTextView = dialog.findViewById<TextView>(R.id.tier_popup_description)
-        val htmlText = """
-        식당의 티어는 여러분이 부여한 소중한 <font color="#43AB38">평가 점수</font>가 반영되어 결정됩니다!<br><br>
-        평가는 각 식당의 상세 페이지에서 할 수 있으며, 점수는 <font color="#43AB38">5점 만점</font>입니다.<br><br>
-        식당에 대한 <font color="#43AB38">평가의 평균 점수</font>로 티어가 산출됩니다.
-        """.trimIndent()
-        tierInfoDescriptionTextView.text = Html.fromHtml(htmlText, Html.FROM_HTML_MODE_COMPACT)
-
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        dialog.window?.setGravity(Gravity.CENTER)
-        dialog.show()
-        dialog.setCanceledOnTouchOutside(true)
+        return (0 until toggleGroup.childCount)
+            .map { toggleGroup.getChildAt(it) as ToggleButton }
+            .any { it.isChecked && it.text !in listOf("전체", "제휴업체") }
     }
 
     private fun setupClickListeners() {
-        binding.tierBtnApply.setOnClickListener {
-            val selectedType = getSelectedTogglesText(binding.tierToggleTypeGroup)
-            val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
-            val selectedLocation = getSelectedTogglesText(binding.tierToggleLocationGroup)
-
-            val resultIntent = Intent().apply {
-                putStringArrayListExtra("selectedMenus", ArrayList(selectedType))
-                putStringArrayListExtra("selectedSituations", ArrayList(selectedSituation))
-                putStringArrayListExtra("selectedLocations", ArrayList(selectedLocation))
-                putExtra("fromTabIndex", fromTabIndex)
-            }
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
-        }
-
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
-        binding.tierInfo.setOnClickListener {
-            showPopup()
-        }
+        binding.tierBtnApply.setOnClickListener { returnSelectedFilters() }
+        binding.btnBack.setOnClickListener { finish() }
+        binding.tierInfo.setOnClickListener { showPopup() }
     }
 
-    private fun updateInitialSelection() {
-        updateToggleGroupSelection(binding.tierToggleTypeGroup, initialSelectedMenus)
-        updateToggleGroupSelection(binding.tierToggleSituationGroup, initialSelectedSituations)
-        updateToggleGroupSelection(binding.tierToggleLocationGroup, initialSelectedLocations)
+    private fun returnSelectedFilters() {
+        val resultIntent = Intent().apply {
+            putStringArrayListExtra("selectedMenus", ArrayList(getSelectedToggles(binding.tierToggleTypeGroup)))
+            putStringArrayListExtra("selectedSituations", ArrayList(getSelectedToggles(binding.tierToggleSituationGroup)))
+            putStringArrayListExtra("selectedLocations", ArrayList(getSelectedToggles(binding.tierToggleLocationGroup)))
+            putExtra("fromTabIndex", fromTabIndex)
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
+    }
+
+    private fun showPopup() {
+        val dialog = Dialog(this).apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            setContentView(R.layout.popup_tier)
+            window?.apply {
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                setGravity(Gravity.CENTER)
+            }
+            setCanceledOnTouchOutside(true)
+        }
+
+        dialog.findViewById<TextView>(R.id.tier_popup_description).text = Html.fromHtml(
+            """
+            식당의 티어는 여러분이 부여한 소중한 <font color="#43AB38">평가 점수</font>가 반영되어 결정됩니다!<br><br>
+            평가는 각 식당의 상세 페이지에서 할 수 있으며, 점수는 <font color="#43AB38">5점 만점</font>입니다.<br><br>
+            식당에 대한 <font color="#43AB38">평가의 평균 점수</font>로 티어가 산출됩니다.
+            """.trimIndent(), Html.FROM_HTML_MODE_COMPACT
+        )
+
+        dialog.show()
     }
 }

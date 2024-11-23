@@ -16,8 +16,10 @@ import com.kust.kustaurant.domain.usecase.community.PostCommunityPostCommentReac
 import com.kust.kustaurant.domain.usecase.community.PostCommunityPostCommentReplyUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityPostDetailScrapUseCase
 import com.kust.kustaurant.domain.usecase.community.PostPostScrapLikeUseCase
+import com.kust.kustaurant.presentation.model.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,9 +31,6 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val postCommentReactUseCase: PostCommunityPostCommentReactUseCase,
     private val deletePostUseCase: DeleteCommunityPostUseCase,
     private val deleteCommentUseCase: DeleteCommunityCommentUseCase,
-
-    //private val postpostImageUploadUseCase
-    //private val patchPostModify
 ) : ViewModel() {
     private val _communityPostDetail = MutableLiveData<CommunityPost>()
     val communityPostDetail: LiveData<CommunityPost> = _communityPostDetail
@@ -51,11 +50,14 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val _commentReply = MutableLiveData<CommunityPostComment>()
     val commentReply: LiveData<CommunityPostComment> = _commentReply
 
+    private val _uiState = MutableLiveData<UiState>(UiState.Idle)
+    val uiState: LiveData<UiState> = _uiState
+
     fun loadCommunityPostDetail(postId: Int) {
         viewModelScope.launch {
             try {
                 _communityPostDetail.value = getCommunityPostDetail(postId)
-                _postMine.value =  _communityPostDetail.value!!.isPostMine
+                _postMine.value = _communityPostDetail.value!!.isPostMine
             } catch (e: Exception) {
                 Log.e(
                     "CommunityPostDetailViewModel",
@@ -67,9 +69,18 @@ class CommunityPostDetailViewModel @Inject constructor(
 
     fun postPostDetailScrap(postId: Int) {
         viewModelScope.launch {
+            _uiState.value = UiState.Loading
             try {
                 _postScrapInfo.value = postPostScrap(postId)
+                _uiState.value = UiState.Success(Unit)
+            } catch (e: HttpException) {
+                if (e.code() == 403) {
+                    _uiState.value = UiState.Error.Forbidden
+                } else {
+                    _uiState.value = UiState.Error.Other(e.message ?: "Unknown error")
+                }
             } catch (e: Exception) {
+                _uiState.value = UiState.Error.Other(e.message ?: "Unknown error")
                 Log.e("CommunityPostDetailViewModel", "From postPostDetailScrap, Error msg is $e")
             }
         }
@@ -77,13 +88,23 @@ class CommunityPostDetailViewModel @Inject constructor(
 
     fun postPostLike(postId: Int) {
         viewModelScope.launch {
+            _uiState.value = UiState.Loading
             try {
                 _postLikeInfo.value = postPostLikeUseCase(postId)
+                _uiState.value = UiState.Success(Unit)
+            } catch (e: HttpException) {
+                if (e.code() == 403) {
+                    _uiState.value = UiState.Error.Forbidden
+                } else {
+                    _uiState.value = UiState.Error.Other(e.message ?: "Unknown error")
+                }
             } catch (e: Exception) {
+                _uiState.value = UiState.Error.Other(e.message ?: "Unknown error")
                 Log.e("CommunityPostDetailViewModel", "From postPostLike, Error msg is $e")
             }
         }
     }
+
 
     fun postCreateCommentReply(content: String, postId: String, parentCommentId: String) {
         viewModelScope.launch {
@@ -96,6 +117,7 @@ class CommunityPostDetailViewModel @Inject constructor(
             }
         }
     }
+
     fun postCommentReact(commentId: Int, action: String) {
         viewModelScope.launch {
             try {
@@ -134,13 +156,17 @@ class CommunityPostDetailViewModel @Inject constructor(
                     }
 
                     // 변경된 댓글 리스트를 반영한 새로운 PostDetail 객체 생성
-                    val updatedPostDetail = currentPostDetail.copy(postCommentList = updatedCommentList)
+                    val updatedPostDetail =
+                        currentPostDetail.copy(postCommentList = updatedCommentList)
 
                     // 변경된 객체를 LiveData에 설정하여 옵저버가 변경사항을 감지하도록 강제
                     _communityPostDetail.postValue(updatedPostDetail)
                 }
             } catch (e: Exception) {
-                Log.e("CommunityPostDetailViewModel", "From postCommentReact, Error reacting to comment: $e")
+                Log.e(
+                    "CommunityPostDetailViewModel",
+                    "From postCommentReact, Error reacting to comment: $e"
+                )
             }
         }
     }
@@ -158,8 +184,7 @@ class CommunityPostDetailViewModel @Inject constructor(
     }
 
 
-
-    fun deleteComment(postId : Int, commentId: Int) {
+    fun deleteComment(postId: Int, commentId: Int) {
         viewModelScope.launch {
             try {
                 deleteCommentUseCase(commentId)
@@ -172,5 +197,9 @@ class CommunityPostDetailViewModel @Inject constructor(
 
     fun resetPostDelete() {
         _postDelete.value = false
+    }
+
+    fun resetUiState() {
+        _uiState.value = UiState.Idle
     }
 }

@@ -19,55 +19,52 @@ class TierViewModel @Inject constructor(
     private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
     private val getTierRestaurantMapUseCase: GetTierRestaurantMapUseCase
 ) : ViewModel() {
-    private val _filterApplied = MutableLiveData<Boolean>()
-    val filterApplied: LiveData<Boolean> = _filterApplied
-
-    private val _isExpanded = MutableLiveData<Boolean>(false)
+    private val _isExpanded = MutableLiveData(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
 
-    private val _allTierRestaurantList = MutableLiveData<List<TierRestaurant>>()
-    val allTierRestaurantList: LiveData<List<TierRestaurant>> = _allTierRestaurantList
+    private val _allRestaurants = MutableLiveData<List<TierRestaurant>>(emptyList())
+    val allRestaurants: LiveData<List<TierRestaurant>> = _allRestaurants
 
-    private val _tierRestaurantList = MutableLiveData<List<TierRestaurant>>()
-    val tierRestaurantList: LiveData<List<TierRestaurant>> = _tierRestaurantList
+    private val _fetchedRestaurants = MutableLiveData<List<TierRestaurant>>()
+    val fetchedRestaurants: LiveData<List<TierRestaurant>> = _fetchedRestaurants
 
     private val _mapData = MutableLiveData<TierMapData>()
     val mapData: LiveData<TierMapData> = _mapData
 
-    private val _selectedMenus = MutableLiveData<Set<String>>(setOf(""))
+    private val _selectedMenus = MutableLiveData(setOf(""))
     val selectedMenus: LiveData<Set<String>> = _selectedMenus
 
-    private val _selectedSituations = MutableLiveData<Set<String>>(setOf(""))
+    private val _selectedSituations = MutableLiveData(setOf(""))
     val selectedSituations: LiveData<Set<String>> = _selectedSituations
 
-    private val _selectedLocations = MutableLiveData<Set<String>>(setOf(""))
+    private val _selectedLocations = MutableLiveData(setOf(""))
     val selectedLocations: LiveData<Set<String>> = _selectedLocations
 
-    //티어 프래그먼트에서 보여줄 카테고리들
+    // 티어 프래그먼트에서 보여줄 카테고리들
     private val _selectedCategories = MutableLiveData<Set<String>>()
     val selectedCategories: LiveData<Set<String>> = _selectedCategories
 
-    private val _isSelectedCategoriesChanged = MutableLiveData<Boolean>(true)
-    val isSelectedCategoriesChanged: LiveData<Boolean> = _isSelectedCategoriesChanged
+    private val _categoryChangeList = MutableLiveData(true)
+    val categoryChangeList: LiveData<Boolean> = _categoryChangeList
 
-    //음식점 리스트 페이지를 관리하는 변수
+    private val _categoryChangeMap = MutableLiveData(true)
+
+    // 음식점 리스트(TierListFragment) 페이지
     private var _tierListPage = 1
+    // 음식점 리스트(TierListFragment) 마지막 스크롤 위치
+    private var _tierListLastPosition: Int = 0
 
-    fun toggleExpand() {
-        _isExpanded.value = _isExpanded.value?.not()
-    }
+    private fun loadRestaurantList() {
+        val menus = selectedMenus.value ?: setOf("전체")
+        val situations = selectedSituations.value ?: setOf("전체")
+        val locations = selectedLocations.value ?: setOf("전체")
 
-   private fun loadRestaurantList(
-        menus: Set<String>,
-        situations: Set<String>,
-        locations: Set<String>
-    ) {
-        var JH_flag = false
+        var flagJH = false
         /*
          * 정책 사항 : 제휴업체 대상인 경우 티어 이미지를 노출하지 않도록 한다.
          */
         if (menus.elementAt(0) == "제휴업체")
-            JH_flag = true
+            flagJH = true
 
         viewModelScope.launch {
             try {
@@ -78,7 +75,7 @@ class TierViewModel @Inject constructor(
                     _tierListPage
                 )
 
-                _tierRestaurantList.value = tierListData.map {
+                val fetchedData = tierListData.map {
                     TierRestaurant(
                         restaurantId = it.restaurantId,
                         restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
@@ -86,7 +83,7 @@ class TierViewModel @Inject constructor(
                         restaurantCuisine = it.restaurantCuisine,
                         restaurantPosition = it.restaurantPosition,
                         restaurantImgUrl = it.restaurantImgUrl,
-                        mainTier = if (JH_flag) -1 else it.mainTier,
+                        mainTier = if (flagJH) -1 else it.mainTier,
                         partnershipInfo = it.partnershipInfo ?: "",
                         isFavorite = it.isFavorite,
                         x = it.x.toDouble(),
@@ -97,26 +94,21 @@ class TierViewModel @Inject constructor(
                             ?: 0.0
                     )
                 }
-                if (_tierListPage == 1)
-                    _allTierRestaurantList.value = emptyList()
+                _fetchedRestaurants.value = fetchedData
 
-                val updatedList =
-                    _allTierRestaurantList.value.orEmpty() + _tierRestaurantList.value.orEmpty()
-
-                _allTierRestaurantList.postValue(updatedList)
-
+                val currentAllRestaurants = _allRestaurants.value ?: emptyList()
+                _allRestaurants.value = currentAllRestaurants + fetchedData
             } catch (e: Exception) {
-                Log.e("티어 뷰모델", "loadRestaurantList Error", e)
+                Log.e("TierViewModel", "From loadRestaurantList, Err is $e")
             }
         }
     }
 
+    private fun loadRestaurantMap() {
+        val menus = selectedMenus.value ?: setOf("전체")
+        val situations = selectedSituations.value ?: setOf("전체")
+        val locations = selectedLocations.value ?: setOf("전체")
 
-    private fun loadRestaurantMap(
-        menus: Set<String>,
-        situations: Set<String>,
-        locations: Set<String>
-    ) {
         viewModelScope.launch {
             try {
                 val tierMapData = getTierRestaurantMapUseCase(
@@ -125,14 +117,18 @@ class TierViewModel @Inject constructor(
                     CategoryIdMapper.mapLocations(locations)
                 )
                 _mapData.value = tierMapData
-            } catch (e : Exception) {
-                Log.e("티어 뷰모델", "loadRestaurantMap Error", e)
+            } catch (e: Exception) {
+                Log.e("TierViewModel", "From loadRestaurantMap, Err is $e")
             }
         }
     }
 
-    private fun setSelectedTypes(types: Set<String>) {
-        _selectedMenus.value = types
+    fun toggleExpand() {
+        _isExpanded.value = _isExpanded.value?.not()
+    }
+
+    private fun setSelectedMenus(menus: Set<String>) {
+        _selectedMenus.value = menus
     }
 
     private fun setSelectedSituations(situations: Set<String>) {
@@ -143,136 +139,78 @@ class TierViewModel @Inject constructor(
         _selectedLocations.value = locations
     }
 
-    private fun setIsSelectedCategoriesChanged(flag: Boolean) {
-        _isSelectedCategoriesChanged.value = flag
-    }
-
     fun getLoadRestaurantMap() {
-        loadRestaurantMap(
-            selectedMenus.value ?: emptySet(),
-            selectedSituations.value ?: emptySet(),
-            selectedLocations.value ?: emptySet()
-        )
+        loadRestaurantMap()
     }
 
-    fun applyFilters(
+    fun setCategory(
         menus: Set<String>,
         situations: Set<String>,
-        locations: Set<String>,
-        tabIndex: Int
+        locations: Set<String>
     ) {
-        if (hasFilterChanged(menus, situations, locations)) {
-            _tierListPage = 1
-            setIsSelectedCategoriesChanged(true)
-            Log.e("TierViewModel", "applyFilters is called and hasFilter is True")
-        } else {
-            setIsSelectedCategoriesChanged(false)
-            _tierListPage++
-        }
-
-        setSelectedTypes(menus)
+        setSelectedMenus(menus)
         setSelectedSituations(situations)
         setSelectedLocations(locations)
-
-        val selectedTypesValue = selectedMenus.value ?: emptySet()
-        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
-        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
-
-        Log.e(
-            "TierCategory",
-            "TierViewModel에서" + "\n" + selectedTypesValue.toString() + "\n" + selectedSelectedSituations.toString() + "\n" + selectedSelectedLocations.toString() + "\b" + _isSelectedCategoriesChanged.value.toString()
-        )
-
-        if (tabIndex == 0) {
-            loadRestaurantList(
-                selectedTypesValue,
-                selectedSelectedSituations,
-                selectedSelectedLocations
-            )
-        } else if (tabIndex == 1) {
-            loadRestaurantMap(
-                selectedTypesValue,
-                selectedSelectedSituations,
-                selectedSelectedLocations
-            )
-        }
-
-        updateSelectedCategories()
-        _filterApplied.value = true
+        _tierListPage = 1
+        updateFilter()
+        _categoryChangeList.value = true
+        _categoryChangeMap.value = true
     }
 
-    fun resetFilterApplied() {
-        _filterApplied.value = false
-    }
 
-    fun checkAndLoadBackendListData(state: RestaurantState) {
-        val selectedTypesValue = selectedMenus.value ?: emptySet()
-        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
-        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
-
-        if (state == RestaurantState.RELOAD_RESTAURANT_LIST_DATA) {
-            _tierListPage = 1
-        } else if (state == RestaurantState.NEXT_PAGE_LIST_DATA) {
-            _tierListPage++
+    fun loadRestaurant(
+        tabIdx: Int
+    ) {
+        if (tabIdx == 0) {
+            loadRestaurantList()
+        } else if (tabIdx == 1) {
+            loadRestaurantMap()
         }
 
-        if (!(state == RestaurantState.NEXT_PAGE_LIST_DATA && tierRestaurantList.value == emptyList<TierRestaurant>()))
-            loadRestaurantList(
-                selectedTypesValue,
-                selectedSelectedSituations,
-                selectedSelectedLocations
-            )
+        updateFilter()
     }
 
     fun checkAndLoadBackendMapData() {
-        val selectedTypesValue = selectedMenus.value ?: emptySet()
-        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
-        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
+        if (_categoryChangeMap.value == true) {
+            _categoryChangeMap.value = false
 
-        if (_isSelectedCategoriesChanged.value == true) {
-            setIsSelectedCategoriesChanged(false)
-
-            loadRestaurantMap(
-                selectedTypesValue,
-                selectedSelectedSituations,
-                selectedSelectedLocations
-            )
+            loadRestaurantMap()
         }
     }
 
-    private fun updateSelectedCategories() {
-        val selectedTypesValue = selectedMenus.value ?: emptySet()
-        val selectedSelectedSituations = selectedSituations.value ?: emptySet()
-        val selectedSelectedLocations = selectedLocations.value ?: emptySet()
+    private fun updateFilter() {
         val categories = mutableSetOf<String>()
 
-        if (selectedMenus.value != setOf("전체")) categories.addAll(selectedTypesValue)
-        if (selectedSituations.value != setOf("전체")) categories.addAll(selectedSelectedSituations)
-        if (selectedLocations.value != setOf("전체")) categories.addAll(selectedSelectedLocations)
-
-        if (categories.isEmpty()) {
+        if (selectedMenus.value != setOf("전체"))
+            selectedMenus.value?.let { categories.addAll(it) }
+        if (selectedSituations.value != setOf("전체"))
+            selectedSituations.value?.let { categories.addAll(it) }
+        if (selectedLocations.value != setOf("전체"))
+            selectedLocations.value?.let { categories.addAll(it) }
+        if (categories.isEmpty())
             categories.add("전체")
-        }
+
         _selectedCategories.value = categories
     }
 
-    fun hasFilterChanged(
-        currentTypes: Set<String>,
-        currentSituations: Set<String>,
-        currentLocations: Set<String>
-    ): Boolean {
-        return (currentTypes != selectedMenus.value ||
-                currentSituations != selectedSituations.value ||
-                currentLocations != selectedLocations.value)
+    fun fetchFirstRestaurants() {
+        _allRestaurants.value = emptyList()
+        _categoryChangeList.value = false
+        _tierListPage = 1
+        loadRestaurantList()
     }
 
+    fun fetchNextRestaurants() {
+        _tierListPage++
+        loadRestaurantList()
+    }
 
+    fun getTierListLastPosition(): Int {
+        return _tierListLastPosition
+    }
 
-    companion object {
-        enum class RestaurantState {
-            RELOAD_RESTAURANT_LIST_DATA,
-            NEXT_PAGE_LIST_DATA
-        }
+    fun setTierListLastPosition(position: Int) {
+        _tierListLastPosition = position
     }
 }
 

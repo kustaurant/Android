@@ -8,7 +8,6 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
-import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -26,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityCommunityPostWriteBinding
 import com.kust.kustaurant.databinding.PopupCommuPostWriteSortBinding
+import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import com.kust.kustaurant.presentation.ui.detail.EvaluateActivity.Companion.REQ_GALLERY
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -51,7 +51,7 @@ class CommunityPostWriteActivity : AppCompatActivity() {
         setupUI()
         observers()
 
-        val postSummary = intent.getParcelableExtra<CommunityPostSummary>("postSummary")
+        val postSummary = intent.getParcelableExtra<CommunityPostIntent>("postSummary")
         viewModel.setEditMode(postSummary)
 
         binding.etPostContent.webViewClient = object : WebViewClient() {
@@ -69,7 +69,6 @@ class CommunityPostWriteActivity : AppCompatActivity() {
                     viewModel.updatePostSort(it.postCategory)
 
                     postId = it.postId
-                    Log.e("asd", "${viewModel.postContentHtml.value}" )
                     binding.etPostContent.evaluateJavascript("javascript:setHtmlContent('$escapedHtmlContent');", null)
                 }
             }

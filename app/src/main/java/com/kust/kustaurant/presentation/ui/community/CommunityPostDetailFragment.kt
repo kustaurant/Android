@@ -8,9 +8,6 @@ import com.bumptech.glide.Glide
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
-import android.opengl.Visibility
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,20 +20,23 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentCommunityPostDetailBinding
 import com.kust.kustaurant.databinding.PopupCommuPostDetailDotsBinding
+import com.kust.kustaurant.presentation.model.CommunityPostIntent
+import com.kust.kustaurant.presentation.model.UiState
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class CommunityPostDetailFragment : Fragment() {
-    private lateinit var binding: FragmentCommunityPostDetailBinding
-    private val viewModel: CommunityPostDetailViewModel by activityViewModels()
+    private var _binding: FragmentCommunityPostDetailBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: CommunityPostDetailViewModel by viewModels()
     private lateinit var CommuCommentAdapter: CommunityPostDetailCommentAdapter
     private val parentViewModel: CommunityViewModel by activityViewModels()
     private var postId: Int = 0
@@ -44,7 +44,7 @@ class CommunityPostDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCommunityPostDetailBinding.inflate(layoutInflater)
+        _binding = FragmentCommunityPostDetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -115,6 +115,27 @@ class CommunityPostDetailFragment : Fragment() {
             }
         }
 
+        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
+            when (uiState) {
+                is UiState.Error.Forbidden -> {
+                    // Err code : 403
+                    Toast.makeText(requireContext(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(), StartActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                    viewModel.resetUiState()
+                }
+                is UiState.Error.Other -> {
+                    Toast.makeText(requireContext(), uiState.message, Toast.LENGTH_SHORT).show()
+                    viewModel.resetUiState()
+                }
+                is UiState.Loading -> {
+                    viewModel.resetUiState()
+                }
+                is UiState.Idle, is UiState.Success<*> -> {
+                }
+            }
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -163,7 +184,6 @@ class CommunityPostDetailFragment : Fragment() {
         }
 
         binding.communityIvPostDetailDots.setOnClickListener {
-            Log.e("asd", "communityIvPostDetailDots ${viewModel.postMine.value!!}")
             if (viewModel.postMine.value!!) {
                 showPopupWindow()
             }
@@ -188,15 +208,15 @@ class CommunityPostDetailFragment : Fragment() {
 
 
         popupBinding.clModify.setOnClickListener {
-            val postSummary = viewModel.communityPostDetail.value?.let {
-                CommunityPostSummary(
+            val postIntent = viewModel.communityPostDetail.value?.let {
+                CommunityPostIntent(
                     it.postId, it.postTitle, it.postCategory, it.postBody
                 )
             }
             requireActivity().supportFragmentManager.popBackStack()
 
             val intent = Intent(requireContext(), CommunityPostWriteActivity::class.java).apply {
-                putExtra("postSummary", postSummary)
+                putExtra("postSummary", postIntent)
             }
 
             popupWindow.dismiss()
@@ -333,14 +353,21 @@ class CommunityPostDetailFragment : Fragment() {
 
         bottomSheetDialog.show()
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
 
+        // WebView 메모리 해제
+        binding.communityWvMiddleContent.apply {
+            clearHistory()
+            clearCache(true)
+            loadUrl("about:blank")
+            onPause()
+            removeAllViews()
+            destroy()
+        }
+
+        // View 및 어댑터 참조 해제
+        binding.communityRvComment.adapter = null
+        _binding = null
+    }
 }
-
-
-@Parcelize
-data class CommunityPostSummary(
-    val postId: Int,
-    val postTitle: String,
-    val postCategory: String,
-    val postBody: String
-) : Parcelable

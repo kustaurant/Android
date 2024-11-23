@@ -27,6 +27,9 @@
 <body>
 <div id="editor-container"></div>
 <script>
+    // 전역 변수 선언
+    let isComposing = false;
+
     const quill = new Quill('#editor-container', {
         modules: {
             toolbar: false // 툴바 비활성화
@@ -63,7 +66,7 @@
         return quill.root.innerHTML;
     }
 
-     function setHtmlContent(content) {
+    function setHtmlContent(content) {
         // Quill의 clipboard 모듈을 사용하여 HTML 콘텐츠 삽입
         quill.clipboard.dangerouslyPasteHTML(content);
     }
@@ -92,6 +95,27 @@
             quill.insertEmbed(range.index, 'image', url);
         }
     }
+
+    // 한글 자모 자동 결합 방지: composition 이벤트 추가
+    const editorContainer = document.querySelector('#editor-container .ql-editor');
+
+    editorContainer.addEventListener('compositionstart', () => {
+        isComposing = true;
+    });
+
+    editorContainer.addEventListener('compositionend', () => {
+        isComposing = false;
+    });
+
+    // 엔터와 스페이스바 키 입력 감지
+    editorContainer.addEventListener('keydown', function(event) {
+        if ((event.key === 'Enter' || event.key === ' ') && isComposing) {
+            event.preventDefault();
+            if (window.JSInterface && window.JSInterface.onCompositionCancel) {
+                JSInterface.onCompositionCancel();
+            }
+        }
+    });
 </script>
 </body>
 </html>

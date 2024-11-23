@@ -27,12 +27,15 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
         fun onItemClicked(data: TierRestaurant)
     }
 
+    fun getCurrentList(): List<TierRestaurant> {
+        return asyncListDiffer.currentList
+    }
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         itemClickListener = onItemClickListener
     }
 
-    fun submitList(list: List<TierRestaurant>) {
-        asyncListDiffer.submitList(list)
+    fun submitList(list: List<TierRestaurant>, commitCallback: (() -> Unit)? = null) {
+        asyncListDiffer.submitList(list, commitCallback)
     }
 
     @SuppressLint("NotifyDataSetChanged")

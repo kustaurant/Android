@@ -3,7 +3,6 @@ package com.kust.kustaurant.presentation.ui.community
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -188,7 +187,6 @@ class CommunityPostListFragment : Fragment() {
             "건의 게시판" -> "suggestion"
             else -> "all"
         }
-        Log.d("asd", "categoryCode 들어옴 $categoryCode")
 
         viewModel.onPostCategoryChanged(categoryCode)
         popupWindow.dismiss()
