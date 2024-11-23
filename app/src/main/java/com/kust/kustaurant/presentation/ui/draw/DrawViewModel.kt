@@ -19,11 +19,10 @@ class DrawViewModel @Inject constructor(
     private val _drawList = MutableLiveData<List<DrawRestaurantData>>()
     val drawList: LiveData<List<DrawRestaurantData>> = _drawList
     private var sameDrawList = 3
-    // LiveData for storing selected filters
-    private val _selectedMenus = MutableLiveData<Set<String>>(setOf("전체"))
+    private val _selectedMenus = MutableLiveData(setOf("전체"))
     val selectedMenus: LiveData<Set<String>> = _selectedMenus
 
-    private val _selectedLocations = MutableLiveData<Set<String>>(setOf("전체"))
+    private val _selectedLocations = MutableLiveData(setOf("전체"))
     val selectedLocations: LiveData<Set<String>> = _selectedLocations
 
     private var _initialSelectedMenus = setOf("전체")
@@ -38,7 +37,6 @@ class DrawViewModel @Inject constructor(
                     (selectedLocations.value == _initialSelectedLocations)
 
             if (checkSameCategory && sameDrawList < 2) {
-                Log.d("DrawViewModel", "just random algorithm")
                 sameDrawList++
                 _drawList.value?.let { currentList ->
                     if (currentList.isNotEmpty()) {
@@ -48,7 +46,6 @@ class DrawViewModel @Inject constructor(
                     }
                 }
             } else {
-                Log.d("DrawViewModel", "draw Restaurants from Backend")
                 sameDrawList = 0
 
                 val mappedMenus = selectedMenus.value?.let { CategoryIdMapper.mapMenus(it) }
@@ -65,9 +62,6 @@ class DrawViewModel @Inject constructor(
                     val selected = getRandomRestaurants(drawRestaurantsListData)
                     _selectedRestaurant.value = selected
                     updateSelectedIndex(drawRestaurantsListData, selected)
-
-                    Log.d("DrawViewModel", "Draw restaurant data: $drawRestaurantsListData")
-                    Log.d("DrawViewModel", "Draw selected restaurant data: $selectedRestaurant")
                 } else {
                     Log.e("DrawViewModel", "Menus or Locations mapping failed. Menus: $mappedMenus, Locations: $mappedLocations")
                 }

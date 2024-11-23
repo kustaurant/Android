@@ -3,9 +3,9 @@ package com.kust.kustaurant.presentation.ui.draw
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,31 +15,31 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.DrawRestaurantData
-import com.kust.kustaurant.databinding.FragmentDrawSelectResultBinding
+import com.kust.kustaurant.databinding.FragmentDrawResultBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 import kotlin.math.floor
 
-class DrawSelectResultFragment : Fragment() {
-    private var _binding: FragmentDrawSelectResultBinding? = null
+class DrawResultFragment : Fragment() {
+    private var _binding: FragmentDrawResultBinding? = null
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: DrawSelectResultAdapter
     private var restaurantList = mutableListOf<DrawRestaurantData>()
     private val viewModel: DrawViewModel by activityViewModels()
-    private var handler: Handler? = null
-    private var runnable: Runnable? = null
     val binding get() = _binding!!
     private val animationScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentDrawSelectResultBinding.inflate(inflater, container, false)
+        _binding = FragmentDrawResultBinding.inflate(inflater, container, false)
         setupViewPager()
         loadRestaurants()
         setupButton()
@@ -57,33 +57,37 @@ class DrawSelectResultFragment : Fragment() {
 
         viewModel.selectedRestaurant.observe(viewLifecycleOwner) { selected ->
             if (_binding == null) {
-                _binding = FragmentDrawSelectResultBinding.inflate(layoutInflater)
+                _binding = FragmentDrawResultBinding.inflate(layoutInflater)
             }
 
             displaySelectedRestaurantInfo(selected)
         }
     }
 
-
     @SuppressLint("SetTextI18n")
     private fun displaySelectedRestaurantInfo(restaurant: DrawRestaurantData) {
         binding.drawTvRestaurantName.text = restaurant.restaurantName
         binding.drawTvRestaurantMenu.text = restaurant.restaurantCuisine
-
     }
 
     private fun setupViewPager() {
+        val viewPagerHeight = calculateViewHeight(267f) // 동적 높이 계산
+
         viewPager = binding.drawViewPager
         adapter = DrawSelectResultAdapter(restaurantList)
         viewPager.adapter = adapter
         viewPager.isUserInputEnabled = false // 스크롤 비활성화
         viewPager.offscreenPageLimit = 1
+
+        // ViewPager의 높이를 동적으로 설정
+        viewPager.layoutParams = viewPager.layoutParams.apply {
+            height = viewPagerHeight
+        }
+
+        // 페이지 전환 애니메이션 설정
         val pageTransformer = ViewPager2.PageTransformer { page, position ->
-            val absPosition = abs(position)
             page.apply {
-                rotationY = -30 * position
-                scaleX = 0.8f + (1 - absPosition) * 0.2f
-                scaleY = scaleX
+                translationX = 30 * position
             }
         }
         viewPager.setPageTransformer(pageTransformer)
@@ -118,7 +122,7 @@ class DrawSelectResultFragment : Fragment() {
             binding.drawTvRestaurantScore.text = ""
             binding.drawTvRestaurantPartnershipInfo.text = ""
             binding.drawLlScoreImgGroup.visibility = View.GONE
-
+            binding.drawIvSelect.visibility = View.INVISIBLE
             loadRestaurants()
         }
 
@@ -129,6 +133,7 @@ class DrawSelectResultFragment : Fragment() {
                 .commit()
         }
     }
+
     private fun loadRestaurants() {
         viewModel.drawRestaurants()
 
@@ -145,7 +150,6 @@ class DrawSelectResultFragment : Fragment() {
     private fun highlightCenterImage() {
         val centerPosition = viewPager.currentItem
         adapter.highlightItem(centerPosition)
-
     }
 
     private fun startAnimation() = animationScope.launch {
@@ -155,7 +159,7 @@ class DrawSelectResultFragment : Fragment() {
 
         var currentPage = adapter.itemCount - 1
         while (currentPage >= 0) {
-            if (!isAdded) return@launch  // Fragment가 아직 활성 상태인지 확인
+            if (!isAdded) return@launch // Fragment가 아직 활성 상태인지 확인
 
             viewPager.setCurrentItem(currentPage, true)
             delay(1700L / adapter.itemCount)
@@ -163,17 +167,21 @@ class DrawSelectResultFragment : Fragment() {
             currentPage--
         }
 
-        // 애니메이션 종료 후, 중앙에 선택된 음식점 배치
+        // 애니메이션 종료 후, 중앙에 선택된 음식점 배치 및 이미지 표시
         viewModel.selectedRestaurant.value?.let { selected ->
             val selectedIndex = restaurantList.indexOf(selected)
             viewPager.setCurrentItem(selectedIndex, true)
             displaySelectedRestaurantInfo(selected)
 
+            // 선택된 음식점 정보 표시
             val roundedScore = selected.restaurantScore?.let { floor(it * 2) / 2 } ?: "평가 없음"
             binding.drawTvRestaurantScore.text = roundedScore.toString()
             binding.drawTvRestaurantPartnershipInfo.text = selected.partnershipInfo ?: "제휴 해당사항 없음"
             updateStarRating(selected.restaurantScore ?: 0.0)
             binding.drawLlScoreImgGroup.visibility = View.VISIBLE
+
+            // 선택된 이미지 표시
+            displaySelectedRestaurantImage(selected)
 
             highlightCenterImage()
             enableButtons()
@@ -183,6 +191,30 @@ class DrawSelectResultFragment : Fragment() {
             fadeIn.start()
         }
     }
+
+    private fun displaySelectedRestaurantImage(restaurant: DrawRestaurantData) {
+        val calculateHeight = calculateViewHeight(297f)
+
+        // gl_start와 gl_end의 위치를 기준으로 너비 계산
+        val startX = binding.glStart.x
+        val endX = binding.glEnd.x
+        val calculatedWidth = (endX - startX).toInt()
+
+        // 선택된 이미지의 크기를 설정
+        binding.drawIvSelect.layoutParams = binding.drawIvSelect.layoutParams.apply {
+            width = calculatedWidth
+            height = calculateHeight
+        }
+
+        // Glide를 사용하여 이미지 로드 및 둥근 모서리 처리
+        Glide.with(this)
+            .load(restaurant.restaurantImgUrl)
+            .transform(CenterCrop(), RoundedCorners(78)) // RoundedCorners와 CenterCrop을 조합
+            .into(binding.drawIvSelect)
+
+        binding.drawIvSelect.visibility = View.VISIBLE
+    }
+
 
     private fun disableButtons() {
         binding.drawBtnCategoryReset.isClickable = false
@@ -208,7 +240,12 @@ class DrawSelectResultFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        animationScope.cancel()  // 코루틴 취소
+        animationScope.cancel()
         _binding = null
+    }
+
+    private fun calculateViewHeight(height : Float): Int {
+        val screenDensity = Resources.getSystem().displayMetrics.density
+        return (height * screenDensity).toInt()
     }
 }

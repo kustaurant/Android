@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +21,7 @@ class DrawSelectCategoryFragment : Fragment() {
     private var _binding : FragmentDrawSelectCategoryBinding? = null
     private val binding get() = _binding!!
     private val viewModel : DrawViewModel by activityViewModels()
-    private var selectedMenus = mutableSetOf<String>("전체")
+    private var selectedMenus = mutableSetOf("전체")
     private lateinit var allMenuViews: List<ConstraintLayout>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +64,7 @@ class DrawSelectCategoryFragment : Fragment() {
             viewModel.applyFilters(selectedMenus,selectedLocation)
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.draw_fragment_container, DrawSelectResultFragment())
+                .replace(R.id.draw_fragment_container, DrawResultFragment())
                 .addToBackStack(null)
                 .commit()
         }
