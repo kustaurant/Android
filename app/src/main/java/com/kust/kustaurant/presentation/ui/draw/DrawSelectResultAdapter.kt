@@ -13,8 +13,6 @@ import com.kust.kustaurant.data.model.DrawRestaurantData
 class DrawSelectResultAdapter(val restaurants: MutableList<DrawRestaurantData>) :
     RecyclerView.Adapter<DrawSelectResultAdapter.RestaurantViewHolder>() {
 
-    private var highlightedPosition: Int = RecyclerView.NO_POSITION
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_draw_select_result_img, parent, false)
@@ -25,13 +23,6 @@ class DrawSelectResultAdapter(val restaurants: MutableList<DrawRestaurantData>) 
         holder.bind(restaurants[position])
             holder.imageView.background = null
             holder.imageView.setPadding(0, 0, 0, 0)
-    }
- 
-    fun highlightItem(position: Int) {
-        val previousHighlightedPosition = highlightedPosition
-        highlightedPosition = position
-        notifyItemChanged(previousHighlightedPosition)
-        notifyItemChanged(position)
     }
 
     override fun getItemCount() = restaurants.size

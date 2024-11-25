@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginTop="40dp"
     android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
     tools:context=".presentation.ui.draw.DrawResultFragment">
 
     <ScrollView
@@ -24,11 +24,11 @@
                 android:id="@+id/draw_selected_tv_clickable_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/draw_iv_select"
+                android:layout_marginBottom="27dp"
                 android:fontFamily="@font/pretendard_regular"
                 android:gravity="center"
-                android:layout_marginBottom="27dp"
                 android:text="@string/draw_selected_category_result_clickable_info"
+                app:layout_constraintBottom_toTopOf="@id/draw_iv_select"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,9 +52,9 @@
                 android:id="@+id/draw_viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/draw_iv_select"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/draw_iv_select"
                 app:layout_constraintTop_toTopOf="@id/draw_iv_select"
                 tools:layout_height="267dp" />
 
@@ -62,16 +62,16 @@
                 android:id="@+id/draw_iv_select"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@drawable/all_radius_30_signature_1"
+                android:padding="1dp"
+                android:scaleType="centerCrop"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@id/draw_tv_restaurant_menu"
-                tools:visibility="visible"
-                android:scaleType="centerCrop"
-                android:padding="1dp"
-                app:layout_constraintEnd_toEndOf="@id/gl_end"
                 app:layout_constraintDimensionRatio="289:296"
-                android:background="@drawable/all_radius_30_signature_1"
+                app:layout_constraintEnd_toEndOf="@id/gl_end"
                 app:layout_constraintStart_toStartOf="@id/gl_start"
-                app:layout_constraintTop_toBottomOf="@id/draw_selected_tv_clickable_info"/>
+                app:layout_constraintTop_toBottomOf="@id/draw_selected_tv_clickable_info"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/draw_tv_restaurant_menu"

@@ -13,7 +13,6 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -48,13 +47,6 @@ class DrawResultFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.selectedIndex.observe(viewLifecycleOwner) { index ->
-            if (index != null && index != RecyclerView.NO_POSITION) {
-                viewPager.setCurrentItem(index, true)
-                adapter.highlightItem(index)
-            }
-        }
-
         viewModel.selectedRestaurant.observe(viewLifecycleOwner) { selected ->
             if (_binding == null) {
                 _binding = FragmentDrawResultBinding.inflate(layoutInflater)
@@ -87,7 +79,7 @@ class DrawResultFragment : Fragment() {
         // 페이지 전환 애니메이션 설정
         val pageTransformer = ViewPager2.PageTransformer { page, position ->
             page.apply {
-                translationX = 30 * position
+                translationX = 20 * position
             }
         }
         viewPager.setPageTransformer(pageTransformer)
@@ -140,20 +132,14 @@ class DrawResultFragment : Fragment() {
         viewModel.drawList.observe(viewLifecycleOwner) { list ->
             restaurantList.clear()
             restaurantList.addAll(list)
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemRangeInserted(0, list.size)
 
-            // 애니메이션 시작
             startAnimation()
         }
     }
 
-    private fun highlightCenterImage() {
-        val centerPosition = viewPager.currentItem
-        adapter.highlightItem(centerPosition)
-    }
-
     private fun startAnimation() = animationScope.launch {
-        disableButtons() // 애니메이션 시작 시 버튼 비활성화
+        disableButtons()
         val textView = binding.drawSelectedTvClickableInfo
         textView.alpha = 0f
 
@@ -171,49 +157,42 @@ class DrawResultFragment : Fragment() {
         viewModel.selectedRestaurant.value?.let { selected ->
             val selectedIndex = restaurantList.indexOf(selected)
             viewPager.setCurrentItem(selectedIndex, true)
-            displaySelectedRestaurantInfo(selected)
 
-            // 선택된 음식점 정보 표시
+            delay(500L)
+            displaySelectedRestaurantInfo(selected)
             val roundedScore = selected.restaurantScore?.let { floor(it * 2) / 2 } ?: "평가 없음"
             binding.drawTvRestaurantScore.text = roundedScore.toString()
             binding.drawTvRestaurantPartnershipInfo.text = selected.partnershipInfo ?: "제휴 해당사항 없음"
             updateStarRating(selected.restaurantScore ?: 0.0)
             binding.drawLlScoreImgGroup.visibility = View.VISIBLE
 
-            // 선택된 이미지 표시
             displaySelectedRestaurantImage(selected)
-
-            highlightCenterImage()
             enableButtons()
 
             val fadeIn = ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f)
-            fadeIn.duration = 500
+            fadeIn.duration = 1000
             fadeIn.start()
         }
     }
 
     private fun displaySelectedRestaurantImage(restaurant: DrawRestaurantData) {
-        val calculateHeight = calculateViewHeight(297f)
 
-        // gl_start와 gl_end의 위치를 기준으로 너비 계산
-        val startX = binding.glStart.x
-        val endX = binding.glEnd.x
-        val calculatedWidth = (endX - startX).toInt()
 
-        // 선택된 이미지의 크기를 설정
-        binding.drawIvSelect.layoutParams = binding.drawIvSelect.layoutParams.apply {
-            width = calculatedWidth
-            height = calculateHeight
-        }
-
-        // Glide를 사용하여 이미지 로드 및 둥근 모서리 처리
         Glide.with(this)
             .load(restaurant.restaurantImgUrl)
-            .transform(CenterCrop(), RoundedCorners(78)) // RoundedCorners와 CenterCrop을 조합
+            .transform(CenterCrop(), RoundedCorners(78))
             .into(binding.drawIvSelect)
 
+        binding.drawIvSelect.alpha = 0f
         binding.drawIvSelect.visibility = View.VISIBLE
+
+        binding.drawIvSelect.animate()
+            .alpha(1f)
+            .setDuration(1000)
+            .setListener(null)
+            .start()
     }
+
 
 
     private fun disableButtons() {
