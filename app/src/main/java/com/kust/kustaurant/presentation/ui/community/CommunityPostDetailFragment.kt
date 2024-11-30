@@ -58,14 +58,9 @@ class CommunityPostDetailFragment : Fragment() {
 
         setupButton()
         setupObservers()
-
-        binding.communityLlBtnPostLike.background = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            cornerRadius = 100f
-            setStroke(1, ContextCompat.getColor(requireContext(), R.color.signature_1))
-        }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupObservers() {
         parentViewModel.selectedPostDetailId.observe(viewLifecycleOwner) { postId ->
             postId?.let {
@@ -109,7 +104,6 @@ class CommunityPostDetailFragment : Fragment() {
         viewModel.postDelete.observe(viewLifecycleOwner) { result ->
             if (result) {
                 Toast.makeText(requireContext(), "게시글이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-
                 viewModel.resetPostDelete()
                 requireActivity().supportFragmentManager.popBackStack()
             }
@@ -142,8 +136,6 @@ class CommunityPostDetailFragment : Fragment() {
     private fun loadPostBodyToWebView(postBody: String) {
         val webView = binding.communityWvMiddleContent
         webView.settings.javaScriptEnabled = false
-
-        // CSS를 추가하여 WebView 내용이 화면 너비에 맞게 조정되도록 함
         val htmlContent = """
         <html>
         <head>
@@ -170,6 +162,12 @@ class CommunityPostDetailFragment : Fragment() {
     private fun setupButton() {
         viewModel.postMine.value?.let{
             binding.communityIvPostDetailDots.isVisible = viewModel.postMine.value!!
+        }
+
+        binding.communityLlBtnPostLike.background = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 100f
+            setStroke(1, ContextCompat.getColor(requireContext(), R.color.signature_1))
         }
 
         binding.btnBack.setOnClickListener {

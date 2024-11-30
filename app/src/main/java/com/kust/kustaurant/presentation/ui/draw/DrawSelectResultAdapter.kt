@@ -1,26 +1,17 @@
 package com.kust.kustaurant.presentation.ui.draw
 
 import android.content.Context
-import android.graphics.drawable.GradientDrawable
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.DrawRestaurantData
 
-class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestaurantData>) :
+class DrawSelectResultAdapter(val restaurants: MutableList<DrawRestaurantData>) :
     RecyclerView.Adapter<DrawSelectResultAdapter.RestaurantViewHolder>() {
-
-    private var highlightedPosition: Int = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -30,38 +21,8 @@ class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestauran
 
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         holder.bind(restaurants[position])
-
-        // Highlight with stroke if needed
-        if (position == highlightedPosition) {
-            val drawable = GradientDrawable().apply {
-                shape = GradientDrawable.RECTANGLE
-
-                // dp를 px로 변환
-                val strokeWidth = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    3f, // 스트로크 너비 2dp
-                    holder.itemView.context.resources.displayMetrics
-                ).toInt()
-
-                setStroke(strokeWidth, ContextCompat.getColor(holder.itemView.context, R.color.signature_1))
-                cornerRadius = 30f
-            }
-
-            holder.imageView.background = drawable
-
-            holder.imageView.setPadding(3)
-
-        } else {
             holder.imageView.background = null
             holder.imageView.setPadding(0, 0, 0, 0)
-        }
-    }
- 
-    fun highlightItem(position: Int) {
-        val previousHighlightedPosition = highlightedPosition
-        highlightedPosition = position
-        notifyItemChanged(previousHighlightedPosition)
-        notifyItemChanged(position)
     }
 
     override fun getItemCount() = restaurants.size
@@ -73,7 +34,6 @@ class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestauran
         fun bind(restaurant: DrawRestaurantData) {
             Glide.with(context)
                 .load(restaurant.restaurantImgUrl)
-                .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(30)))
                 .into(imageView)
 
         }

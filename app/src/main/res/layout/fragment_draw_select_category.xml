@@ -822,7 +822,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
-                    android:id="@+id/draw_btn_draw_random_restaurants"
+                    android:id="@+id/draw_btn_draw_result"
                     android:layout_width="0dp"
                     android:layout_height="52dp"
                     android:layout_marginTop="27dp"

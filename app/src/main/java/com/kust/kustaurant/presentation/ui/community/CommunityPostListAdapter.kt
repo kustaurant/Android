@@ -1,5 +1,6 @@
 package com.kust.kustaurant.presentation.ui.community
 
+import android.annotation.SuppressLint
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
@@ -30,13 +31,14 @@ class CommunityPostListAdapter() :
 
         init {
             itemView.setOnClickListener {
-                val position = adapterPosition
+                val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    itemClickListener?.onItemClicked(getItem(position))
+                    itemClickListener.onItemClicked(getItem(position))
                 }
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: CommunityPost) {
             viewBinding.communityTvCategory.text = item.postCategory
 

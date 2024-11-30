@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<ImageView
+    android:id="@+id/draw_iv_image_Restaurant"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    <ImageView
-        android:id="@+id/draw_iv_image_Restaurant"
-        android:layout_width="291dp"
-        android:layout_height="291dp"
-        android:padding="2dp"
-        android:background="@drawable/all_radius_30_none"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@string/draw_selected_restaurant_img_info" />
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop"
+    android:contentDescription="@string/draw_selected_restaurant_img_info" />
 </FrameLayout>

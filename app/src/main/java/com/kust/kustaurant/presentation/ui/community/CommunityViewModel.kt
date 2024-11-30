@@ -60,7 +60,7 @@ class CommunityViewModel @Inject constructor(
                     _communityPosts.postValue(currentPosts)
                 }
             } catch (e: Exception) {
-                Log.e("CommunityViewModel", "loadCommunityPosts Error", e)
+                Log.e("CommunityViewModel", "From loadCommunityPosts Err is ", e)
             } finally {  }
         }
     }
@@ -124,7 +124,7 @@ class CommunityViewModel @Inject constructor(
                 val rankings = getCommunityRankingListUseCase(sort)
                 _communityRanking.value = rankings
             } catch (e: Exception) {
-                Log.e("CommunityViewModel", "loadCommunityRanking Error", e)
+                Log.e("CommunityViewModel", "From loadCommunityRanking Err is ", e)
             }
         }
     }

@@ -35,10 +35,10 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val _communityPostDetail = MutableLiveData<CommunityPost>()
     val communityPostDetail: LiveData<CommunityPost> = _communityPostDetail
 
-    private val _postMine = MutableLiveData<Boolean>(true)
+    private val _postMine = MutableLiveData(true)
     val postMine: LiveData<Boolean> = _postMine
 
-    private val _postDelete = MutableLiveData<Boolean>(false)
+    private val _postDelete = MutableLiveData(false)
     val postDelete: LiveData<Boolean> = _postDelete
 
     private val _postScrapInfo = MutableLiveData<CommunityPostScrapResponse>()
@@ -48,7 +48,6 @@ class CommunityPostDetailViewModel @Inject constructor(
     val postLikeInfo: LiveData<CommunityPostLikeResponse> = _postLikeInfo
 
     private val _commentReply = MutableLiveData<CommunityPostComment>()
-    val commentReply: LiveData<CommunityPostComment> = _commentReply
 
     private val _uiState = MutableLiveData<UiState>(UiState.Idle)
     val uiState: LiveData<UiState> = _uiState
