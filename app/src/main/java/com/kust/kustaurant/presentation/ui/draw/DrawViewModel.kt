@@ -18,26 +18,25 @@ class DrawViewModel @Inject constructor(
 ) : ViewModel() {
     private val _drawList = MutableLiveData<List<DrawRestaurantData>>()
     val drawList: LiveData<List<DrawRestaurantData>> = _drawList
-    private var sameDrawList = 3
+    private var _sameDrawList = 0 // limit 3 times + manage first draw
     private val _selectedMenus = MutableLiveData(setOf("전체"))
     val selectedMenus: LiveData<Set<String>> = _selectedMenus
 
     private val _selectedLocations = MutableLiveData(setOf("전체"))
     val selectedLocations: LiveData<Set<String>> = _selectedLocations
 
-    private var _initialSelectedMenus = setOf("전체")
-    private var _initialSelectedLocations = setOf("전체")
+    private var _previousSelectedMenus = setOf("")
+    private var _previousSelectedLocations = setOf("")
 
     private val _selectedRestaurant = MutableLiveData<DrawRestaurantData>()
     val selectedRestaurant: LiveData<DrawRestaurantData> = _selectedRestaurant
 
     fun drawRestaurants() {
         viewModelScope.launch {
-            val checkSameCategory = (selectedMenus.value == _initialSelectedMenus) &&
-                    (selectedLocations.value == _initialSelectedLocations)
+            isResetFilter()
 
-            if (checkSameCategory && sameDrawList < 2) {
-                sameDrawList++
+            if (_sameDrawList < 2) {
+                _sameDrawList++
                 _drawList.value?.let { currentList ->
                     if (currentList.isNotEmpty()) {
                         val selected = getRandomRestaurants(currentList)
@@ -46,24 +45,23 @@ class DrawViewModel @Inject constructor(
                     }
                 }
             } else {
-                sameDrawList = 0
+                _sameDrawList = 0
 
                 val mappedMenus = selectedMenus.value?.let { CategoryIdMapper.mapMenus(it) }
                 val mappedLocations = selectedLocations.value?.let { CategoryIdMapper.mapLocations(it) }
 
                 if (mappedMenus != null && mappedLocations != null) {
-                    Log.d("DrawViewModel", "$mappedMenus $mappedLocations")
                     val drawRestaurantsListData = getDrawRestaurantUseCase(
                         mappedMenus,
                         mappedLocations
                     )
-                    _drawList.value = drawRestaurantsListData
+                    _drawList.value = drawRestaurantsListData.shuffled().take(20)
 
-                    val selected = getRandomRestaurants(drawRestaurantsListData)
+                    val selected = getRandomRestaurants(_drawList.value!!)
                     _selectedRestaurant.value = selected
                     updateSelectedIndex(drawRestaurantsListData, selected)
                 } else {
-                    Log.e("DrawViewModel", "Menus or Locations mapping failed. Menus: $mappedMenus, Locations: $mappedLocations")
+                     Log.e("DrawViewModel", "Menus or Locations mapping failed. Menus: $mappedMenus, Locations: $mappedLocations")
                 }
             }
         }
@@ -91,12 +89,15 @@ class DrawViewModel @Inject constructor(
     fun applyFilters(types: Set<String>, locations: Set<String>) {
         setSelectedTypes(types)
         setSelectedLocations(locations)
+    }
 
-        // 현재 선택된 값들을 새로운 "초기" 값으로 설정
-        _initialSelectedMenus = types
-        _initialSelectedLocations = locations
-
-        sameDrawList = 3
+    private fun isResetFilter() {
+        if(!((selectedMenus.value == _previousSelectedMenus) &&
+                (selectedLocations.value == _previousSelectedLocations))) {
+            _sameDrawList = 3
+            _previousSelectedMenus = selectedMenus.value!!
+            _previousSelectedLocations = selectedLocations.value!!
+        }
     }
 }
 

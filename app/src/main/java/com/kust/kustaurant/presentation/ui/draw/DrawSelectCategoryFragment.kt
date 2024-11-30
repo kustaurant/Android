@@ -35,33 +35,15 @@ class DrawSelectCategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        allMenuViews= listOf(
-            binding.homeBtnAll,
-            binding.homeBtnKorea,
-            binding.homeBtnJapan,
-            binding.homeBtnChina,
-            binding.homeBtnWestern,
-            binding.homeBtnAsian,
-            binding.homeBtnMeat,
-            binding.homeBtnSeafood,
-            binding.homeBtnChicken,
-            binding.homeBtnHamburgerPizza,
-            binding.homeBtnTteokbokki,
-            binding.homeBtnBeer,
-            binding.homeBtnCafe,
-            binding.homeBtnBakery,
-            binding.homeBtnSalad,
-            binding.homeBtnBenefit
-        )
-
+        allMenuViews = getMenuList()
         setupToggleGroups()
         observeViewModel()
 
-        binding.drawBtnDrawRandomRestaurants.setOnClickListener {
+        binding.drawBtnDrawResult.setOnClickListener {
             //val selectedSituation = getSelectedTogglesText(binding.tierToggleSituationGroup)
             val selectedLocation = getSelectedTogglesText(binding.tierToggleLocationGroup)
 
-            viewModel.applyFilters(selectedMenus,selectedLocation)
+            viewModel.applyFilters(selectedMenus, selectedLocation)
 
             parentFragmentManager.beginTransaction()
                 .replace(R.id.draw_fragment_container, DrawResultFragment())
@@ -94,14 +76,12 @@ class DrawSelectCategoryFragment : Fragment() {
                     toggleButton.isChecked = true
                 } else {
                     if (isChecked) {
-                        // Change the text color to active
                         toggleButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
 
                         if (toggleButton.text.toString() == "전체" || toggleButton.text.toString() == "제휴업체") {
                             clearOtherToggles(toggleGroup, toggleButton)
                         }
                     } else {
-                        // Change the text color to inactive
                         toggleButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
                     }
 
@@ -259,5 +239,26 @@ class DrawSelectCategoryFragment : Fragment() {
         } else {
             view.setBackgroundResource(R.drawable.all_radius_15_none)
         }
+    }
+
+    private fun getMenuList(): List<ConstraintLayout> {
+        return listOf(
+            binding.homeBtnAll,
+            binding.homeBtnKorea,
+            binding.homeBtnJapan,
+            binding.homeBtnChina,
+            binding.homeBtnWestern,
+            binding.homeBtnAsian,
+            binding.homeBtnMeat,
+            binding.homeBtnSeafood,
+            binding.homeBtnChicken,
+            binding.homeBtnHamburgerPizza,
+            binding.homeBtnTteokbokki,
+            binding.homeBtnBeer,
+            binding.homeBtnCafe,
+            binding.homeBtnBakery,
+            binding.homeBtnSalad,
+            binding.homeBtnBenefit
+        )
     }
 }
