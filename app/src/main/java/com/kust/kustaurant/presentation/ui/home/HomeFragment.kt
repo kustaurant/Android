@@ -55,7 +55,6 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
         setupCategoryRV()
         autoScrollHandler = Handler(Looper.getMainLooper())
         autoScrollRunnable = Runnable {
-            // 아무 것도 안 함, 실제 로직은 setupViewPager에서 설정
         }
 
 
@@ -144,14 +143,12 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
             }
         }
 
-        // TierFragment로 전환
         val fragment = TierFragment()
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm, fragment)
             .addToBackStack(null)
             .commit()
 
-        // 네비게이션 바 상태 업데이트
         (requireActivity() as? MainActivity)?.let { mainActivity ->
             mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_rank
         }
@@ -181,7 +178,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
         binding.categoryRecyclerView.apply {
             val spanCount = 4
             val spacing = 10
-            val spacingInPx = context.dpToPx(spacing) // dp를 px로 변환
+            val spacingInPx = context.dpToPx(spacing)
 
             addItemDecoration(CategorySpaceDecoration(spanCount, spacingInPx))
             adapter = categoryAdapter
@@ -335,10 +332,8 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // View가 파괴될 때 Handler를 정리합니다.
         autoScrollHandler.removeCallbacks(autoScrollRunnable)
 
-        // View가 파괴될 때 Handler를 정리합니다.
         if (::autoScrollRunnable.isInitialized && ::autoScrollHandler.isInitialized) {
             autoScrollHandler.removeCallbacks(autoScrollRunnable)
         }
