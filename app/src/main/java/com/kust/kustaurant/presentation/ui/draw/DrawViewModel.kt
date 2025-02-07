@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kust.kustaurant.data.model.DrawRestaurantData
 import com.kust.kustaurant.domain.usecase.draw.GetDrawRestaurantUseCase
-import com.kust.kustaurant.presentation.util.CategoryIdMapper
+import com.kust.kustaurant.presentation.common.CategoryIdMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

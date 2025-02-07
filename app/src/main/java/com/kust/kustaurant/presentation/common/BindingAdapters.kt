@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.util
+package com.kust.kustaurant.presentation.common
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
