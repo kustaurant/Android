@@ -19,6 +19,7 @@ class DrawViewModel @Inject constructor(
     private val _drawList = MutableLiveData<List<DrawRestaurantData>>()
     val drawList: LiveData<List<DrawRestaurantData>> = _drawList
     private var _sameDrawList = 0 // limit 3 times + manage first draw
+
     private val _selectedMenus = MutableLiveData(setOf("전체"))
     val selectedMenus: LiveData<Set<String>> = _selectedMenus
 
@@ -30,6 +31,9 @@ class DrawViewModel @Inject constructor(
 
     private val _selectedRestaurant = MutableLiveData<DrawRestaurantData>()
     val selectedRestaurant: LiveData<DrawRestaurantData> = _selectedRestaurant
+
+    private var _selectedIndex = MutableLiveData<Int>()
+    val selectedIndex: LiveData<Int> = _selectedIndex
 
     fun drawRestaurants() {
         viewModelScope.launch {
@@ -61,14 +65,11 @@ class DrawViewModel @Inject constructor(
                     _selectedRestaurant.value = selected
                     updateSelectedIndex(drawRestaurantsListData, selected)
                 } else {
-                     Log.e("DrawViewModel", "Menus or Locations mapping failed. Menus: $mappedMenus, Locations: $mappedLocations")
+                    Log.e("DrawViewModel", "Menus or Locations mapping failed. Menus: $mappedMenus, Locations: $mappedLocations")
                 }
             }
         }
     }
-
-    private var _selectedIndex = MutableLiveData<Int>()
-    val selectedIndex: LiveData<Int> = _selectedIndex
 
     private fun updateSelectedIndex(restaurants: List<DrawRestaurantData>, selected: DrawRestaurantData) {
         _selectedIndex.value = restaurants.indexOf(selected)
@@ -78,26 +79,25 @@ class DrawViewModel @Inject constructor(
         return restaurants.shuffled().first()
     }
 
-    private fun setSelectedTypes(types: Set<String>) {
-        _selectedMenus.value = types
+    fun updateSelectedMenus(newSelectedMenus: Set<String>) {
+        _selectedMenus.value = newSelectedMenus
     }
 
-    private fun setSelectedLocations(locations: Set<String>) {
-        _selectedLocations.value = locations
+    fun updateSelectedLocations(newSelectedLocations: Set<String>) {
+        _selectedLocations.value = newSelectedLocations
     }
 
     fun applyFilters(types: Set<String>, locations: Set<String>) {
-        setSelectedTypes(types)
-        setSelectedLocations(locations)
+        updateSelectedMenus(types)
+        updateSelectedLocations(locations)
     }
 
     private fun isResetFilter() {
         if(!((selectedMenus.value == _previousSelectedMenus) &&
-                (selectedLocations.value == _previousSelectedLocations))) {
+                    (selectedLocations.value == _previousSelectedLocations))) {
             _sameDrawList = 3
-            _previousSelectedMenus = selectedMenus.value!!
-            _previousSelectedLocations = selectedLocations.value!!
+            _previousSelectedMenus = selectedMenus.value ?: setOf()
+            _previousSelectedLocations = selectedLocations.value ?: setOf()
         }
     }
 }
-
