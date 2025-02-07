@@ -33,7 +33,6 @@ class DrawViewModel @Inject constructor(
     val selectedRestaurant: LiveData<DrawRestaurantData> = _selectedRestaurant
 
     private var _selectedIndex = MutableLiveData<Int>()
-    val selectedIndex: LiveData<Int> = _selectedIndex
 
     fun drawRestaurants() {
         viewModelScope.launch {
@@ -85,11 +84,6 @@ class DrawViewModel @Inject constructor(
 
     fun updateSelectedLocations(newSelectedLocations: Set<String>) {
         _selectedLocations.value = newSelectedLocations
-    }
-
-    fun applyFilters(types: Set<String>, locations: Set<String>) {
-        updateSelectedMenus(types)
-        updateSelectedLocations(locations)
     }
 
     private fun isResetFilter() {
