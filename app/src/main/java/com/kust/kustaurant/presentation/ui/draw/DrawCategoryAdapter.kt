@@ -1,18 +1,17 @@
 package com.kust.kustaurant.presentation.ui.draw
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kust.kustaurant.R
+import com.kust.kustaurant.databinding.ItemCategoryBinding
 import com.kust.kustaurant.presentation.common.CategoryItem
 
-class DrawCategoryAdapter(private val categoryList: List<CategoryItem>,
-                          private val itemClickListener: CategoryItemClickListener) :
-    RecyclerView.Adapter<DrawCategoryAdapter.CategoryViewHolder>() {
+class DrawCategoryAdapter(
+    private val categoryList: List<CategoryItem>,
+    private val itemClickListener: CategoryItemClickListener
+) : RecyclerView.Adapter<DrawCategoryAdapter.CategoryViewHolder>() {
 
     private var selectedItems: Set<String> = setOf()
 
@@ -20,12 +19,11 @@ class DrawCategoryAdapter(private val categoryList: List<CategoryItem>,
         fun onCategoryItemClick(category: String)
     }
 
-    inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.category_image)
-        val textView: TextView = itemView.findViewById(R.id.category_text)
+    inner class CategoryViewHolder(private val binding: ItemCategoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
-            itemView.setOnClickListener {
+            binding.root.setOnClickListener {
                 val position = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val categoryItem = categoryList[position]
@@ -33,21 +31,24 @@ class DrawCategoryAdapter(private val categoryList: List<CategoryItem>,
                 }
             }
         }
+
+        fun bind(categoryItem: CategoryItem, isSelected: Boolean) {
+            binding.categoryImage.setImageResource(categoryItem.imageResId)
+            binding.categoryText.text = categoryItem.text
+            binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.btn_selector_draw_category)
+            binding.root.isSelected = isSelected
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_category, parent, false)
-        return CategoryViewHolder(view)
+        val binding = ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CategoryViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val categoryItem = categoryList[position]
-        holder.imageView.setImageResource(categoryItem.imageResId)
-        holder.textView.text = categoryItem.text
-
-        holder.itemView.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.btn_selector_draw_category)
-        holder.itemView.isSelected = selectedItems.contains(categoryItem.text)
+        val isSelected = selectedItems.contains(categoryItem.text)
+        holder.bind(categoryItem, isSelected)
     }
 
     override fun getItemCount(): Int = categoryList.size
