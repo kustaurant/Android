@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentDrawSelectCategoryBinding
 import com.kust.kustaurant.presentation.common.CategoryData
+import com.kust.kustaurant.presentation.common.DimensionUtils.dpToPx
 import com.kust.kustaurant.presentation.ui.home.HomeFragment.CategorySpaceDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -156,8 +157,8 @@ class DrawSelectCategoryFragment : Fragment(), DrawCategoryAdapter.CategoryItemC
         binding.categoryRecyclerView.apply {
             val spanCount = 4
             val spacing = 10
-            // spacing을 dp에서 px로 변환
-            val spacingInPx = (spacing * resources.displayMetrics.density).toInt()
+            val spacingInPx = context.dpToPx(spacing)
+
             addItemDecoration(CategorySpaceDecoration(spanCount, spacingInPx))
             layoutManager = GridLayoutManager(requireContext(), spanCount)
             adapter = categoryAdapter
@@ -165,6 +166,7 @@ class DrawSelectCategoryFragment : Fragment(), DrawCategoryAdapter.CategoryItemC
             (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         }
     }
+
 
     override fun onCategoryItemClick(category: String) {
         val currentSelectedMenus = viewModel.selectedMenus.value?.toMutableSet() ?: mutableSetOf()

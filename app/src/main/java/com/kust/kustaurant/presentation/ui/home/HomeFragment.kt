@@ -1,7 +1,6 @@
 package com.kust.kustaurant.presentation.ui.home
 
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -23,6 +22,7 @@ import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.model.HomeResponse
 import com.kust.kustaurant.databinding.FragmentHomeBinding
 import com.kust.kustaurant.presentation.common.CategoryData
+import com.kust.kustaurant.presentation.common.DimensionUtils.dpToPx
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import com.kust.kustaurant.presentation.ui.tier.TierFragment
@@ -148,7 +148,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
         binding.categoryRecyclerView.apply {
             val spanCount = 4
             val spacing = 10
-            val spacingInPx = context.dpToPx(spacing) // dp를 px로 변환
+            val spacingInPx = context.dpToPx(spacing)
 
             addItemDecoration(CategorySpaceDecoration(spanCount, spacingInPx))
             adapter = categoryAdapter
@@ -179,10 +179,6 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
                 outRect.top = spacing
             }
         }
-    }
-
-    fun Context.dpToPx(dp: Int): Int {
-        return (dp * resources.displayMetrics.density).toInt()
     }
 
     private fun setupRecyclerViews() {
