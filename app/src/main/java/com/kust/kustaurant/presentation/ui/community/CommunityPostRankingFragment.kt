@@ -26,7 +26,6 @@ class CommunityPostRankingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ViewModel의 랭킹 데이터를 관찰하여 UI 업데이트
         viewModel.communityRanking.observe(viewLifecycleOwner) { rankings ->
             val (topRankers, remainingRankings) = viewModel.onRankingDataChanged(rankings)
             bindTopRankers(topRankers)
@@ -77,7 +76,6 @@ class CommunityPostRankingFragment : Fragment() {
         binding.communityToggleQuarterly.isChecked = true
         binding.communityTogglePopularSort.isChecked = false
 
-        // 초기 상태에 맞게 텍스트 색상 설정
         binding.communityToggleQuarterly.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
         binding.communityTogglePopularSort.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
 
@@ -87,28 +85,21 @@ class CommunityPostRankingFragment : Fragment() {
                 binding.communityTogglePopularSort.isChecked = false
                 viewModel.onSortTypeChanged("quarterly")
 
-                // 분기순 버튼 텍스트 색상 변경
                 binding.communityToggleQuarterly.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
-                // 누적순 버튼 텍스트 색상 기본으로 변경
                 binding.communityTogglePopularSort.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
             } else {
-                // 분기순 버튼이 체크 해제되었을 때 (옵션)
                 binding.communityToggleQuarterly.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
             }
         }
 
-        // 누적순 버튼 클릭 이벤트 처리
         binding.communityTogglePopularSort.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.communityToggleQuarterly.isChecked = false
                 viewModel.onSortTypeChanged("cumulative")
 
-                // 누적순 버튼 텍스트 색상 변경
                 binding.communityTogglePopularSort.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
-                // 분기순 버튼 텍스트 색상 기본으로 변경
                 binding.communityToggleQuarterly.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
             } else {
-                // 누적순 버튼이 체크 해제되었을 때 (옵션)
                 binding.communityTogglePopularSort.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
             }
         }
