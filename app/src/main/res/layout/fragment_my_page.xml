@@ -257,7 +257,7 @@
                     app:layout_constraintTop_toBottomOf="@id/my_view_community_comment_top"
                     android:fontFamily="@font/pretendard_regular"
                     android:textSize="15sp"
-                    android:textColor="@color/cement_4"
+                    android:textColor="@color/black"
                     android:paddingVertical="14dp"
                     android:text="커뮤니티 댓글 단 글"/>
 
@@ -277,7 +277,7 @@
                     app:layout_constraintTop_toBottomOf="@id/my_view_community_scrap_top"
                     android:fontFamily="@font/pretendard_regular"
                     android:textSize="15sp"
-                    android:textColor="@color/cement_4"
+                    android:textColor="@color/black"
                     android:paddingVertical="14dp"
                     android:text="커뮤니티 스크랩"/>
 

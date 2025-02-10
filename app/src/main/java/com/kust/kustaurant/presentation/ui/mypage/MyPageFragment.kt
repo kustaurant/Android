@@ -64,11 +64,11 @@ class MyPageFragment : Fragment() {
     private fun initButtons() {
         val buttonActions = mapOf(
             binding.myClEvaluateCount to MyEvaluateActivity::class.java,
-//            binding.myClPostCount to MyPostActivity::class.java,
+            binding.myClPostCount to MyPostActivity::class.java,
             binding.myClUserInfo to MyEditActivity::class.java,
             binding.myTvSave to MySaveActivity::class.java,
-//            binding.myTvCommunityComment to MyCommentActivity::class.java,
-//            binding.myTvCommunityScrap to MyScrapActivity::class.java,
+            binding.myTvCommunityComment to MyCommentActivity::class.java,
+            binding.myTvCommunityScrap to MyScrapActivity::class.java,
             binding.myTvTermsUse to MyTermsUseActivity::class.java,
             binding.myTvOpinion to MyOpinionActivity::class.java,
             binding.myTvNotification to MyNotificationActivity::class.java,
