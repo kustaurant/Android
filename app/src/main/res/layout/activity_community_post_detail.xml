@@ -72,7 +72,19 @@
                 android:contentDescription="설정 버튼입니다." />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        <ProgressBar
+            android:id="@+id/progress_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <ScrollView
+            android:id="@+id/sv_community_post_content"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:fillViewport="true"
@@ -80,6 +92,8 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="invisible"
+            tools:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/community_cl_top_bar">
 
