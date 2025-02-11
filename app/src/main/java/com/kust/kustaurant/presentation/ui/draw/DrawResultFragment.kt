@@ -4,13 +4,11 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
@@ -101,16 +99,7 @@ class DrawResultFragment : Fragment() {
     }
 
     private fun setupButton() {
-        val drawable = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            setStroke(1, ContextCompat.getColor(requireContext(), R.color.signature_1))
-            cornerRadius = 100f
-            setColor(ContextCompat.getColor(requireContext(), R.color.white))
-        }
-
-        binding.drawBtnCategoryReset.background = drawable
-
-        binding.drawBtnRetry.setOnClickListener {
+        binding.clRetryBtn.setOnClickListener {
             binding.drawTvRestaurantScore.text = ""
             binding.drawTvRestaurantPartnershipInfo.text = ""
             binding.drawLlScoreImgGroup.visibility = View.GONE
@@ -118,7 +107,7 @@ class DrawResultFragment : Fragment() {
             loadRestaurants()
         }
 
-        binding.drawBtnCategoryReset.setOnClickListener {
+        binding.clCategoryResetBtn.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.draw_fragment_container, DrawSelectCategoryFragment())
                 .addToBackStack(null)
@@ -196,19 +185,19 @@ class DrawResultFragment : Fragment() {
 
 
     private fun disableButtons() {
-        binding.drawBtnCategoryReset.isClickable = false
-        binding.drawBtnRetry.isClickable = false
-        binding.drawBtnCategoryReset.alpha = 0.5f
-        binding.drawBtnRetry.alpha = 0.5f
+        binding.clCategoryResetBtn.isClickable = false
+        binding.clRetryBtn.isClickable = false
+        binding.clCategoryResetBtn.alpha = 0.5f
+        binding.clRetryBtn.alpha = 0.5f
 
         binding.drawViewPager.setOnClickListener(null)
     }
 
     private fun enableButtons() {
-        binding.drawBtnCategoryReset.isClickable = true
-        binding.drawBtnRetry.isClickable = true
-        binding.drawBtnCategoryReset.alpha = 1.0f
-        binding.drawBtnRetry.alpha = 1.0f
+        binding.clCategoryResetBtn.isClickable = true
+        binding.clRetryBtn.isClickable = true
+        binding.clCategoryResetBtn.alpha = 1.0f
+        binding.clRetryBtn.alpha = 1.0f
 
         binding.drawViewPager.setOnClickListener {
             val intent = Intent(requireContext(), DetailActivity::class.java)
