@@ -22,7 +22,7 @@
             app:layout_constraintDimensionRatio="360:63"
             app:layout_constraintEnd_toEndOf="@id/tier_gl_end"
             app:layout_constraintStart_toStartOf="@id/tier_gl_start"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"> 
 
             <TextView
                 android:id="@+id/tier_tv_category_text"
@@ -75,6 +75,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/cement_2"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
