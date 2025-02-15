@@ -9,7 +9,7 @@ import com.kust.kustaurant.data.model.TierMapData
 import com.kust.kustaurant.domain.model.TierRestaurant
 import com.kust.kustaurant.domain.usecase.tier.GetTierRestaurantListUseCase
 import com.kust.kustaurant.domain.usecase.tier.GetTierRestaurantMapUseCase
-import com.kust.kustaurant.presentation.util.CategoryIdMapper
+import com.kust.kustaurant.presentation.common.CategoryIdMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
