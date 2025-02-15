@@ -49,7 +49,6 @@
                 android:id="@+id/tier_cl_expand_reduce_toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/circle_background"
                 android:onClick="@{() -> viewModel.toggleExpand()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

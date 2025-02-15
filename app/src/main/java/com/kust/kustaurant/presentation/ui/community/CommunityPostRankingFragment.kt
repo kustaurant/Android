@@ -20,8 +20,14 @@ class CommunityPostRankingFragment : Fragment() {
     private var _binding: FragmentCommunityRankingBinding? = null
     private val binding get() = _binding!!
     private val viewModel: CommunityViewModel by activityViewModels()
-
     private lateinit var adapter: CommunityRankingListAdapter
+    private val rankerViews by lazy {
+        listOf(
+            Triple(binding.communityIvRank1, binding.communityTvRank1Nickname, binding.communityTvRank1CommentCnt),
+            Triple(binding.communityIvRank2, binding.communityTvRank2Nickname, binding.communityTvRank2CommentCnt),
+            Triple(binding.communityIvRank3, binding.communityTvRank3Nickname, binding.communityTvRank3CommentCnt)
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,10 +62,21 @@ class CommunityPostRankingFragment : Fragment() {
     }
 
     private fun bindTopRankers(topRankers: List<CommunityRanking>) {
-        if (topRankers.isNotEmpty()) bindRanker(topRankers[0], binding.communityIvRank1, binding.communityTvRank1Nickname, binding.communityTvRank1CommentCnt)
-        if (topRankers.size > 1) bindRanker(topRankers[1], binding.communityIvRank2, binding.communityTvRank2Nickname, binding.communityTvRank2CommentCnt)
-        if (topRankers.size > 2) bindRanker(topRankers[2], binding.communityIvRank3, binding.communityTvRank3Nickname, binding.communityTvRank3CommentCnt)
-    }
+        for (i in rankerViews.indices) {
+            if (i < 3) {
+                if(topRankers.size < i + 1) {
+                    rankerViews[i].first.setImageDrawable(
+                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_baby_cow)
+                    )
+                    rankerViews[i].second.text = ""
+                    rankerViews[i].third.text = "0개"
+                    continue
+                } else {
+                    val (ivRank, tvRankNickname, tvRankCommentCnt) = rankerViews[i]
+                    bindRanker(topRankers[i], ivRank, tvRankNickname, tvRankCommentCnt)
+                }
+            }
+        }}
 
     @SuppressLint("SetTextI18n")
     private fun bindRanker(ranking: CommunityRanking, imageView: ImageView, nicknameTextView: TextView, commentCountTextView: TextView) {

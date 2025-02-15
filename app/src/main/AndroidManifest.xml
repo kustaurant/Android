@@ -59,6 +59,8 @@
         <activity
             android:name=".presentation.ui.community.CommunityPostWriteActivity"
             android:exported="false" />
+        <activity android:name=".presentation.ui.community.CommunityPostDetailActivity"
+            android:exported="false"/>
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">

@@ -18,6 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:paddingBottom="10dp">
 
             <TextView
@@ -63,6 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/all_radius_30_signature_1"
+                android:contentDescription="뽑기 결과 사진입니다."
                 android:padding="1dp"
                 android:scaleType="centerCrop"
                 android:visibility="invisible"
@@ -194,53 +196,82 @@
                 app:layout_constraintWidth_percent="0.65"
                 tools:text="이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용이과대학 학생증 제시 시 99퍼센트 할인적용" />
 
-            <Button
-                android:id="@+id/draw_btn_category_reset"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_category_reset_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="6.5dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/all_radius_100_none"
-                android:backgroundTint="@color/white"
-                android:fontFamily="@font/pretendard_medium"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingStart="16dp"
-                android:paddingTop="7dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="7dp"
-                android:text="카테고리 재설정"
-                android:textColor="@color/signature_1"
+                android:layout_marginBottom="49dp"
+                android:background="@drawable/all_radius_100_signature_1"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="7dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/draw_btn_retry"
+                app:layout_constraintEnd_toStartOf="@id/cl_retry_btn"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info" />
+                app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info">
 
-            <Button
-                android:id="@+id/draw_btn_retry"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="카테고리 재설정"
+                    android:textColor="@color/signature_1"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_retry_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6.5dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/all_radius_100_none"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="49dp"
+                android:background="@drawable/all_radius_100_white"
                 android:backgroundTint="@color/signature_1"
-                android:drawableStart="@drawable/ic_retry"
-                android:fontFamily="@font/pretendard_medium"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingStart="16dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="4dp"
-                android:text="다시 뽑기"
-                android:textColor="@color/white"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/draw_btn_category_reset"
-                app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info" />
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/cl_category_reset_btn"
+                app:layout_constraintTop_toBottomOf="@id/draw_tv_restaurant_partnership_info">
+
+                <ImageView
+                    android:id="@+id/iv_retry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_retry"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_retry"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_retry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="다시 뽑기"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_retry"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
