@@ -84,6 +84,7 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
             }
         )
     }
+
     Log.d("TierMapDataMapper", "Polygon Coords: $polygonCoords")
     Log.d("TierMapDataMapper", "Solid Lines: $solidLines")
     Log.d("TierMapDataMapper", "Dashed Lines: $dashedLines")
@@ -97,6 +98,7 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
         favoriteTierRestaurants = favoriteTierRestaurants,
         tieredTierRestaurants = tieredTierRestaurants,
         nonTieredRestaurants = nonTieredRestaurants,
-        minZoom = this.minZoom
+        minZoom = this.minZoom,
+        visibleBounds = this.visibleBounds
     )
 }

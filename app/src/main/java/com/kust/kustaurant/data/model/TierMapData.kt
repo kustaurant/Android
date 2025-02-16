@@ -10,5 +10,6 @@ data class TierMapData(
     val favoriteTierRestaurants : List<TierRestaurant>,
     val tieredTierRestaurants: List<TierRestaurant>,
     val nonTieredRestaurants: List<NonTieredRestaurantGroup>,
-    val minZoom: Int
+    val minZoom: Int,
+    val visibleBounds : List<Double>
 )
