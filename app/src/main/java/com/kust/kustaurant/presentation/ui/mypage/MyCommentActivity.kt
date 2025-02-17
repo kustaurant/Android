@@ -1,10 +1,14 @@
 package com.kust.kustaurant.presentation.ui.mypage
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kust.kustaurant.databinding.ActivityMyCommentBinding
+import com.kust.kustaurant.presentation.ui.community.CommunityPostDetailActivity
+import com.kust.kustaurant.presentation.ui.mypage.MyPostActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,5 +50,14 @@ class MyCommentActivity : AppCompatActivity() {
         binding.commentRvRestaurant.adapter = commentAdapter
         binding.commentRvRestaurant.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        commentAdapter.setOnItemClickListener(object: CommentAdapter.OnItemClickListener{
+            override fun onCommentClicked(postId: Int) {
+                val intent = Intent(this@MyCommentActivity, CommunityPostDetailActivity::class.java)
+                Log.d("postIdBefore", postId.toString())
+                intent.putExtra("postId", postId)
+                startActivity(intent)
+            }
+        })
     }
 }

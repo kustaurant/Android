@@ -21,7 +21,7 @@ class PostAdapter(val context: Context) : ListAdapter<MyCommunityListResponse, P
     private lateinit var itemClickListener : OnItemClickListener
 
     interface OnItemClickListener {
-        fun onPostClicked(restaurantId : Int)
+        fun onPostClicked(postId : Int)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
