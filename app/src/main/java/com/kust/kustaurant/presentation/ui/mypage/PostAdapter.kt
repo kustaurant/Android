@@ -42,7 +42,7 @@ class PostAdapter(val context: Context) : ListAdapter<MyCommunityListResponse, P
 //                .into(binding.myIvEvaluateRestaurant)
 
             binding.myClPost.setOnClickListener {
-                itemClickListener.onPostClicked(restaurantId = 510)
+                itemClickListener.onPostClicked(item.postId)
             }
 
         }
