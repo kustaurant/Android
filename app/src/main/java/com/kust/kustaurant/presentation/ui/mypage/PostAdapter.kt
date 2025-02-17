@@ -23,7 +23,6 @@ class PostAdapter(val context: Context) : ListAdapter<MyCommunityListResponse, P
     interface OnItemClickListener {
         fun onPostClicked(postId : Int)
     }
-
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
         itemClickListener = onItemClickListener
     }
