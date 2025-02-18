@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="9dp"
-    android:background="@drawable/bottom_sheet_design"
-    android:padding="20dp">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="restaurant"
+            type="com.kust.kustaurant.domain.model.TierRestaurant" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tier_cl_content"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="9dp"
+        android:background="@drawable/bottom_sheet_design"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/tier_iv_restaurant_img"
@@ -21,12 +27,12 @@
             android:contentDescription="@string/restaurant_img_info"
             android:paddingEnd="24dp"
             android:scaleType="centerCrop"
-            app:strokeColor="@null"
-            app:shapeAppearanceOverlay="@style/RoundedImageView"
             android:src="@drawable/img_default_restaurant"
             app:layout_constraintBottom_toTopOf="@+id/tier_divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
+            app:strokeColor="@null"
             tools:ignore="RtlSymmetry" />
 
         <ImageView
@@ -42,28 +48,24 @@
 
         <ImageView
             android:id="@+id/tier_iv_restaurant_favorite_img"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
-            android:background="@drawable/all_radius_6_none"
-            android:backgroundTint="#FEAF1C"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/restaurant_favorite_info"
-            android:padding="3dp"
             android:src="@drawable/ic_favorite"
+            android:visibility="@{restaurant.isFavorite ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/tier_iv_restaurant_img"
             app:layout_constraintStart_toStartOf="@id/tier_iv_restaurant_img" />
 
         <ImageView
             android:id="@+id/tier_iv_restaurant_evaluation_img"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
-            android:background="@drawable/all_radius_6_none"
-            android:backgroundTint="#01BAA6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/restaurant_evaluation_info"
-            android:padding="3dp"
             android:src="@drawable/ic_check"
+            android:visibility="@{restaurant.isEvaluated ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/tier_iv_restaurant_img"
-            app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_favorite_img" />
-
+            app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_favorite_img"
+            app:layout_goneMarginStart="18dp" />
 
         <TextView
             android:id="@+id/tier_tv_restaurant_name"
@@ -86,7 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_regular"
-            android:text="@{restaurant.restaurantDetails}"
+            android:text="@{restaurant.restaurantCuisine + ` | ` + restaurant.restaurantPosition}"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@id/tier_tv_restaurant_name"
             app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_img"
@@ -98,8 +100,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_regular"
-            android:text="@{restaurant.restaurantTextAlliance}"
+            android:text="@{restaurant.partnershipInfo.isEmpty() ? @string/restaurant_no_partnership_info : restaurant.partnershipInfo}"
             android:textSize="12sp"
+            android:maxLines="3"
+            android:ellipsize="end"
             app:layout_constraintEnd_toEndOf="@id/tier_tv_restaurant_name"
             app:layout_constraintStart_toEndOf="@id/tier_iv_restaurant_img"
             app:layout_constraintTop_toBottomOf="@id/tier_tv_restaurant_details"
@@ -118,6 +122,4 @@
             app:layout_constraintTop_toBottomOf="@id/tier_iv_restaurant_img" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
