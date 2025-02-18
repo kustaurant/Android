@@ -30,6 +30,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        buildConfigField("String", "BASE_URL", properties["base.url"].toString())
+
         // 네이버 로그인
         buildConfigField("String", "NAVER_CLIENT_ID", "\"${properties["naver_client_id"]}\"")
         buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${properties["naver_client_secret"]}\"")
