@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.util
+package com.kust.kustaurant.presentation.common
 object CategoryIdMapper {
     val cuisineMap = mapOf(
         "전체" to "ALL",

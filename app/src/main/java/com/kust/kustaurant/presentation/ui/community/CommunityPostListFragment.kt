@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
@@ -38,81 +39,43 @@ class CommunityPostListFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        commuAdapter = CommunityPostListAdapter()
-        binding.communityRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = commuAdapter
-        }
-
+        setupRecyclerView()
         setupUI()
 
         return binding.root
     }
 
+    private fun setupRecyclerView() {
+        commuAdapter = CommunityPostListAdapter().apply {
+            setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener {
+                override fun onItemClicked(data: CommunityPost) {
+                    navigateToPostDetail(data.postId)
+                }
+            })
+        }
+
+        binding.communityRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = commuAdapter
+        }
+    }
+
+    private fun navigateToPostDetail(postId: Int) {
+        viewModel.selectPost(postId)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, CommunityPostDetailFragment())
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun setupUI() {
         setupFloatingWriteBtn()
 
-        commuAdapter.setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener {
-            override fun onItemClicked(data: CommunityPost) {
-                viewModel.selectPost(data.postId)
-
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frm, CommunityPostDetailFragment())
-                    .addToBackStack(null)
-                    .commit()
-            }
-        })
-
         binding.communityToggleLastestSort.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                viewModel.updateSortAndLoadPosts("recent")
-                binding.communityRecyclerView.scrollToPosition(0)
-                binding.communityTogglePopularSort.isChecked = false
-                buttonView.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.signature_1
-                    )
-                )
-            } else {
-                // 이미 체크된 버튼을 다시 누를 경우 체크를 유지
-                if (!binding.communityTogglePopularSort.isChecked) {
-                    buttonView.isChecked = true
-                } else {
-                    buttonView.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.cement_4
-                        )
-                    )
-                }
-            }
+            handleSortToggle(buttonView, isChecked, "recent", binding.communityTogglePopularSort)
         }
-
         binding.communityTogglePopularSort.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                viewModel.updateSortAndLoadPosts("popular")
-                binding.communityRecyclerView.scrollToPosition(0)
-                binding.communityToggleLastestSort.isChecked = false
-                buttonView.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.signature_1
-                    )
-                )
-            } else {
-                // 이미 체크된 버튼을 다시 누를 경우 체크를 유지
-                if (!binding.communityToggleLastestSort.isChecked) {
-                    buttonView.isChecked = true
-                } else {
-                    buttonView.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.cement_4
-                        )
-                    )
-                }
-            }
+            handleSortToggle(buttonView, isChecked, "popular", binding.communityToggleLastestSort)
         }
 
         binding.commuBtnWritePost.setOnClickListener {
@@ -148,6 +111,27 @@ class CommunityPostListFragment : Fragment() {
             )
 
             binding.communitySrl.isRefreshing = false
+        }
+    }
+
+    private fun handleSortToggle(
+        buttonView: CompoundButton,
+        isChecked: Boolean,
+        sortType: String,
+        otherToggle: CompoundButton
+    ) {
+        if (isChecked) {
+            viewModel.updateSortAndLoadPosts(sortType)
+            binding.communityRecyclerView.scrollToPosition(0)
+            otherToggle.isChecked = false
+            buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
+        } else {
+            // 유지 조건
+            if (!otherToggle.isChecked) {
+                buttonView.isChecked = true
+            } else {
+                buttonView.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
+            }
         }
     }
 
