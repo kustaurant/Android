@@ -6,5 +6,6 @@ data class TierMapDataResponse(
     val favoriteTierRestaurants : List<RestaurantResponse>,
     val tieredRestaurants: List<RestaurantResponse>,
     val nonTieredRestaurants: List<NonTieredRestaurantResponse>,
-    val minZoom: Int
+    val minZoom: Int,
+    val visibleBounds : List<Double>
 )

@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kust.kustaurant.data.model.TierMapData
 import com.kust.kustaurant.domain.model.TierRestaurant
+import com.kust.kustaurant.domain.usecase.tier.GetAuthTierRestaurantListUseCase
+import com.kust.kustaurant.domain.usecase.tier.GetAuthTierRestaurantMapUseCase
 import com.kust.kustaurant.domain.usecase.tier.GetTierRestaurantListUseCase
 import com.kust.kustaurant.domain.usecase.tier.GetTierRestaurantMapUseCase
 import com.kust.kustaurant.presentation.common.CategoryIdMapper
@@ -17,8 +19,10 @@ import javax.inject.Inject
 @HiltViewModel
 class TierViewModel @Inject constructor(
     private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
-    private val getTierRestaurantMapUseCase: GetTierRestaurantMapUseCase
-) : ViewModel() {
+    private val getTierRestaurantMapUseCase: GetTierRestaurantMapUseCase,
+    private val getAuthTierRestaurantListUseCase: GetAuthTierRestaurantListUseCase,
+    private val getAuthTierRestaurantMapUseCase: GetAuthTierRestaurantMapUseCase
+) : ViewModel(){
     private val _isExpanded = MutableLiveData(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
 
@@ -54,7 +58,7 @@ class TierViewModel @Inject constructor(
     // 음식점 리스트(TierListFragment) 마지막 스크롤 위치
     private var _tierListLastPosition: Int = 0
 
-    private fun loadRestaurantList() {
+    private fun loadRestaurantList(isAuth : Boolean) {
         val menus = selectedMenus.value ?: setOf("전체")
         val situations = selectedSituations.value ?: setOf("전체")
         val locations = selectedLocations.value ?: setOf("전체")
@@ -68,14 +72,23 @@ class TierViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val tierListData = getTierRestaurantListUseCase(
-                    CategoryIdMapper.mapMenus(menus),
-                    CategoryIdMapper.mapSituations(situations),
-                    CategoryIdMapper.mapLocations(locations),
-                    _tierListPage
-                )
+                val tierListData = if(isAuth) {
+                    getAuthTierRestaurantListUseCase(
+                        CategoryIdMapper.mapMenus(menus),
+                        CategoryIdMapper.mapSituations(situations),
+                        CategoryIdMapper.mapLocations(locations),
+                        _tierListPage
+                    )
+                } else {
+                    getTierRestaurantListUseCase(
+                        CategoryIdMapper.mapMenus(menus),
+                        CategoryIdMapper.mapSituations(situations),
+                        CategoryIdMapper.mapLocations(locations),
+                        _tierListPage
+                    )
+                }
 
-                val fetchedData = tierListData.map {
+                val fetchedData = tierListData.map { it ->
                     TierRestaurant(
                         restaurantId = it.restaurantId,
                         restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
@@ -104,18 +117,26 @@ class TierViewModel @Inject constructor(
         }
     }
 
-    private fun loadRestaurantMap() {
+    private fun loadRestaurantMap(isAuth: Boolean) {
         val menus = selectedMenus.value ?: setOf("전체")
         val situations = selectedSituations.value ?: setOf("전체")
         val locations = selectedLocations.value ?: setOf("전체")
 
         viewModelScope.launch {
             try {
-                val tierMapData = getTierRestaurantMapUseCase(
-                    CategoryIdMapper.mapMenus(menus),
-                    CategoryIdMapper.mapSituations(situations),
-                    CategoryIdMapper.mapLocations(locations)
-                )
+                val tierMapData = if(isAuth) {
+                    getAuthTierRestaurantMapUseCase(
+                        CategoryIdMapper.mapMenus(menus),
+                        CategoryIdMapper.mapSituations(situations),
+                        CategoryIdMapper.mapLocations(locations)
+                    )
+                } else {
+                    getTierRestaurantMapUseCase(
+                        CategoryIdMapper.mapMenus(menus),
+                        CategoryIdMapper.mapSituations(situations),
+                        CategoryIdMapper.mapLocations(locations)
+                    )
+                }
                 _mapData.value = tierMapData
             } catch (e: Exception) {
                 Log.e("TierViewModel", "From loadRestaurantMap, Err is $e")
@@ -139,9 +160,6 @@ class TierViewModel @Inject constructor(
         _selectedLocations.value = locations
     }
 
-    fun getLoadRestaurantMap() {
-        loadRestaurantMap()
-    }
 
     fun setCategory(
         menus: Set<String>,
@@ -157,24 +175,23 @@ class TierViewModel @Inject constructor(
         _categoryChangeMap.value = true
     }
 
-
     fun loadRestaurant(
-        tabIdx: Int
+        screenType: TierScreenType,
+        isAuth: Boolean,
     ) {
-        if (tabIdx == 0) {
-            loadRestaurantList()
-        } else if (tabIdx == 1) {
-            loadRestaurantMap()
+        if (screenType == TierScreenType.LIST) {
+            loadRestaurantList(isAuth)
+        } else if (screenType == TierScreenType.MAP) {
+            loadRestaurantMap(isAuth)
         }
-
         updateFilter()
     }
 
-    fun checkAndLoadBackendMapData() {
+    fun checkAndLoadBackendMapData(isAuth : Boolean) {
         if (_categoryChangeMap.value == true) {
             _categoryChangeMap.value = false
 
-            loadRestaurantMap()
+            loadRestaurantMap(isAuth)
         }
     }
 
@@ -193,16 +210,16 @@ class TierViewModel @Inject constructor(
         _selectedCategories.value = categories
     }
 
-    fun fetchFirstRestaurants() {
+    fun fetchFirstRestaurants(isAuth: Boolean) {
         _allRestaurants.value = emptyList()
         _categoryChangeList.value = false
         _tierListPage = 1
-        loadRestaurantList()
+        loadRestaurantList(isAuth)
     }
 
-    fun fetchNextRestaurants() {
+    fun fetchNextRestaurants(isAuth: Boolean) {
         _tierListPage++
-        loadRestaurantList()
+        loadRestaurantList(isAuth)
     }
 
     fun getTierListLastPosition(): Int {
@@ -213,4 +230,3 @@ class TierViewModel @Inject constructor(
         _tierListLastPosition = position
     }
 }
-
