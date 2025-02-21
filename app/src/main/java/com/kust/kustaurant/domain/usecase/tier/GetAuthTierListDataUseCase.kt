@@ -10,6 +10,6 @@ class GetAuthTierRestaurantListUseCase @Inject constructor(
     private val tierRepository: TierRepository
 ) {
     suspend operator fun invoke(cuisines: String, situations: String, locations: String, page : Int): List<RestaurantResponse> {
-        return tierRepository.getRestaurantList(cuisines, situations, locations, page)
+        return tierRepository.getAuthRestaurantList(cuisines, situations, locations, page)
     }
 }
