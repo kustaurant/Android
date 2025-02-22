@@ -127,7 +127,6 @@ class TierListAdapter(private val context: Context, private var isExpanded: Bool
                 2 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_2)
                 3 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_3)
                 4 -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_4)
-                -1 -> binding.tierIvRestaurantTierImg.visibility = View.GONE
                 else -> binding.tierIvRestaurantTierImg.setImageResource(R.drawable.ic_rank_all)
             }
 
