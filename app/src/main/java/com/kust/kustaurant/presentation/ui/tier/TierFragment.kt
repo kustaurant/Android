@@ -168,14 +168,14 @@ class TierFragment : Fragment() {
         val selectedMenus = data.getStringArrayListExtra("selectedMenus")?.toSet() ?: emptySet()
         val selectedSituations = data.getStringArrayListExtra("selectedSituations")?.toSet() ?: emptySet()
         val selectedLocations = data.getStringArrayListExtra("selectedLocations")?.toSet() ?: emptySet()
-        val fromTabIndex = TierScreenType.fromTabIdx(data.getIntExtra("fromTabIndex", 0))
+        val screenType = TierScreenType.fromTabIdx(data.getIntExtra("fromTabIndex", 0))
 
         viewModel.setCategory(selectedMenus, selectedSituations, selectedLocations)
 
         if (getAccessToken(requireContext()) == null) {
-            viewModel.loadRestaurant(fromTabIndex, false)
+            viewModel.loadRestaurant(screenType, false)
         } else {
-            viewModel.loadRestaurant(fromTabIndex, true)
+            viewModel.loadRestaurant(screenType, true)
         }
     }
 

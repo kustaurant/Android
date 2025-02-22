@@ -1,6 +1,5 @@
 package com.kust.kustaurant.presentation.ui.tier
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -8,20 +7,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.model.NonTieredRestaurantGroup
-import com.kust.kustaurant.domain.model.TierRestaurant
 import com.kust.kustaurant.data.model.TierMapData
 import com.kust.kustaurant.databinding.FragmentTierMapBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.kust.kustaurant.domain.model.TierRestaurant
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -33,15 +33,17 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TierMapFragment : Fragment(), OnMapReadyCallback {
+
     private lateinit var binding: FragmentTierMapBinding
     private val viewModel: TierViewModel by activityViewModels()
     private lateinit var naverMap: NaverMap
+    private lateinit var visibleBounds: List<Double>
 
-    // 오버레이 리스트
+    // 오버레이 및 마커 리스트
     private val polygonOverlays = mutableListOf<PolygonOverlay>()
     private val polylineOverlays = mutableListOf<PolylineOverlay>()
     private val restaurantMarkers = mutableListOf<Marker>()
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
     private var currentZoom = 0
 
@@ -53,15 +55,22 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        binding.tierMapView.onCreate(savedInstanceState)
-        binding.tierMapView.getMapAsync(this)
+        val mapView = binding.tierMapView
+        mapView.onCreate(savedInstanceState)
+        mapView.getMapAsync(this)
 
-        viewModel.getLoadRestaurantMap()
+        if (getAccessToken(requireContext()) == null) {
+            viewModel.loadRestaurant(TierScreenType.MAP, false)
+        } else {
+            viewModel.loadRestaurant(TierScreenType.MAP, true)
+        }
 
-        // BottomSheet 설정
         val bottomSheet = binding.tierBottomSheet
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+            isDraggable = false
+            isHideable = true
+        }
 
         return binding.root
     }
@@ -73,14 +82,22 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun observeViewModel() {
         viewModel.mapData.observe(viewLifecycleOwner) { mapData ->
-            // naverMap이 초기화된 후에 updateMap을 호출
             if (::naverMap.isInitialized) {
                 updateMap(mapData)
+                moveCameraToVisibleBounds(visibleBounds)
             } else {
                 binding.tierMapView.getMapAsync {
                     naverMap = it
                     updateMap(mapData)
                 }
+            }
+        }
+
+        viewModel.isShowBottomSheet.observe(viewLifecycleOwner) { isShow ->
+            if (isShow) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
         }
     }
@@ -89,11 +106,8 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         naverMap = map
         naverMap.uiSettings.isZoomControlEnabled = false
 
-        val cameraUpdate = CameraUpdate.scrollTo(LatLng(37.5407, 127.0738))
-        naverMap.moveCamera(cameraUpdate)
-
-        naverMap.setOnMapClickListener { _, coord ->
-            handleMapClick(coord)
+        naverMap.setOnMapClickListener { _, _ ->
+            viewModel.setShowBottomSheet(false)
         }
 
         naverMap.addOnCameraChangeListener { _, _ ->
@@ -102,58 +116,11 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 currentZoom = newZoom
                 updateMarkersForZoom()
             }
-        }
-    }
 
-    private fun handleMapClick(coord: LatLng) {
-        val restaurant = findRestaurantAtCoord(coord)
-
-        if (restaurant != null) {
-            showRestaurantInfo(restaurant)
-        } else {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        }
-    }
-
-    private fun findRestaurantAtCoord(coord: LatLng): TierRestaurant? {
-        val allRestaurants = (viewModel.mapData.value?.tieredTierRestaurants ?: emptyList()) +
-                (viewModel.mapData.value?.nonTieredRestaurants?.flatMap { it.tierRestaurants } ?: emptyList())
-
-        return allRestaurants.find { restaurant ->
-            val restaurantCoord = LatLng(restaurant.y, restaurant.x)
-            coord.latitude == restaurantCoord.latitude && coord.longitude == restaurantCoord.longitude
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun showRestaurantInfo(tierRestaurant: TierRestaurant) {
-        binding.apply {
-            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_name).text = tierRestaurant.restaurantName
-            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_details).text = tierRestaurant.restaurantCuisine + " | " + tierRestaurant.restaurantPosition
-            tierBottomSheet.findViewById<TextView>(R.id.tier_tv_restaurant_partnership_info).text =
-                (tierRestaurant.partnershipInfo.ifEmpty { R.string.restaurant_no_partnership_info }).toString()
-
-            Glide.with(requireContext())
-                .load(tierRestaurant.restaurantImgUrl)
-                .placeholder(R.drawable.img_default_restaurant)
-                .into(tierBottomSheet.findViewById(R.id.tier_iv_restaurant_img))
-
-            val tierImageView = tierBottomSheet.findViewById<ImageView>(R.id.tier_iv_restaurant_tier_img)
-            val tierImageResource = when (tierRestaurant.mainTier) {
-                1 -> R.drawable.ic_rank_1
-                2 -> R.drawable.ic_rank_2
-                3 -> R.drawable.ic_rank_3
-                4 -> R.drawable.ic_rank_4
-                else -> R.drawable.ic_rank_all
-            }
-            tierImageView.setImageResource(tierImageResource)
-            tierBottomSheet.setOnClickListener {
-                val intent = Intent(requireContext(), DetailActivity::class.java)
-                intent.putExtra("restaurantId", tierRestaurant.restaurantId)
-                startActivity(intent)
+            if (viewModel.isShowBottomSheet.value == true) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun updateMarkersForZoom() {
@@ -164,6 +131,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateMap(mapData: TierMapData) {
         clearOverlaysAndMarkers()
+        visibleBounds = mapData.visibleBounds
 
         mapData.solidLines.forEach { line ->
             if (line.isNotEmpty()) {
@@ -211,6 +179,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
                 Log.d("TierMapFragment", "Dashed Line is empty")
             }
         }
+
         createMarkersForTieredRestaurants(mapData.tieredTierRestaurants)
         createMarkersForNonTieredRestaurants(mapData.nonTieredRestaurants)
     }
@@ -241,18 +210,19 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
     private fun createRestaurantMarker(tierRestaurant: TierRestaurant) {
         val marker = Marker().apply {
             position = LatLng(tierRestaurant.y, tierRestaurant.x)
-            //captionText = tierRestaurant.restaurantName
-            icon = getMarkerIcon(tierRestaurant.mainTier)
+            icon = getMarkerIcon(tierRestaurant)
             map = naverMap
-
-            zIndex = when (tierRestaurant.mainTier) {
-                1 -> 4
-                2 -> 3
-                3 -> 2
-                4 -> 1
-                else -> 0
+            zIndex = if (tierRestaurant.isFavorite) {
+                5
+            } else {
+                when (tierRestaurant.mainTier) {
+                    1 -> 4
+                    2 -> 3
+                    3 -> 2
+                    4 -> 1
+                    else -> 0
+                }
             }
-
             setOnClickListener {
                 showRestaurantInfo(tierRestaurant)
                 true
@@ -261,14 +231,56 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         restaurantMarkers.add(marker)
     }
 
-    private fun getMarkerIcon(tier: Int): OverlayImage {
-        return when (tier) {
-            1 -> OverlayImage.fromResource(R.drawable.ic_rank_1)
-            2 -> OverlayImage.fromResource(R.drawable.ic_rank_2)
-            3 -> OverlayImage.fromResource(R.drawable.ic_rank_3)
-            4 -> OverlayImage.fromResource(R.drawable.ic_rank_4)
-            else -> OverlayImage.fromResource(R.drawable.ic_no_rank_position)
+    private fun getMarkerIcon(restaurant: TierRestaurant): OverlayImage {
+        return if (restaurant.isFavorite) {
+            OverlayImage.fromResource(R.drawable.ic_favorite)
+        } else {
+            when (restaurant.mainTier) {
+                1 -> OverlayImage.fromResource(R.drawable.ic_rank_1)
+                2 -> OverlayImage.fromResource(R.drawable.ic_rank_2)
+                3 -> OverlayImage.fromResource(R.drawable.ic_rank_3)
+                4 -> OverlayImage.fromResource(R.drawable.ic_rank_4)
+                else -> OverlayImage.fromResource(R.drawable.ic_no_rank_position)
+            }
         }
+    }
+
+    private fun showRestaurantInfo(tierRestaurant: TierRestaurant) {
+        binding.bottomSheetContent.apply {
+            restaurant = tierRestaurant
+            Glide.with(requireContext())
+                .load(tierRestaurant.restaurantImgUrl)
+                .placeholder(R.drawable.img_default_restaurant)
+                .into(tierIvRestaurantImg)
+            val tierImageResource = when (tierRestaurant.mainTier) {
+                1 -> R.drawable.ic_rank_1
+                2 -> R.drawable.ic_rank_2
+                3 -> R.drawable.ic_rank_3
+                4 -> R.drawable.ic_rank_4
+                else -> R.drawable.ic_rank_all
+            }
+            tierIvRestaurantTierImg.setImageResource(tierImageResource)
+        }
+        binding.tierBottomSheet.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("restaurantId", tierRestaurant.restaurantId)
+            startActivity(intent)
+        }
+        viewModel.setShowBottomSheet(true)
+    }
+
+    private fun moveCameraToVisibleBounds(visibleBounds: List<Double>) {
+        if (visibleBounds.size < 4) return
+        val minLng = visibleBounds[0]
+        val maxLng = visibleBounds[1]
+        val minLat = visibleBounds[2]
+        val maxLat = visibleBounds[3]
+        val bounds = LatLngBounds(
+            LatLng(minLat, minLng),
+            LatLng(maxLat, maxLng)
+        )
+        val cameraUpdate = CameraUpdate.fitBounds(bounds, 50)
+        naverMap.moveCamera(cameraUpdate)
     }
 
     override fun onStart() {
@@ -278,7 +290,6 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkAndLoadBackendMapData()
         binding.tierMapView.onResume()
     }
 
@@ -303,7 +314,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     object PolygonColors {
-        val POLYGON_SELECTED =  Color.argb(59, 67, 171, 56)
-        val POLYGON_UNSELECTED =  Color.argb(31, 67, 171, 56)
+        val POLYGON_SELECTED = Color.argb(59, 67, 171, 56)
+        val POLYGON_UNSELECTED = Color.argb(31, 67, 171, 56)
     }
 }

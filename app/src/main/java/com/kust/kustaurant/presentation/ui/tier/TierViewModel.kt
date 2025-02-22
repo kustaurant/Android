@@ -53,6 +53,9 @@ class TierViewModel @Inject constructor(
 
     private val _categoryChangeMap = MutableLiveData(true)
 
+    private val _isShowBottomSheet = MutableLiveData<Boolean>(false)
+    val isShowBottomSheet: LiveData<Boolean> get() = _isShowBottomSheet
+
     // 음식점 리스트(TierListFragment) 페이지
     private var _tierListPage = 1
     // 음식점 리스트(TierListFragment) 마지막 스크롤 위치
@@ -73,7 +76,7 @@ class TierViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val tierListData = if(isAuth) {
-                    getAuthTierRestaurantListUseCase(
+                    getAuthTierRestaurantListUseCase.invoke(
                         CategoryIdMapper.mapMenus(menus),
                         CategoryIdMapper.mapSituations(situations),
                         CategoryIdMapper.mapLocations(locations),
@@ -187,14 +190,6 @@ class TierViewModel @Inject constructor(
         updateFilter()
     }
 
-    fun checkAndLoadBackendMapData(isAuth : Boolean) {
-        if (_categoryChangeMap.value == true) {
-            _categoryChangeMap.value = false
-
-            loadRestaurantMap(isAuth)
-        }
-    }
-
     private fun updateFilter() {
         val categories = mutableSetOf<String>()
 
@@ -228,5 +223,8 @@ class TierViewModel @Inject constructor(
 
     fun setTierListLastPosition(position: Int) {
         _tierListLastPosition = position
+    }
+    fun setShowBottomSheet(show: Boolean) {
+        _isShowBottomSheet.value = show
     }
 }
