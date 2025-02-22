@@ -43,7 +43,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
     private lateinit var autoScrollHandler: Handler
     private lateinit var autoScrollRunnable: Runnable
     private var currentPage = 0
-    private val delayMillis = 5000L // 5초
+    private val delayMillis = 5000L
 
     private lateinit var categoryAdapter: CategoryAdapter
 
@@ -56,12 +56,10 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
         setupCategoryRV()
         autoScrollHandler = Handler(Looper.getMainLooper())
         autoScrollRunnable = Runnable {
-            // 아무 것도 안 함, 실제 로직은 setupViewPager에서 설정
         }
 
 
         setupRecyclerViews()
-        Log.d("token", getAccessToken(requireContext()).toString())
 
         homeViewModel.homeResponse.observe(viewLifecycleOwner) { response ->
             updateUI(response)
@@ -74,70 +72,84 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
 
         return binding.root
     }
-    
+
     override fun onCategoryItemClick(category: String) {
         when (category) {
             "전체" -> {
                 tierViewModel.setCategory(setOf("전체"), setOf("전체"), setOf("전체"))
             }
+
             "한식" -> {
                 tierViewModel.setCategory(setOf("한식"), setOf("전체"), setOf("전체"))
             }
+
             "일식" -> {
                 tierViewModel.setCategory(setOf("일식"), setOf("전체"), setOf("전체"))
             }
+
             "중식" -> {
                 tierViewModel.setCategory(setOf("중식"), setOf("전체"), setOf("전체"))
             }
+
             "양식" -> {
                 tierViewModel.setCategory(setOf("양식"), setOf("전체"), setOf("전체"))
             }
+
             "아시안" -> {
                 tierViewModel.setCategory(setOf("아시안"), setOf("전체"), setOf("전체"))
             }
+
             "고기" -> {
                 tierViewModel.setCategory(setOf("고기"), setOf("전체"), setOf("전체"))
             }
+
             "해산물" -> {
                 tierViewModel.setCategory(setOf("해산물"), setOf("전체"), setOf("전체"))
             }
+
             "치킨" -> {
                 tierViewModel.setCategory(setOf("치킨"), setOf("전체"), setOf("전체"))
             }
+
             "햄버거/피자" -> {
                 tierViewModel.setCategory(setOf("햄버거/피자"), setOf("전체"), setOf("전체"))
             }
+
             "분식" -> {
                 tierViewModel.setCategory(setOf("분식"), setOf("전체"), setOf("전체"))
             }
+
             "술집" -> {
                 tierViewModel.setCategory(setOf("술집"), setOf("전체"), setOf("전체"))
             }
+
             "카페/디저트" -> {
                 tierViewModel.setCategory(setOf("카페/디저트"), setOf("전체"), setOf("전체"))
             }
+
             "베이커리" -> {
                 tierViewModel.setCategory(setOf("베이커리"), setOf("전체"), setOf("전체"))
             }
+
             "샐러드" -> {
                 tierViewModel.setCategory(setOf("샐러드"), setOf("전체"), setOf("전체"))
             }
+
             "제휴업체" -> {
                 tierViewModel.setCategory(setOf("제휴업체"), setOf("전체"), setOf("전체"))
             }
+
             else -> {
                 tierViewModel.setCategory(setOf("전체"), setOf("전체"), setOf("전체"))
             }
         }
 
-        // TierFragment로 전환
         val fragment = TierFragment()
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_frm, fragment)
             .addToBackStack(null)
             .commit()
 
-        // 네비게이션 바 상태 업데이트
         (requireActivity() as? MainActivity)?.let { mainActivity ->
             mainActivity.binding.mainNavigation.selectedItemId = R.id.menu_rank
         }
@@ -161,21 +173,18 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
         override fun getItemOffsets(
             outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
         ) {
-            val position = parent.getChildAdapterPosition(view) // 아이템 위치
-            val column = position % spanCount // 아이템의 열 위치
+            val position = parent.getChildAdapterPosition(view)
+            val column = position % spanCount
 
-            // 왼쪽 여백 설정
-            if (column > 0) { // 첫 번째 열이 아닌 경우에만 왼쪽 여백 추가
+            if (column > 0) {
                 outRect.left = spacing / 2
             }
 
-            // 오른쪽 여백 설정
-            if (column < spanCount - 1) { // 마지막 열이 아닌 경우에만 오른쪽 여백 추가
+            if (column < spanCount - 1) {
                 outRect.right = spacing / 2
             }
 
-            // 상단 여백 설정
-            if (position >= spanCount) { // 첫 번째 줄이 아닌 경우에만 상단 여백 추가
+            if (position >= spanCount) {
                 outRect.top = spacing
             }
         }
@@ -189,31 +198,42 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
         topRestaurantadapter = TopRestaurantAdapter(topRestaurantList)
 
         binding.homeMERv.adapter = meRestaurantadapter
-        binding.homeMERv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.homeMERv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.homeTOPRv.adapter = topRestaurantadapter
-        binding.homeTOPRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.homeTOPRv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        // Horizontal Margin 적용
         val size = resources.getDimensionPixelSize(R.dimen.MY_SIZE)
         val m_size = resources.getDimensionPixelSize(R.dimen.MY_EDGE_MARGIN)
         val deco = SpaceDecoration(size, m_size)
         binding.homeMERv.addItemDecoration(deco)
         binding.homeTOPRv.addItemDecoration(deco)
 
-        meRestaurantadapter.setOnItemClickListener(object : MeRestaurantAdapter.OnItemClickListener{
+        meRestaurantadapter.setOnItemClickListener(object :
+            MeRestaurantAdapter.OnItemClickListener {
             override fun onItemClicked(data: RestaurantModel) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra("restaurantId", data.restaurantId)
-                val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.slide_in_right, R.anim.stay_in_place)
+                val options = ActivityOptions.makeCustomAnimation(
+                    requireContext(),
+                    R.anim.slide_in_right,
+                    R.anim.stay_in_place
+                )
                 startActivity(intent, options.toBundle())
             }
         })
 
-        topRestaurantadapter.setOnItemClickListener(object : TopRestaurantAdapter.OnItemClickListener{
+        topRestaurantadapter.setOnItemClickListener(object :
+            TopRestaurantAdapter.OnItemClickListener {
             override fun onItemClicked(data: RestaurantModel) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra("restaurantId", data.restaurantId)
-                val options = ActivityOptions.makeCustomAnimation(requireContext(), R.anim.slide_in_right, R.anim.stay_in_place)
+                val options = ActivityOptions.makeCustomAnimation(
+                    requireContext(),
+                    R.anim.slide_in_right,
+                    R.anim.stay_in_place
+                )
                 startActivity(intent, options.toBundle())
             }
         })
@@ -264,7 +284,8 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
         val adapter = HomeAdBannerPagerAdapter(imageUrls)
         binding.homeAdBanner.adapter = adapter
 
-        binding.homeAdBanner.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.homeAdBanner.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 currentPage = position + 1
@@ -273,14 +294,13 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
             }
         })
 
-        // 자동 스크롤 설정
         autoScrollHandler = Handler(Looper.getMainLooper())
         autoScrollRunnable = object : Runnable {
             override fun run() {
                 if (binding.homeAdBanner.currentItem < adapter.itemCount - 1) {
                     binding.homeAdBanner.currentItem += 1
                 } else {
-                    binding.homeAdBanner.currentItem = 0 // 마지막 이미지 후 첫 번째 이미지로 돌아감
+                    binding.homeAdBanner.currentItem = 0
                 }
                 autoScrollHandler.postDelayed(this, delayMillis)
             }
@@ -290,10 +310,8 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // View가 파괴될 때 Handler를 정리합니다.
         autoScrollHandler.removeCallbacks(autoScrollRunnable)
 
-        // View가 파괴될 때 Handler를 정리합니다.
         if (::autoScrollRunnable.isInitialized && ::autoScrollHandler.isInitialized) {
             autoScrollHandler.removeCallbacks(autoScrollRunnable)
         }

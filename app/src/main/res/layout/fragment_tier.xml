@@ -153,7 +153,7 @@
                 android:id="@+id/tier_iv_category_btn"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:background="@drawable/circle_background"
+                android:background="@drawable/all_radius_27"
                 android:backgroundTint="@color/signature_1"
                 android:contentDescription="@string/category_btn_info"
                 android:padding="4dp"

@@ -61,11 +61,10 @@ class CommunityPostListFragment : Fragment() {
     }
 
     private fun navigateToPostDetail(postId: Int) {
-        viewModel.selectPost(postId)
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, CommunityPostDetailFragment())
-            .addToBackStack(null)
-            .commit()
+        val intent = Intent(requireActivity(), CommunityPostDetailActivity::class.java).apply{
+            putExtra("postId", postId)
+        }
+        startActivity(intent)
     }
 
     private fun setupUI() {

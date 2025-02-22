@@ -2,6 +2,7 @@ package com.kust.kustaurant.presentation.ui.mypage
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyPostBinding
+import com.kust.kustaurant.presentation.ui.community.CommunityPostDetailActivity
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -66,9 +68,10 @@ class MyPostActivity : AppCompatActivity() {
         binding.myRvPost.layoutManager = LinearLayoutManager(this)
 
         postAdapter.setOnItemClickListener(object: PostAdapter.OnItemClickListener{
-            override fun onPostClicked(restaurantId: Int) {
-                val intent = Intent(this@MyPostActivity, DetailActivity::class.java)
-                intent.putExtra("restaurantId", restaurantId)
+            override fun onPostClicked(postId: Int) {
+                val intent = Intent(this@MyPostActivity, CommunityPostDetailActivity::class.java)
+                Log.d("postIdBefore", postId.toString())
+                intent.putExtra("postId", postId)
                 startActivity(intent)
             }
         })

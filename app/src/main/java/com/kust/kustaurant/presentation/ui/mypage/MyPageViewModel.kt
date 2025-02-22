@@ -12,12 +12,14 @@ import com.kust.kustaurant.data.model.MyEvaluateResponse
 import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.data.model.MyPageResponse
 import com.kust.kustaurant.data.model.MyProfileResponse
+import com.kust.kustaurant.data.model.MyScrapResponse
 import com.kust.kustaurant.domain.usecase.mypage.GetMyCommunityCommentUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyCommunityListUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyEvaluateDataUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyFavoriteDataUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyPageDataUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyProfileDataUseCase
+import com.kust.kustaurant.domain.usecase.mypage.GetMyScrapUseCase
 import com.kust.kustaurant.domain.usecase.mypage.PatchMyProfileDataUseCase
 import com.kust.kustaurant.domain.usecase.mypage.PostMyFeedBackUseCase
 import dagger.hilt.android.internal.Contexts.getApplication
@@ -35,8 +37,9 @@ class MyPageViewModel @Inject constructor(
     private val getMyFavoriteDataUseCase: GetMyFavoriteDataUseCase,
     private val getMyCommunityCommentUseCase: GetMyCommunityCommentUseCase,
     private val getMyCommunityListUseCase: GetMyCommunityListUseCase,
+    private val getMyScrapUseCase: GetMyScrapUseCase,
     private val getMyEvaluateDataUseCase: GetMyEvaluateDataUseCase,
-    private val postMyFeedBackUseCase: PostMyFeedBackUseCase
+    private val postMyFeedBackUseCase: PostMyFeedBackUseCase,
 ) : ViewModel() {
     private var originalProfileData: MyProfileResponse?= null
 
@@ -54,6 +57,9 @@ class MyPageViewModel @Inject constructor(
 
     private val _myCommunityData = MutableLiveData<List<MyCommunityListResponse>>()
     val myCommunityData: LiveData<List<MyCommunityListResponse>> = _myCommunityData
+
+    private val _myScrapData = MutableLiveData<List<MyScrapResponse>>()
+    val myScrapData: LiveData<List<MyScrapResponse>> = _myScrapData
 
     private val _myEvaluateData = MutableLiveData<List<MyEvaluateResponse>>()
     val myEvaluateData: LiveData<List<MyEvaluateResponse>> = _myEvaluateData
@@ -159,6 +165,17 @@ class MyPageViewModel @Inject constructor(
                 _myCommunityData.postValue(myCommunityData)
             } catch (e : Exception){
                 Log.e("마이페이지 뷰모델", "loadMyCommunityData Error", e)
+            }
+        }
+    }
+
+    fun loadMyScrapData(){
+        viewModelScope.launch {
+            try {
+                val myScrapData = getMyScrapUseCase()
+                _myScrapData.postValue(myScrapData)
+            } catch (e : Exception){
+                Log.e("마이페이지 뷰모델", "loadScrapData Error", e)
             }
         }
     }

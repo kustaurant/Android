@@ -89,7 +89,6 @@ class MyEditActivity : AppCompatActivity() {
 
     private fun patchInfo() {
         binding.btnSubmit.setOnClickListener {
-            Log.d("eidt", binding.editEtPhone.text.toString())
             viewModel.patchMyProfileData(
                 binding.editEtName.text.toString(),
                 binding.editEtEmail.text.toString(),
