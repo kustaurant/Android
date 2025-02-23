@@ -69,35 +69,35 @@
             android:textColor="@color/cement_6"
             android:text="호야초밥 맛변했어 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ"/>
 
-        <ImageView
-            android:id="@+id/my_iv_post_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"
-            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/my_iv_post_icon"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"/>-->
 
-        <TextView
-            android:id="@+id/my_tv_post_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="머1정"
-            android:textSize="12dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/pretendard_regular"
-            android:textColor="@color/cement_7"
-            app:layout_constraintStart_toEndOf="@id/my_iv_post_icon"
-            app:layout_constraintTop_toBottomOf="@id/my_tv_post_body"/>
+<!--        <TextView-->
+<!--            android:id="@+id/my_tv_post_name"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="머1정"-->
+<!--            android:textSize="12dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:fontFamily="@font/pretendard_regular"-->
+<!--            android:textColor="@color/cement_7"-->
+<!--            app:layout_constraintStart_toEndOf="@id/my_iv_post_icon"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/my_tv_post_body"/>-->
 
-        <View
-            android:id="@+id/my_view_post_center"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="7dp"
-            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"
-            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"
-            app:layout_constraintStart_toEndOf="@id/my_tv_post_name"
-            android:background="@color/cement_3"/>
+<!--        <View-->
+<!--            android:id="@+id/my_view_post_center"-->
+<!--            android:layout_width="1dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_marginStart="7dp"-->
+<!--            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"-->
+<!--            app:layout_constraintStart_toEndOf="@id/my_tv_post_name"-->
+<!--            android:background="@color/cement_3"/>-->
 
         <TextView
             android:id="@+id/my_tv_post_time"
@@ -107,17 +107,16 @@
             android:textSize="12dp"
             android:fontFamily="@font/pretendard_regular"
             android:textColor="@color/cement_7"
-            android:layout_marginStart="7dp"
-            app:layout_constraintStart_toEndOf="@id/my_view_post_center"
-            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"
-            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"/>
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/my_tv_post_body"/>/>
 
         <View
             android:id="@+id/my_view_post_center_2"
             android:layout_width="1dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"
-            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"
+            app:layout_constraintTop_toTopOf="@id/my_tv_post_time"
+            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_time"
             app:layout_constraintStart_toEndOf="@id/my_tv_post_time"
             android:layout_marginStart="7dp"
             android:background="@color/cement_3"/>
@@ -127,8 +126,8 @@
             android:id="@+id/my_iv_post_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"
-            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"
+            app:layout_constraintTop_toTopOf="@id/my_tv_post_time"
+            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_time"
             android:src="@drawable/ic_like_true"
             android:layout_marginStart="10dp"
             app:layout_constraintStart_toEndOf="@id/my_view_post_center_2"/>
@@ -137,8 +136,8 @@
             android:id="@+id/my_tv_post_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"
-            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"
+            app:layout_constraintTop_toTopOf="@id/my_tv_post_time"
+            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_time"
             app:layout_constraintStart_toEndOf="@id/my_iv_post_like"
             android:textSize="12sp"
             android:fontFamily="@font/pretendard_regular"
@@ -150,8 +149,8 @@
             android:id="@+id/my_iv_post_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"
-            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"
+            app:layout_constraintTop_toTopOf="@id/my_tv_post_time"
+            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_time"
             android:src="@drawable/ic_comment"
             android:layout_marginStart="7dp"
             app:layout_constraintStart_toEndOf="@id/my_tv_post_like"/>
@@ -160,8 +159,8 @@
             android:id="@+id/my_tv_post_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/my_tv_post_name"
-            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_name"
+            app:layout_constraintTop_toTopOf="@id/my_tv_post_time"
+            app:layout_constraintBottom_toBottomOf="@id/my_tv_post_time"
             app:layout_constraintStart_toEndOf="@id/my_iv_post_comment"
             android:layout_marginStart="5dp"
             android:textSize="12sp"

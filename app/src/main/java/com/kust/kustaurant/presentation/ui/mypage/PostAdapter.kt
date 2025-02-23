@@ -1,6 +1,7 @@
 package com.kust.kustaurant.presentation.ui.mypage
 
 import android.content.Context
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.kust.kustaurant.data.model.MyEvaluateResponse
 import com.kust.kustaurant.databinding.ItemMyEvaluateBinding
 import com.kust.kustaurant.databinding.ItemMyPostBinding
 import com.kust.kustaurant.presentation.common.DimensionUtils.dpToPx
+import com.kust.kustaurant.presentation.common.communityRegex
 import com.kust.kustaurant.presentation.ui.detail.DetailGradeAdapter
 
 class PostAdapter(val context: Context) : ListAdapter<MyCommunityListResponse, PostAdapter.ViewHolder>(diffUtil) {
@@ -31,18 +33,23 @@ class PostAdapter(val context: Context) : ListAdapter<MyCommunityListResponse, P
 
     inner class ViewHolder(val binding : ItemMyPostBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : MyCommunityListResponse){
+            val postBodyWithoutImg = if (item.postBody.trim().startsWith("<p><img")) {
+                ""
+            } else {
+                item.postBody.replace(communityRegex(), "")
+            }
+            binding.myTvPostBody.text = Html.fromHtml(postBodyWithoutImg, Html.FROM_HTML_MODE_LEGACY)
+
             binding.myTvPostCategory.text = item.postCategory
             binding.myTvPostTitle.text = item.postTitle
             binding.myTvPostTime.text = item.timeAgo
-            binding.myTvPostBody.text = item.postBody
             binding.myTvPostLike.text = item.likeCount.toString()
             binding.myTvPostComment.text = item.commentCount.toString()
 
-            //이미지로 수정 해야함
-            if (!item.postBody.isNullOrEmpty()) {
+            if (item.postImgUrl != null) {
                 binding.myCvEvaluateRestaurant.visibility = View.VISIBLE
                 Glide.with(context)
-                    .load(item.postBody)
+                    .load(item.postImgUrl)
                     .into(binding.myIvEvaluateRestaurant)
 
                 val params = binding.myClPostInfo.layoutParams as ViewGroup.MarginLayoutParams
