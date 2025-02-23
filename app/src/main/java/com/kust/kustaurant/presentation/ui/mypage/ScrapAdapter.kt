@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.data.model.MyScrapResponse
 import com.kust.kustaurant.databinding.ItemMyScrapBinding
-import com.kust.kustaurant.presentation.common.DimensionUtils
 import com.kust.kustaurant.presentation.common.DimensionUtils.dpToPx
 import com.kust.kustaurant.presentation.common.communityRegex
 
@@ -28,7 +27,11 @@ class ScrapAdapter(val context: Context) : ListAdapter<MyScrapResponse, ScrapAda
 
     inner class ViewHolder(val binding : ItemMyScrapBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : MyScrapResponse){
-            val postBodyWithoutImg = item.postBody.replace(communityRegex(), "")
+            val postBodyWithoutImg = if (item.postBody.trim().startsWith("<p><img")) {
+                ""
+            } else {
+                item.postBody.replace(communityRegex(), "")
+            }
             binding.myTvScrapBody.text = Html.fromHtml(postBodyWithoutImg, Html.FROM_HTML_MODE_LEGACY)
 
             binding.myTvScrapCategory.text = item.postCategory
@@ -37,11 +40,10 @@ class ScrapAdapter(val context: Context) : ListAdapter<MyScrapResponse, ScrapAda
             binding.myTvScrapLike.text = item.likeCount.toString()
             binding.myTvScrapComment.text = item.commentCount.toString()
 
-            //이미지로 수정 해야함
-            if (!item.postBody.isNullOrEmpty()) {
+            if (item.postImgUrl != null) {
                 binding.myCvEvaluateRestaurant.visibility = View.VISIBLE
                 Glide.with(context)
-                    .load(item.postBody)
+                    .load(item.postImgUrl)
                     .into(binding.myIvEvaluateRestaurant)
 
                 val params = binding.myClScrapInfo.layoutParams as ViewGroup.MarginLayoutParams
