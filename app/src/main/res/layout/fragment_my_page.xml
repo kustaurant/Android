@@ -200,7 +200,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:text='@{viewModel.myPageData.favoriteCount != 0 ? String.valueOf(viewModel.myPageData.favoriteCount) : "-"}' />
+                        android:text='@{viewModel.myPageData.postCount != 0 ? String.valueOf(viewModel.myPageData.postCount) : "-"}' />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,5 +4,5 @@ data class MyPageResponse (
     val iconImgUrl : String,
     val nickname: String,
     val evaluationCount: Int,
-    val favoriteCount: Int,
+    val postCount: Int,
 )
