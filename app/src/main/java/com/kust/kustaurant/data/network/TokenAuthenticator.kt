@@ -3,6 +3,7 @@ package com.kust.kustaurant.data.network
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.kust.kustaurant.BuildConfig
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.saveAccessToken
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
@@ -36,7 +37,7 @@ class TokenAuthenticator(private val context: Context) : Authenticator {
     private fun refreshToken(oldToken: String?): String? {
         try {
             val refreshTokenRequest = Request.Builder()
-                .url("http://3.35.154.191:8080/api/v1/new-access-token")
+                .url(BuildConfig.BASE_URL + "/api/v1/new-access-token")
                 .post(RequestBody.create("application/json".toMediaTypeOrNull(), "{}"))
                 .header("Authorization", oldToken ?: "")
                 .build()
@@ -53,7 +54,7 @@ class TokenAuthenticator(private val context: Context) : Authenticator {
         return null
     }
 
-    private fun handleLogout(){
+    private fun handleLogout() {
         context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE).edit().clear().apply()
 
         val intent = Intent(context, StartActivity::class.java).apply {

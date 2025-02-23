@@ -14,10 +14,24 @@ import com.kust.kustaurant.databinding.ItemMyCommentBinding
 class CommentAdapter(val context: Context) : ListAdapter<MyCommentResponse, CommentAdapter.ViewHolder>(
     diffUtil) {
 
+    private lateinit var itemClickListener : OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onCommentClicked(postId : Int)
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+        itemClickListener = onItemClickListener
+    }
+
     inner class ViewHolder(val binding : ItemMyCommentBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : MyCommentResponse){
             binding.tvComment.text = item.postcommentBody
             binding.tvCommentTitle.text = item.postTitle
+
+            binding.clComment.setOnClickListener {
+                itemClickListener.onCommentClicked(item.postId)
+            }
         }
     }
     override fun onCreateViewHolder(
