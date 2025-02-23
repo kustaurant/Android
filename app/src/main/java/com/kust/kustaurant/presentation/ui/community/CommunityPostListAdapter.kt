@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.databinding.ItemCommunityPostBinding
 import com.kust.kustaurant.domain.model.CommunityPost
+import com.kust.kustaurant.presentation.common.communityRegex
 
 class CommunityPostListAdapter() :
     ListAdapter<CommunityPost, CommunityPostListAdapter.ViewHolder>(communityPostListDiffUtil) {
@@ -43,9 +44,7 @@ class CommunityPostListAdapter() :
             viewBinding.communityTvCategory.text = item.postCategory
 
             // 이미지 URL 추출 및 제거
-            val regex = "<img[^>]+src=\"([^\"]+)\"[^>]*>".toRegex()
-            val matchResult = regex.find(item.postBody)
-            val imageUrl = matchResult?.groups?.get(1)?.value
+            val imageUrl = communityRegex().find(item.postBody)?.groups?.get(1)?.value
 
             // 이미지가 있을 경우 Glide를 사용해 로드
             if (imageUrl != null) {
@@ -58,7 +57,7 @@ class CommunityPostListAdapter() :
             }
 
             // <img> 태그 제거 후 나머지 텍스트를 TextView에 적용
-            val postBodyWithoutImg = item.postBody.replace(regex, "")
+            val postBodyWithoutImg = item.postBody.replace(communityRegex(), "")
             viewBinding.communityTvBoardContent.text = Html.fromHtml(postBodyWithoutImg, Html.FROM_HTML_MODE_LEGACY)
 
             // 나머지 UI 요소 설정

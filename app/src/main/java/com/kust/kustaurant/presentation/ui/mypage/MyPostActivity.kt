@@ -76,4 +76,9 @@ class MyPostActivity : AppCompatActivity() {
             }
         })
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadMyCommunityData()
+    }
 }

@@ -3,9 +3,12 @@ package com.kust.kustaurant.presentation.ui.mypage
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyCommentBinding
 import com.kust.kustaurant.presentation.ui.community.CommunityPostDetailActivity
 import com.kust.kustaurant.presentation.ui.mypage.MyPostActivity
@@ -14,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyCommentActivity : AppCompatActivity() {
     lateinit var binding : ActivityMyCommentBinding
-    private var commentData : ArrayList<CommentData> = arrayListOf()
     private lateinit var commentAdapter : CommentAdapter
     private val viewModel: MyPageViewModel by viewModels()
 
@@ -24,6 +26,8 @@ class MyCommentActivity : AppCompatActivity() {
         binding = ActivityMyCommentBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        viewModel.loadMyCommentData()
 
         initBack()
         observeViewModel()
@@ -39,9 +43,18 @@ class MyCommentActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.loadMyCommentData()
         viewModel.myCommentData.observe(this){ commentData ->
-            commentAdapter.submitList(commentData)
+            if (commentData.isEmpty()) {
+                binding.commentRvRestaurant.visibility = View.GONE
+                binding.myLlPostNone.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(R.drawable.ic_my_page_none)
+                    .into(binding.myIvPostNone)
+            } else {
+                binding.commentRvRestaurant.visibility = View.VISIBLE
+                binding.myLlPostNone.visibility = View.GONE
+                commentAdapter.submitList(commentData)
+            }
         }
     }
 
@@ -59,5 +72,10 @@ class MyCommentActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadMyCommentData()
     }
 }

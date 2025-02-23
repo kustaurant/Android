@@ -2,10 +2,13 @@ package com.kust.kustaurant.presentation.ui.mypage
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMySaveBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import com.kust.kustaurant.presentation.ui.detail.DetailViewModel
@@ -25,6 +28,8 @@ class MySaveActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        viewModel.loadMyFavoriteData()
+
         initBack()
         observeViewModel()
         initRecyclerView()
@@ -33,9 +38,18 @@ class MySaveActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.loadMyFavoriteData()
         viewModel.myFavoriteData.observe(this){ menuData ->
-            saveRestaurantAdapter.submitList(menuData)
+            if (menuData.isEmpty()) {
+                binding.saveRvRestaurant.visibility = View.GONE
+                binding.myLlSaveNone.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(R.drawable.ic_my_page_none)
+                    .into(binding.myIvSaveNone)
+            } else {
+                binding.saveRvRestaurant.visibility = View.VISIBLE
+                binding.myLlSaveNone.visibility = View.GONE
+                saveRestaurantAdapter.submitList(menuData)
+            }
         }
     }
 
@@ -59,5 +73,10 @@ class MySaveActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadMyFavoriteData()
     }
 }
