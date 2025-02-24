@@ -117,7 +117,7 @@
                 android:textSize="17dp"
                 android:fontFamily="@font/pretendard_semibold"
                 android:textColor="@color/cement_4"
-                android:text="아직 작성한 게시글이 없어요"/>
+                android:text="아직 저장한 게시글이 없어요"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

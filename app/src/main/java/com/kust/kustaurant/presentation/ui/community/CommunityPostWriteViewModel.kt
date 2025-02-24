@@ -19,6 +19,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.IOException
 import javax.inject.Inject
+
 @HiltViewModel
 class CommunityPostWriteViewModel @Inject constructor(
     private val imageUtil: ImageUtil,
@@ -136,7 +137,7 @@ class CommunityPostWriteViewModel @Inject constructor(
         // 빈 태그를 정규식으로 제거
         val content = _postContentHtml.value?.replace(Regex("<p><br></p>|<br>|<p></p>"), "")?.trim()
         val isContentNotEmpty = !content.isNullOrEmpty()
-         _postSendReady.value = !_postSort.value.isNullOrEmpty() &&
+        _postSendReady.value = !_postSort.value.isNullOrEmpty() &&
                 isContentNotEmpty &&
                 !_postTitle.value.isNullOrEmpty()
     }

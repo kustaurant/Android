@@ -7,6 +7,22 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface TierApi {
+    @GET("/api/v1/auth/tier/map")
+    suspend fun getAuthTierMapList(
+        @Query("cuisines") cuisines: String,
+        @Query("situations") situations: String,
+        @Query("locations") locations: String
+    ): TierMapDataResponse
+
+    @GET("/api/v1/auth/tier")
+    suspend fun getAuthRestaurantList(
+        @Query("cuisines") cuisines: String,
+        @Query("situations") situations: String,
+        @Query("locations") locations: String,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int = 30
+    ): List<RestaurantResponse>
+
     @GET("/api/v1/tier/map")
     suspend fun getTierMapList(
         @Query("cuisines") cuisines: String,

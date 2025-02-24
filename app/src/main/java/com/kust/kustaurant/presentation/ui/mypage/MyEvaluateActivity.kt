@@ -2,12 +2,14 @@ package com.kust.kustaurant.presentation.ui.mypage
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyEvaluateBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
@@ -41,7 +43,17 @@ class MyEvaluateActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.myEvaluateData.observe(this){ data ->
-            evaluateRestaurantAdapter.submitList(data)
+            if (data.isEmpty()) {
+                binding.myRvEvaluate.visibility = View.GONE
+                binding.myLlEvaluateNone.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(R.drawable.ic_my_page_none)
+                    .into(binding.myIvEvaluateNone)
+            } else {
+                binding.myRvEvaluate.visibility = View.VISIBLE
+                binding.myLlEvaluateNone.visibility = View.GONE
+                evaluateRestaurantAdapter.submitList(data)
+            }
         }
     }
 
@@ -57,5 +69,10 @@ class MyEvaluateActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadMyEvaluateData()
     }
 }

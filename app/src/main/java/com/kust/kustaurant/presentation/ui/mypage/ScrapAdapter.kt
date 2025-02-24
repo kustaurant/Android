@@ -1,13 +1,18 @@
 package com.kust.kustaurant.presentation.ui.mypage
 
 import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.kust.kustaurant.data.model.MyScrapResponse
 import com.kust.kustaurant.databinding.ItemMyScrapBinding
+import com.kust.kustaurant.presentation.common.DimensionUtils.dpToPx
+import com.kust.kustaurant.presentation.common.communityRegex
 
 class ScrapAdapter(val context: Context) : ListAdapter<MyScrapResponse, ScrapAdapter.ViewHolder>(diffUtil) {
 
@@ -22,16 +27,32 @@ class ScrapAdapter(val context: Context) : ListAdapter<MyScrapResponse, ScrapAda
 
     inner class ViewHolder(val binding : ItemMyScrapBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : MyScrapResponse){
+            val postBodyWithoutImg = if (item.postBody.trim().startsWith("<p><img")) {
+                ""
+            } else {
+                item.postBody.replace(communityRegex(), "")
+            }
+            binding.myTvScrapBody.text = Html.fromHtml(postBodyWithoutImg, Html.FROM_HTML_MODE_LEGACY)
+
             binding.myTvScrapCategory.text = item.postCategory
             binding.myTvScrapTitle.text = item.postTitle
             binding.myTvScrapTime.text = item.timeAgo
-            binding.myTvScrapBody.text = item.postBody
             binding.myTvScrapLike.text = item.likeCount.toString()
             binding.myTvScrapComment.text = item.commentCount.toString()
 
-//            Glide.with(context)
-//                .load(item.postTitle)
-//                .into(binding.myIvEvaluateRestaurant)
+            if (item.postImgUrl != null) {
+                binding.myCvEvaluateRestaurant.visibility = View.VISIBLE
+                Glide.with(context)
+                    .load(item.postImgUrl)
+                    .into(binding.myIvEvaluateRestaurant)
+
+                val params = binding.myClScrapInfo.layoutParams as ViewGroup.MarginLayoutParams
+                params.marginEnd = context.dpToPx(22)
+                binding.myClScrapInfo.layoutParams = params
+
+            } else {
+                binding.myCvEvaluateRestaurant.visibility = View.GONE
+            }
 
             binding.myClScrapInfo.setOnClickListener {
                 itemClickListener.onPostClicked(item.postId)

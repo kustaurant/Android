@@ -26,4 +26,21 @@ class TierRepositoryImpl @Inject constructor(
     ): TierMapData {
         return tierApi.getTierMapList(cuisines, situations, locations).toTierMapData()
     }
+
+    override suspend fun getAuthRestaurantList(
+        cuisines: String,
+        situations: String,
+        locations: String,
+        page: Int
+    ): List<RestaurantResponse> {
+        return tierApi.getAuthRestaurantList(cuisines, situations, locations, page)
+    }
+
+    override suspend fun getAuthRestaurantMapList(
+        cuisines: String,
+        situations: String,
+        locations: String
+    ): TierMapData {
+        return tierApi.getAuthTierMapList(cuisines, situations, locations).toTierMapData()
+    }
 }
