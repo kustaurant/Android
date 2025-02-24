@@ -7,115 +7,87 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <style>
         html, body {
-            height: 100%;
-            margin: 0;
+          height: 100%;
+          margin: 0;
         }
         #editor-container {
-            height: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            background-color: rgba(234, 234, 234, 0.3);
+          height: 100%;
+          box-sizing: border-box;
+          background-color: rgba(234, 234, 234, 0.3);
         }
         /* 기본 힌트 텍스트 스타일 */
         .ql-editor:empty::before {
-            content: "내용을 입력해주세요. 커뮤니티 이용 규칙에 의해 부적절한 게시물은 숨김, 삭제 처리될 수 있습니다.";
-            color: #888;
-            font-style: italic;
+          content: "내용을 입력해주세요. 커뮤니티 이용 규칙에 의해 부적절한 게시물은 숨김, 삭제 처리될 수 있습니다.";
+          color: #888;
+          font-style: italic;
         }
     </style>
 </head>
 <body>
 <div id="editor-container"></div>
 <script>
-    // 전역 변수 선언
-    let isComposing = false;
-
     const quill = new Quill('#editor-container', {
-        modules: {
-            toolbar: false // 툴바 비활성화
-        },
-        placeholder: "내용을 입력해주세요. 커뮤니티 이용 규칙에 의해 부적절한 게시물은 숨김, 삭제 처리될 수 있습니다."
+      modules: {
+        toolbar: false // 툴바 비활성화
+      },
+      placeholder: "내용을 입력해주세요. 커뮤니티 이용 규칙에 의해 부적절한 게시물은 숨김, 삭제 처리될 수 있습니다."
     });
 
     function sanitizeHtml(content) {
-        // 특정 태그와 JavaScript를 필터링하는 정규식 패턴
-        const scriptPattern = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
-        const tagPattern = /<\/?(?!b|i|u|a|p|img|br|strong|em|div|span|h1|h2|h3|h4|h5|h6|ul|ol|li|blockquote|pre|code|table|tr|th|td)[^>]*>/gi;
-        // 스크립트 제거 및 허용된 태그 외 제거
-        return content.replace(scriptPattern, "").replace(tagPattern, "");
+      // 특정 태그와 JavaScript를 필터링하는 정규식 패턴
+      const scriptPattern = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+      const tagPattern = /<\/?(?!b|i|u|a|p|img|br|strong|em|div|span|h1|h2|h3|h4|h5|h6|ul|ol|li|blockquote|pre|code|table|tr|th|td)[^>]*>/gi;
+      // 스크립트 제거 및 허용된 태그 외 제거
+      return content.replace(scriptPattern, "").replace(tagPattern, "");
     }
 
     // Android에서 호출할 함수들
     function setHtmlContent(content) {
-        const sanitizedContent = sanitizeHtml(content);
-        quill.clipboard.dangerouslyPasteHTML(sanitizedContent);
+      const sanitizedContent = sanitizeHtml(content);
+      quill.clipboard.dangerouslyPasteHTML(sanitizedContent);
     }
 
-    // 텍스트 변경 이벤트에서 필터링 적용
     quill.on('text-change', function() {
-        if (!isComposing) {
-            const sanitizedContent = sanitizeHtml(quill.root.innerHTML);
-            if (window.JSInterface && window.JSInterface.onTextChange) {
-                JSInterface.onTextChange(sanitizedContent);
-            }
-        }
+      const sanitizedContent = sanitizeHtml(quill.root.innerHTML);
+      if (window.JSInterface && window.JSInterface.onTextChange) {
+        JSInterface.onTextChange(sanitizedContent);
+      }
     });
 
-    // Android에서 호출할 함수들
     function getHtmlContent() {
-        return quill.root.innerHTML;
+      return quill.root.innerHTML;
     }
 
     function setHtmlContent(content) {
-        // Quill의 clipboard 모듈을 사용하여 HTML 콘텐츠 삽입
-        quill.clipboard.dangerouslyPasteHTML(content);
+      // Quill의 clipboard 모듈을 사용하여 HTML 콘텐츠 삽입
+      quill.clipboard.dangerouslyPasteHTML(content);
     }
 
     function setBold() {
-        const range = quill.getSelection();
-        if (range) {
-            // 드래그된 부분의 볼드 상태 확인
-            const currentFormat = quill.getFormat(range);
-            // 드래그된 텍스트의 볼드를 토글
-            quill.format('bold', !currentFormat.bold);
-        }
+      const range = quill.getSelection();
+      if (range) {
+        // 드래그된 부분의 볼드 상태 확인
+        const currentFormat = quill.getFormat(range);
+        // 드래그된 텍스트의 볼드를 토글
+        quill.format('bold', !currentFormat.bold);
+      }
     }
 
     function undo() {
-        quill.history.undo();
+      quill.history.undo();
     }
 
     function redo() {
-        quill.history.redo();
+      quill.history.redo();
     }
 
-    function insertImage(url) {
+   function insertImage(url) {
         const range = quill.getSelection();
         if (range) {
             quill.insertEmbed(range.index, 'image', url);
+            quill.setSelection(range.index + 1, 0);
         }
     }
-
-    // 한글 자모 자동 결합 방지: composition 이벤트 추가
-    const editorContainer = document.querySelector('#editor-container .ql-editor');
-
-    editorContainer.addEventListener('compositionstart', () => {
-        isComposing = true;
-    });
-
-    editorContainer.addEventListener('compositionend', () => {
-        isComposing = false;
-    });
-
-    // 엔터와 스페이스바 키 입력 감지
-    editorContainer.addEventListener('keydown', function(event) {
-        if ((event.key === 'Enter' || event.key === ' ') && isComposing) {
-            event.preventDefault();
-            if (window.JSInterface && window.JSInterface.onCompositionCancel) {
-                JSInterface.onCompositionCancel();
-            }
-        }
-    });
 </script>
 </body>
 </html>

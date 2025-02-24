@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,6 +18,7 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentTierBinding
 import com.google.android.material.tabs.TabLayout
 import com.kust.kustaurant.MainActivity
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.presentation.ui.home.HomeFragment
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,8 +27,18 @@ import dagger.hilt.android.AndroidEntryPoint
 class TierFragment : Fragment() {
     private var _binding: FragmentTierBinding? = null
     private val viewModel: TierViewModel by activityViewModels()
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
     private lateinit var pagerAdapter: TierPagerAdapter
+
+    private val tierCategoryActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.let { data ->
+                handleCategoryActivityResult(data)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +71,7 @@ class TierFragment : Fragment() {
     private fun setupViewPager() {
         pagerAdapter = TierPagerAdapter(this)
         binding.tierViewPager.adapter = pagerAdapter
-        binding.tierViewPager.isUserInputEnabled = false // ViewPager2의 스크롤을 비활성화
+        binding.tierViewPager.isUserInputEnabled = false // ViewPager2 스크롤 비활성화
     }
 
     private fun setupTabLayout() {
@@ -78,8 +90,7 @@ class TierFragment : Fragment() {
             })
         }
 
-        binding.tierViewPager.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
+        binding.tierViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.tierTabLayout.getTabAt(position)?.select()
                 updateTabCategoryMargin(position)
@@ -95,12 +106,21 @@ class TierFragment : Fragment() {
     private fun setupButtons() {
         binding.tierIvCategoryBtn.setOnClickListener {
             val intent = Intent(requireContext(), TierCategoryActivity::class.java).apply {
-                putStringArrayListExtra("selectedMenus", ArrayList(viewModel.selectedMenus.value ?: emptySet()))
-                putStringArrayListExtra("selectedSituations", ArrayList(viewModel.selectedSituations.value ?: emptySet()))
-                putStringArrayListExtra("selectedLocations", ArrayList(viewModel.selectedLocations.value ?: emptySet()))
+                putStringArrayListExtra(
+                    "selectedMenus",
+                    ArrayList(viewModel.selectedMenus.value ?: emptySet())
+                )
+                putStringArrayListExtra(
+                    "selectedSituations",
+                    ArrayList(viewModel.selectedSituations.value ?: emptySet())
+                )
+                putStringArrayListExtra(
+                    "selectedLocations",
+                    ArrayList(viewModel.selectedLocations.value ?: emptySet())
+                )
                 putExtra("fromTabIndex", binding.tierTabLayout.selectedTabPosition)
             }
-            startActivityForResult(intent, CATEGORY_UPDATE_REQUEST_CODE)
+            tierCategoryActivityLauncher.launch(intent)
         }
         binding.tierFlIvSearch.setOnClickListener {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
@@ -135,7 +155,7 @@ class TierFragment : Fragment() {
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             background = ContextCompat.getDrawable(context, R.drawable.btn_tier_catetory_selected)
             val paddingHorizontal = getPadding(13f)
-            val paddingVertical =  getPadding(5.9f)
+            val paddingVertical = getPadding(5.9f)
             setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
             layoutParams = ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -144,26 +164,19 @@ class TierFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CATEGORY_UPDATE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            data?.let { handleCategoryActivityResult(it) }
-        }
-    }
-
     private fun handleCategoryActivityResult(data: Intent) {
         val selectedMenus = data.getStringArrayListExtra("selectedMenus")?.toSet() ?: emptySet()
         val selectedSituations = data.getStringArrayListExtra("selectedSituations")?.toSet() ?: emptySet()
         val selectedLocations = data.getStringArrayListExtra("selectedLocations")?.toSet() ?: emptySet()
-        val fromTabIndex = data.getIntExtra("fromTabIndex", 0)
+        val screenType = TierScreenType.fromTabIdx(data.getIntExtra("fromTabIndex", 0))
 
         viewModel.setCategory(selectedMenus, selectedSituations, selectedLocations)
-        viewModel.loadRestaurant(fromTabIndex)
+
+        if (getAccessToken(requireContext()) == null) {
+            viewModel.loadRestaurant(screenType, false)
+        } else {
+            viewModel.loadRestaurant(screenType, true)
+        }
     }
 
     private fun setupBackButton() {
@@ -197,13 +210,14 @@ class TierFragment : Fragment() {
         layoutParams = params
     }
 
-    private fun getPadding(dp : Float): Int {
+    private fun getPadding(dp: Float): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics
         ).toInt()
     }
 
-    companion object {
-        private const val CATEGORY_UPDATE_REQUEST_CODE = 1220
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

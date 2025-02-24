@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kust.kustaurant.R
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentTierListBinding
 import com.kust.kustaurant.domain.model.TierRestaurant
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
@@ -91,7 +92,11 @@ class TierListFragment : Fragment() {
     private fun setupRefreshListener() {
         binding.tierSrl.setOnRefreshListener {
             tierAdapter.submitList(emptyList())
-            viewModel.fetchFirstRestaurants()
+            if (getAccessToken(requireContext()) == null) {
+                viewModel.fetchFirstRestaurants(false)
+            } else {
+                viewModel.fetchFirstRestaurants(true)
+            }
             binding.tierSrl.isRefreshing = false
         }
     }
@@ -101,7 +106,11 @@ class TierListFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.fetchNextRestaurants()
+                    if (getAccessToken(requireContext()) == null) {
+                        viewModel.fetchNextRestaurants(false)
+                    } else {
+                        viewModel.fetchNextRestaurants(true)
+                    }
                 }
             }
         })
@@ -111,7 +120,11 @@ class TierListFragment : Fragment() {
         viewModel.categoryChangeList.observe(viewLifecycleOwner) { changed ->
             if (changed && recyclerViewState == null) {
                 tierAdapter.submitList(emptyList())
-                viewModel.fetchFirstRestaurants()
+                if (getAccessToken(requireContext()) == null) {
+                    viewModel.fetchFirstRestaurants(false)
+                } else {
+                    viewModel.fetchFirstRestaurants(true)
+                }
             }
         }
 
