@@ -42,7 +42,6 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
     private val polylineOverlays = mutableListOf<PolylineOverlay>()
     private val restaurantMarkers = mutableListOf<Marker>()
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
-
     private var currentZoom = 0
 
     override fun onCreateView(
