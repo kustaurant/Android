@@ -15,6 +15,7 @@ import okhttp3.RequestBody
 import okhttp3.Response
 import okhttp3.Route
 import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 
 class TokenAuthenticator(private val context: Context) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
@@ -42,14 +43,21 @@ class TokenAuthenticator(private val context: Context) : Authenticator {
                 .header("Authorization", oldToken ?: "")
                 .build()
 
-            val client = OkHttpClient()
+            val client = OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .build()
+
             val response = client.newCall(refreshTokenRequest).execute()
             if (response.isSuccessful) {
-                val body = response.body?.string()
-                return body?.let { JSONObject(it).getString("accessToken") }
+                val body = response.body.string()
+                return body.let { JSONObject(it).getString("accessToken") }
+            } else {
+                Log.e("TokenAuthenticator", "refresh 실패 코드: ${response.code}")
             }
         } catch (e: Exception) {
-            Log.e("TokenAuthenticator", "Failed to refresh token: ${e.localizedMessage}")
+            Log.e("TokenAuthenticator", "refresh 실패 코드: ${e.localizedMessage}")
         }
         return null
     }

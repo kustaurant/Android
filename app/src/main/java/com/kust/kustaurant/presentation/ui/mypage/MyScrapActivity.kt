@@ -71,4 +71,9 @@ class MyScrapActivity : AppCompatActivity() {
             }
         })
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadMyScrapData()
+    }
 }
