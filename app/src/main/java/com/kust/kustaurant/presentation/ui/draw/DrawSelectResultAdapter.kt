@@ -22,7 +22,6 @@ class DrawSelectResultAdapter(val restaurants: MutableList<DrawRestaurantData>) 
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         holder.bind(restaurants[position])
             holder.imageView.background = null
-            holder.imageView.setPadding(0, 0, 0, 0)
     }
 
     override fun getItemCount() = restaurants.size
