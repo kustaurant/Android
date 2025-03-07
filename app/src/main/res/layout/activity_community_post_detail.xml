@@ -94,7 +94,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
 
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/sv_community_post_content"
             android:layout_width="0dp"
@@ -106,7 +105,7 @@
             app:layout_constraintStart_toStartOf="@id/community_gl_start"
             app:layout_constraintEnd_toEndOf="@id/community_gl_end"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingBottom="20dp"
+            android:paddingBottom="70dp"
             tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -153,7 +152,7 @@
 
                     <TextView
                         android:id="@+id/community_tv_time_ago"
-                        android:layout_width="40dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text=""

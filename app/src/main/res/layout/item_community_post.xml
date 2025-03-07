@@ -5,9 +5,9 @@
     android:id="@+id/tier_cl_restaurant"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
     android:layout_marginTop="9dp"
-    android:layout_marginBottom="9dp">
+    android:layout_marginBottom="9dp"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/community_tv_category"
@@ -32,6 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
         android:ellipsize="end"
         android:fontFamily="@font/pretendard_medium"
         android:maxWidth="226dp"
@@ -50,6 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
         android:ellipsize="end"
         android:fontFamily="@font/pretendard_medium"
         android:maxLines="1"
@@ -100,9 +102,9 @@
         <TextView
             android:id="@+id/community_tv_time_ago"
             android:layout_width="wrap_content"
-            android:minWidth="40dp"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:minWidth="40dp"
             android:text=""
             android:textColor="@color/cement_7"
             android:textSize="11dp"
