@@ -77,12 +77,12 @@ interface CommunityApi {
         @Part image: MultipartBody.Part
     ): CommunityPostUploadImageResponse
 
-    @POST("/api/v1/auth/community/comments")
+    @POST("/api/v2/auth/community/comments")
     suspend fun postCommunityPostCommentReply(
         @Query("content") content: String,
         @Query("postId") postId: String,
-        @Query("parentCommentId") parentCommentId: String? = null,
-    ): CommunityPostComment
+        @Query("parentCommentId") parentCommentId: String,
+    ): List<CommunityPostComment>
 
     @POST("/api/v1/auth/community/comments/{commentId}/{action}")
     suspend fun postCommentReact(
