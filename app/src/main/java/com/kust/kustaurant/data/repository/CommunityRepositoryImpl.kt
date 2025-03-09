@@ -62,7 +62,7 @@ class CommunityRepositoryImpl @Inject constructor(
         content: String,
         postId: String,
         parentCommentId: String
-    ): CommunityPostComment {
+    ): List<CommunityPostComment> {
         return communityApi.postCommunityPostCommentReply(content, postId, parentCommentId)
     }
 

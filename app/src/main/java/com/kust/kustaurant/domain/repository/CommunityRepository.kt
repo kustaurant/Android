@@ -53,7 +53,7 @@ interface CommunityRepository {
         content : String,
         postId : String,
         parentCommentId : String,
-    ) : CommunityPostComment
+    ) : List<CommunityPostComment>
 
     suspend fun postCommentReact(
         commentId : Int,

@@ -9,7 +9,7 @@ import javax.inject.Singleton
 class PostCommunityPostCommentReplyUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
 ){
-    suspend operator fun invoke(content : String, postId : String, parentCommentId : String) : CommunityPostComment {
+    suspend operator fun invoke(content : String, postId : String, parentCommentId : String) : List<CommunityPostComment> {
         return communityRepository.postCommunityPostCommentReply(content, postId, parentCommentId)
     }
 }

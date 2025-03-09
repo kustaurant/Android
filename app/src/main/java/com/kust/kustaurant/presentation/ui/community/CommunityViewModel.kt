@@ -19,7 +19,7 @@ class CommunityViewModel @Inject constructor(
     private val getCommunityRankingListUseCase: GetCommunityRankingListUseCase,
 
     ) : ViewModel() {
-    private val _postCategory = MutableLiveData<String>("")
+    private val _postCategory = MutableLiveData<String>("all")
     val postCategory: LiveData<String> = _postCategory
 
     private val _sort = MutableLiveData<String>("recent")

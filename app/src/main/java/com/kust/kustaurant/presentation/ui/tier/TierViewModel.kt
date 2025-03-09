@@ -76,7 +76,7 @@ class TierViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val tierListData = if(isAuth) {
-                    getAuthTierRestaurantListUseCase.invoke(
+                    getAuthTierRestaurantListUseCase(
                         CategoryIdMapper.mapMenus(menus),
                         CategoryIdMapper.mapSituations(situations),
                         CategoryIdMapper.mapLocations(locations),
