@@ -162,6 +162,11 @@ class DrawResultFragment : Fragment() {
 
         binding.drawIvSelect.alpha = 0f
         binding.drawIvSelect.visibility = View.VISIBLE
+        binding.drawIvSelect.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("restaurantId",viewModel.selectedRestaurant.value!!.restaurantId)
+            startActivity(intent)
+        }
 
         binding.drawIvSelect.animate()
             .alpha(1f)
@@ -184,12 +189,6 @@ class DrawResultFragment : Fragment() {
         binding.clRetryBtn.isClickable = true
         binding.clCategoryResetBtn.alpha = 1.0f
         binding.clRetryBtn.alpha = 1.0f
-
-        binding.drawViewPager.setOnClickListener {
-            val intent = Intent(requireContext(), DetailActivity::class.java)
-            intent.putExtra("restaurantId",viewModel.selectedRestaurant.value!!.restaurantId)
-            startActivity(intent)
-        }
     }
 
     override fun onDestroyView() {
