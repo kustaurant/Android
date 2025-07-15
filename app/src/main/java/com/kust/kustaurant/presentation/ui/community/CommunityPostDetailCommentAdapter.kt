@@ -193,7 +193,6 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
                     override fun onDisLikeClicked(commentId: Int, position: Int) {
                         interactionListener?.onDisLikeClicked(commentId, position)
                     }
-
                 })
             }
 
@@ -238,14 +237,14 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
                         oldItem.isLiked == newItem.isLiked &&
                         oldItem.isDisliked == newItem.isDisliked &&
                         oldItem.likeCount == newItem.likeCount &&
-                        oldItem.dislikeCount == newItem.dislikeCount
+                        oldItem.dislikeCount == newItem.dislikeCount &&
+                        oldItem.createdAt == newItem.createdAt
 
                 // 대댓글 리스트 비교
                 val areRepliesSame = oldItem.repliesList.size == newItem.repliesList.size &&
                         oldItem.repliesList.zip(newItem.repliesList).all { (oldReply, newReply) ->
                             oldReply == newReply
                         }
-
                 return isContentSame && areRepliesSame
             }
         }

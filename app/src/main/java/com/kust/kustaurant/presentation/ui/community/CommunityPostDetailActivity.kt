@@ -3,9 +3,10 @@ package com.kust.kustaurant.presentation.ui.community
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
@@ -16,25 +17,18 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.ActivityCommunityPostDetailBinding
+import com.kust.kustaurant.databinding.BottomSheetCommentBinding
 import com.kust.kustaurant.databinding.PopupCommuPostDetailDotsBinding
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import com.kust.kustaurant.presentation.model.UiState
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class CommunityPostDetailActivity : AppCompatActivity() {
@@ -48,7 +42,6 @@ class CommunityPostDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityCommunityPostDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.viewModel = viewModel
 
         binding.svCommunityPostContent.visibility = View.INVISIBLE
         binding.progressIndicator.visibility = View.VISIBLE
@@ -83,7 +76,7 @@ class CommunityPostDetailActivity : AppCompatActivity() {
                 binding.communityTvLikeCnt.text = post.likeCount.toString()
                 binding.communityTvCommentsCnt.text = post.commentCount.toString()
                 binding.communityTvTimeAgo.text = post.timeAgo
-
+                binding.communityIvPostDetailDots.visibility = if (post.isPostMine) View.VISIBLE else View.GONE
                 binding.communityTvBtnPostLike.text = post.likeCount.toString()
                 binding.communityTvBtnScrapLike.text = post.scrapCount.toString()
 
@@ -92,9 +85,15 @@ class CommunityPostDetailActivity : AppCompatActivity() {
                 Glide.with(this)
                     .load(post.user.rankImg)
                     .into(binding.communityIvUserIcon)
-
-                CommuCommentAdapter.submitList(post.postCommentList)
             }
+        }
+
+        viewModel.communityPostComments.observe(this) { comments ->
+            CommuCommentAdapter.submitList(comments)
+        }
+
+        viewModel.communityPostCommentsCnt.observe(this) { cnt ->
+            binding.communityTvCommentsCnt.text = cnt.toString()
         }
 
         viewModel.postScrapInfo.observe(this) { result ->
@@ -103,6 +102,7 @@ class CommunityPostDetailActivity : AppCompatActivity() {
 
         viewModel.postLikeInfo.observe(this) { result ->
             binding.communityTvBtnPostLike.text = result.likeCount.toString()
+            binding.communityTvLikeCnt.text = result.likeCount.toString()
         }
 
         viewModel.postDelete.observe(this) { result ->
@@ -158,7 +158,7 @@ class CommunityPostDetailActivity : AppCompatActivity() {
                     font-family: sans-serif; 
                     line-height: 1.5; 
                     word-wrap: break-word; 
-                    background: rgba(234, 234, 234, 0.1); /* 10% 투명도의 #EAEAEA(cement_2) */
+                    background: rgba(234, 234, 234, 0.2); /* #EAEAEA(cement_2) */
                 }
                 img { max-width: 100%; height: auto; }
             </style>
@@ -173,30 +173,31 @@ class CommunityPostDetailActivity : AppCompatActivity() {
     }
 
     private fun setupButton() {
-        viewModel.postMine.value?.let{
-            binding.communityIvPostDetailDots.isVisible = viewModel.postMine.value!!
-        }
-
-        binding.communityLlBtnPostLike.background = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            cornerRadius = 100f
-            setStroke(1, ContextCompat.getColor(this@CommunityPostDetailActivity, R.color.signature_1))
-        }
-
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
-        binding.communityLlBtnPostLike.setOnClickListener {
-            viewModel.postPostLike(postId)
-        }
-        binding.communityLlBtnScrap.setOnClickListener {
-            viewModel.postPostDetailScrap(postId)
-        }
-
-        binding.communityIvPostDetailDots.setOnClickListener {
-            if (viewModel.postMine.value!!) {
-                showPopupWindow()
+        with(binding) {
+            communityLlBtnPostLike.setOnClickListener {
+                viewModel.postPostLike(postId)
+            }
+            communityLlBtnScrap.setOnClickListener {
+                viewModel.postPostDetailScrap(postId)
+            }
+            communityIvPostDetailDots.setOnClickListener {
+                if (viewModel.postMine.value!!) {
+                    showPopupWindow()
+                }
+            }
+            btnBack.setOnClickListener {
+                finish()
+            }
+            communityClCommentConfirm.setOnClickListener {
+                val inputText = communityEtInput.text.toString()
+                if (inputText.isNotBlank()) {
+                    viewModel.postCreateCommentReply(inputText, postId)
+                    communityEtInput.text.clear()
+                    Toast.makeText(this@CommunityPostDetailActivity, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    communityEtInput.error = "텍스트를 입력해주세요"
+                    Toast.makeText(this@CommunityPostDetailActivity, "텍스트를 입력해주세요", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -319,23 +320,23 @@ class CommunityPostDetailActivity : AppCompatActivity() {
     }
 
     private fun showBottomSheetInput(commentId: Int) {
+        binding.communityClComment.visibility = View.GONE
+
         val bottomSheetDialog = BottomSheetDialog(this).apply {
             setCancelable(true)
             setCanceledOnTouchOutside(true)
         }
-        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_comment, null)
-        bottomSheetDialog.setContentView(bottomSheetView)
 
-        val etInput = bottomSheetView.findViewById<EditText>(R.id.detail_et_input)
-        val btnSubmit =
-            bottomSheetView.findViewById<ConstraintLayout>(R.id.detail_cl_comment_confirm)
+        val bottomSheetBinding = BottomSheetCommentBinding.inflate(layoutInflater, null, false)
+        bottomSheetDialog.setContentView(bottomSheetBinding.root)
+
+        val etInput = bottomSheetBinding.detailEtInput
+        val btnSubmit = bottomSheetBinding.detailClCommentConfirm
 
         bottomSheetDialog.setOnShowListener {
             etInput.requestFocus()
-            // 바텀 sheet 생성하는데 시간 지연
             etInput.postDelayed({
-                val imm =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.showSoftInput(etInput, InputMethodManager.SHOW_IMPLICIT)
             }, 100)
         }
@@ -343,11 +344,7 @@ class CommunityPostDetailActivity : AppCompatActivity() {
         btnSubmit.setOnClickListener {
             val inputText = etInput.text.toString()
             if (inputText.isNotBlank()) {
-                viewModel.postCreateCommentReply(
-                    inputText,
-                   postId.toString(),
-                    commentId.toString()
-                )
+                viewModel.postCreateCommentReply(inputText, postId, commentId)
                 bottomSheetDialog.dismiss()
                 Toast.makeText(this@CommunityPostDetailActivity, "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
@@ -357,13 +354,37 @@ class CommunityPostDetailActivity : AppCompatActivity() {
         }
 
         bottomSheetDialog.setOnDismissListener {
-            val imm =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(etInput.windowToken, 0)
+            binding.communityClComment.visibility = View.VISIBLE
         }
 
         bottomSheetDialog.show()
     }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            val sendButton = findViewById<View>(R.id.community_cl_comment_confirm)
+            val sendRect = Rect()
+            sendButton.getGlobalVisibleRect(sendRect)
+            if (sendRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                return super.dispatchTouchEvent(ev)
+            }
+
+            val currentFocusView = currentFocus
+            if (currentFocusView is EditText) {
+                val outRect = Rect()
+                currentFocusView.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                    currentFocusView.clearFocus()
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

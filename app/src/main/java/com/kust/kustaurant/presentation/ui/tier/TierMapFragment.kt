@@ -33,18 +33,15 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TierMapFragment : Fragment(), OnMapReadyCallback {
-
     private lateinit var binding: FragmentTierMapBinding
     private val viewModel: TierViewModel by activityViewModels()
     private lateinit var naverMap: NaverMap
-    private lateinit var visibleBounds: List<Double>
 
     // 오버레이 및 마커 리스트
     private val polygonOverlays = mutableListOf<PolygonOverlay>()
     private val polylineOverlays = mutableListOf<PolylineOverlay>()
     private val restaurantMarkers = mutableListOf<Marker>()
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
-
     private var currentZoom = 0
 
     override fun onCreateView(
@@ -84,7 +81,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         viewModel.mapData.observe(viewLifecycleOwner) { mapData ->
             if (::naverMap.isInitialized) {
                 updateMap(mapData)
-                moveCameraToVisibleBounds(visibleBounds)
+                moveCameraToVisibleBounds(mapData.visibleBounds)
             } else {
                 binding.tierMapView.getMapAsync {
                     naverMap = it
@@ -131,7 +128,6 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateMap(mapData: TierMapData) {
         clearOverlaysAndMarkers()
-        visibleBounds = mapData.visibleBounds
 
         mapData.solidLines.forEach { line ->
             if (line.isNotEmpty()) {

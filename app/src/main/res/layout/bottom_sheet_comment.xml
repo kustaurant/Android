@@ -1,49 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- res/layout/bottom_sheet_input.xml -->
+<?xml version="1.0" encoding="utf-8"?><!-- res/layout/bottom_sheet_input.xml -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="10dp"
     android:orientation="horizontal"
-    android:padding = "10dp"
-    android:layout_marginBottom="10dp">
+    android:padding="10dp">
 
     <EditText
         android:id="@+id/detail_et_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:background="@drawable/all_radius_27"
+        android:fontFamily="@font/pretendard_regular"
+        android:hint="대댓글을 입력하세요"
         android:paddingHorizontal="16dp"
         android:paddingVertical="14dp"
-        android:background="@drawable/all_radius_27"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="14dp"
-        android:fontFamily="@font/pretendard_regular"
         android:textColorHint="@color/cement_4"
-        android:layout_marginEnd="6dp"
+        android:textSize="14dp"
         app:layout_constraintEnd_toStartOf="@id/detail_cl_comment_confirm"
-        android:hint="대댓글을 입력하세요" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/detail_cl_comment_confirm"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.11"
-        app:layout_constraintDimensionRatio="42:46"
         android:background="@drawable/all_radius_100"
         android:backgroundTint="@color/cement_2"
+        app:layout_constraintDimensionRatio="42:46"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.11">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_gravity="center"
-            android:src="@drawable/ic_confirm"/>
+            android:contentDescription="댓글 입력 확인 버튼"
+            android:paddingStart="0dp"
+            android:paddingEnd="3dp"
+            android:src="@drawable/ic_confirm"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
