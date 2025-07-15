@@ -24,7 +24,7 @@ android {
     defaultConfig {
         applicationId = "com.kust.kustaurant"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 19
         versionName = "1.1.1"
 
