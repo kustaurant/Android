@@ -3,7 +3,6 @@ package com.kust.kustaurant.presentation.ui.draw
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -19,9 +19,6 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.DrawRestaurantData
 import com.kust.kustaurant.databinding.FragmentDrawResultBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.floor
@@ -33,7 +30,6 @@ class DrawResultFragment : Fragment() {
     private var restaurantList = mutableListOf<DrawRestaurantData>()
     private val viewModel: DrawViewModel by activityViewModels()
     val binding get() = _binding!!
-    private val animationScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDrawResultBinding.inflate(inflater, container, false)
@@ -61,23 +57,17 @@ class DrawResultFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        val viewPagerHeight = calculateViewHeight(267f) // 동적 높이 계산
-
         viewPager = binding.drawViewPager
         adapter = DrawSelectResultAdapter(restaurantList)
         viewPager.adapter = adapter
         viewPager.isUserInputEnabled = false // 스크롤 비활성화
         viewPager.offscreenPageLimit = 1
 
-        // ViewPager의 높이를 동적으로 설정
-        viewPager.layoutParams = viewPager.layoutParams.apply {
-            height = viewPagerHeight
-        }
 
         // 페이지 전환 애니메이션 설정
         val pageTransformer = ViewPager2.PageTransformer { page, position ->
             page.apply {
-                translationX = 20 * position
+                translationX = position
             }
         }
         viewPager.setPageTransformer(pageTransformer)
@@ -127,7 +117,7 @@ class DrawResultFragment : Fragment() {
         }
     }
 
-    private fun startAnimation() = animationScope.launch {
+    private fun startAnimation() = viewLifecycleOwner.lifecycleScope.launch {
         disableButtons()
         val textView = binding.drawSelectedTvClickableInfo
         textView.alpha = 0f
@@ -165,8 +155,6 @@ class DrawResultFragment : Fragment() {
     }
 
     private fun displaySelectedRestaurantImage(restaurant: DrawRestaurantData) {
-
-
         Glide.with(this)
             .load(restaurant.restaurantImgUrl)
             .transform(CenterCrop(), RoundedCorners(78))
@@ -174,6 +162,11 @@ class DrawResultFragment : Fragment() {
 
         binding.drawIvSelect.alpha = 0f
         binding.drawIvSelect.visibility = View.VISIBLE
+        binding.drawIvSelect.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("restaurantId",viewModel.selectedRestaurant.value!!.restaurantId)
+            startActivity(intent)
+        }
 
         binding.drawIvSelect.animate()
             .alpha(1f)
@@ -181,8 +174,6 @@ class DrawResultFragment : Fragment() {
             .setListener(null)
             .start()
     }
-
-
 
     private fun disableButtons() {
         binding.clCategoryResetBtn.isClickable = false
@@ -198,22 +189,10 @@ class DrawResultFragment : Fragment() {
         binding.clRetryBtn.isClickable = true
         binding.clCategoryResetBtn.alpha = 1.0f
         binding.clRetryBtn.alpha = 1.0f
-
-        binding.drawViewPager.setOnClickListener {
-            val intent = Intent(requireContext(), DetailActivity::class.java)
-            intent.putExtra("restaurantId",viewModel.selectedRestaurant.value!!.restaurantId)
-            startActivity(intent)
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        animationScope.cancel()
         _binding = null
-    }
-
-    private fun calculateViewHeight(height : Float): Int {
-        val screenDensity = Resources.getSystem().displayMetrics.density
-        return (height * screenDensity).toInt()
     }
 }

@@ -35,6 +35,12 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val _communityPostDetail = MutableLiveData<CommunityPost>()
     val communityPostDetail: LiveData<CommunityPost> = _communityPostDetail
 
+    private val _communityPostComments = MutableLiveData<List<CommunityPostComment>?>()
+    val communityPostComments: LiveData<List<CommunityPostComment>?> = _communityPostComments
+
+    private val _communityPostCommentsCnt = MutableLiveData<Int>()
+    val communityPostCommentsCnt: LiveData<Int> = _communityPostCommentsCnt
+
     private val _postMine = MutableLiveData(true)
     val postMine: LiveData<Boolean> = _postMine
 
@@ -47,8 +53,6 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val _postLikeInfo = MutableLiveData<CommunityPostLikeResponse>()
     val postLikeInfo: LiveData<CommunityPostLikeResponse> = _postLikeInfo
 
-    private val _commentReply = MutableLiveData<CommunityPostComment>()
-
     private val _uiState = MutableLiveData<UiState>(UiState.Idle)
     val uiState: LiveData<UiState> = _uiState
 
@@ -57,6 +61,7 @@ class CommunityPostDetailViewModel @Inject constructor(
             try {
                 _communityPostDetail.value = getCommunityPostDetail(postId)
                 _postMine.value = _communityPostDetail.value!!.isPostMine
+                _communityPostComments.value = _communityPostDetail.value!!.postCommentList
             } catch (e: Exception) {
                 Log.e(
                     "CommunityPostDetailViewModel",
@@ -104,13 +109,25 @@ class CommunityPostDetailViewModel @Inject constructor(
         }
     }
 
-
-    fun postCreateCommentReply(content: String, postId: String, parentCommentId: String) {
+    fun postCreateCommentReply(content: String, postId: Int, parentCommentId: Int? = null) {
         viewModelScope.launch {
             try {
-                _commentReply.value =
-                    postCreateCommentReplyUseCase(content, postId, parentCommentId)
-                loadCommunityPostDetail(postId.toInt())
+                _communityPostComments.value = if (parentCommentId == null) {
+                    postCreateCommentReplyUseCase(content, postId.toString(), "")
+                } else {
+                    postCreateCommentReplyUseCase(
+                        content,
+                        postId.toString(),
+                        parentCommentId.toString()
+                    )
+                }
+
+                var cnt = 0
+                for (comment in _communityPostComments.value!!) {
+                    cnt += 1 + comment.repliesList.size
+                }
+
+                _communityPostCommentsCnt.value = cnt
             } catch (e: Exception) {
                 Log.e("CommunityPostDetailViewModel", "From postCommentReply, Error msg is $e")
             }
@@ -149,12 +166,10 @@ class CommunityPostDetailViewModel @Inject constructor(
                                     reply
                                 }
                             }
-                            // 대댓글 리스트의 참조를 명확하게 변경하여 LiveData가 이를 감지하도록 함
                             comment.copy(repliesList = updatedReplies)
                         }
                     }
 
-                    // 변경된 댓글 리스트를 반영한 새로운 PostDetail 객체 생성
                     val updatedPostDetail =
                         currentPostDetail.copy(postCommentList = updatedCommentList)
 
@@ -181,7 +196,6 @@ class CommunityPostDetailViewModel @Inject constructor(
             }
         }
     }
-
 
     fun deleteComment(postId: Int, commentId: Int) {
         viewModelScope.launch {
