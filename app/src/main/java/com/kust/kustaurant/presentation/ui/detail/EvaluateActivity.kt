@@ -118,14 +118,11 @@ class EvaluateActivity : AppCompatActivity() {
 
     private fun selectGallery() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13 이상
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES), REQ_GALLERY)
-            } else {
-                openGallery()
-            }
+            // Android 13 이상부터 Photo Picker
+            val intent = Intent(android.provider.MediaStore.ACTION_PICK_IMAGES)
+            photoPickerLauncher.launch(intent)
         } else {
-            // Android 13 미만
+            // Android 13 미만은 기존 갤러리 + 권한 체크
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), REQ_GALLERY)
             } else {
