@@ -13,7 +13,7 @@ file("../local.properties").inputStream().use{ properties.load(it) }
 
 android {
     namespace = "com.kust.kustaurant"
-    compileSdk = 34
+    compileSdk = 35
 
     buildFeatures {
         viewBinding = true
@@ -25,8 +25,8 @@ android {
         applicationId = "com.kust.kustaurant"
         minSdk = 26
         targetSdk = 35
-        versionCode = 19
-        versionName = "1.1.1"
+        versionCode = 25
+        versionName = "1.2.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
