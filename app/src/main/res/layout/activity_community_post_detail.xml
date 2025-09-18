@@ -306,7 +306,7 @@
                             android:id="@+id/community_iv_btn_scrap_like"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="스크립 아이콘입니다."
+                            android:contentDescription="스크랩 아이콘입니다."
                             android:src="@drawable/ic_scrap" />
 
                         <TextView
