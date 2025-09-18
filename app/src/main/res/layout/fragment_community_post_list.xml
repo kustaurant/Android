@@ -136,7 +136,7 @@
 
         <Button
             android:id="@+id/commu_btn_write_post"
-            android:layout_width="104dp"
+            android:layout_width="wrap_content"
             android:layout_height="37dp"
             android:layout_marginBottom="22dp"
             android:background="@drawable/all_radius_30_signature_1"
@@ -152,6 +152,8 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:singleLine="true"
+            android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/community_gl_end" />
     </androidx.constraintlayout.widget.ConstraintLayout>
