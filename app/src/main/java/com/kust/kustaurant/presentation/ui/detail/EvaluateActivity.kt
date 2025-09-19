@@ -11,7 +11,6 @@ import android.widget.RatingBar
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -19,11 +18,12 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.databinding.ActivityEvaluateBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EvaluateActivity : AppCompatActivity() {
+class EvaluateActivity : BaseActivity() {
     lateinit var binding: ActivityEvaluateBinding
     private lateinit var keyWordAdapter: EvaluateKeyWordAdapter
     private var keyWordList: ArrayList<String> = arrayListOf()

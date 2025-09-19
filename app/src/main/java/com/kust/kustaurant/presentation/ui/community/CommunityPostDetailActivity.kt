@@ -16,7 +16,6 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -25,13 +24,14 @@ import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.ActivityCommunityPostDetailBinding
 import com.kust.kustaurant.databinding.BottomSheetCommentBinding
 import com.kust.kustaurant.databinding.PopupCommuPostDetailDotsBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import com.kust.kustaurant.presentation.model.UiState
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CommunityPostDetailActivity : AppCompatActivity() {
+class CommunityPostDetailActivity : BaseActivity() {
     private var _binding: ActivityCommunityPostDetailBinding? = null
     private val binding get() = _binding!!
     private val viewModel: CommunityPostDetailViewModel by viewModels()

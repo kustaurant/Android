@@ -1,7 +1,6 @@
 package com.kust.kustaurant.presentation.ui.community
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
@@ -16,13 +15,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityCommunityPostWriteBinding
 import com.kust.kustaurant.databinding.PopupCommuPostWriteSortBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -30,7 +29,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CommunityPostWriteActivity : AppCompatActivity() {
+class CommunityPostWriteActivity : BaseActivity() {
     private lateinit var binding: ActivityCommunityPostWriteBinding
     private val viewModel: CommunityPostWriteViewModel by viewModels()
     private var textChangeJob: Job? = null

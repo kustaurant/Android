@@ -1,16 +1,14 @@
 package com.kust.kustaurant.presentation.ui.mypage
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.appcompat.app.AppCompatActivity
-import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyNotificationBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 
-class MyNotificationActivity : AppCompatActivity() {
+class MyNotificationActivity : BaseActivity() {
     lateinit var binding : ActivityMyNotificationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

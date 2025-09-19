@@ -37,6 +37,7 @@ class CommunityPostWriteViewModel @Inject constructor(
     private val _postCreateResult = MutableLiveData<PostFinishState?>()
     val postCreateResult: LiveData<PostFinishState?> get() = _postCreateResult
     private val _isEditMode = MutableLiveData<Boolean>()
+    var lastHandledSeq: Long? = null
     private suspend fun uploadImage(uri: Uri, fileName: String): String? {
         return try {
             val imageBytes = imageUtil.getImageBytesFromUri(uri)

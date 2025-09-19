@@ -56,6 +56,7 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val _uiState = MutableLiveData<UiState>(UiState.Idle)
     val uiState: LiveData<UiState> = _uiState
 
+    var lastHandledSeq: Long? = null
     fun loadCommunityPostDetail(postId: Int) {
         viewModelScope.launch {
             try {

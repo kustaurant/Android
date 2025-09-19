@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyCommentBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.ui.community.CommunityPostDetailActivity
-import com.kust.kustaurant.presentation.ui.mypage.MyPostActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyCommentActivity : AppCompatActivity() {
+class MyCommentActivity : BaseActivity() {
     lateinit var binding : ActivityMyCommentBinding
     private lateinit var commentAdapter : CommentAdapter
     private val viewModel: MyPageViewModel by viewModels()

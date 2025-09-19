@@ -17,7 +17,6 @@ import javax.inject.Inject
 class CommunityViewModel @Inject constructor(
     private val getCommunityPostListUseCase: GetCommunityPostListUseCase,
     private val getCommunityRankingListUseCase: GetCommunityRankingListUseCase,
-
     ) : ViewModel() {
     private val _postCategory = MutableLiveData<String>("all")
     val postCategory: LiveData<String> = _postCategory
@@ -36,6 +35,7 @@ class CommunityViewModel @Inject constructor(
 
     private val _rankingSortType = MutableLiveData<String>("")
 
+    var lastHandledSeq: Long? = null
     private fun loadCommunityPosts(postCategory: String, currentPage: Int, sort: String) {
         if (isLastPage) return
 

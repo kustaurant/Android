@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.kust.kustaurant.BuildConfig
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.saveAccessToken
 import com.kust.kustaurant.data.saveId
 import com.kust.kustaurant.databinding.ActivityStartBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -21,7 +20,8 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StartActivity : AppCompatActivity() {
+class StartActivity : BaseActivity() {
+    override fun shouldHandleGlobal503() = false
     lateinit var binding: ActivityStartBinding
     private val naverloginviewModel: NaverLoginViewModel by viewModels()
 
