@@ -32,7 +32,7 @@ class ImageUtil @Inject constructor(
     ): MultipartBody.Part {
         val body = object : RequestBody() {
             override fun contentType() = mimeType.toMediaType()
-            override fun contentLength() = querySize(uri).takeIf { it >= 0 } ?: -1
+            override fun contentLength(): Long = -1
             override fun writeTo(sink: okio.BufferedSink) {
                 val input = context.contentResolver.openInputStream(uri)
                     ?: throw IOException("Cannot open input stream for $uri")

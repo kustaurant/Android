@@ -1,7 +1,7 @@
 package com.kust.kustaurant.di
 
 import android.content.Context
-import com.kust.kustaurant.presentation.ui.community.ImageUtil
+import com.kust.kustaurant.presentation.ui.util.ImageUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
