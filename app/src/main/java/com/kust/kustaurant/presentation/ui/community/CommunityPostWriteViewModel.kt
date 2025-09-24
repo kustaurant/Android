@@ -1,23 +1,20 @@
 package com.kust.kustaurant.presentation.ui.community
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.domain.usecase.community.PatchPostModifyUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityPostCreateUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityUploadImageUseCase
-import com.kust.kustaurant.domain.usecase.community.PatchPostModifyUseCase
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
+import com.kust.kustaurant.presentation.ui.util.ImageUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.IOException
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,25 +34,34 @@ class CommunityPostWriteViewModel @Inject constructor(
     private val _postCreateResult = MutableLiveData<PostFinishState?>()
     val postCreateResult: LiveData<PostFinishState?> get() = _postCreateResult
     private val _isEditMode = MutableLiveData<Boolean>()
-    var lastHandledSeq: Long? = null
-    private suspend fun uploadImage(uri: Uri, fileName: String): String? {
-        return try {
-            val imageBytes = imageUtil.getImageBytesFromUri(uri)
-            if (imageBytes != null) {
-                val requestFile = RequestBody.create(
-                    "image/*".toMediaTypeOrNull(),
-                    imageBytes
-                )
+    val toastMessage : LiveData<String?> get() = _toastMessage
+    private val _toastMessage = MutableLiveData<String?>()
 
-                val imagePart = MultipartBody.Part.createFormData("image", fileName, requestFile)
-
-                postUploadImage(imagePart).imgUrl
-            } else {
-                Log.e("CommunityPostWriteViewModel", "Failed to get image bytes")
-                null
+    private suspend fun uploadImage(uri: Uri, fileName: String): String? = withContext(Dispatchers.IO) {
+        try {
+            val mime = imageUtil.queryMimeType(uri)
+            val size = imageUtil.querySize(uri)
+            val max = 10L * 1024 * 1024
+            if (size in 1..Long.MAX_VALUE && size > max) {
+                Log.e("Upload", "File too large: $size")
+                _toastMessage.postValue("파일 크기가 너무 큽니다. (최대 10MB까지 업로드 가능)")
+                return@withContext null
             }
+
+            val part = imageUtil.asStreamingPart(
+                uri = uri,
+                formField = "image",
+                fileName = fileName.ifBlank { "upload.jpg" },
+                mimeType = mime
+            )
+            return@withContext postUploadImage(part).imgUrl
+        } catch (se: SecurityException) {
+            Log.e("Upload", "SecurityException: $se")
+            _toastMessage.postValue("권한 문제가 발생했습니다.")
+            null
         } catch (e: Exception) {
-            Log.e("CommunityPostWriteViewModel", "Upload error: $e")
+            Log.e("Upload", "Upload error: $e")
+            _toastMessage.postValue("업로드 중 오류가 발생했습니다.")
             null
         }
     }
@@ -100,6 +106,9 @@ class CommunityPostWriteViewModel @Inject constructor(
         }
     }
 
+    fun clearToastMessage() {
+        _toastMessage.value = null
+    }
 
     private fun createPost() {
         viewModelScope.launch {
@@ -135,7 +144,6 @@ class CommunityPostWriteViewModel @Inject constructor(
     }
 
     private fun isPostSendReady() {
-        // 빈 태그를 정규식으로 제거
         val content = _postContentHtml.value?.replace(Regex("<p><br></p>|<br>|<p></p>"), "")?.trim()
         val isContentNotEmpty = !content.isNullOrEmpty()
         _postSendReady.value = !_postSort.value.isNullOrEmpty() &&
@@ -146,17 +154,4 @@ class CommunityPostWriteViewModel @Inject constructor(
 
 enum class PostFinishState{
     FINISH_IDLE, FINISH_ERR, FINISH_MODIFY, FINISH_CREATE
-}
-
-class ImageUtil @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
-    fun getImageBytesFromUri(uri: Uri): ByteArray? {
-        return try {
-            context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-    }
 }

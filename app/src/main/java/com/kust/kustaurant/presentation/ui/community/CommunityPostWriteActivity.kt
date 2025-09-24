@@ -91,6 +91,13 @@ class CommunityPostWriteActivity : BaseActivity() {
             }
             binding.tvFinish.backgroundTintList = ColorStateList.valueOf(color)
         }
+
+        viewModel.toastMessage.observe(this) { message ->
+            message?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                viewModel.clearToastMessage()
+            }
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
