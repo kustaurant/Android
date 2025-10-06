@@ -1,4 +1,4 @@
-package com.kust.kustaurant.data.model
+package com.kust.kustaurant.data.model.commnity
 
 data class CommunityPostScrapResponse(
     val scrapCount : Int,

@@ -1,4 +1,4 @@
-package com.kust.kustaurant.domain.model
+package com.kust.kustaurant.domain.model.community
 
 data class CommunityPost(
     val postId: Int,
