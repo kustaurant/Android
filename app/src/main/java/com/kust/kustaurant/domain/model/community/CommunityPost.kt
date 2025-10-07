@@ -1,7 +1,7 @@
 package com.kust.kustaurant.domain.model.community
 
 data class CommunityPost(
-    val postId: Int,
+    val postId: Long,
     val postTitle: String,
     val postBody: String,
     val status: String,
@@ -19,7 +19,7 @@ data class CommunityPost(
     val scrapCount: Int,
     val likeUserList : List<ScrapUser>?,
     val isScraped : Boolean,
-    val isLiked : Boolean,
+    val isLiked : Boolean?,
     val isPostMine : Boolean
 )
 
@@ -31,7 +31,7 @@ data class User(
 )
 
 data class CommunityPostComment(
-    val commentId: Int,
+    val commentId: Long,
     val commentBody: String,
     val status : String,
     val user: User,
@@ -47,7 +47,7 @@ data class CommunityPostComment(
 )
 
 data class ScrapUser(
-    val userId: Int,
+    val userId: Long,
     val providerId: String,
     //val accessToken: String,
     //val refreshToken: String,

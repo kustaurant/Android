@@ -1,94 +1,100 @@
 package com.kust.kustaurant.data.remote
 
-import com.kust.kustaurant.data.model.CommunityPostCommentReactResponse
-import com.kust.kustaurant.data.model.CommunityPostScrapResponse
-import com.kust.kustaurant.data.model.CommunityPostLikeResponse
-import com.kust.kustaurant.data.model.CommunityPostUploadImageResponse
-import com.kust.kustaurant.domain.model.CommunityPost
-import com.kust.kustaurant.domain.model.CommunityPostComment
-import com.kust.kustaurant.domain.model.CommunityRanking
+import com.kust.kustaurant.data.model.commnity.CommunityPostCommentReactResponse
+import com.kust.kustaurant.data.model.commnity.CommunityPostLikeResponse
+import com.kust.kustaurant.data.model.commnity.CommunityPostScrapResponse
+import com.kust.kustaurant.data.model.commnity.CommunityPostUploadImageResponse
+import com.kust.kustaurant.data.model.commnity.PostCommentRequest
+import com.kust.kustaurant.data.model.commnity.PostRequest
+import com.kust.kustaurant.data.model.commnity.PostResponse
+import com.kust.kustaurant.domain.model.community.AuthUserInfo
+import com.kust.kustaurant.domain.model.community.CommunityPost
+import com.kust.kustaurant.domain.model.community.CommunityPostComment
+import com.kust.kustaurant.domain.model.community.CommunityRanking
 import okhttp3.MultipartBody
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CommunityApi {
-    @GET("/api/v1/community/posts")
+    @GET("/api/v2/community/posts")
     suspend fun getCommunityPostListData(
-        @Query("postCategory") postCategory: String,
+        @Query("category") category: String,
         @Query("page") page: Int,
         @Query("sort") sort: String
     ): List<CommunityPost>
 
-    @GET("/api/v1/community/ranking")
+    @GET("/api/v2/community/ranking")
     suspend fun getCommunityRankingListData(
         @Query("sort") sort: String,
     ): List<CommunityRanking>
 
-    @GET("/api/v1/community/{postId}")
+    @GET("/api/v2/community/{postId}")
     suspend fun getCommunityPostDetailData(
-        @Path("postId") postId: Int,
+        @Path("postId") postId: Long,
     ): CommunityPost
 
-    @POST("/api/v1/auth/community/{postId}/scraps")
+    @POST("/api/v2/auth/community/{postId}/scraps")
     suspend fun postCommunityPostDetailScrap(
-        @Path("postId") postId: Int,
+        @Path("postId") postId: Long,
+        @Query("scrapped") scrapped : Boolean,
     ): CommunityPostScrapResponse
 
-    @POST("/api/v1/auth/community/{postId}/likes")
-    suspend fun postCommunityPostDetailLike(
-        @Path("postId") postId: Int,
+    @PUT("/api/v2/auth/community/{postId}/reaction")
+    suspend fun postCommunityPostLikeToggle(
+        @Path("postId") postId: Long,
+        @Query("cmd") cmd : String?
     ): CommunityPostLikeResponse
 
-    @POST("/api/v1/auth/community/posts/create")
+    @POST("/api/v2/auth/community/posts/create")
     suspend fun postPostCreate(
-        @Query("title") title: String,
-        @Query("postCategory") postCategory: String,
-        @Query("content") content: String,
-        @Query("imageFile") imageFile: String?,
+        @Body postRequest : PostRequest
     ): CommunityPost
 
-    @PATCH("/api/v1/auth/community/posts/{postId}")
-    suspend fun patchPostModify(
+    @PATCH("/api/v2/auth/community/posts/{postId}")
+    suspend fun patchModifyPost(
         @Path("postId") postId: String,
-        @Query("title") title: String,
-        @Query("postCategory") postCategory: String,
-        @Query("content") content: String,
-        @Query("imageFile") imageFile: String?,
+        @Body postRequest : PostRequest
     )
 
-    @DELETE("/api/v1/auth/community/{postId}")
+    @GET("/api/v2/auth/community/posts/{postId}")
+    suspend fun getModifyPost(
+        @Path("postId") postId: Long,
+        @Query("user") user : AuthUserInfo,
+    ) : PostResponse
+
+    @DELETE("/api/v2/auth/community/{postId}")
     suspend fun deletePost(
-        @Path("postId") postId: Int,
+        @Path("postId") postId: Long,
     )
 
-    @DELETE("/api/v1/auth/community/comment/{commentId}")
+    @DELETE("/api/v2/auth/comments/{commentId}")
     suspend fun deletePostComment(
-        @Path("commentId") commentId: Int,
+        @Path("commentId") commentId: Long,
     )
+
     @Multipart
-    @POST("/api/v1/auth/community/posts/image")
+    @POST("/api/v2/auth/community/posts/image")
     suspend fun postCommunityUploadImage(
         @Part image: MultipartBody.Part
     ): CommunityPostUploadImageResponse
 
-    @POST("/api/v2/auth/community/comments")
+    @POST("/api/v2/auth/posts/{postId}/comments")
     suspend fun postCommunityPostCommentReply(
-        @Query("content") content: String,
-        @Query("postId") postId: String,
-        @Query("parentCommentId") parentCommentId: String,
+        @Query("postId") postId: Long,
+        @Body postCommentRequest : PostCommentRequest
     ): List<CommunityPostComment>
 
-    @POST("/api/v1/auth/community/comments/{commentId}/{action}")
-    suspend fun postCommentReact(
-        @Path("commentId") commentId: Int,
-        @Path("action") action: String,
+    @PUT("/api/v2/auth/community/comments/{commentId}/reaction")
+    suspend fun putCommentLikeToggle(
+        @Path("commentId") commentId: Long,
+        @Query("reaction") reaction: String?
     ): CommunityPostCommentReactResponse
-
-
 }

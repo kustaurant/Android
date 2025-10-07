@@ -8,7 +8,7 @@ import javax.inject.Singleton
 class DeleteCommunityCommentUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
 ){
-    suspend operator fun invoke(commentId : Int) {
-        return communityRepository.deletePostComment(commentId)
+    suspend operator fun invoke(commentId : Long) {
+        return communityRepository.deleteCommunityComment(commentId)
     }
 }
