@@ -93,9 +93,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.oauth) // 네이버 로그인
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.v2.user)
+    implementation(libs.v2.user) // 카카오 로그인
     implementation(libs.richeditor.android)
-    implementation(libs.richeditor.android) // 카카오 로그인
     kapt(libs.hilt.android.compiler)
 
     // Retrofit
@@ -104,6 +103,10 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.okhttp.urlconnection)
+
+    //Coil
+    implementation(libs.coil)
+    implementation(libs.coil.svg)
 
     implementation(libs.androidx.databinding.compiler)
 
