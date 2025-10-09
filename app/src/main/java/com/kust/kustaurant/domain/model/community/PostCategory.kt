@@ -6,3 +6,13 @@ enum class PostCategory(val value : String){
         COLUMN("COLUMN"),
         SUGGESTION("SUGGESTION")
 }
+
+fun String.toPostCategory(): PostCategory {
+        return when (this) {
+                "all" -> PostCategory.ALL
+                "free" -> PostCategory.FREE
+                "column" -> PostCategory.COLUMN
+                "suggestion" -> PostCategory.SUGGESTION
+                else -> PostCategory.ALL
+        }
+}
