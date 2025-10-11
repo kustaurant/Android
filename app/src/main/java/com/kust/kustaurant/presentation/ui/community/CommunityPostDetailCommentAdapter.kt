@@ -16,10 +16,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
-import com.kust.kustaurant.domain.model.CommunityPostComment
+import com.kust.kustaurant.domain.model.community.CommunityPostComment
+import com.kust.kustaurant.domain.model.community.LikeEvent
 
 class CommunityPostDetailCommentAdapter(private val context: Context) :
     ListAdapter<CommunityPostComment, CommunityPostDetailCommentAdapter.ViewHolder>(diffUtil) {
@@ -28,11 +30,11 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
     var interactionListener: CommunityPostDetailCommentReplyAdapter.OnItemClickListener? = null
 
     interface OnItemClickListener {
-        fun onReportClicked(commentId: Int)
-        fun onDeleteClicked(commentId: Int)
-        fun onCommentClicked(commentId: Int)
-        fun onLikeClicked(commentId: Int, position: Int)
-        fun onDisLikeClicked(commentId: Int, position: Int)
+        fun onReportClicked(commentId: Long)
+        fun onDeleteClicked(commentId: Long)
+        fun onCommentClicked(commentId: Long)
+        fun onLikeClicked(commentId: Long, position: Int)
+        fun onDisLikeClicked(commentId: Long, position: Int)
 
     }
 
@@ -140,33 +142,37 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
             }
         }
 
-        private fun getLikeIconResource(likeStatus: Boolean): Int {
-            return when (likeStatus) {
-                true -> R.drawable.ic_like_true
-                false -> R.drawable.ic_like_false
-            }
+        private fun getLikeIconResource(reaction: LikeEvent?): Int = when (reaction) {
+            LikeEvent.LIKE -> R.drawable.ic_like_true
+            LikeEvent.DISLIKE, null -> R.drawable.ic_like_false
         }
 
-        private fun getDislikeIconResource(likeStatus: Boolean): Int {
-            return when (likeStatus) {
-                true -> R.drawable.ic_dislike_true
-                false -> R.drawable.ic_dislike_false
-            }
+        private fun getDislikeIconResource(reaction: LikeEvent?): Int = when (reaction) {
+            LikeEvent.DISLIKE-> R.drawable.ic_dislike_true
+            LikeEvent.LIKE, null  -> R.drawable.ic_dislike_false
         }
 
         fun bind(item: CommunityPostComment) {
-            binding.ivLike.setImageResource(getLikeIconResource(item.isLiked))
-            binding.ivHate.setImageResource(getDislikeIconResource(item.isDisliked))
+            val reaction = LikeEvent.from(item.reactionType)
+            binding.ivLike.setImageResource(getLikeIconResource(reaction))
+            binding.ivHate.setImageResource(getDislikeIconResource(reaction))
             binding.rvGrade.visibility = View.GONE
             binding.tvGrade.visibility = View.GONE
             binding.tvReviewTime.text = item.timeAgo
-            binding.tvUserName.text = item.user.userNickname
-            binding.tvReview.text = item.commentBody
+            binding.tvUserName.text = item.writernickname
+            binding.tvReview.text = item.body
             binding.tvLike.text = if(item.likeCount < 0) "0" else item.likeCount.toString()
             binding.tvHate.text = if(item.dislikeCount < 0) "0" else item.dislikeCount.toString()
-            Glide.with(context)
-                .load(item.user.rankImg)
-                .into(binding.ivUserImage)
+
+            binding.ivUserImage.load(item.writericonUrl) {
+                crossfade(true)
+                placeholder(R.drawable.ic_baby_cow)
+                error(R.drawable.ic_baby_cow)
+
+                if (item.writericonUrl?.endsWith(".svg", true) == true) {
+                    decoderFactory(SvgDecoder.Factory())
+                }
+            }
 
             binding.flLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
@@ -178,19 +184,19 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
             val replyAdapter = CommunityPostDetailCommentReplyAdapter(context).apply {
                 setOnItemClickListener(object :
                     CommunityPostDetailCommentReplyAdapter.OnItemClickListener {
-                    override fun onReportClicked(commentId: Int) {
+                    override fun onReportClicked(commentId: Long) {
                         interactionListener?.onReportClicked(commentId)
                     }
 
-                    override fun onDeleteClicked(commentId: Int) {
+                    override fun onDeleteClicked(commentId: Long) {
                         interactionListener?.onDeleteClicked(commentId)
                     }
 
-                    override fun onLikeClicked(commentId: Int, position: Int) {
+                    override fun onLikeClicked(commentId: Long, position: Int) {
                         interactionListener?.onLikeClicked(commentId, position)
                     }
 
-                    override fun onDisLikeClicked(commentId: Int, position: Int) {
+                    override fun onDisLikeClicked(commentId: Long, position: Int) {
                         interactionListener?.onDisLikeClicked(commentId, position)
                     }
                 })
@@ -198,7 +204,7 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
 
             binding.detailRvReply.adapter = replyAdapter
             binding.detailRvReply.layoutManager = LinearLayoutManager(binding.root.context)
-            replyAdapter.submitList(item.repliesList)
+            replyAdapter.submitList(item.replies)
             replyAdapter.notifyItemChanged(absoluteAdapterPosition)
         }
     }
@@ -233,16 +239,16 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
                 oldItem: CommunityPostComment,
                 newItem: CommunityPostComment
             ): Boolean {
-                val isContentSame = oldItem.commentId == newItem.commentId &&
-                        oldItem.isLiked == newItem.isLiked &&
-                        oldItem.isDisliked == newItem.isDisliked &&
+                val isContentSame =
+                    oldItem.commentId == newItem.commentId &&
                         oldItem.likeCount == newItem.likeCount &&
+                        oldItem.status == newItem.status &&
                         oldItem.dislikeCount == newItem.dislikeCount &&
-                        oldItem.createdAt == newItem.createdAt
+                        oldItem.timeAgo == newItem.timeAgo
 
                 // 대댓글 리스트 비교
-                val areRepliesSame = oldItem.repliesList.size == newItem.repliesList.size &&
-                        oldItem.repliesList.zip(newItem.repliesList).all { (oldReply, newReply) ->
+                val areRepliesSame = oldItem.replies?.size == newItem.replies?.size &&
+                        oldItem.replies.zip(newItem.replies).all { (oldReply, newReply) ->
                             oldReply == newReply
                         }
                 return isContentSame && areRepliesSame

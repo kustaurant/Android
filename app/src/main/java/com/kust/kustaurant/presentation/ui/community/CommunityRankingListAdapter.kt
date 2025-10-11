@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
+import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ItemCommunityRankingBinding
-import com.kust.kustaurant.domain.model.CommunityRanking
+import com.kust.kustaurant.domain.model.community.CommunityRanking
 
 class CommunityRankingListAdapter :
     ListAdapter<CommunityRanking, CommunityRankingListAdapter.ViewHolder>(communityRankingListDiffUtil) {
@@ -23,13 +25,19 @@ class CommunityRankingListAdapter :
 
         @SuppressLint("SetTextI18n")
         fun bind(item: CommunityRanking) {
-            viewBinding.communityTvNickname.text = item.userNickname
+            viewBinding.communityTvNickname.text = item.nickname
             viewBinding.communityTvItemCommentCnt.text = item.evaluationCount.toString() + "개"
             viewBinding.communityTvRestaurantRank.text = item.rank.toString()
 
-            Glide.with(viewBinding.communityIvUserIcon.context)
-                .load(item.rankImg)
-                .into(viewBinding.communityIvUserIcon)
+            viewBinding.communityIvUserIcon.load(item.iconUrl) {
+                crossfade(true)
+                placeholder(R.drawable.ic_baby_cow)
+                error(R.drawable.ic_baby_cow)
+
+                if(item.iconUrl.endsWith(".svg", true)) {
+                    decoderFactory(SvgDecoder.Factory())
+                }
+            }
         }
     }
 
@@ -52,7 +60,7 @@ class CommunityRankingListAdapter :
     companion object {
         val communityRankingListDiffUtil = object : DiffUtil.ItemCallback<CommunityRanking>() {
             override fun areItemsTheSame(oldItem: CommunityRanking, newItem: CommunityRanking): Boolean {
-                return oldItem.userNickname == newItem.userNickname
+                return oldItem.nickname == newItem.nickname
             }
 
             override fun areContentsTheSame(oldItem: CommunityRanking, newItem: CommunityRanking): Boolean {
