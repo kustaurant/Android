@@ -117,7 +117,7 @@
             android:exported="false" />
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="dyfgbjtlqu" />
+            android:value="${NAVER_MAP_ID}"/>
 
         <activity
             android:name=".presentation.ui.detail.DetailActivity"

@@ -41,6 +41,7 @@ android {
         buildConfigField("String", "KAKAO_REST_API_KEY", "\"${properties["kakao_rest_api_key"]}\"")
 
         manifestPlaceholders["KAKAO_NATIVE_KEY"] = properties["kakao_manifest_native_key"].toString()
+        manifestPlaceholders["NAVER_MAP_ID"] = properties["naver_map_id"].toString()
     }
 
     buildTypes {
@@ -130,6 +131,4 @@ dependencies {
 
     implementation ("com.airbnb.android:lottie:6.5.2")
     implementation(kotlin("script-runtime"))
-
-
 }
