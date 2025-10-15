@@ -5,17 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.data.model.CommunityPostLikeResponse
-import com.kust.kustaurant.data.model.CommunityPostScrapResponse
-import com.kust.kustaurant.domain.model.CommunityPost
-import com.kust.kustaurant.domain.model.CommunityPostComment
+import com.kust.kustaurant.data.model.commnity.CommunityPostLikeResponse
+import com.kust.kustaurant.data.model.commnity.CommunityPostScrapResponse
+import com.kust.kustaurant.domain.model.community.CommunityPost
+import com.kust.kustaurant.domain.model.community.CommunityPostComment
+import com.kust.kustaurant.domain.model.community.LikeEvent
 import com.kust.kustaurant.domain.usecase.community.DeleteCommunityCommentUseCase
 import com.kust.kustaurant.domain.usecase.community.DeleteCommunityPostUseCase
 import com.kust.kustaurant.domain.usecase.community.GetCommunityPostDetailUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityPostCommentReactUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityPostCommentReplyUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityPostDetailScrapUseCase
-import com.kust.kustaurant.domain.usecase.community.PostPostScrapLikeUseCase
+import com.kust.kustaurant.domain.usecase.community.PostPostLikeUseCase
 import com.kust.kustaurant.presentation.model.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -26,20 +27,20 @@ import javax.inject.Inject
 class CommunityPostDetailViewModel @Inject constructor(
     private val getCommunityPostDetail: GetCommunityPostDetailUseCase,
     private val postPostScrap: PostCommunityPostDetailScrapUseCase,
-    private val postPostLikeUseCase: PostPostScrapLikeUseCase,
+    private val postPostLikeUseCase: PostPostLikeUseCase,
     private val postCreateCommentReplyUseCase: PostCommunityPostCommentReplyUseCase,
     private val postCommentReactUseCase: PostCommunityPostCommentReactUseCase,
     private val deletePostUseCase: DeleteCommunityPostUseCase,
     private val deleteCommentUseCase: DeleteCommunityCommentUseCase,
 ) : ViewModel() {
-    private val _communityPostDetail = MutableLiveData<CommunityPost>()
-    val communityPostDetail: LiveData<CommunityPost> = _communityPostDetail
+    private val _postDetail = MutableLiveData<CommunityPost>()
+    val postDetail: LiveData<CommunityPost> = _postDetail
 
-    private val _communityPostComments = MutableLiveData<List<CommunityPostComment>?>()
-    val communityPostComments: LiveData<List<CommunityPostComment>?> = _communityPostComments
+    private val _postComments = MutableLiveData<List<CommunityPostComment>?>()
+    val postComments: LiveData<List<CommunityPostComment>?> = _postComments
 
-    private val _communityPostCommentsCnt = MutableLiveData<Int>()
-    val communityPostCommentsCnt: LiveData<Int> = _communityPostCommentsCnt
+    private val _postCommentsCnt = MutableLiveData<Int>()
+    val postCommentsCnt: LiveData<Int> = _postCommentsCnt
 
     private val _postMine = MutableLiveData(true)
     val postMine: LiveData<Boolean> = _postMine
@@ -56,13 +57,12 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val _uiState = MutableLiveData<UiState>(UiState.Idle)
     val uiState: LiveData<UiState> = _uiState
 
-    var lastHandledSeq: Long? = null
-    fun loadCommunityPostDetail(postId: Int) {
+    fun loadCommunityPostDetail(postId: Long) {
         viewModelScope.launch {
             try {
-                _communityPostDetail.value = getCommunityPostDetail(postId)
-                _postMine.value = _communityPostDetail.value!!.isPostMine
-                _communityPostComments.value = _communityPostDetail.value!!.postCommentList
+                _postDetail.value = getCommunityPostDetail(postId)
+                _postMine.value = _postDetail.value!!.isPostMine
+                _postComments.value = _postDetail.value!!.comments
             } catch (e: Exception) {
                 Log.e(
                     "CommunityPostDetailViewModel",
@@ -72,11 +72,11 @@ class CommunityPostDetailViewModel @Inject constructor(
         }
     }
 
-    fun postPostDetailScrap(postId: Int) {
+    fun postPostDetailScrap(postId: Long) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             try {
-                _postScrapInfo.value = postPostScrap(postId)
+                _postScrapInfo.value = postPostScrap(postId, !(_postDetail.value?.isScrapped ?: false))
                 _uiState.value = UiState.Success(Unit)
             } catch (e: HttpException) {
                 if (e.code() == 403) {
@@ -91,11 +91,26 @@ class CommunityPostDetailViewModel @Inject constructor(
         }
     }
 
-    fun postPostLike(postId: Int) {
+    fun postPostLike(postId: Long) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             try {
-                _postLikeInfo.value = postPostLikeUseCase(postId)
+                val current = LikeEvent.from(_postDetail.value?.myReaction)
+
+                val next: LikeEvent? = when (current) {
+                    LikeEvent.LIKE -> null
+                    LikeEvent.DISLIKE -> LikeEvent.LIKE
+                    null -> LikeEvent.LIKE
+                }
+
+                _postLikeInfo.value = postPostLikeUseCase(postId, next)
+                _postLikeInfo.value?.let { info ->
+                    _postDetail.value = _postDetail.value?.copy(
+                        myReaction = info.reactionType,
+                        likeOnlyCount = info.likeCount.toLong(),
+                    )
+                }
+
                 _uiState.value = UiState.Success(Unit)
             } catch (e: HttpException) {
                 if (e.code() == 403) {
@@ -110,72 +125,78 @@ class CommunityPostDetailViewModel @Inject constructor(
         }
     }
 
-    fun postCreateCommentReply(content: String, postId: Int, parentCommentId: Int? = null) {
+    fun postCreateCommentReply(content: String, postId: Long, parentCommentId: Long?) {
         viewModelScope.launch {
             try {
-                _communityPostComments.value = if (parentCommentId == null) {
-                    postCreateCommentReplyUseCase(content, postId.toString(), "")
-                } else {
+                _postComments.value =
                     postCreateCommentReplyUseCase(
                         content,
-                        postId.toString(),
-                        parentCommentId.toString()
+                        postId,
+                        parentCommentId
                     )
-                }
 
                 var cnt = 0
-                for (comment in _communityPostComments.value!!) {
-                    cnt += 1 + comment.repliesList.size
+                for (comment in _postComments.value!!) {
+                    comment.replies.let {
+                        cnt += it.size
+                    }
+                    cnt += 1
                 }
 
-                _communityPostCommentsCnt.value = cnt
+                _postCommentsCnt.value = cnt
             } catch (e: Exception) {
                 Log.e("CommunityPostDetailViewModel", "From postCommentReply, Error msg is $e")
             }
         }
     }
 
-    fun postCommentReact(commentId: Int, action: String) {
+    fun postCommentReact(commentId: Long, action: String) {
         viewModelScope.launch {
             try {
-                val response = postCommentReactUseCase(commentId, action)
+                val current = _postComments.value ?: return@launch
 
-                _communityPostDetail.value?.let { currentPostDetail ->
-                    // 댓글 순회
-                    val updatedCommentList = currentPostDetail.postCommentList?.map { comment ->
+                val currentReactionType: String? = current
+                    .asSequence()
+                    .flatMap { sequenceOf(it) + it.replies.asSequence() }
+                    .firstOrNull { it.commentId == commentId }
+                    ?.reactionType
+
+                val likeEvent = when {
+                    action == "LIKE" && currentReactionType == "LIKE" -> null
+                    action == "DISLIKE" && currentReactionType == "DISLIKE" -> null
+                    action == "LIKE" -> LikeEvent.LIKE
+                    action == "DISLIKE" -> LikeEvent.DISLIKE
+                    else -> null
+                }
+
+                val response = postCommentReactUseCase(commentId, likeEvent)
+
+                _postComments.value?.let { cur ->
+                    val updatedComments = cur.map { comment ->
                         if (comment.commentId == commentId) {
-                            // 댓글이 업데이트된 경우
                             comment.copy(
                                 likeCount = response.likeCount,
                                 dislikeCount = response.dislikeCount,
-                                isLiked = response.commentLikeStatus == 1,
-                                isDisliked = response.commentLikeStatus == -1,
-                                updatedAt = comment.updatedAt
+                                reactionType = response.reactionType,
+                                timeAgo = comment.timeAgo
                             )
                         } else {
-                            // 대댓글 순회
-                            val updatedReplies = comment.repliesList.map { reply ->
+                            val newReplies = comment.replies.map { reply ->
                                 if (reply.commentId == commentId) {
                                     reply.copy(
                                         likeCount = response.likeCount,
                                         dislikeCount = response.dislikeCount,
-                                        isLiked = response.commentLikeStatus == 1,
-                                        isDisliked = response.commentLikeStatus == -1,
-                                        updatedAt = reply.updatedAt
+                                        reactionType = response.reactionType,
+                                        timeAgo = reply.timeAgo
                                     )
-                                } else {
-                                    reply
-                                }
+                                } else reply
                             }
-                            comment.copy(repliesList = updatedReplies)
+
+                            comment.copy(replies = newReplies)
                         }
                     }
 
-                    val updatedPostDetail =
-                        currentPostDetail.copy(postCommentList = updatedCommentList)
-
-                    // 변경된 객체를 LiveData에 설정하여 옵저버가 변경사항을 감지하도록 강제
-                    _communityPostDetail.postValue(updatedPostDetail)
+                    _postComments.postValue(updatedComments)
                 }
             } catch (e: Exception) {
                 Log.e(
@@ -186,7 +207,8 @@ class CommunityPostDetailViewModel @Inject constructor(
         }
     }
 
-    fun deletePost(postId: Int) {
+
+    fun deletePost(postId: Long) {
         viewModelScope.launch {
             try {
                 deletePostUseCase(postId)
@@ -198,7 +220,7 @@ class CommunityPostDetailViewModel @Inject constructor(
         }
     }
 
-    fun deleteComment(postId: Int, commentId: Int) {
+    fun deleteComment(postId: Long, commentId: Long) {
         viewModelScope.launch {
             try {
                 deleteCommentUseCase(commentId)

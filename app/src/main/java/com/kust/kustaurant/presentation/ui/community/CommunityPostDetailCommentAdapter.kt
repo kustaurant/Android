@@ -241,13 +241,14 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
             ): Boolean {
                 val isContentSame =
                     oldItem.commentId == newItem.commentId &&
-                        oldItem.likeCount == newItem.likeCount &&
-                        oldItem.status == newItem.status &&
-                        oldItem.dislikeCount == newItem.dislikeCount &&
-                        oldItem.timeAgo == newItem.timeAgo
+                    oldItem.likeCount == newItem.likeCount &&
+                    oldItem.status == newItem.status &&
+                    oldItem.dislikeCount == newItem.dislikeCount &&
+                    oldItem.timeAgo == newItem.timeAgo &&
+                    oldItem.reactionType == newItem.reactionType
 
                 // 대댓글 리스트 비교
-                val areRepliesSame = oldItem.replies?.size == newItem.replies?.size &&
+                val areRepliesSame = oldItem.replies.size == newItem.replies.size &&
                         oldItem.replies.zip(newItem.replies).all { (oldReply, newReply) ->
                             oldReply == newReply
                         }
