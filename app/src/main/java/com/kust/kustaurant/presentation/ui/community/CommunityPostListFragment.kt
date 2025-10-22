@@ -18,7 +18,7 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentCommunityPostListBinding
 import com.kust.kustaurant.databinding.PopupCommuPostListSortBinding
-import com.kust.kustaurant.domain.model.CommunityPost
+import com.kust.kustaurant.domain.model.community.CommunityPost
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 
 class CommunityPostListFragment : Fragment() {
@@ -60,7 +60,7 @@ class CommunityPostListFragment : Fragment() {
         }
     }
 
-    private fun navigateToPostDetail(postId: Int) {
+    private fun navigateToPostDetail(postId: Long) {
         val intent = Intent(requireActivity(), CommunityPostDetailActivity::class.java).apply{
             putExtra("postId", postId)
         }

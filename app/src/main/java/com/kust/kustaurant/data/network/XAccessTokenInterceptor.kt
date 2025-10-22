@@ -1,25 +1,34 @@
 package com.kust.kustaurant.data.network
 
 import android.content.Context
-import android.util.Log
 import com.kust.kustaurant.data.getAccessToken
+import com.kust.kustaurant.data.getDeviceId
+import com.kust.kustaurant.data.saveDeviceId
 import okhttp3.Interceptor
 import okhttp3.Response
 
 class XAccessTokenInterceptor(val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val builder = chain.request().newBuilder()
-        val accessToken = getAccessToken(context)
+        val original = chain.request()
+        val builder = original.newBuilder()
 
-        accessToken?.let {
-            builder.addHeader("Authorization", it)
-            Log.d("NetworkInterceptor", "Authorization: $it")
+        val access = getAccessToken(context)
+        if (!access.isNullOrBlank()) {
+            builder.header("Authorization", ensureBearer(access))
+        } else {
+            getDeviceId(context)?.let { builder.header("X-Device-Id", it) }
         }
 
-        return chain.proceed(builder.build())
+        val response = chain.proceed(builder.build())
+        response.header("X-Anonymous-Id")?.let { anon ->
+            if (anon.isNotBlank() && anon != getDeviceId(context)) {
+                saveDeviceId(context, anon)
+            }
+        }
+
+        return response
     }
 
-    companion object {
-        const val AUTHORIZATION = "Authorization"
-    }
+    private fun ensureBearer(token: String): String =
+        if (token.startsWith("Bearer ")) token else "Bearer $token"
 }

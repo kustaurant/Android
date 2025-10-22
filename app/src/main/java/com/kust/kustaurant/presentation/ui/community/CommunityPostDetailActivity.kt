@@ -1,7 +1,6 @@
 package com.kust.kustaurant.presentation.ui.community
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -17,7 +16,8 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
@@ -35,8 +35,8 @@ class CommunityPostDetailActivity : BaseActivity() {
     private var _binding: ActivityCommunityPostDetailBinding? = null
     private val binding get() = _binding!!
     private val viewModel: CommunityPostDetailViewModel by viewModels()
-    private lateinit var CommuCommentAdapter: CommunityPostDetailCommentAdapter
-    private var postId = -1
+    private lateinit var commentAdapter: CommunityPostDetailCommentAdapter
+    private var postId = -1L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +54,9 @@ class CommunityPostDetailActivity : BaseActivity() {
 
     private fun initPostContent() {
         Log.d("postId", postId.toString())
-        postId = intent.getIntExtra("postId", -1)
+        postId = intent.getLongExtra("postId", -1L)
 
-        if (postId == -1) {
+        if (postId == -1L) {
             Toast.makeText(this, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show()
             finish()
         } else {
@@ -66,38 +66,44 @@ class CommunityPostDetailActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setupObservers() {
-        viewModel.communityPostDetail.observe(this) { postDetail ->
+        viewModel.postDetail.observe(this) { postDetail ->
             postDetail?.let { post ->
-                binding.communityTvActivityPostInfo.text = post.postCategory
-                binding.communityTvPostTitle.text = post.postTitle
-                binding.communityTvPostUser.text = post.user.userNickname
+                binding.communityTvActivityPostInfo.text = post.category
+                binding.communityTvPostTitle.text = post.title
+                binding.communityTvPostUser.text = post.writernickname
                 binding.communityTvTimeAgo.text = post.timeAgo
-                binding.communityTvVisitCnt.text = post.postVisitCount
-                binding.communityTvLikeCnt.text = post.likeCount.toString()
+                binding.communityTvVisitCnt.text = post.visitCount.toString()
+                binding.communityTvLikeCnt.text = post.likeOnlyCount.toString()
                 binding.communityTvCommentsCnt.text = post.commentCount.toString()
                 binding.communityTvTimeAgo.text = post.timeAgo
                 binding.communityIvPostDetailDots.visibility = if (post.isPostMine) View.VISIBLE else View.GONE
-                binding.communityTvBtnPostLike.text = post.likeCount.toString()
+                binding.communityTvBtnPostLike.text = post.likeOnlyCount.toString()
                 binding.communityTvBtnScrapLike.text = post.scrapCount.toString()
 
-                loadPostBodyToWebView(post.postBody)
+                loadPostBodyToWebView(post.body)
 
-                Glide.with(this)
-                    .load(post.user.rankImg)
-                    .into(binding.communityIvUserIcon)
+                binding.communityIvUserIcon.load(post.writericonUrl) {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_baby_cow)
+                    error(R.drawable.ic_baby_cow)
+
+                    if (post.writericonUrl?.endsWith(".svg", true) == true) {
+                        decoderFactory(SvgDecoder.Factory())
+                    }
+                }
             }
         }
 
-        viewModel.communityPostComments.observe(this) { comments ->
-            CommuCommentAdapter.submitList(comments)
+        viewModel.postComments.observe(this) { comments ->
+            commentAdapter.submitList(comments)
         }
 
-        viewModel.communityPostCommentsCnt.observe(this) { cnt ->
+        viewModel.postCommentsCnt.observe(this) { cnt ->
             binding.communityTvCommentsCnt.text = cnt.toString()
         }
 
         viewModel.postScrapInfo.observe(this) { result ->
-            binding.communityTvBtnScrapLike.text = result.scrapCount.toString()
+            binding.communityTvBtnScrapLike.text = result.postScrapCount.toString()
         }
 
         viewModel.postLikeInfo.observe(this) { result ->
@@ -178,7 +184,7 @@ class CommunityPostDetailActivity : BaseActivity() {
                 viewModel.postPostLike(postId)
             }
             communityLlBtnScrap.setOnClickListener {
-                viewModel.postPostDetailScrap(postId)
+                viewModel.postPostDetailScrap(postId, )
             }
             communityIvPostDetailDots.setOnClickListener {
                 if (viewModel.postMine.value!!) {
@@ -191,7 +197,7 @@ class CommunityPostDetailActivity : BaseActivity() {
             communityClCommentConfirm.setOnClickListener {
                 val inputText = communityEtInput.text.toString()
                 if (inputText.isNotBlank()) {
-                    viewModel.postCreateCommentReply(inputText, postId)
+                    viewModel.postCreateCommentReply(inputText, postId, null)
                     communityEtInput.text.clear()
                     Toast.makeText(this@CommunityPostDetailActivity, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
                 } else {
@@ -220,9 +226,9 @@ class CommunityPostDetailActivity : BaseActivity() {
 
 
         popupBinding.clModify.setOnClickListener {
-            val postIntent = viewModel.communityPostDetail.value?.let {
+            val postIntent = viewModel.postDetail.value?.let {
                 CommunityPostIntent(
-                    it.postId, it.postTitle, it.postCategory, it.postBody
+                    it.postId, it.title, it.category, it.body
                 )
             }
             finish()
@@ -238,56 +244,56 @@ class CommunityPostDetailActivity : BaseActivity() {
 
 
     private fun initRecyclerView() {
-        CommuCommentAdapter = CommunityPostDetailCommentAdapter(this)
+        commentAdapter = CommunityPostDetailCommentAdapter(this)
         binding.communityRvComment.layoutManager = LinearLayoutManager(this)
-        binding.communityRvComment.adapter = CommuCommentAdapter
+        binding.communityRvComment.adapter = commentAdapter
         binding.communityRvComment.itemAnimator = null
 
-        CommuCommentAdapter.setOnItemClickListener(object :
+        commentAdapter.setOnItemClickListener(object :
             CommunityPostDetailCommentAdapter.OnItemClickListener {
-            override fun onReportClicked(commentId: Int) {
+            override fun onReportClicked(commentId: Long) {
                 checkToken {
                     //viewModel.postCommentReport(restaurantId, commentId)
                     Toast.makeText(this@CommunityPostDetailActivity, "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onDeleteClicked(commentId: Int) {
+            override fun onDeleteClicked(commentId: Long) {
                 checkToken {
                     viewModel.deleteComment(postId, commentId)
                     Toast.makeText(this@CommunityPostDetailActivity, "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onCommentClicked(commentId: Int) {
+            override fun onCommentClicked(commentId: Long) {
                 checkToken {
                     showBottomSheetInput(commentId)
                 }
             }
 
-            override fun onLikeClicked(commentId: Int, position: Int) {
+            override fun onLikeClicked(commentId: Long, position: Int) {
                 checkToken {
-                    viewModel.postCommentReact(commentId, "likes")
+                    viewModel.postCommentReact(commentId, "LIKE")
                 }
             }
 
-            override fun onDisLikeClicked(commentId: Int, position: Int) {
+            override fun onDisLikeClicked(commentId: Long, position: Int) {
                 checkToken {
-                    viewModel.postCommentReact(commentId, "dislikes")
+                    viewModel.postCommentReact(commentId, "DISLIKE")
                 }
             }
         })
 
-        CommuCommentAdapter.interactionListener =
+        commentAdapter.interactionListener =
             object : CommunityPostDetailCommentReplyAdapter.OnItemClickListener {
-                override fun onReportClicked(commentId: Int) {
+                override fun onReportClicked(commentId: Long) {
                     checkToken {
                         //viewModel.postCommentReport(restaurantId, commentId)
                         Toast.makeText(this@CommunityPostDetailActivity, "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
-                override fun onDeleteClicked(commentId: Int) {
+                override fun onDeleteClicked(commentId: Long) {
                     checkToken {
                         viewModel.deleteComment(postId, commentId)
                         Toast.makeText(this@CommunityPostDetailActivity, "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT)
@@ -295,15 +301,15 @@ class CommunityPostDetailActivity : BaseActivity() {
                     }
                 }
 
-                override fun onLikeClicked(commentId: Int, position: Int) {
+                override fun onLikeClicked(commentId: Long, position: Int) {
                     checkToken {
-                        viewModel.postCommentReact(commentId, "likes")
+                        viewModel.postCommentReact(commentId, "LIKE")
                     }
                 }
 
-                override fun onDisLikeClicked(commentId: Int, position: Int) {
+                override fun onDisLikeClicked(commentId: Long, position: Int) {
                     checkToken {
-                        viewModel.postCommentReact(commentId, "dislikes")
+                        viewModel.postCommentReact(commentId, "DISLIKE")
                     }
                 }
             }
@@ -319,7 +325,7 @@ class CommunityPostDetailActivity : BaseActivity() {
         }
     }
 
-    private fun showBottomSheetInput(commentId: Int) {
+    private fun showBottomSheetInput(commentId: Long) {
         binding.communityClComment.visibility = View.GONE
 
         val bottomSheetDialog = BottomSheetDialog(this).apply {
@@ -336,7 +342,7 @@ class CommunityPostDetailActivity : BaseActivity() {
         bottomSheetDialog.setOnShowListener {
             etInput.requestFocus()
             etInput.postDelayed({
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.showSoftInput(etInput, InputMethodManager.SHOW_IMPLICIT)
             }, 100)
         }
@@ -354,7 +360,7 @@ class CommunityPostDetailActivity : BaseActivity() {
         }
 
         bottomSheetDialog.setOnDismissListener {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(etInput.windowToken, 0)
             binding.communityClComment.visibility = View.VISIBLE
         }
@@ -377,7 +383,7 @@ class CommunityPostDetailActivity : BaseActivity() {
                 currentFocusView.getGlobalVisibleRect(outRect)
                 if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
                     currentFocusView.clearFocus()
-                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(currentFocusView.windowToken, 0)
                 }
             }

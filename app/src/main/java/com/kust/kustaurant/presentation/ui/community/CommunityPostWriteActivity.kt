@@ -36,7 +36,7 @@ class CommunityPostWriteActivity : BaseActivity() {
     private lateinit var binding: ActivityCommunityPostWriteBinding
     private val viewModel: CommunityPostWriteViewModel by viewModels()
     private var textChangeJob: Job? = null
-    private var postId : Int? = null
+    private var postId : Long? = null
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var docPickerLauncher: ActivityResultLauncher<Intent>
 

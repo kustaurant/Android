@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.domain.model.community.toPostCategory
 import com.kust.kustaurant.domain.usecase.community.PatchPostModifyUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityPostCreateUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityUploadImageUseCase
@@ -81,20 +82,20 @@ class CommunityPostWriteViewModel @Inject constructor(
         return uploadImage(uri, fileName)
     }
 
-    fun onSubmit(postId : Int?) {
+    fun onSubmit(postId : Long?) {
         if(_isEditMode.value == true)
             postId?.let { modifyPost(it) }
         else if(_isEditMode.value == false)
             createPost()
     }
 
-    private fun modifyPost(postId: Int) {
+    private fun modifyPost(postId: Long) {
         viewModelScope.launch {
             try {
                 patchPostModify(
                     postId.toString(),
                     _postTitle.value!!,
-                    _postSort.value!!,
+                    _postSort.value!!.toPostCategory(),
                     _postContentHtml.value!!
                 )
 
@@ -115,7 +116,7 @@ class CommunityPostWriteViewModel @Inject constructor(
             try {
                 postPostCreate(
                     _postTitle.value!!,
-                    _postSort.value!!,
+                    _postSort.value!!.toPostCategory(),
                     _postContentHtml.value!!
                 )
 

@@ -1,6 +1,6 @@
 package com.kust.kustaurant.data.remote
 
-import com.kust.kustaurant.data.model.commnity.CommunityPostCommentReactResponse
+import com.kust.kustaurant.data.model.commnity.CommunityCommentReactionResponse
 import com.kust.kustaurant.data.model.commnity.CommunityPostLikeResponse
 import com.kust.kustaurant.data.model.commnity.CommunityPostScrapResponse
 import com.kust.kustaurant.data.model.commnity.CommunityPostUploadImageResponse
@@ -53,7 +53,7 @@ interface CommunityApi {
         @Query("cmd") cmd : String?
     ): CommunityPostLikeResponse
 
-    @POST("/api/v2/auth/community/posts/create")
+    @POST("/api/v2/auth/community/posts")
     suspend fun postPostCreate(
         @Body postRequest : PostRequest
     ): CommunityPost
@@ -70,7 +70,7 @@ interface CommunityApi {
         @Query("user") user : AuthUserInfo,
     ) : PostResponse
 
-    @DELETE("/api/v2/auth/community/{postId}")
+    @DELETE("/api/v2/auth/community/posts/{postId}")
     suspend fun deletePost(
         @Path("postId") postId: Long,
     )
@@ -88,7 +88,7 @@ interface CommunityApi {
 
     @POST("/api/v2/auth/posts/{postId}/comments")
     suspend fun postCommunityPostCommentReply(
-        @Query("postId") postId: Long,
+        @Path("postId") postId: Long,
         @Body postCommentRequest : PostCommentRequest
     ): List<CommunityPostComment>
 
@@ -96,5 +96,5 @@ interface CommunityApi {
     suspend fun putCommentLikeToggle(
         @Path("commentId") commentId: Long,
         @Query("reaction") reaction: String?
-    ): CommunityPostCommentReactResponse
+    ): CommunityCommentReactionResponse
 }

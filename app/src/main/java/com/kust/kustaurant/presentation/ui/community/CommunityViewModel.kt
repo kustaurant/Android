@@ -5,8 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.domain.model.CommunityPost
-import com.kust.kustaurant.domain.model.CommunityRanking
+import com.kust.kustaurant.domain.model.community.CommunityPost
+import com.kust.kustaurant.domain.model.community.CommunityRanking
+import com.kust.kustaurant.domain.model.community.toCategorySort
+import com.kust.kustaurant.domain.model.community.toPostCategory
+import com.kust.kustaurant.domain.model.community.toRankingSort
 import com.kust.kustaurant.domain.usecase.community.GetCommunityPostListUseCase
 import com.kust.kustaurant.domain.usecase.community.GetCommunityRankingListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,16 +38,15 @@ class CommunityViewModel @Inject constructor(
 
     private val _rankingSortType = MutableLiveData<String>("")
 
-    var lastHandledSeq: Long? = null
     private fun loadCommunityPosts(postCategory: String, currentPage: Int, sort: String) {
         if (isLastPage) return
 
         viewModelScope.launch {
             try {
                 val newPosts = getCommunityPostListUseCase(
-                    postCategory,
+                    postCategory.toPostCategory(),
                     currentPage,
-                    sort
+                    sort.toCategorySort()
                 )
 
                 if (newPosts.isEmpty()) {
@@ -53,6 +55,9 @@ class CommunityViewModel @Inject constructor(
                     val currentPosts = _communityPosts.value.orEmpty() + newPosts
                     _communityPosts.postValue(currentPosts)
                 }
+
+
+
             } catch (e: Exception) {
                 Log.e("CommunityViewModel", "From loadCommunityPosts Err is ", e)
             } finally {  }
@@ -115,7 +120,7 @@ class CommunityViewModel @Inject constructor(
     private fun loadCommunityRanking(sort: String) {
         viewModelScope.launch {
             try {
-                val rankings = getCommunityRankingListUseCase(sort)
+                val rankings = getCommunityRankingListUseCase(sort.toRankingSort())
                 _communityRanking.value = rankings
             } catch (e: Exception) {
                 Log.e("CommunityViewModel", "From loadCommunityRanking Err is ", e)

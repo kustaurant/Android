@@ -11,10 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentCommunityRankingBinding
-import com.kust.kustaurant.domain.model.CommunityRanking
+import com.kust.kustaurant.domain.model.community.CommunityRanking
 
 class CommunityPostRankingFragment : Fragment() {
     private var _binding: FragmentCommunityRankingBinding? = null
@@ -47,7 +48,7 @@ class CommunityPostRankingFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.onSortTypeChanged("quarterly")
+        viewModel.onSortTypeChanged("seasonal")
 
         setupToggleButtons()
 
@@ -80,12 +81,19 @@ class CommunityPostRankingFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun bindRanker(ranking: CommunityRanking, imageView: ImageView, nicknameTextView: TextView, commentCountTextView: TextView) {
-        nicknameTextView.text = ranking.userNickname
+        nicknameTextView.text = ranking.nickname
         commentCountTextView.text = "${ranking.evaluationCount} 개"
 
-        Glide.with(imageView.context)
-            .load(ranking.rankImg)
-            .into(imageView)
+
+        imageView.load(ranking.iconUrl) {
+            crossfade(true)
+            placeholder(R.drawable.ic_baby_cow)
+            error(R.drawable.ic_baby_cow)
+
+            if(ranking.iconUrl.endsWith(".svg", true)) {
+                decoderFactory(SvgDecoder.Factory())
+            }
+        }
     }
 
     private fun setupToggleButtons() {
@@ -100,7 +108,7 @@ class CommunityPostRankingFragment : Fragment() {
         binding.communityToggleQuarterly.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.communityTogglePopularSort.isChecked = false
-                viewModel.onSortTypeChanged("quarterly")
+                viewModel.onSortTypeChanged("seasonal")
 
                 binding.communityToggleQuarterly.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
                 binding.communityTogglePopularSort.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))

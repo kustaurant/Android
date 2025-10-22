@@ -1,6 +1,6 @@
 package com.kust.kustaurant.domain.usecase.community
 
-import com.kust.kustaurant.data.model.commnity.CommunityPostCommentReactResponse
+import com.kust.kustaurant.data.model.commnity.CommunityCommentReactionResponse
 import com.kust.kustaurant.domain.model.community.LikeEvent
 import com.kust.kustaurant.domain.repository.CommunityRepository
 import javax.inject.Inject
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 class PostCommunityPostCommentReactUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
 ){
-    suspend operator fun invoke(commentId : Long, reaction : LikeEvent?) : CommunityPostCommentReactResponse {
+    suspend operator fun invoke(commentId : Long, reaction : LikeEvent?) : CommunityCommentReactionResponse {
         return communityRepository.postCommentLikeToggle(commentId, reaction)
     }
 }

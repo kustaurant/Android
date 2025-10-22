@@ -1,32 +1,38 @@
 package com.kust.kustaurant.domain.repository
 
-import com.kust.kustaurant.data.model.CommunityPostCommentReactResponse
-import com.kust.kustaurant.data.model.CommunityPostLikeResponse
-import com.kust.kustaurant.data.model.CommunityPostScrapResponse
-import com.kust.kustaurant.data.model.CommunityPostUploadImageResponse
-import com.kust.kustaurant.domain.model.CommunityPost
-import com.kust.kustaurant.domain.model.CommunityPostComment
-import com.kust.kustaurant.domain.model.CommunityRanking
+import com.kust.kustaurant.data.model.commnity.CommunityCommentReactionResponse
+import com.kust.kustaurant.data.model.commnity.CommunityPostLikeResponse
+import com.kust.kustaurant.data.model.commnity.CommunityPostScrapResponse
+import com.kust.kustaurant.data.model.commnity.CommunityPostUploadImageResponse
+import com.kust.kustaurant.domain.model.community.AuthUserInfo
+import com.kust.kustaurant.domain.model.community.CategorySort
+import com.kust.kustaurant.domain.model.community.CommunityPost
+import com.kust.kustaurant.domain.model.community.CommunityPostComment
+import com.kust.kustaurant.domain.model.community.CommunityRanking
+import com.kust.kustaurant.domain.model.community.LikeEvent
+import com.kust.kustaurant.domain.model.community.PostModification
+import com.kust.kustaurant.domain.model.community.PostCategory
+import com.kust.kustaurant.domain.model.community.RankingSort
 import okhttp3.MultipartBody
 
 interface CommunityRepository {
-    suspend fun getPostListData(
-        postCategory: String,
+    suspend fun getPostList(
+        postCategory: PostCategory,
         page: Int,
-        sort: String
+        sort: CategorySort
     ): List<CommunityPost>
 
-    suspend fun getRankingListData(
-        sort: String
+    suspend fun getRankingList(
+        sort: RankingSort
     ): List<CommunityRanking>
 
-    suspend fun getPostDetailData(
-        postId: Int,
+    suspend fun getPostDetail(
+        postId: Long,
     ): CommunityPost
 
     suspend fun postPostCreate(
         title : String,
-        postCategory : String,
+        postCategory : PostCategory,
         content : String,
     ) : CommunityPost
 
@@ -35,37 +41,44 @@ interface CommunityRepository {
     ) : CommunityPostUploadImageResponse
 
     suspend fun postPostDetailScrap(
-        postId : Int,
+        postId : Long,
+        scrapped : Boolean
     ) : CommunityPostScrapResponse
 
-    suspend fun postPostDetailLike(
-        postId : Int,
+    suspend fun postPostLikeToggle(
+        postId : Long,
+        likeEvent : LikeEvent?,
     ) : CommunityPostLikeResponse
 
     suspend fun patchPostModify(
         postId: String,
         title : String,
-        postCategory : String,
+        postCategory : PostCategory,
         content : String,
     )
 
-    suspend fun postCommunityPostCommentReply(
+    suspend fun getPostModify(
+        postId: Long,
+        user : AuthUserInfo,
+    ) : PostModification
+
+    suspend fun postCommunityCommentReply(
+        postId : Long,
         content : String,
-        postId : String,
-        parentCommentId : String,
+        parentCommentId : Long?,
     ) : List<CommunityPostComment>
 
-    suspend fun postCommentReact(
-        commentId : Int,
-        action : String,
-    ) : CommunityPostCommentReactResponse
+    suspend fun postCommentLikeToggle(
+        commentId : Long,
+        reaction : LikeEvent?,
+    ) : CommunityCommentReactionResponse
 
     suspend fun deletePost(
-        postId : Int,
+        postId : Long,
     )
 
-    suspend fun deletePostComment(
-        commentId : Int,
+    suspend fun deleteCommunityComment(
+        commentId : Long,
     )
 }
 
