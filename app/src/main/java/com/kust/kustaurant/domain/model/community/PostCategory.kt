@@ -9,10 +9,9 @@ enum class PostCategory(val value : String){
 
 fun String.toPostCategory(): PostCategory {
         return when (this) {
-                "all" -> PostCategory.ALL
-                "free" -> PostCategory.FREE
-                "column" -> PostCategory.COLUMN
-                "suggestion" -> PostCategory.SUGGESTION
+                "자유게시판" -> PostCategory.FREE
+                "칼럼게시판" -> PostCategory.COLUMN
+                "건의게시판" -> PostCategory.SUGGESTION
                 else -> PostCategory.ALL
         }
 }

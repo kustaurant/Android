@@ -1,7 +1,7 @@
 package com.kust.kustaurant.data.model.commnity
 
-data class CommunityPostCommentReactResponse(
+data class CommunityCommentReactionResponse(
     val likeCount : Int,
     val dislikeCount : Int,
-    val commentLikeStatus : Int,
+    val reactionType : String?,
 )
