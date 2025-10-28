@@ -10,15 +10,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.databinding.ItemCommunityPostBinding
-import com.kust.kustaurant.domain.model.community.CommunityPost
+import com.kust.kustaurant.domain.model.community.CommunityPostListItem
 import com.kust.kustaurant.presentation.common.communityRegex
 
 class CommunityPostListAdapter() :
-    ListAdapter<CommunityPost, CommunityPostListAdapter.ViewHolder>(communityPostListDiffUtil) {
+    ListAdapter<CommunityPostListItem, CommunityPostListAdapter.ViewHolder>(
+        communityPostListDiffUtil
+    ) {
     lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener{
-        fun onItemClicked(data : CommunityPost)
+        fun onItemClicked(data : CommunityPostListItem)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
@@ -40,10 +42,9 @@ class CommunityPostListAdapter() :
         }
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: CommunityPost) {
+        fun bind(item: CommunityPostListItem) {
             viewBinding.communityTvCategory.text = item.category
-
-            val imageUrl = item.photoUrls?.first()
+            val imageUrl = item.photoUrl
 
             if (imageUrl != null) {
                 viewBinding.communityIvPostImg.visibility = View.VISIBLE
@@ -59,7 +60,7 @@ class CommunityPostListAdapter() :
             viewBinding.communityTvBoardContent.text = Html.fromHtml(postBodyWithoutImg, Html.FROM_HTML_MODE_LEGACY)
 
             // 나머지 UI 요소 설정
-            viewBinding.communityTvLikeCnt.text = item.likeOnlyCount.toString()
+            viewBinding.communityTvLikeCnt.text = item.totalLikes.toString()
             viewBinding.communityTvCommentCnt.text = item.commentCount.toString()
             viewBinding.communityTvUserNickname.text = item.writernickname
             viewBinding.communityTvPostTitle.text = item.title
@@ -82,14 +83,14 @@ class CommunityPostListAdapter() :
     }
 
     companion object {
-        val communityPostListDiffUtil = object : DiffUtil.ItemCallback<CommunityPost>() {
-            override fun areItemsTheSame(oldItem: CommunityPost, newItem: CommunityPost): Boolean {
+        val communityPostListDiffUtil = object : DiffUtil.ItemCallback<CommunityPostListItem>() {
+            override fun areItemsTheSame(oldItem: CommunityPostListItem, newItem: CommunityPostListItem): Boolean {
                 return oldItem.postId == newItem.postId
             }
 
             override fun areContentsTheSame(
-                oldItem: CommunityPost,
-                newItem: CommunityPost
+                oldItem: CommunityPostListItem,
+                newItem: CommunityPostListItem
             ): Boolean {
                 return oldItem == newItem
             }

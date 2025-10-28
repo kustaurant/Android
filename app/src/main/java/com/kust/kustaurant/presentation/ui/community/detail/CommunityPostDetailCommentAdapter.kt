@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.ui.community
+package com.kust.kustaurant.presentation.ui.community.detail
 
 import android.app.AlertDialog
 import android.content.Context
@@ -22,6 +22,7 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
 import com.kust.kustaurant.domain.model.community.CommunityPostComment
 import com.kust.kustaurant.domain.model.community.LikeEvent
+import com.kust.kustaurant.domain.model.community.PostCommentStatus
 
 class CommunityPostDetailCommentAdapter(private val context: Context) :
     ListAdapter<CommunityPostComment, CommunityPostDetailCommentAdapter.ViewHolder>(diffUtil) {
@@ -31,11 +32,10 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
 
     interface OnItemClickListener {
         fun onReportClicked(commentId: Long)
-        fun onDeleteClicked(commentId: Long)
+        fun onDeleteClicked(commentId: Long, status : PostCommentStatus)
         fun onCommentClicked(commentId: Long)
         fun onLikeClicked(commentId: Long, position: Int)
         fun onDisLikeClicked(commentId: Long, position: Int)
-
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -105,7 +105,8 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
                 }
             } else {
                 popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
-                    itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).commentId)
+                    val item = getItem(absoluteAdapterPosition)
+                    itemClickListener.onDeleteClicked(item.commentId, PostCommentStatus.from(item.status))
                     popupWindow.dismiss()
                 }
             }
@@ -188,8 +189,8 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
                         interactionListener?.onReportClicked(commentId)
                     }
 
-                    override fun onDeleteClicked(commentId: Long) {
-                        interactionListener?.onDeleteClicked(commentId)
+                    override fun onDeleteClicked(commentId: Long, status : PostCommentStatus) {
+                        interactionListener?.onDeleteClicked(commentId, status)
                     }
 
                     override fun onLikeClicked(commentId: Long, position: Int) {
@@ -252,6 +253,7 @@ class CommunityPostDetailCommentAdapter(private val context: Context) :
                         oldItem.replies.zip(newItem.replies).all { (oldReply, newReply) ->
                             oldReply == newReply
                         }
+
                 return isContentSame && areRepliesSame
             }
         }

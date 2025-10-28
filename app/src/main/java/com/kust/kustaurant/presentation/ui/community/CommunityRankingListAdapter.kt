@@ -14,7 +14,9 @@ import com.kust.kustaurant.databinding.ItemCommunityRankingBinding
 import com.kust.kustaurant.domain.model.community.CommunityRanking
 
 class CommunityRankingListAdapter :
-    ListAdapter<CommunityRanking, CommunityRankingListAdapter.ViewHolder>(communityRankingListDiffUtil) {
+    ListAdapter<CommunityRanking, CommunityRankingListAdapter.ViewHolder>(
+        communityRankingListDiffUtil
+    ) {
     override fun getItemCount(): Int {
         return currentList.size
     }

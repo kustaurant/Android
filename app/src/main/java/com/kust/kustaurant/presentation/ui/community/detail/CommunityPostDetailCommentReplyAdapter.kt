@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.ui.community
+package com.kust.kustaurant.presentation.ui.community.detail
 
 import android.app.AlertDialog
 import android.content.Context
@@ -19,15 +19,17 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
 import com.kust.kustaurant.domain.model.community.CommunityPostComment
 import com.kust.kustaurant.domain.model.community.LikeEvent
+import com.kust.kustaurant.domain.model.community.PostCommentStatus
 
 class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapter<CommunityPostComment, CommunityPostDetailCommentReplyAdapter.ViewHolder>(
-    CommunityPostDetailCommentAdapter.diffUtil) {
+    CommunityPostDetailCommentAdapter.diffUtil
+) {
 
     private lateinit var itemClickListener : OnItemClickListener
 
     interface OnItemClickListener {
         fun onReportClicked(commentId: Long)
-        fun onDeleteClicked(commentId: Long)
+        fun onDeleteClicked(commentId: Long, status : PostCommentStatus)
         fun onLikeClicked(commentId: Long, position: Int)
         fun onDisLikeClicked(commentId: Long, position: Int)
     }
@@ -61,7 +63,8 @@ class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapte
                 }
             } else {
                 popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
-                    itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).commentId)
+                    val item = getItem(absoluteAdapterPosition)
+                    itemClickListener.onDeleteClicked(item.commentId, PostCommentStatus.from(item.status))
                     popupWindow.dismiss()
                 }
             }
@@ -137,12 +140,12 @@ class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapte
 
         }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityPostDetailCommentReplyAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemDetailReviewReplyBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CommunityPostDetailCommentReplyAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 }
