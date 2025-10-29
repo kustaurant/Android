@@ -1,6 +1,5 @@
 package com.kust.kustaurant.presentation.ui.community
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +17,11 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentCommunityPostListBinding
 import com.kust.kustaurant.databinding.PopupCommuPostListSortBinding
-import com.kust.kustaurant.domain.model.community.CommunityPost
+import com.kust.kustaurant.domain.model.community.CategorySort
+import com.kust.kustaurant.domain.model.community.CommunityPostListItem
+import com.kust.kustaurant.domain.model.community.toPostCategory
+import com.kust.kustaurant.presentation.ui.community.detail.CommunityPostDetailActivity
+import com.kust.kustaurant.presentation.ui.community.write.CommunityPostWriteActivity
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 
 class CommunityPostListFragment : Fragment() {
@@ -48,7 +51,7 @@ class CommunityPostListFragment : Fragment() {
     private fun setupRecyclerView() {
         commuAdapter = CommunityPostListAdapter().apply {
             setOnItemClickListener(object : CommunityPostListAdapter.OnItemClickListener {
-                override fun onItemClicked(data: CommunityPost) {
+                override fun onItemClicked(data: CommunityPostListItem) {
                     navigateToPostDetail(data.postId)
                 }
             })
@@ -71,10 +74,10 @@ class CommunityPostListFragment : Fragment() {
         setupFloatingWriteBtn()
 
         binding.communityToggleLastestSort.setOnCheckedChangeListener { buttonView, isChecked ->
-            handleSortToggle(buttonView, isChecked, "recent", binding.communityTogglePopularSort)
+            handleSortToggle(buttonView, isChecked, CategorySort.LATEST, binding.communityTogglePopularSort)
         }
         binding.communityTogglePopularSort.setOnCheckedChangeListener { buttonView, isChecked ->
-            handleSortToggle(buttonView, isChecked, "popular", binding.communityToggleLastestSort)
+            handleSortToggle(buttonView, isChecked, CategorySort.POPULARITY, binding.communityToggleLastestSort)
         }
 
         binding.commuBtnWritePost.setOnClickListener {
@@ -93,10 +96,10 @@ class CommunityPostListFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (!recyclerView.canScrollVertically(1)) {
-                    val postCategory = viewModel.postCategory.value
+                    val category = viewModel.postCategory.value
                     val sort = viewModel.sort.value
 
-                    if (!postCategory.isNullOrEmpty() && !sort.isNullOrEmpty()) {
+                    if (category != null && sort != null) {
                         viewModel.getCommunityPostList(PostLoadState.POST_NEXT_PAGE, sort)
                     }
                 }
@@ -116,7 +119,7 @@ class CommunityPostListFragment : Fragment() {
     private fun handleSortToggle(
         buttonView: CompoundButton,
         isChecked: Boolean,
-        sortType: String,
+        sortType: CategorySort,
         otherToggle: CompoundButton
     ) {
         if (isChecked) {
@@ -163,15 +166,7 @@ class CommunityPostListFragment : Fragment() {
     }
 
     private fun updateSelectedPostSort(selectedText: String, popupWindow: PopupWindow) {
-        val categoryCode = when (selectedText) {
-            "전체 게시판" -> "all"
-            "자유 게시판" -> "free"
-            "칼럼 게시판" -> "column"
-            "건의 게시판" -> "suggestion"
-            else -> "all"
-        }
-
-        viewModel.onPostCategoryChanged(categoryCode)
+        viewModel.onPostCategoryChanged(selectedText.toPostCategory())
         popupWindow.dismiss()
     }
 
@@ -221,19 +216,12 @@ class CommunityPostListFragment : Fragment() {
         }
 
         viewModel.postCategory.observe(viewLifecycleOwner) { category ->
-            val position = when (category) {
-                "all" -> "전체 게시판"
-                "free" -> "자유 게시판"
-                "column" -> "칼럼 게시판"
-                "suggestion" -> "건의 게시판"
-                else -> "전체 게시판"
-            }
-            binding.tvSelectPostSort.text = position
+            binding.tvSelectPostSort.text = category.displayName
         }
 
         viewModel.sort.observe(viewLifecycleOwner) { sort ->
-            binding.communityToggleLastestSort.isChecked = sort == "recent"
-            binding.communityTogglePopularSort.isChecked = sort == "popular"
+            binding.communityToggleLastestSort.isChecked = sort == CategorySort.LATEST
+            binding.communityTogglePopularSort.isChecked = sort == CategorySort.POPULARITY
         }
     }
 

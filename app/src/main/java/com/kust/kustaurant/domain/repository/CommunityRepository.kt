@@ -8,6 +8,7 @@ import com.kust.kustaurant.domain.model.community.AuthUserInfo
 import com.kust.kustaurant.domain.model.community.CategorySort
 import com.kust.kustaurant.domain.model.community.CommunityPost
 import com.kust.kustaurant.domain.model.community.CommunityPostComment
+import com.kust.kustaurant.domain.model.community.CommunityPostListItem
 import com.kust.kustaurant.domain.model.community.CommunityRanking
 import com.kust.kustaurant.domain.model.community.LikeEvent
 import com.kust.kustaurant.domain.model.community.PostModification
@@ -20,7 +21,7 @@ interface CommunityRepository {
         postCategory: PostCategory,
         page: Int,
         sort: CategorySort
-    ): List<CommunityPost>
+    ): List<CommunityPostListItem>
 
     suspend fun getRankingList(
         sort: RankingSort
@@ -66,7 +67,7 @@ interface CommunityRepository {
         postId : Long,
         content : String,
         parentCommentId : Long?,
-    ) : List<CommunityPostComment>
+    ) : CommunityPostComment
 
     suspend fun postCommentLikeToggle(
         commentId : Long,

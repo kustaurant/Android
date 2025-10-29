@@ -8,11 +8,12 @@ enum class PostCategory(val value: String, val displayName: String) {
 }
 
 fun String.toPostCategory(): PostCategory {
-        return when (this) {
-                "전체게시판" -> PostCategory.ALL
-                "자유게시판" -> PostCategory.FREE
-                "칼럼게시판" -> PostCategory.COLUMN
-                "건의게시판" -> PostCategory.SUGGESTION
+        return when (this.uppercase()) {
+                "ALL", "전체게시판" -> PostCategory.ALL
+                "FREE", "자유게시판" -> PostCategory.FREE
+                "COLUMN", "칼럼게시판" -> PostCategory.COLUMN
+                "SUGGESTION", "건의게시판" -> PostCategory.SUGGESTION
                 else -> PostCategory.ALL
         }
 }
+

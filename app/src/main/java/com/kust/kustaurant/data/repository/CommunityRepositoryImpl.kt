@@ -12,6 +12,7 @@ import com.kust.kustaurant.domain.model.community.AuthUserInfo
 import com.kust.kustaurant.domain.model.community.CategorySort
 import com.kust.kustaurant.domain.model.community.CommunityPost
 import com.kust.kustaurant.domain.model.community.CommunityPostComment
+import com.kust.kustaurant.domain.model.community.CommunityPostListItem
 import com.kust.kustaurant.domain.model.community.CommunityRanking
 import com.kust.kustaurant.domain.model.community.LikeEvent
 import com.kust.kustaurant.domain.model.community.PostCategory
@@ -24,7 +25,7 @@ import javax.inject.Inject
 class CommunityRepositoryImpl @Inject constructor(
     private val communityApi : CommunityApi
 ) : CommunityRepository {
-    override suspend fun getPostList(postCategory: PostCategory, page: Int, sort: CategorySort): List<CommunityPost> {
+    override suspend fun getPostList(postCategory: PostCategory, page: Int, sort: CategorySort): List<CommunityPostListItem> {
         return communityApi
             .getCommunityPostListData(postCategory.value, page, sort.value)
     }
@@ -36,7 +37,7 @@ class CommunityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPostDetail(postId: Long): CommunityPost {
-        return communityApi.getCommunityPostDetailData(postId)
+        return communityApi.getCommunityPostDetailData(postId).toDomain()
     }
 
     override suspend fun postPostCreate(
@@ -45,7 +46,7 @@ class CommunityRepositoryImpl @Inject constructor(
         content: String,
     ): CommunityPost {
         val request = PostRequest(title, postCategory.value, content)
-        return communityApi.postPostCreate(request)
+        return communityApi.postPostCreate(request).toDomain()
     }
 
     override suspend fun postUploadImage(image: MultipartBody.Part): CommunityPostUploadImageResponse {
@@ -78,9 +79,9 @@ class CommunityRepositoryImpl @Inject constructor(
         postId : Long,
         content : String,
         parentCommentId : Long?,
-    ): List<CommunityPostComment> {
+    ): CommunityPostComment {
         val request = PostCommentRequest(content, parentCommentId)
-        return communityApi.postCommunityPostCommentReply(postId, request)
+        return communityApi.postCommunityPostCommentReply(postId, request).toDomain()
     }
 
     override suspend fun postCommentLikeToggle(

@@ -11,7 +11,7 @@ data class CommunityPostListItem(
     val writerevalCount: Long,
     val writericonUrl: String?,
 
-    val photoUrl: String,
+    val photoUrl: String?,
     val timeAgo: String?,
 
     val totalLikes: Long,

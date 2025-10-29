@@ -4,7 +4,7 @@ import com.kust.kustaurant.domain.model.community.CommunityPost
 
 data class CommunityPostResponse(
     val postId: Long,
-    val category: String,
+    val category: PostCategoryDto ,
     val title: String,
     val body: String,
     val photoUrls: List<String>?,
@@ -35,7 +35,7 @@ data class CommunityPostResponse(
 fun CommunityPostResponse.toDomain(): CommunityPost =
     CommunityPost(
         postId = postId,
-        category = category,
+        category = category.toDomain(),
         title = title,
         body = body,
         photoUrls = photoUrls,

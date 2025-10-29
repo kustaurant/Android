@@ -16,6 +16,7 @@ import coil.load
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentCommunityRankingBinding
 import com.kust.kustaurant.domain.model.community.CommunityRanking
+import com.kust.kustaurant.domain.model.community.RankingSort
 
 class CommunityPostRankingFragment : Fragment() {
     private var _binding: FragmentCommunityRankingBinding? = null
@@ -47,8 +48,6 @@ class CommunityPostRankingFragment : Fragment() {
         _binding = FragmentCommunityRankingBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-
-        viewModel.onSortTypeChanged("seasonal")
 
         setupToggleButtons()
 
@@ -108,7 +107,7 @@ class CommunityPostRankingFragment : Fragment() {
         binding.communityToggleQuarterly.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.communityTogglePopularSort.isChecked = false
-                viewModel.onSortTypeChanged("seasonal")
+                viewModel.onSortTypeChanged(RankingSort.SEASONAL)
 
                 binding.communityToggleQuarterly.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
                 binding.communityTogglePopularSort.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
@@ -120,7 +119,7 @@ class CommunityPostRankingFragment : Fragment() {
         binding.communityTogglePopularSort.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.communityToggleQuarterly.isChecked = false
-                viewModel.onSortTypeChanged("cumulative")
+                viewModel.onSortTypeChanged(RankingSort.CUMULATIVE)
 
                 binding.communityTogglePopularSort.setTextColor(ContextCompat.getColor(requireContext(), R.color.signature_1))
                 binding.communityToggleQuarterly.setTextColor(ContextCompat.getColor(requireContext(), R.color.cement_4))
