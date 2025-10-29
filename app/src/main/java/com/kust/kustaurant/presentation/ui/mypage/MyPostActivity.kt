@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyPostBinding
 import com.kust.kustaurant.presentation.common.BaseActivity
-import com.kust.kustaurant.presentation.ui.community.CommunityPostDetailActivity
+import com.kust.kustaurant.presentation.ui.community.detail.CommunityPostDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
