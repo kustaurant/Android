@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.ui.community
+package com.kust.kustaurant.presentation.ui.community.detail
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -24,9 +24,11 @@ import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.ActivityCommunityPostDetailBinding
 import com.kust.kustaurant.databinding.BottomSheetCommentBinding
 import com.kust.kustaurant.databinding.PopupCommuPostDetailDotsBinding
+import com.kust.kustaurant.domain.model.community.PostCommentStatus
 import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import com.kust.kustaurant.presentation.model.UiState
+import com.kust.kustaurant.presentation.ui.community.write.CommunityPostWriteActivity
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -68,7 +70,7 @@ class CommunityPostDetailActivity : BaseActivity() {
     private fun setupObservers() {
         viewModel.postDetail.observe(this) { postDetail ->
             postDetail?.let { post ->
-                binding.communityTvActivityPostInfo.text = post.category
+                binding.communityTvActivityPostInfo.text = post.category.displayName
                 binding.communityTvPostTitle.text = post.title
                 binding.communityTvPostUser.text = post.writernickname
                 binding.communityTvTimeAgo.text = post.timeAgo
@@ -95,7 +97,7 @@ class CommunityPostDetailActivity : BaseActivity() {
         }
 
         viewModel.postComments.observe(this) { comments ->
-            commentAdapter.submitList(comments)
+            commentAdapter.submitList(comments.orEmpty())
         }
 
         viewModel.postCommentsCnt.observe(this) { cnt ->
@@ -228,7 +230,7 @@ class CommunityPostDetailActivity : BaseActivity() {
         popupBinding.clModify.setOnClickListener {
             val postIntent = viewModel.postDetail.value?.let {
                 CommunityPostIntent(
-                    it.postId, it.title, it.category, it.body
+                    it.postId, it.title, it.category.value, it.body
                 )
             }
             finish()
@@ -258,8 +260,12 @@ class CommunityPostDetailActivity : BaseActivity() {
                 }
             }
 
-            override fun onDeleteClicked(commentId: Long) {
+            override fun onDeleteClicked(commentId: Long, status: PostCommentStatus) {
                 checkToken {
+                    if(status != PostCommentStatus.ACTIVE) {
+                        Toast.makeText(this@CommunityPostDetailActivity, "이미 삭제된 댓글입니다.", Toast.LENGTH_SHORT).show()
+                        return@checkToken
+                    }
                     viewModel.deleteComment(postId, commentId)
                     Toast.makeText(this@CommunityPostDetailActivity, "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -293,8 +299,13 @@ class CommunityPostDetailActivity : BaseActivity() {
                     }
                 }
 
-                override fun onDeleteClicked(commentId: Long) {
+                override fun onDeleteClicked(commentId: Long, status: PostCommentStatus) {
                     checkToken {
+                        if(status != PostCommentStatus.ACTIVE) {
+                            Toast.makeText(this@CommunityPostDetailActivity, "이미 삭제된 댓글입니다.", Toast.LENGTH_SHORT).show()
+                            return@checkToken
+                        }
+
                         viewModel.deleteComment(postId, commentId)
                         Toast.makeText(this@CommunityPostDetailActivity, "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT)
                             .show()

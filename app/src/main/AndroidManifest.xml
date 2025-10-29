@@ -54,9 +54,9 @@
             android:name=".presentation.ui.tier.TierCategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.community.CommunityPostWriteActivity"
+            android:name=".presentation.ui.community.write.CommunityPostWriteActivity"
             android:exported="false" />
-        <activity android:name=".presentation.ui.community.CommunityPostDetailActivity"
+        <activity android:name=".presentation.ui.community.detail.CommunityPostDetailActivity"
             android:exported="false"/>
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"

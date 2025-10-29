@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.ui.community
+package com.kust.kustaurant.presentation.ui.community.write
 
 import android.net.Uri
 import android.util.Log
@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.domain.model.community.toPostCategory
+import com.kust.kustaurant.domain.model.community.PostCategory
 import com.kust.kustaurant.domain.usecase.community.PatchPostModifyUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityPostCreateUseCase
 import com.kust.kustaurant.domain.usecase.community.PostCommunityUploadImageUseCase
@@ -27,16 +27,22 @@ class CommunityPostWriteViewModel @Inject constructor(
 ) : ViewModel() {
     private val _postTitle = MutableLiveData<String>()
     val postTitle: LiveData<String> get() = _postTitle
-    private val _postContentHtml = MutableLiveData<String>()
-    private val _postSort = MutableLiveData<String>()
-    val postSort: LiveData<String> get() = _postSort
+
+    private val _postCategory = MutableLiveData<PostCategory?>()
+    val postCategory: LiveData<PostCategory?> get() = _postCategory
+
     private val _postSendReady = MutableLiveData<Boolean>()
     val postSendReady: LiveData<Boolean> get() = _postSendReady
+
     private val _postCreateResult = MutableLiveData<PostFinishState?>()
     val postCreateResult: LiveData<PostFinishState?> get() = _postCreateResult
-    private val _isEditMode = MutableLiveData<Boolean>()
+
     val toastMessage : LiveData<String?> get() = _toastMessage
     private val _toastMessage = MutableLiveData<String?>()
+
+    private val _postContentHtml = MutableLiveData<String>()
+
+    private val _isEditMode = MutableLiveData<Boolean>()
 
     private suspend fun uploadImage(uri: Uri, fileName: String): String? = withContext(Dispatchers.IO) {
         try {
@@ -95,7 +101,7 @@ class CommunityPostWriteViewModel @Inject constructor(
                 patchPostModify(
                     postId.toString(),
                     _postTitle.value!!,
-                    _postSort.value!!.toPostCategory(),
+                    _postCategory.value ?: PostCategory.FREE,
                     _postContentHtml.value!!
                 )
 
@@ -116,7 +122,7 @@ class CommunityPostWriteViewModel @Inject constructor(
             try {
                 postPostCreate(
                     _postTitle.value!!,
-                    _postSort.value!!.toPostCategory(),
+                    _postCategory.value ?: PostCategory.FREE,
                     _postContentHtml.value!!
                 )
 
@@ -134,8 +140,8 @@ class CommunityPostWriteViewModel @Inject constructor(
     }
 
 
-    fun updatePostSort(selectedSort: String) {
-        _postSort.value = selectedSort
+    fun updatePostSort(newCategory: PostCategory) {
+        _postCategory.value = newCategory
         isPostSendReady()
     }
 
@@ -147,7 +153,7 @@ class CommunityPostWriteViewModel @Inject constructor(
     private fun isPostSendReady() {
         val content = _postContentHtml.value?.replace(Regex("<p><br></p>|<br>|<p></p>"), "")?.trim()
         val isContentNotEmpty = !content.isNullOrEmpty()
-        _postSendReady.value = !_postSort.value.isNullOrEmpty() &&
+        _postSendReady.value = _postCategory.value != PostCategory.ALL &&
                 isContentNotEmpty &&
                 !_postTitle.value.isNullOrEmpty()
     }

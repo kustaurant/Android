@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.ui.community
+package com.kust.kustaurant.presentation.ui.community.detail
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -36,8 +36,8 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val _postDetail = MutableLiveData<CommunityPost>()
     val postDetail: LiveData<CommunityPost> = _postDetail
 
-    private val _postComments = MutableLiveData<List<CommunityPostComment>?>()
-    val postComments: LiveData<List<CommunityPostComment>?> = _postComments
+    private val _postComments = MutableLiveData< List<CommunityPostComment>>()
+    val postComments: LiveData<List<CommunityPostComment>> = _postComments
 
     private val _postCommentsCnt = MutableLiveData<Int>()
     val postCommentsCnt: LiveData<Int> = _postCommentsCnt
@@ -61,8 +61,8 @@ class CommunityPostDetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _postDetail.value = getCommunityPostDetail(postId)
+                _postComments.value = _postDetail.value!!.comments ?: emptyList()
                 _postMine.value = _postDetail.value!!.isPostMine
-                _postComments.value = _postDetail.value!!.comments
             } catch (e: Exception) {
                 Log.e(
                     "CommunityPostDetailViewModel",
@@ -77,6 +77,14 @@ class CommunityPostDetailViewModel @Inject constructor(
             _uiState.value = UiState.Loading
             try {
                 _postScrapInfo.value = postPostScrap(postId, !(_postDetail.value?.isScrapped ?: false))
+                val info = _postScrapInfo.value ?: return@launch
+
+                _postDetail.value?.let {
+                    _postDetail.value = it.copy(
+                        isScrapped = info.isScrapped,
+                        scrapCount = info.postScrapCount.toLong()
+                    )
+                }
                 _uiState.value = UiState.Success(Unit)
             } catch (e: HttpException) {
                 if (e.code() == 403) {
@@ -128,26 +136,55 @@ class CommunityPostDetailViewModel @Inject constructor(
     fun postCreateCommentReply(content: String, postId: Long, parentCommentId: Long?) {
         viewModelScope.launch {
             try {
-                _postComments.value =
-                    postCreateCommentReplyUseCase(
-                        content,
-                        postId,
-                        parentCommentId
-                    )
+                val created: CommunityPostComment =
+                    postCreateCommentReplyUseCase(content, postId, parentCommentId)
 
-                var cnt = 0
-                for (comment in _postComments.value!!) {
-                    comment.replies.let {
-                        cnt += it.size
+                val current = _postDetail.value ?: return@launch
+                val currentComments = current.comments.orEmpty()
+
+                val newComments =
+                    if (created.parentCommentId == null) {
+                        listOf(created) + currentComments
+                    } else {
+                        val (updated, inserted) =
+                            insertReply(currentComments, created.parentCommentId, created)
+                        if (inserted) updated else listOf(created) + currentComments
                     }
-                    cnt += 1
-                }
 
-                _postCommentsCnt.value = cnt
+                _postComments.value = newComments
+                _postDetail.value = current.copy(
+                    comments = newComments,
+                    commentCount = current.commentCount + 1
+                )
+
             } catch (e: Exception) {
-                Log.e("CommunityPostDetailViewModel", "From postCommentReply, Error msg is $e")
+                Log.e("CommunityPostDetailViewModel", "From postCommentReply, Error msg is $e", e)
             }
         }
+    }
+
+    private fun insertReply(
+        list: List<CommunityPostComment>,
+        parentId: Long,
+        child: CommunityPostComment
+    ): Pair<List<CommunityPostComment>, Boolean> {
+        var inserted = false
+        val updated = list.map { c ->
+            when {
+                c.commentId == parentId -> {
+                    inserted = true
+                    c.copy(replies = listOf(child) + c.replies)
+                }
+                else -> {
+                    val (newReplies, did) = insertReply(c.replies, parentId, child)
+                    if (did) {
+                        inserted = true
+                        c.copy(replies = newReplies)
+                    } else c
+                }
+            }
+        }
+        return updated to inserted
     }
 
     fun postCommentReact(commentId: Long, action: String) {
@@ -206,7 +243,6 @@ class CommunityPostDetailViewModel @Inject constructor(
             }
         }
     }
-
 
     fun deletePost(postId: Long) {
         viewModelScope.launch {

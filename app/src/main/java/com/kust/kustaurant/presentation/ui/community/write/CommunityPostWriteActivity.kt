@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.ui.community
+package com.kust.kustaurant.presentation.ui.community.write
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -24,6 +24,8 @@ import androidx.lifecycle.lifecycleScope
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityCommunityPostWriteBinding
 import com.kust.kustaurant.databinding.PopupCommuPostWriteSortBinding
+import com.kust.kustaurant.domain.model.community.PostCategory
+import com.kust.kustaurant.domain.model.community.toPostCategory
 import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,7 +69,7 @@ class CommunityPostWriteActivity : BaseActivity() {
 
                     viewModel.updateContentFromHtml(it.postBody)
                     viewModel.updateTitle(it.postTitle)
-                    viewModel.updatePostSort(it.postCategory)
+                    viewModel.updatePostSort(it.postCategory.toPostCategory())
 
                     postId = it.postId
                     binding.etPostContent.evaluateJavascript("javascript:setHtmlContent('$escapedHtmlContent');", null)
@@ -82,8 +84,8 @@ class CommunityPostWriteActivity : BaseActivity() {
             }
         }
 
-        viewModel.postSort.observe(this) { sort ->
-            binding.tvSelectPostSort.text = sort
+        viewModel.postCategory.observe(this) { category ->
+            binding.tvSelectPostSort.text = category?.displayName
         }
 
         viewModel.postSendReady.observe(this) { isReady ->
@@ -236,20 +238,20 @@ class CommunityPostWriteActivity : BaseActivity() {
         popupWindow.showAsDropDown(binding.llSelectPostSort, 0, -binding.llSelectPostSort.height)
 
         popupBinding.tvFree.setOnClickListener {
-            updateSelectedPostSort(popupBinding.tvFree.text.toString(), popupWindow)
+            updateSelectedPostSort(PostCategory.FREE, popupWindow)
         }
 
         popupBinding.tvSuggest.setOnClickListener {
-            updateSelectedPostSort(popupBinding.tvSuggest.text.toString(), popupWindow)
+            updateSelectedPostSort(PostCategory.SUGGESTION, popupWindow)
         }
 
         popupBinding.tvColumn.setOnClickListener {
-            updateSelectedPostSort(popupBinding.tvColumn.text.toString(), popupWindow)
+            updateSelectedPostSort(PostCategory.COLUMN, popupWindow)
         }
     }
 
-    private fun updateSelectedPostSort(selectedText: String, popupWindow: PopupWindow) {
-        viewModel.updatePostSort(selectedText)
+    private fun updateSelectedPostSort(category: PostCategory, popupWindow: PopupWindow) {
+        viewModel.updatePostSort(category)
         popupWindow.dismiss()
     }
 
