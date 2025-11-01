@@ -47,7 +47,7 @@ class StartActivity : BaseActivity() {
         }
 
         naverloginviewModel.accessToken.observe(this){newAccessToken ->
-            Log.d("newaccesstoken", "${newAccessToken}")
+            Log.d("newaccesstoken", newAccessToken)
             // sharedpreference를 통해 accesstoken 저장
             saveAccessToken(this, newAccessToken)
             val intent = Intent(this@StartActivity, MainActivity::class.java)
@@ -86,7 +86,7 @@ class StartActivity : BaseActivity() {
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {
             override fun onSuccess(response: NidProfileResponse) {
                 // provider, providerId, naveraccesstoken 설정
-                val provider = "naver"
+                val provider = "NAVER"
                 val providerId = response.profile?.id
                 val naverAccessToken = NaverIdLoginSDK.getAccessToken()
                 saveId(this@StartActivity,providerId?: "")

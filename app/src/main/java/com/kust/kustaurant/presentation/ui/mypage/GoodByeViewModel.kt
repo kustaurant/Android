@@ -5,39 +5,37 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.domain.usecase.login.PostGoodByeDataUseCase
+import com.kust.kustaurant.domain.usecase.auth.DeleteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
 class GoodByeViewModel @Inject constructor(
-    private val postGoodByeDataUseCase: PostGoodByeDataUseCase
-):ViewModel(){
+    private val deleteUserUseCase: DeleteUserUseCase
+) : ViewModel() {
+
     private val _response = MutableLiveData<String>()
     val response: LiveData<String> get() = _response
 
-    fun postGoodBye(){
+    fun postGoodBye() {
         viewModelScope.launch {
             try {
-                // 서버에서 응답받은 JSON 문자열
-                val responseString = postGoodByeDataUseCase.invoke()
+                deleteUserUseCase()
 
-                // JSON 파싱
-                val jsonResponse = JSONObject(responseString)
-                val status = jsonResponse.getString("status")
-                val message = jsonResponse.getString("message")
-
-                if (status == "OK" && message == "회원탈퇴가 성공적으로 이루어졌습니다.") {
-                    _response.value = "success" // 성공 시 success 값 전달
-                } else {
-                    _response.value = "fail" // 실패 시 fail 값 전달
-                }
+                _response.value = "success"
             } catch (e: Exception) {
-                // 에러 발생 시 fail 값 전달
+                val errorMsg = when (e) {
+                    is retrofit2.HttpException -> when (e.code()) {
+                        401 -> "인증 정보 없음"
+                        404 -> "사용자 없음"
+                        else -> "서버 오류 (${e.code()})"
+                    }
+                    else -> e.message ?: "알 수 없는 오류 발생"
+                }
+
                 _response.value = "fail"
-                Log.e("GoodByeViewModel", "오류 발생: ${e.message}")
+                Log.e("GoodByeViewModel", "회원탈퇴 실패: $errorMsg")
             }
         }
     }

@@ -131,7 +131,7 @@ class OnboardingActivity : BaseActivity() {
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {
             override fun onSuccess(response: NidProfileResponse) {
                 // provider, providerId, naveraccesstoken 설정
-                val provider = "naver"
+                val provider = "NAVER"
                 val providerId = response.profile?.id
                 val naverAccessToken = NaverIdLoginSDK.getAccessToken()
                 saveId(this@OnboardingActivity,providerId?: "")
