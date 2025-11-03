@@ -152,7 +152,6 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:singleLine="true"
             android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/community_gl_end" />

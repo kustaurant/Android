@@ -31,6 +31,9 @@
     <string name="community_user_img_info">사용자가 지정한 아이콘입니다.</string>
     <string name="community_post_img_info">사용자가 올린 이미지 입니다.</string>
     <string name="community_post_write_info">내용을 입력해주세요. 커뮤니티 이용 규칙에 의해 부적절한 게시물은 숨김, 삭제 처리될 수 있습니다.</string>
+    <string name="community_user_icon_info">유저 아이콘 입니다.</string>
+    <string name="community_like_icon_info">좋아요 아이콘 입니다.</string>
+    <string name="community_scrap_icon_info">스크랩 아이콘입니다.</string>
 
     <!-- DetailActivity  -->
     <string name="detail_to_naver"><u>네이버 지도로 이동하기</u></string>
@@ -84,5 +87,4 @@
     <string name="community_post_go_back_description">되돌리기 버튼입니다.</string>
     <string name="community_post_go_forward_description">앞으로 되돌리기 버튼입니다.</string>
     <string name="community_post_bold_description">드래그한 글자를 굵게 표시하는 버튼입니다.</string>
-
 </resources>
