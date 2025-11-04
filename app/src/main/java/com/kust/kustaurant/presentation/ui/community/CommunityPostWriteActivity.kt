@@ -1,12 +1,10 @@
 package com.kust.kustaurant.presentation.ui.community
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.net.Uri
-import android.os.Build
+import android.os.Bundle
 import android.provider.OpenableColumns
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
@@ -15,10 +13,10 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -26,7 +24,6 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityCommunityPostWriteBinding
 import com.kust.kustaurant.databinding.PopupCommuPostWriteSortBinding
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
-import com.kust.kustaurant.presentation.ui.detail.EvaluateActivity.Companion.REQ_GALLERY
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -36,9 +33,9 @@ import kotlinx.coroutines.launch
 class CommunityPostWriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCommunityPostWriteBinding
     private val viewModel: CommunityPostWriteViewModel by viewModels()
-    private lateinit var photoPickerLauncher: ActivityResultLauncher<Intent>
     private var textChangeJob: Job? = null
     private var postId : Int? = null
+    private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,20 +161,16 @@ class CommunityPostWriteActivity : AppCompatActivity() {
 
     // Fragment에서 ViewModel에서 반환된 HTML 값을 직접 설정하고 커서 위치 재확인
     private fun initPhotoPicker() {
-        photoPickerLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    result.data?.data?.let { uri ->
-                        lifecycleScope.launch {
-                            val imageUrl =
-                                viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))
-                            imageUrl?.let {
-                                insertImageAtCursor(it)
-                            }
-                        }
+        pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                lifecycleScope.launch {
+                    val imageUrl = viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))
+                    imageUrl?.let {
+                        insertImageAtCursor(it)
                     }
                 }
             }
+        }
     }
 
     private fun insertImageAtCursor(imageUrl: String) {
@@ -186,32 +179,7 @@ class CommunityPostWriteActivity : AppCompatActivity() {
     }
 
     private fun selectGallery() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13 이상 Photo Picker
-            val intent = Intent(android.provider.MediaStore.ACTION_PICK_IMAGES)
-            photoPickerLauncher.launch(intent)
-        } else {
-            // Android 13 미만 기존 갤러리 + 권한 체크
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_DENIED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQ_GALLERY
-                )
-            } else {
-                openGallery()
-            }
-        }
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        photoPickerLauncher.launch(intent)
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun showPopupWindow() {
@@ -241,17 +209,6 @@ class CommunityPostWriteActivity : AppCompatActivity() {
     private fun updateSelectedPostSort(selectedText: String, popupWindow: PopupWindow) {
         viewModel.updatePostSort(selectedText)
         popupWindow.dismiss()
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQ_GALLERY && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            openGallery()
-        }
     }
 
     private fun getFileNameFromUri(uri: Uri): String {

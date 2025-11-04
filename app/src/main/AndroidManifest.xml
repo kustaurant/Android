@@ -5,8 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Android 12(API 32) 이하에서 이미지를 읽기 위한 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-
-
+  
     <application
         android:name=".presentation.KustaurantApplication"
         android:allowBackup="true"
@@ -120,7 +119,7 @@
             android:exported="false" />
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="dyfgbjtlqu" />
+            android:value="${NAVER_MAP_ID}"/>
 
         <activity
             android:name=".presentation.ui.detail.DetailActivity"

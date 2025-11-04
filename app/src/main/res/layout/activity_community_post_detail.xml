@@ -128,6 +128,7 @@
                         android:id="@+id/community_iv_user_icon"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
+                        android:contentDescription="@string/community_user_icon_info"
                         android:src="@drawable/ic_baby_cow" />
 
                     <TextView
@@ -278,6 +279,7 @@
                             android:id="@+id/community_iv_btn_post_like"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:contentDescription="@string/community_like_icon_info"
                             android:src="@drawable/ic_like_true" />
 
                         <TextView
@@ -304,6 +306,7 @@
                             android:id="@+id/community_iv_btn_scrap_like"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:contentDescription="@string/community_scrap_icon_info"
                             android:src="@drawable/ic_scrap" />
 
                         <TextView
@@ -365,7 +368,7 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="14dp"
                 android:textColorHint="@color/cement_4"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@id/community_cl_comment_confirm"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -386,6 +389,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:contentDescription="댓글 입력 확인 버튼"
+                    android:paddingEnd="3dp"
+                    android:paddingStart="0dp"
                     android:src="@drawable/ic_confirm"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
