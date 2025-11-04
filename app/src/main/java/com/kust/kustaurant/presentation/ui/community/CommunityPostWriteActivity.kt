@@ -1,11 +1,9 @@
 package com.kust.kustaurant.presentation.ui.community
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.webkit.JavascriptInterface
@@ -18,13 +16,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityCommunityPostWriteBinding
 import com.kust.kustaurant.databinding.PopupCommuPostWriteSortBinding
-import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -38,7 +36,6 @@ class CommunityPostWriteActivity : BaseActivity() {
     private var textChangeJob: Job? = null
     private var postId : Int? = null
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
-    private lateinit var docPickerLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -184,36 +181,13 @@ class CommunityPostWriteActivity : BaseActivity() {
         }
     }
 
-    private fun initFallback() {
-        docPickerLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val uri = result.data?.data
-                if (uri != null) {
-                    lifecycleScope.launch {
-                        val url = viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))
-                        url?.let { insertImageAtCursor(it) }
-                    }
-                }
-            }
-        }
-    }
-
     private fun insertImageAtCursor(imageUrl: String) {
         // JavaScript를 호출하여 이미지를 현재 커서 위치에 삽입
         binding.etPostContent.evaluateJavascript("javascript:insertImage('$imageUrl');", null)
     }
-
+ 
     private fun selectGallery() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            pickMedia.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
-        } else {
-            // Android 8~10(API 26~29)
-            openDocumentFallback()
-        }
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun openDocumentFallback() {
