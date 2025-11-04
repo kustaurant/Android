@@ -16,7 +16,8 @@ class CommunityRepositoryImpl @Inject constructor(
     private val communityApi : CommunityApi
 ) : CommunityRepository {
     override suspend fun getPostListData(postCategory: String, page: Int, sort: String): List<CommunityPost> {
-        return communityApi.getCommunityPostListData(postCategory, page, sort)
+        return communityApi
+            .getCommunityPostListData(postCategory, page, sort)
     }
 
     override suspend fun getRankingListData(

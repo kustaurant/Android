@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyOpinionBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyOpinionActivity : AppCompatActivity() {
+class MyOpinionActivity : BaseActivity() {
     lateinit var binding : ActivityMyOpinionBinding
     private val viewModel: MyPageViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {

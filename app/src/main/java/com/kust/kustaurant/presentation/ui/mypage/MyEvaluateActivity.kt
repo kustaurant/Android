@@ -3,20 +3,17 @@ package com.kust.kustaurant.presentation.ui.mypage
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyEvaluateBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyEvaluateActivity : AppCompatActivity() {
+class MyEvaluateActivity : BaseActivity() {
     lateinit var binding : ActivityMyEvaluateBinding
     private lateinit var evaluateRestaurantAdapter : EvaluateRestaurantAdapter
     private val viewModel: MyPageViewModel by viewModels()

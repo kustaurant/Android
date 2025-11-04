@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMyScrapBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.ui.community.CommunityPostDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.getValue
 
 @AndroidEntryPoint
-class MyScrapActivity : AppCompatActivity() {
+class MyScrapActivity : BaseActivity() {
     lateinit var binding : ActivityMyScrapBinding
     private val viewModel: MyPageViewModel by viewModels()
     lateinit var postAdapter: ScrapAdapter

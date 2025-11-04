@@ -12,14 +12,14 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
 import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityTierCategorySelectBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TierCategoryActivity : AppCompatActivity() {
+class TierCategoryActivity : BaseActivity() {
     private lateinit var binding: ActivityTierCategorySelectBinding
     private var fromTabIndex: Int = 0
 

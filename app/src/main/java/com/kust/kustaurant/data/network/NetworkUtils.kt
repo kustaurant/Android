@@ -21,13 +21,14 @@ object NetworkUtils {
     }
 
     // retrofit 통신 코드를 매핑
-    private fun mapHttpException(e: HttpException): RuntimeException {
+    fun mapHttpException(e: HttpException): RuntimeException {
         return when(e.code()) {
             400 -> BadRequestException(message = e.message())
             401 -> UnauthorizedException(message = e.message())
             403 -> ForbiddenException(message = e.message())
             404 -> NotFoundException(message = e.message())
-            500, 501, 502, 503 -> ServerException(message = e.message())
+            503 -> ServerException503(message = e.message())
+            500, 501, 502 -> ServerException(message = e.message())
             else -> OtherHttpException(code = e.code(), message = e.message())
         }
     }

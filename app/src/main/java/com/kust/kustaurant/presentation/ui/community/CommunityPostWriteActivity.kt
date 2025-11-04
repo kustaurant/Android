@@ -16,13 +16,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityCommunityPostWriteBinding
 import com.kust.kustaurant.databinding.PopupCommuPostWriteSortBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -30,12 +30,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CommunityPostWriteActivity : AppCompatActivity() {
+class CommunityPostWriteActivity : BaseActivity() {
     private lateinit var binding: ActivityCommunityPostWriteBinding
     private val viewModel: CommunityPostWriteViewModel by viewModels()
     private var textChangeJob: Job? = null
     private var postId : Int? = null
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var docPickerLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +72,7 @@ class CommunityPostWriteActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun observers() {
         viewModel.postTitle.observe(this) { title ->
             if (binding.etPostTitle.text.toString() != title) {
@@ -91,6 +93,13 @@ class CommunityPostWriteActivity : AppCompatActivity() {
                 ContextCompat.getColor(this, R.color.cement_4)
             }
             binding.tvFinish.backgroundTintList = ColorStateList.valueOf(color)
+        }
+
+        viewModel.toastMessage.observe(this) { message ->
+            message?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                viewModel.clearToastMessage()
+            }
         }
     }
 
@@ -162,13 +171,19 @@ class CommunityPostWriteActivity : AppCompatActivity() {
     // Fragment에서 ViewModel에서 반환된 HTML 값을 직접 설정하고 커서 위치 재확인
     private fun initPhotoPicker() {
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                lifecycleScope.launch {
-                    val imageUrl = viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))
-                    imageUrl?.let {
-                        insertImageAtCursor(it)
-                    }
-                }
+            uri ?: return@registerForActivityResult
+            lifecycleScope.launch {
+                viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))?.let { insertImageAtCursor(it) }
+            }
+        }
+
+        docPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+            val uri = res.data?.data ?: return@registerForActivityResult
+            try {
+                contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            } catch (_: SecurityException) { /* 공급자 미지원 or 이미 보유 */ }
+            lifecycleScope.launch {
+                viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))?.let { insertImageAtCursor(it) }
             }
         }
     }
@@ -179,7 +194,19 @@ class CommunityPostWriteActivity : AppCompatActivity() {
     }
 
     private fun selectGallery() {
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        if (ActivityResultContracts.PickVisualMedia.isPhotoPickerAvailable(this)) {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        } else {
+            openDocumentFallback()
+        }
+    }
+
+    private fun openDocumentFallback() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
+        }
+        docPickerLauncher.launch(intent)
     }
 
     private fun showPopupWindow() {

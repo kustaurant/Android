@@ -26,9 +26,16 @@ class NotFoundException(
 ): RuntimeException()
 
 /**
- * 500: server error
+ * 500: server error, except 503
  */
 class ServerException(
+    override val message: String?
+): RuntimeException()
+
+/**
+ * 503: server error
+ */
+class ServerException503(
     override val message: String?
 ): RuntimeException()
 

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.BuildConfig
@@ -14,6 +13,7 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.data.saveAccessToken
 import com.kust.kustaurant.data.saveId
 import com.kust.kustaurant.databinding.ActivityOnboardingBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -22,7 +22,8 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class OnboardingActivity : AppCompatActivity() {
+class OnboardingActivity : BaseActivity() {
+    override fun shouldHandleGlobal503() = false
     lateinit var binding: ActivityOnboardingBinding
     private var selectedColor: Int = 0
     private var defaultColor: Int = 0

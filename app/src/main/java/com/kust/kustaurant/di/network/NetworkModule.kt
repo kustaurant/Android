@@ -2,6 +2,7 @@ package com.kust.kustaurant.di.network
 
 import android.content.Context
 import com.kust.kustaurant.BuildConfig
+import com.kust.kustaurant.data.network.ServiceUnavailableNotifyInterceptor
 import com.kust.kustaurant.data.network.TokenAuthenticator
 import com.kust.kustaurant.data.network.XAccessTokenInterceptor
 import com.kust.kustaurant.data.remote.CommunityApi
@@ -40,20 +41,24 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
+        notify503: ServiceUnavailableNotifyInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
+            .addInterceptor(notify503)
             .addInterceptor(loggingInterceptor)
             .addInterceptor(XAccessTokenInterceptor(context))
-            .authenticator(TokenAuthenticator(context))  // Authenticator 추가
+            .authenticator(TokenAuthenticator(context))
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
@@ -115,5 +120,4 @@ object NetworkModule {
     fun provideSearchApi(retrofit: Retrofit): SearchApi {
         return retrofit.create(SearchApi::class.java)
     }
-
 }

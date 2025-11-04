@@ -2,12 +2,12 @@ package com.kust.kustaurant.presentation.ui.mypage
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.kust.kustaurant.R
+import com.kust.kustaurant.presentation.common.BaseActivity
 
-class MyCertificateActivity : AppCompatActivity() {
+class MyCertificateActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

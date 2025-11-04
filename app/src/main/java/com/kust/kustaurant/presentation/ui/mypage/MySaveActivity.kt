@@ -4,19 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityMySaveBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
-import com.kust.kustaurant.presentation.ui.detail.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @AndroidEntryPoint
-class MySaveActivity : AppCompatActivity() {
+class MySaveActivity : BaseActivity() {
     lateinit var binding : ActivityMySaveBinding
     private lateinit var saveRestaurantAdapter : SaveRestaurantAdapter
     private val viewModel: MyPageViewModel by viewModels()

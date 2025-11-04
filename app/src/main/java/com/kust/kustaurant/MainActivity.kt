@@ -3,8 +3,8 @@ package com.kust.kustaurant
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.appcompat.app.AppCompatActivity
 import com.kust.kustaurant.databinding.ActivityMainBinding
+import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.ui.community.CommunityFragment
 import com.kust.kustaurant.presentation.ui.draw.DrawFragment
 import com.kust.kustaurant.presentation.ui.home.HomeFragment
@@ -13,7 +13,7 @@ import com.kust.kustaurant.presentation.ui.tier.TierFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     lateinit var binding: ActivityMainBinding
     private var TIME_INTERVAL: Long = 2000
     private var backPressedTime: Long = 0
