@@ -205,16 +205,6 @@ class CommunityPostWriteActivity : BaseActivity() {
         binding.etPostContent.evaluateJavascript("javascript:insertImage('$imageUrl');", null)
     }
 
-    private fun selectGallery() {  
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            pickMedia.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
-        } else {
-            // Android 8~10(API 26~29)
-            openDocumentFallback() 
-    }
-
     private fun selectGallery() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             pickMedia.launch(
@@ -224,6 +214,14 @@ class CommunityPostWriteActivity : BaseActivity() {
             // Android 8~10(API 26~29)
             openDocumentFallback()
         }
+    }
+
+    private fun openDocumentFallback() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            .apply { addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
+        docPickerLauncher.launch(intent)
     }
 
     private fun showPopupWindow() {
