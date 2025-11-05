@@ -1,4 +1,4 @@
-package com.kust.kustaurant.data.model.commnity
+package com.kust.kustaurant.data.model.community
 
 data class PostCommentRequest(
     val content : String,

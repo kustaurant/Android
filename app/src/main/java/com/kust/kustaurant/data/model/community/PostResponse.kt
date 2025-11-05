@@ -1,4 +1,4 @@
-package com.kust.kustaurant.data.model.commnity
+package com.kust.kustaurant.data.model.community
 
 import com.kust.kustaurant.domain.model.community.PostModification
 

@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.data.model.commnity.CommunityPostLikeResponse
-import com.kust.kustaurant.data.model.commnity.CommunityPostScrapResponse
+import com.kust.kustaurant.data.model.community.CommunityPostLikeResponse
+import com.kust.kustaurant.data.model.community.CommunityPostScrapResponse
 import com.kust.kustaurant.domain.model.community.CommunityPost
 import com.kust.kustaurant.domain.model.community.CommunityPostComment
 import com.kust.kustaurant.domain.model.community.LikeEvent

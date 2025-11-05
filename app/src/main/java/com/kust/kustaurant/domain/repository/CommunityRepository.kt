@@ -1,9 +1,9 @@
 package com.kust.kustaurant.domain.repository
 
-import com.kust.kustaurant.data.model.commnity.CommunityCommentReactionResponse
-import com.kust.kustaurant.data.model.commnity.CommunityPostLikeResponse
-import com.kust.kustaurant.data.model.commnity.CommunityPostScrapResponse
-import com.kust.kustaurant.data.model.commnity.CommunityPostUploadImageResponse
+import com.kust.kustaurant.data.model.community.CommunityCommentReactionResponse
+import com.kust.kustaurant.data.model.community.CommunityPostLikeResponse
+import com.kust.kustaurant.data.model.community.CommunityPostScrapResponse
+import com.kust.kustaurant.data.model.community.CommunityPostUploadImageResponse
 import com.kust.kustaurant.domain.model.community.AuthUserInfo
 import com.kust.kustaurant.domain.model.community.CategorySort
 import com.kust.kustaurant.domain.model.community.CommunityPost

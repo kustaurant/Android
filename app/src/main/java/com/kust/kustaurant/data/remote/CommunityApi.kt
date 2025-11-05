@@ -1,14 +1,14 @@
 package com.kust.kustaurant.data.remote
 
-import com.kust.kustaurant.data.model.commnity.CommunityCommentReactionResponse
-import com.kust.kustaurant.data.model.commnity.CommunityPostCommentResponse
-import com.kust.kustaurant.data.model.commnity.CommunityPostLikeResponse
-import com.kust.kustaurant.data.model.commnity.CommunityPostResponse
-import com.kust.kustaurant.data.model.commnity.CommunityPostScrapResponse
-import com.kust.kustaurant.data.model.commnity.CommunityPostUploadImageResponse
-import com.kust.kustaurant.data.model.commnity.PostCommentRequest
-import com.kust.kustaurant.data.model.commnity.PostRequest
-import com.kust.kustaurant.data.model.commnity.PostResponse
+import com.kust.kustaurant.data.model.community.CommunityCommentReactionResponse
+import com.kust.kustaurant.data.model.community.CommunityPostCommentResponse
+import com.kust.kustaurant.data.model.community.CommunityPostLikeResponse
+import com.kust.kustaurant.data.model.community.CommunityPostResponse
+import com.kust.kustaurant.data.model.community.CommunityPostScrapResponse
+import com.kust.kustaurant.data.model.community.CommunityPostUploadImageResponse
+import com.kust.kustaurant.data.model.community.PostCommentRequest
+import com.kust.kustaurant.data.model.community.PostRequest
+import com.kust.kustaurant.data.model.community.PostResponse
 import com.kust.kustaurant.domain.model.community.AuthUserInfo
 import com.kust.kustaurant.domain.model.community.CommunityPostListItem
 import com.kust.kustaurant.domain.model.community.CommunityRanking

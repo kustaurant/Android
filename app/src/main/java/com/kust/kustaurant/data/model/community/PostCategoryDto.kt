@@ -1,4 +1,4 @@
-package com.kust.kustaurant.data.model.commnity
+package com.kust.kustaurant.data.model.community
 
 import com.google.gson.annotations.SerializedName
 import com.kust.kustaurant.domain.model.community.PostCategory
