@@ -153,7 +153,9 @@ class CommunityPostWriteViewModel @Inject constructor(
     private fun isPostSendReady() {
         val content = _postContentHtml.value?.replace(Regex("<p><br></p>|<br>|<p></p>"), "")?.trim()
         val isContentNotEmpty = !content.isNullOrEmpty()
-        _postSendReady.value = _postCategory.value != PostCategory.ALL &&
+        _postSendReady.value =
+            _postCategory.value != null &&
+            _postCategory.value != PostCategory.ALL &&
                 isContentNotEmpty &&
                 !_postTitle.value.isNullOrEmpty()
     }
