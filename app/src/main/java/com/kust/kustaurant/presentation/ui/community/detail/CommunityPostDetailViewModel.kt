@@ -192,11 +192,7 @@ class CommunityPostDetailViewModel @Inject constructor(
             try {
                 val current = _postComments.value ?: return@launch
 
-                val currentReactionType: String? = current
-                    .asSequence()
-                    .flatMap { sequenceOf(it) + it.replies.asSequence() }
-                    .firstOrNull { it.commentId == commentId }
-                    ?.reactionType
+                val currentReactionType = findCommentById(current, commentId)?.reactionType
 
                 val likeEvent = when {
                     action == "LIKE" && currentReactionType == "LIKE" -> null
@@ -209,31 +205,17 @@ class CommunityPostDetailViewModel @Inject constructor(
                 val response = postCommentReactUseCase(commentId, likeEvent)
 
                 _postComments.value?.let { cur ->
-                    val updatedComments = cur.map { comment ->
-                        if (comment.commentId == commentId) {
-                            comment.copy(
-                                likeCount = response.likeCount,
-                                dislikeCount = response.dislikeCount,
-                                reactionType = response.reactionType,
-                                timeAgo = comment.timeAgo
-                            )
-                        } else {
-                            val newReplies = comment.replies.map { reply ->
-                                if (reply.commentId == commentId) {
-                                    reply.copy(
-                                        likeCount = response.likeCount,
-                                        dislikeCount = response.dislikeCount,
-                                        reactionType = response.reactionType,
-                                        timeAgo = reply.timeAgo
-                                    )
-                                } else reply
-                            }
-
-                            comment.copy(replies = newReplies)
-                        }
+                    val updatedComments = cur.map {
+                        updateCommentTree(
+                            it,
+                            commentId,
+                            response.likeCount,
+                            response.dislikeCount,
+                            response.reactionType
+                        )
                     }
-
                     _postComments.postValue(updatedComments)
+                    _postDetail.value = _postDetail.value?.copy(comments = updatedComments)
                 }
             } catch (e: Exception) {
                 Log.e(
@@ -242,6 +224,38 @@ class CommunityPostDetailViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun findCommentById(
+        comments: List<CommunityPostComment>,
+        targetId: Long
+    ): CommunityPostComment? {
+        comments.forEach { comment ->
+            if (comment.commentId == targetId) return comment
+            findCommentById(comment.replies, targetId)?.let { return it }
+        }
+        return null
+    }
+
+    private fun updateCommentTree(
+        comment: CommunityPostComment,
+        targetId: Long,
+        likeCount: Int,
+        dislikeCount: Int,
+        reactionType: String?
+    ): CommunityPostComment {
+        if (comment.commentId == targetId) {
+            return comment.copy(
+                likeCount = likeCount,
+                dislikeCount = dislikeCount,
+                reactionType = reactionType
+            )
+        }
+        if (comment.replies.isEmpty()) return comment
+        val updatedReplies = comment.replies.map {
+            updateCommentTree(it, targetId, likeCount, dislikeCount, reactionType)
+        }
+        return comment.copy(replies = updatedReplies)
     }
 
     fun deletePost(postId: Long) {
