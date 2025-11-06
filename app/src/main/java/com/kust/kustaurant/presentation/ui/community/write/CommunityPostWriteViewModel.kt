@@ -37,41 +37,44 @@ class CommunityPostWriteViewModel @Inject constructor(
     private val _postCreateResult = MutableLiveData<PostFinishState?>()
     val postCreateResult: LiveData<PostFinishState?> get() = _postCreateResult
 
-    val toastMessage : LiveData<String?> get() = _toastMessage
+    val toastMessage: LiveData<String?> get() = _toastMessage
     private val _toastMessage = MutableLiveData<String?>()
 
     private val _postContentHtml = MutableLiveData<String>()
-
     private val _isEditMode = MutableLiveData<Boolean>()
 
-    private suspend fun uploadImage(uri: Uri, fileName: String): String? = withContext(Dispatchers.IO) {
-        try {
-            val mime = imageUtil.queryMimeType(uri)
-            val size = imageUtil.querySize(uri)
-            val max = 10L * 1024 * 1024
-            if (size in 1..Long.MAX_VALUE && size > max) {
-                Log.e("Upload", "File too large: $size")
-                _toastMessage.postValue("파일 크기가 너무 큽니다. (최대 10MB까지 업로드 가능)")
-                return@withContext null
-            }
-
-            val part = imageUtil.asStreamingPart(
-                uri = uri,
-                formField = "image",
-                fileName = fileName.ifBlank { "upload.jpg" },
-                mimeType = mime
-            )
-            return@withContext postUploadImage(part).imgUrl
-        } catch (se: SecurityException) {
-            Log.e("Upload", "SecurityException: $se")
-            _toastMessage.postValue("권한 문제가 발생했습니다.")
-            null
-        } catch (e: Exception) {
-            Log.e("Upload", "Upload error: $e")
-            _toastMessage.postValue("업로드 중 오류가 발생했습니다.")
-            null
-        }
+    companion object {
+        private const val MAX_FILE_SIZE = 10L * 1024 * 1024 // 10MB
     }
+
+    private suspend fun uploadImage(uri: Uri, fileName: String): String? =
+        withContext(Dispatchers.IO) {
+            try {
+                val mime = imageUtil.queryMimeType(uri)
+                val size = imageUtil.querySize(uri)
+                if (size > 0 && size > MAX_FILE_SIZE) {
+                    Log.e("Upload", "File too large: $size")
+                    _toastMessage.postValue("파일 크기가 너무 큽니다. (최대 10MB까지 업로드 가능)")
+                    return@withContext null
+                }
+
+                val part = imageUtil.asStreamingPart(
+                    uri = uri,
+                    formField = "image",
+                    fileName = fileName.ifBlank { "upload.jpg" },
+                    mimeType = mime
+                )
+                return@withContext postUploadImage(part).imgUrl
+            } catch (se: SecurityException) {
+                Log.e("Upload", "SecurityException: $se")
+                _toastMessage.postValue("권한 문제가 발생했습니다.")
+                null
+            } catch (e: Exception) {
+                Log.e("Upload", "Upload error: $e")
+                _toastMessage.postValue("업로드 중 오류가 발생했습니다.")
+                null
+            }
+        }
 
     fun setEditMode(postSummary: CommunityPostIntent?) {
         _isEditMode.value = postSummary?.postBody != null
@@ -80,6 +83,7 @@ class CommunityPostWriteViewModel @Inject constructor(
     fun resetPostCreateResult() {
         _postCreateResult.value = PostFinishState.FINISH_IDLE
     }
+
     fun resetPostSendReady() {
         _postSendReady.value = false
     }
@@ -88,10 +92,10 @@ class CommunityPostWriteViewModel @Inject constructor(
         return uploadImage(uri, fileName)
     }
 
-    fun onSubmit(postId : Long?) {
-        if(_isEditMode.value == true)
+    fun onSubmit(postId: Long?) {
+        if (_isEditMode.value == true)
             postId?.let { modifyPost(it) }
-        else if(_isEditMode.value == false)
+        else if (_isEditMode.value == false)
             createPost()
     }
 
@@ -155,12 +159,16 @@ class CommunityPostWriteViewModel @Inject constructor(
         val isContentNotEmpty = !content.isNullOrEmpty()
         _postSendReady.value =
             _postCategory.value != null &&
-            _postCategory.value != PostCategory.ALL &&
-                isContentNotEmpty &&
-                !_postTitle.value.isNullOrEmpty()
+                    _postCategory.value != PostCategory.ALL &&
+                    isContentNotEmpty &&
+                    !_postTitle.value.isNullOrEmpty()
+    }
+
+    fun setToastMessage(message: String) {
+        _toastMessage.value = message
     }
 }
 
-enum class PostFinishState{
+enum class PostFinishState {
     FINISH_IDLE, FINISH_ERR, FINISH_MODIFY, FINISH_CREATE
 }

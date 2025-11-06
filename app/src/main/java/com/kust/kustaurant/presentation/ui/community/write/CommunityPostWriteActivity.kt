@@ -1,11 +1,9 @@
 package com.kust.kustaurant.presentation.ui.community.write
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.webkit.JavascriptInterface
@@ -50,7 +48,6 @@ class CommunityPostWriteActivity : BaseActivity() {
 
         initWebView()
         initPhotoPicker()
-        initFallback()
         setupUI()
         observers()
 
@@ -77,6 +74,7 @@ class CommunityPostWriteActivity : BaseActivity() {
             }
         }
     }
+
     private fun observers() {
         viewModel.postTitle.observe(this) { title ->
             if (binding.etPostTitle.text.toString() != title) {
@@ -175,29 +173,19 @@ class CommunityPostWriteActivity : BaseActivity() {
     // Fragment에서 ViewModel에서 반환된 HTML 값을 직접 설정하고 커서 위치 재확인
     private fun initPhotoPicker() {
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                lifecycleScope.launch {
-                    val imageUrl = viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))
-                    imageUrl?.let {
-                        insertImageAtCursor(it)
-                    }
-                }
+            uri ?: return@registerForActivityResult
+            lifecycleScope.launch {
+                viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))?.let { insertImageAtCursor(it) }
             }
         }
-    }
 
-    private fun initFallback() {
-        docPickerLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val uri = result.data?.data
-                if (uri != null) {
-                    lifecycleScope.launch {
-                        val url = viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))
-                        url?.let { insertImageAtCursor(it) }
-                    }
-                }
+        docPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+            val uri = res.data?.data ?: return@registerForActivityResult
+            try {
+                contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            } catch (_: SecurityException) { /* 공급자 미지원 or 이미 보유 */ }
+            lifecycleScope.launch {
+                viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))?.let { insertImageAtCursor(it) }
             }
         }
     }
@@ -208,12 +196,9 @@ class CommunityPostWriteActivity : BaseActivity() {
     }
 
     private fun selectGallery() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            pickMedia.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
+        if (ActivityResultContracts.PickVisualMedia.isPhotoPickerAvailable(this)) {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         } else {
-            // Android 8~10(API 26~29)
             openDocumentFallback()
         }
     }
