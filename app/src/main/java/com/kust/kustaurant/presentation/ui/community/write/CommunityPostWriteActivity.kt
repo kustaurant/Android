@@ -1,11 +1,13 @@
 package com.kust.kustaurant.presentation.ui.community.write
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.inputmethod.InputMethodManager
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -17,6 +19,8 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.kust.kustaurant.R
@@ -191,8 +195,21 @@ class CommunityPostWriteActivity : BaseActivity() {
     }
 
     private fun insertImageAtCursor(imageUrl: String) {
-        // JavaScript를 호출하여 이미지를 현재 커서 위치에 삽입
         binding.etPostContent.evaluateJavascript("javascript:insertImage('$imageUrl');", null)
+
+        binding.etPostContent.postDelayed({ showImeNow() }, 16)
+    }
+
+    private fun showImeNow() {
+        binding.etPostContent.isFocusable = true
+        binding.etPostContent.isFocusableInTouchMode = true
+        binding.etPostContent.requestFocus()
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.etPostContent, InputMethodManager.SHOW_IMPLICIT)
+
+        WindowInsetsControllerCompat(window, binding.etPostContent)
+            .show(WindowInsetsCompat.Type.ime())
     }
 
     private fun selectGallery() {
