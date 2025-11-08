@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.model.DrawRestaurantData
+import com.kust.kustaurant.data.model.DrawRestaurant
 import com.kust.kustaurant.databinding.FragmentDrawResultBinding
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
 import kotlinx.coroutines.delay
@@ -27,7 +27,7 @@ class DrawResultFragment : Fragment() {
     private var _binding: FragmentDrawResultBinding? = null
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: DrawSelectResultAdapter
-    private var restaurantList = mutableListOf<DrawRestaurantData>()
+    private var restaurantList = mutableListOf<DrawRestaurant>()
     private val viewModel: DrawViewModel by activityViewModels()
     val binding get() = _binding!!
 
@@ -51,7 +51,7 @@ class DrawResultFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun displaySelectedRestaurantInfo(restaurant: DrawRestaurantData) {
+    private fun displaySelectedRestaurantInfo(restaurant: DrawRestaurant) {
         binding.drawTvRestaurantName.text = restaurant.restaurantName
         binding.drawTvRestaurantMenu.text = restaurant.restaurantCuisine
     }
@@ -154,7 +154,7 @@ class DrawResultFragment : Fragment() {
         }
     }
 
-    private fun displaySelectedRestaurantImage(restaurant: DrawRestaurantData) {
+    private fun displaySelectedRestaurantImage(restaurant: DrawRestaurant) {
         Glide.with(this)
             .load(restaurant.restaurantImgUrl)
             .transform(CenterCrop(), RoundedCorners(78))
