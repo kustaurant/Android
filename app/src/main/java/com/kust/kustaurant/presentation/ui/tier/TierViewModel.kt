@@ -5,10 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.data.model.TierMapData
+import com.kust.kustaurant.data.model.tier.TierMapData
 import com.kust.kustaurant.domain.model.TierRestaurant
-import com.kust.kustaurant.domain.usecase.tier.GetAuthTierRestaurantListUseCase
-import com.kust.kustaurant.domain.usecase.tier.GetAuthTierRestaurantMapUseCase
 import com.kust.kustaurant.domain.usecase.tier.GetTierRestaurantListUseCase
 import com.kust.kustaurant.domain.usecase.tier.GetTierRestaurantMapUseCase
 import com.kust.kustaurant.presentation.common.CategoryIdMapper
@@ -20,17 +18,12 @@ import javax.inject.Inject
 class TierViewModel @Inject constructor(
     private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
     private val getTierRestaurantMapUseCase: GetTierRestaurantMapUseCase,
-    private val getAuthTierRestaurantListUseCase: GetAuthTierRestaurantListUseCase,
-    private val getAuthTierRestaurantMapUseCase: GetAuthTierRestaurantMapUseCase
 ) : ViewModel(){
     private val _isExpanded = MutableLiveData(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
 
     private val _allRestaurants = MutableLiveData<List<TierRestaurant>>(emptyList())
     val allRestaurants: LiveData<List<TierRestaurant>> = _allRestaurants
-
-    private val _fetchedRestaurants = MutableLiveData<List<TierRestaurant>>()
-    val fetchedRestaurants: LiveData<List<TierRestaurant>> = _fetchedRestaurants
 
     private val _mapData = MutableLiveData<TierMapData>()
     val mapData: LiveData<TierMapData> = _mapData
@@ -56,90 +49,79 @@ class TierViewModel @Inject constructor(
     private val _isShowBottomSheet = MutableLiveData<Boolean>(false)
     val isShowBottomSheet: LiveData<Boolean> get() = _isShowBottomSheet
 
-    // 음식점 리스트(TierListFragment) 페이지
-    private var _tierListPage = 1
     // 음식점 리스트(TierListFragment) 마지막 스크롤 위치
     private var _tierListLastPosition: Int = 0
 
-    private fun loadRestaurantList(isAuth : Boolean) {
+    private val _pageState = MutableLiveData(TierPageState())
+    val pageState: LiveData<TierPageState> = _pageState
+
+    private fun loadRestaurantList(requestedPage: Int) {
+        val state = _pageState.value ?: return
+        if (state.phase != TierPhase.Refreshing && state.phase != TierPhase.Paging) return
+
         val menus = selectedMenus.value ?: setOf("전체")
         val situations = selectedSituations.value ?: setOf("전체")
         val locations = selectedLocations.value ?: setOf("전체")
-
-        var flagJH = false
-        /*
-         * 정책 사항 : 제휴업체 대상인 경우 티어 이미지를 노출하지 않도록 한다.
-         */
-        if (menus.elementAt(0) == "제휴업체")
-            flagJH = true
+        val isPartnership = selectedMenus.value?.firstOrNull() == "제휴업체"
 
         viewModelScope.launch {
             try {
-                val tierListData = if(isAuth) {
-                    getAuthTierRestaurantListUseCase(
-                        CategoryIdMapper.mapMenus(menus),
-                        CategoryIdMapper.mapSituations(situations),
-                        CategoryIdMapper.mapLocations(locations),
-                        _tierListPage
-                    )
-                } else {
-                    getTierRestaurantListUseCase(
-                        CategoryIdMapper.mapMenus(menus),
-                        CategoryIdMapper.mapSituations(situations),
-                        CategoryIdMapper.mapLocations(locations),
-                        _tierListPage
-                    )
-                }
+                val tierListData = getTierRestaurantListUseCase(
+                    CategoryIdMapper.mapMenus(menus),
+                    CategoryIdMapper.mapSituations(situations),
+                    CategoryIdMapper.mapLocations(locations),
+                    requestedPage
+                )
 
-                val fetchedData = tierListData.map { it ->
+                val fetched = tierListData.map {
                     TierRestaurant(
                         restaurantId = it.restaurantId,
-                        restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
+                        restaurantRanking = it.restaurantRanking ?: 0,
                         restaurantName = it.restaurantName,
                         restaurantCuisine = it.restaurantCuisine,
                         restaurantPosition = it.restaurantPosition,
                         restaurantImgUrl = it.restaurantImgUrl,
-                        mainTier = if (flagJH) -1 else it.mainTier,
+                        mainTier = if (isPartnership) -1 else it.mainTier,
                         partnershipInfo = it.partnershipInfo ?: "",
                         isFavorite = it.isFavorite,
-                        x = it.x.toDouble(),
-                        y = it.y.toDouble(),
+                        x = it.longitude,
+                        y = it.latitude,
                         isEvaluated = it.isEvaluated,
-                        restaurantScore = it.restaurantScore?.toDoubleOrNull()
-                            ?.takeIf { !it.isNaN() }
-                            ?: 0.0
+                        restaurantScore = it.restaurantScore?.takeIf { s -> !s.isNaN() } ?: 0.0
                     )
                 }
-                _fetchedRestaurants.value = fetchedData
 
-                val currentAllRestaurants = _allRestaurants.value ?: emptyList()
-                _allRestaurants.value = currentAllRestaurants + fetchedData
+                val last = fetched.isEmpty()
+                val current = _allRestaurants.value ?: emptyList()
+
+                _allRestaurants.value =
+                    if (requestedPage == 1) fetched else current + fetched
+
+                _pageState.value = state.copy(
+                    phase = TierPhase.Idle,
+                    page = requestedPage,
+                    isLastPage = last
+                )
             } catch (e: Exception) {
-                Log.e("TierViewModel", "From loadRestaurantList, Err is $e")
+                Log.e("TierViewModel", "loadRestaurantList error: $e")
+                _pageState.value = state.copy(phase = TierPhase.Idle)
             }
         }
     }
 
-    private fun loadRestaurantMap(isAuth: Boolean) {
+    private fun loadRestaurantMap() {
         val menus = selectedMenus.value ?: setOf("전체")
         val situations = selectedSituations.value ?: setOf("전체")
         val locations = selectedLocations.value ?: setOf("전체")
 
         viewModelScope.launch {
             try {
-                val tierMapData = if(isAuth) {
-                    getAuthTierRestaurantMapUseCase(
-                        CategoryIdMapper.mapMenus(menus),
-                        CategoryIdMapper.mapSituations(situations),
-                        CategoryIdMapper.mapLocations(locations)
-                    )
-                } else {
+                val tierMapData =
                     getTierRestaurantMapUseCase(
                         CategoryIdMapper.mapMenus(menus),
                         CategoryIdMapper.mapSituations(situations),
                         CategoryIdMapper.mapLocations(locations)
                     )
-                }
                 _mapData.value = tierMapData
             } catch (e: Exception) {
                 Log.e("TierViewModel", "From loadRestaurantMap, Err is $e")
@@ -172,7 +154,10 @@ class TierViewModel @Inject constructor(
         setSelectedMenus(menus)
         setSelectedSituations(situations)
         setSelectedLocations(locations)
-        _tierListPage = 1
+
+        if( _pageState.value == null) return
+        _pageState.value = _pageState.value!!.copy(page = 1)
+
         updateFilter()
         _categoryChangeList.value = true
         _categoryChangeMap.value = true
@@ -180,12 +165,11 @@ class TierViewModel @Inject constructor(
 
     fun loadRestaurant(
         screenType: TierScreenType,
-        isAuth: Boolean,
     ) {
         if (screenType == TierScreenType.LIST) {
-            loadRestaurantList(isAuth)
+            loadRestaurantList(1)
         } else if (screenType == TierScreenType.MAP) {
-            loadRestaurantMap(isAuth)
+            loadRestaurantMap()
         }
         updateFilter()
     }
@@ -205,16 +189,22 @@ class TierViewModel @Inject constructor(
         _selectedCategories.value = categories
     }
 
-    fun fetchFirstRestaurants(isAuth: Boolean) {
+    fun fetchFirstRestaurants() {
+        if( _pageState.value == null) return
+
         _allRestaurants.value = emptyList()
         _categoryChangeList.value = false
-        _tierListPage = 1
-        loadRestaurantList(isAuth)
+        _pageState.value = _pageState.value!!.copy(phase = TierPhase.Refreshing, page = 1, isLastPage = false)
+        loadRestaurantList(1)
     }
 
-    fun fetchNextRestaurants(isAuth: Boolean) {
-        _tierListPage++
-        loadRestaurantList(isAuth)
+    fun fetchNextRestaurants() {
+        if( _pageState.value == null) return
+
+        val s = _pageState.value!!
+        if (s.phase != TierPhase.Idle || s.isLastPage) return
+        _pageState.value = s.copy(phase = TierPhase.Paging)
+        loadRestaurantList(s.page + 1)
     }
 
     fun getTierListLastPosition(): Int {
