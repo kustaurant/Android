@@ -52,12 +52,13 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/draw_viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/draw_iv_select"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/draw_iv_select"
-                tools:layout_height="267dp" />
+                android:layout_marginTop="14.5dp"
+                android:layout_marginBottom="14.5dp" />
 
             <ImageView
                 android:id="@+id/draw_iv_select"
