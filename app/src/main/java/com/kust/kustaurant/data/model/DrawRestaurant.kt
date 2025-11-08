@@ -1,17 +1,19 @@
 package com.kust.kustaurant.data.model
 
-data class RestaurantResponse(
+data class DrawRestaurant(
     val restaurantId: Int,
-    val restaurantRanking: String?,
+    val restaurantRanking: Int?,
     val restaurantName: String,
     val restaurantCuisine: String,
     val restaurantPosition: String,
     val restaurantImgUrl: String,
     val mainTier: Int,
+    val latitude: Double,
+    val longitude: Double,
+    val partnershipInfo: String?,
+    val restaurantScore: Double?,
     val isEvaluated: Boolean,
     val isFavorite: Boolean,
-    val x: String,
-    val y: String,
-    val partnershipInfo: String?,
-    val restaurantScore: String?
+    val cuisineImgUrl : String,
+    val tierImgUrl : String
 )

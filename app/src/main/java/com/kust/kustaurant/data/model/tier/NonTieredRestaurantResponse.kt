@@ -1,4 +1,4 @@
-package com.kust.kustaurant.data.model
+package com.kust.kustaurant.data.model.tier
 
 data class NonTieredRestaurantResponse(
     val zoom: Int,

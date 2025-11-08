@@ -1,4 +1,4 @@
-package com.kust.kustaurant.data.model
+package com.kust.kustaurant.data.model.tier
 
 import com.kust.kustaurant.domain.model.TierRestaurant
 
