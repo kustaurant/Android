@@ -2,6 +2,7 @@ package com.kust.kustaurant.di.network
 
 import android.content.Context
 import com.kust.kustaurant.BuildConfig
+import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import com.kust.kustaurant.data.network.ServiceUnavailableNotifyInterceptor
 import com.kust.kustaurant.data.network.TokenAuthenticator
 import com.kust.kustaurant.data.network.XAccessTokenInterceptor
@@ -40,6 +41,7 @@ object NetworkModule {
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
         @ApplicationContext context: Context,
+        prefs : AuthPreferenceDataSource,
         notify503: ServiceUnavailableNotifyInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
@@ -47,8 +49,8 @@ object NetworkModule {
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
             .addInterceptor(notify503)
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(XAccessTokenInterceptor(context))
-            .authenticator(TokenAuthenticator(context))
+            .addInterceptor(XAccessTokenInterceptor(prefs))
+            .authenticator(TokenAuthenticator(prefs, context))
             .build()
     }
 

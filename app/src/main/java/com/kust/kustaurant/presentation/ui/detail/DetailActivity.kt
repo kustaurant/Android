@@ -13,7 +13,6 @@ import androidx.activity.viewModels
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.ActivityDetailBinding
 import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
@@ -41,8 +40,7 @@ class DetailActivity : BaseActivity() {
         binding.lifecycleOwner = this
         restaurantId = intent.getIntExtra("restaurantId", 346)
 
-        val accessToken = getAccessToken(this)
-        if (accessToken == null) {
+        if (viewModel.hasLoginInfo()) {
             viewModel.loadAnonDetailData(restaurantId)
         } else {
             viewModel.loadDetailData(restaurantId)
@@ -60,10 +58,10 @@ class DetailActivity : BaseActivity() {
     private fun loadData() {
         viewModel.detailData.observe(this) { detailData ->
             binding.tvToNaver.visibility = View.VISIBLE
-            if (detailData.partnershipInfo == null){
+            if (detailData.partnershipInfo == null) {
                 binding.detailClAlliance.visibility = View.GONE
             }
-            if (detailData.isEvaluated){
+            if (detailData.isEvaluated) {
                 binding.detailIvEvaluateCheck.visibility = View.VISIBLE
                 binding.detailTvEvaluate.text = "다시 평가하기"
             }
@@ -71,7 +69,7 @@ class DetailActivity : BaseActivity() {
             binding.detailClFavorite.isSelected = detailData.isFavorite
             isEvaluated = detailData.isEvaluated
 
-            when (detailData.mainTier){
+            when (detailData.mainTier) {
                 1 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_1)
                 2 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_2)
                 3 -> binding.detailIvRank.setImageResource(R.drawable.ic_rank_3)
@@ -92,14 +90,18 @@ class DetailActivity : BaseActivity() {
         binding.detailFlIvSearch.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
-
         }
     }
 
-
     private fun initFavorite() {
         binding.detailFlFavorite.setOnClickListener {
-            checkToken {
+            if (!viewModel.hasLoginInfo()) {
+                return@setOnClickListener run {
+                    val intent = Intent(this, StartActivity::class.java)
+                    startActivity(intent)
+                    Toast.makeText(this, "로그인 후 이용해 주세요.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
                 viewModel.postFavoriteToggle(restaurantId)
             }
         }
@@ -124,9 +126,10 @@ class DetailActivity : BaseActivity() {
     }
 
     fun setViewPagerHeight(height: Int) {
-        binding.vpMenuReview.layoutParams = (binding.vpMenuReview.layoutParams as ViewGroup.LayoutParams).apply {
-            this.height = height
-        }
+        binding.vpMenuReview.layoutParams =
+            (binding.vpMenuReview.layoutParams as ViewGroup.LayoutParams).apply {
+                this.height = height
+            }
     }
 
     private fun changeTopBar() {
@@ -145,25 +148,20 @@ class DetailActivity : BaseActivity() {
         }
     }
 
-
     private fun initEvaluate() {
         binding.btnEvaluate.setOnClickListener {
-            checkToken{
+            if (!viewModel.hasLoginInfo()) {
+                return@setOnClickListener run {
+                    val intent = Intent(this, StartActivity::class.java)
+                    startActivity(intent)
+                    Toast.makeText(this, "로그인 후 이용해 주세요.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
                 val intent = Intent(this, EvaluateActivity::class.java)
-                intent.putExtra("restaurantId",restaurantId)
+                intent.putExtra("restaurantId", restaurantId)
                 intent.putExtra("isEvaluated", isEvaluated)
                 startActivity(intent)
             }
-        }
-    }
-
-    private fun checkToken(action: () -> Unit) {
-        val accessToken = getAccessToken(this)
-        if (accessToken == null) {
-            val intent = Intent(this, StartActivity::class.java)
-            startActivity(intent)
-        } else {
-            action()
         }
     }
 

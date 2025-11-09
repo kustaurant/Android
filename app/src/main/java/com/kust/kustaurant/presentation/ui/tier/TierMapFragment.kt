@@ -14,7 +14,6 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.model.tier.NonTieredRestaurantGroup
 import com.kust.kustaurant.data.model.tier.TierMapData
 import com.kust.kustaurant.databinding.FragmentTierMapBinding
@@ -56,11 +55,7 @@ class TierMapFragment : Fragment(), OnMapReadyCallback {
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-        if (getAccessToken(requireContext()) == null) {
-            viewModel.loadRestaurant(TierScreenType.MAP)
-        } else {
-            viewModel.loadRestaurant(TierScreenType.MAP)
-        }
+        viewModel.loadRestaurant(TierScreenType.MAP)
 
         val bottomSheet = binding.tierBottomSheet
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet).apply {

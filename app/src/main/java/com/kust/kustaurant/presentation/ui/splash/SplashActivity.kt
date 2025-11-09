@@ -6,17 +6,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.activity.viewModels
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.presentation.common.BaseActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity() {
+    private val viewModel: SplashViewModel by viewModels()
     override fun shouldHandleGlobal503() = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_splash)
 
         // 스플래시 화면 0.5초 후 이미 로그인한 전적이 있으면 home, 아니면 온보딩
@@ -28,7 +30,7 @@ class SplashActivity : BaseActivity() {
             if (!isFirstLaunch) {
                 val intent = Intent(this, OnboardingActivity::class.java)
                 startActivity(intent)
-            } else if (getAccessToken(this) == null) {
+            } else if (viewModel.hasLoginInfo()) {
                 val intent = Intent(this, StartActivity::class.java)
                 startActivity(intent)
             } else {

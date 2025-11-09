@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import com.kust.kustaurant.data.model.tier.TierMapData
 import com.kust.kustaurant.domain.model.TierRestaurant
 import com.kust.kustaurant.domain.usecase.tier.GetTierRestaurantListUseCase
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class TierViewModel @Inject constructor(
     private val getTierRestaurantListUseCase: GetTierRestaurantListUseCase,
     private val getTierRestaurantMapUseCase: GetTierRestaurantMapUseCase,
+    private val prefs: AuthPreferenceDataSource
 ) : ViewModel(){
     private val _isExpanded = MutableLiveData(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
@@ -216,5 +218,12 @@ class TierViewModel @Inject constructor(
     }
     fun setShowBottomSheet(show: Boolean) {
         _isShowBottomSheet.value = show
+    }
+
+    fun hasLoginInfo(): Boolean {
+        prefs.getAccessToken()?.let {
+            return true
+        }
+        return false
     }
 }

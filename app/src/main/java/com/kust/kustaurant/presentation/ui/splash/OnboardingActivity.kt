@@ -10,8 +10,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.BuildConfig
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.saveAccessToken
-import com.kust.kustaurant.data.saveId
 import com.kust.kustaurant.databinding.ActivityOnboardingBinding
 import com.kust.kustaurant.presentation.common.BaseActivity
 import com.navercorp.nid.NaverIdLoginSDK
@@ -86,12 +84,14 @@ class OnboardingActivity : BaseActivity() {
             startNaverLogin()
         }
 
-        naverloginviewModel.accessToken.observe(this){newAccessToken ->
-            // sharedpreference를 통해 accesstoken 저장
-            saveAccessToken(this, newAccessToken)
+        naverloginviewModel.isLoginSuccessful.observe(this){ isSuccess ->
+            if(!isSuccess) {
+                Log.d("Naver Login", "Login failed")
+                return@observe
+            }
+
             val intent = Intent(this@OnboardingActivity, MainActivity::class.java)
 
-            //액티비티 스택제거
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     or Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -134,11 +134,9 @@ class OnboardingActivity : BaseActivity() {
                 val provider = "NAVER"
                 val providerId = response.profile?.id
                 val naverAccessToken = NaverIdLoginSDK.getAccessToken()
-                saveId(this@OnboardingActivity,providerId?: "")
-
                 Log.d("Naver Login", "${providerId}, ${naverAccessToken}")
 
-                naverloginviewModel.postNaverLogin(provider, providerId ?: "", naverAccessToken?:"")
+                naverloginviewModel.loginWithNaver(provider, providerId ?: "", naverAccessToken?:"")
             }
 
             override fun onFailure(httpStatus: Int, message: String) {

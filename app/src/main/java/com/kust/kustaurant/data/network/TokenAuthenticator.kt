@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.kust.kustaurant.BuildConfig
-import com.kust.kustaurant.data.getAccessToken
-import com.kust.kustaurant.data.saveAccessToken
+import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import com.kust.kustaurant.presentation.ui.splash.StartActivity
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Authenticator
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -16,14 +16,19 @@ import okhttp3.Response
 import okhttp3.Route
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class TokenAuthenticator(private val context: Context) : Authenticator {
+class TokenAuthenticator
+@Inject constructor(
+    private val prefs: AuthPreferenceDataSource,
+    @ApplicationContext private val context: Context
+) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         if (response.code == 401) {
-            val token = getAccessToken(context)  // 기존 토큰 가져오기
-            val newToken = refreshToken(token)  // 토큰 갱신 로직
+            val token = prefs.getRefreshToken()
+            val newToken = refreshToken(token)
             return if (newToken != null) {
-                saveAccessToken(context, newToken)
+                prefs.setAccessToken(newToken)
                 response.request.newBuilder()
                     .header("Authorization", "Bearer $newToken")
                     .build()

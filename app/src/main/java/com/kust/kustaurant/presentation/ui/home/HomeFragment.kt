@@ -6,7 +6,6 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.kust.kustaurant.MainActivity
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.model.HomeResponse
 import com.kust.kustaurant.databinding.FragmentHomeBinding
 import com.kust.kustaurant.presentation.common.CategoryData
@@ -252,7 +250,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
                 restaurantResponse.restaurantImgUrl,
                 restaurantResponse.mainTier,
                 restaurantResponse.partnershipInfo ?: "해당사항 없음",
-                restaurantResponse.restaurantScore?.toDouble() ?: 0.0,
+                restaurantResponse.restaurantScore?: 0.0,
                 restaurantResponse.isEvaluated,
                 restaurantResponse.isFavorite
             )
@@ -268,7 +266,7 @@ class HomeFragment : Fragment(), CategoryAdapter.CategoryItemClickListener {
                 restaurantResponse.restaurantImgUrl,
                 restaurantResponse.mainTier,
                 restaurantResponse.partnershipInfo ?: "해당사항 없음",
-                restaurantResponse.restaurantScore?.toDouble() ?: 0.0,
+                restaurantResponse.restaurantScore ?: 0.0,
                 restaurantResponse.isEvaluated,
                 restaurantResponse.isFavorite
             )
