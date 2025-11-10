@@ -5,8 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.domain.model.CommunityPost
-import com.kust.kustaurant.domain.model.CommunityRanking
+import com.kust.kustaurant.domain.model.community.CategorySort
+import com.kust.kustaurant.domain.model.community.CommunityPostListItem
+import com.kust.kustaurant.domain.model.community.CommunityRanking
+import com.kust.kustaurant.domain.model.community.PostCategory
+import com.kust.kustaurant.domain.model.community.RankingSort
 import com.kust.kustaurant.domain.usecase.community.GetCommunityPostListUseCase
 import com.kust.kustaurant.domain.usecase.community.GetCommunityRankingListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,14 +21,14 @@ class CommunityViewModel @Inject constructor(
     private val getCommunityPostListUseCase: GetCommunityPostListUseCase,
     private val getCommunityRankingListUseCase: GetCommunityRankingListUseCase,
     ) : ViewModel() {
-    private val _postCategory = MutableLiveData<String>("all")
-    val postCategory: LiveData<String> = _postCategory
+    private val _postCategory = MutableLiveData<PostCategory>(PostCategory.ALL)
+    val postCategory: LiveData<PostCategory> = _postCategory
 
-    private val _sort = MutableLiveData<String>("recent")
-    val sort: LiveData<String> = _sort
+    private val _sort = MutableLiveData<CategorySort>(CategorySort.LATEST)
+    val sort: LiveData<CategorySort> = _sort
 
-    private val _communityPosts = MutableLiveData<List<CommunityPost>>()
-    val communityPosts: LiveData<List<CommunityPost>> = _communityPosts
+    private val _communityPosts = MutableLiveData<List<CommunityPostListItem>>()
+    val communityPosts: LiveData<List<CommunityPostListItem>> = _communityPosts
 
     private val _communityRanking = MutableLiveData<List<CommunityRanking>>()
     val communityRanking: LiveData<List<CommunityRanking>> = _communityRanking
@@ -33,10 +36,13 @@ class CommunityViewModel @Inject constructor(
     private var isLastPage = false
     private var currentPage = 0 //Start from 0
 
-    private val _rankingSortType = MutableLiveData<String>("")
+    private val _rankingSortType = MutableLiveData<RankingSort>(RankingSort.SEASONAL)
 
-    var lastHandledSeq: Long? = null
-    private fun loadCommunityPosts(postCategory: String, currentPage: Int, sort: String) {
+    init {
+        loadCommunityRanking(RankingSort.SEASONAL)
+    }
+
+    private fun loadCommunityPosts(postCategory: PostCategory, currentPage: Int, sort: CategorySort) {
         if (isLastPage) return
 
         viewModelScope.launch {
@@ -53,13 +59,14 @@ class CommunityViewModel @Inject constructor(
                     val currentPosts = _communityPosts.value.orEmpty() + newPosts
                     _communityPosts.postValue(currentPosts)
                 }
+
             } catch (e: Exception) {
                 Log.e("CommunityViewModel", "From loadCommunityPosts Err is ", e)
             } finally {  }
         }
     }
 
-    fun getCommunityPostList(state : CommunityPostListFragment.Companion.PostLoadState, sort : String) {
+    fun getCommunityPostList(state : CommunityPostListFragment.Companion.PostLoadState, sort : CategorySort) {
         when(state) {
             CommunityPostListFragment.Companion.PostLoadState.POST_FIRST_PAGE -> {
                 isLastPage = false
@@ -72,16 +79,20 @@ class CommunityViewModel @Inject constructor(
             }
         }
 
+        if(_postCategory.value == null || _sort.value == null) {
+            Log.e("CommunityViewModel", "From getCommunityPostList Err: postCategory or sort is null")
+            return
+        }
         loadCommunityPosts(_postCategory.value!!, currentPage, _sort.value!!)
     }
 
-    fun updateSortAndLoadPosts(newSort: String) {
+    fun updateSortAndLoadPosts(newSort: CategorySort) {
         if (_sort.value != newSort) {
             getCommunityPostList(CommunityPostListFragment.Companion.PostLoadState.POST_FIRST_PAGE, newSort)
         }
     }
 
-    fun onPostCategoryChanged(newCategory: String) {
+    fun onPostCategoryChanged(newCategory: PostCategory) {
         if(_postCategory.value != newCategory) {
             _postCategory.value = newCategory
             getCommunityPostList(
@@ -105,18 +116,17 @@ class CommunityViewModel @Inject constructor(
         return Pair(topRankers, remainingRankings)
     }
 
-    fun onSortTypeChanged(newSortType: String) {
-        if (_rankingSortType.value != newSortType) {
-            _rankingSortType.value = newSortType
-            loadCommunityRanking(newSortType)
+    fun onSortTypeChanged(newSort: RankingSort) {
+        if (_rankingSortType.value != newSort) {
+            _rankingSortType.value = newSort
+            loadCommunityRanking(newSort)
         }
     }
 
-    private fun loadCommunityRanking(sort: String) {
+    private fun loadCommunityRanking(sort: RankingSort) {
         viewModelScope.launch {
             try {
-                val rankings = getCommunityRankingListUseCase(sort)
-                _communityRanking.value = rankings
+                _communityRanking.value = getCommunityRankingListUseCase(sort)
             } catch (e: Exception) {
                 Log.e("CommunityViewModel", "From loadCommunityRanking Err is ", e)
             }

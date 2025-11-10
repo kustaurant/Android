@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.kust.kustaurant.presentation.ui.community.CommunityPostWriteViewModel" />
+            type="com.kust.kustaurant.presentation.ui.community.write.CommunityPostWriteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -167,77 +167,106 @@
                     android:background="@android:color/transparent"
                     android:gravity="top|start"
                     android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title_divider"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-<!--
-                <EditText
-                    android:id="@+id/et_post_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="top|start"
-                    android:hint="@string/community_post_write_info"
-                    android:inputType="textMultiLine"
-                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title_divider" />
--->
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_bottom_group"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="44dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/gl_end"
-            app:layout_constraintStart_toStartOf="@id/gl_start">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <ImageView
-                android:id="@+id/iv_select_img"
+            <View
+                android:id="@+id/bottom_top_line"
+                android:layout_width="0dp"
+                android:layout_height="0.5dp"
+                android:background="@color/black"
+                android:alpha="0.25"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ll_bottom_group" />
+
+            <View
+                android:id="@+id/bottom_bottom_line"
+                android:layout_width="0dp"
+                android:layout_height="0.5dp"
+                android:background="@color/black"
+                android:alpha="0.25"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/ll_bottom_group" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_bottom_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:contentDescription="@string/community_post_select_img_description"
-                android:padding="5dp"
-                android:src="@drawable/ic_select_img" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
 
-            <ImageView
-                android:id="@+id/iv_go_back"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_bottom_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:contentDescription="@string/community_post_go_back_description"
-                android:padding="5dp"
-                android:src="@drawable/ic_go_back" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
 
-            <ImageView
-                android:id="@+id/iv_go_forward"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/bottom_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:contentDescription="@string/community_post_go_forward_description"
-                android:padding="5dp"
-                android:src="@drawable/ic_go_forward" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/gl_bottom_end"
+                app:layout_constraintStart_toStartOf="@id/gl_bottom_start"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/iv_bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:contentDescription="@string/community_post_bold_description"
-                android:padding="5dp"
-                android:src="@drawable/ic_word_bold" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_select_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:contentDescription="@string/community_post_select_img_description"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_select_img" />
+
+                <ImageView
+                    android:id="@+id/iv_go_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:contentDescription="@string/community_post_go_back_description"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_go_back" />
+
+                <ImageView
+                    android:id="@+id/iv_go_forward"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:contentDescription="@string/community_post_go_forward_description"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_go_forward" />
+
+                <ImageView
+                    android:id="@+id/iv_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:contentDescription="@string/community_post_bold_description"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_word_bold" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

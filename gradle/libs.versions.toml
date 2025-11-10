@@ -30,6 +30,8 @@ oauthJdk8 = "5.9.1"
 v2User = "2.10.0"
 stickyScrollView = "1.0.3"
 richeditorAndroid = "2.0.0"
+coil = "2.7.0"
+coilSvg = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -61,6 +63,8 @@ oauth-jdk8 = { group = "com.navercorp.nid", name = "oauth-jdk8", version.ref = "
 v2-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "v2User" }
 sticky-scroll-view = { module = "com.github.amarjain07:StickyScrollView", version.ref = "stickyScrollView" }
 richeditor-android = { group = "jp.wasabeef", name = "richeditor-android", version.ref = "richeditorAndroid" }
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coilSvg" }
 
 
 [plugins]

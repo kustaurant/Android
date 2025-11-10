@@ -1,7 +1,6 @@
 package com.kust.kustaurant.presentation.ui.draw
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,19 +10,8 @@ import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.DrawRestaurantData
 
-class DrawSelectResultAdapter(
-    val restaurants: MutableList<DrawRestaurantData>
-) : RecyclerView.Adapter<DrawSelectResultAdapter.RestaurantViewHolder>() {
-
-    interface OnItemClickListener {
-        fun onItemClick(restaurant: DrawRestaurantData)
-    }
-
-    private var itemClickListener: OnItemClickListener? = null
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.itemClickListener = listener
-    }
+class DrawSelectResultAdapter(val restaurants: MutableList<DrawRestaurantData>) :
+    RecyclerView.Adapter<DrawSelectResultAdapter.RestaurantViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -34,12 +22,6 @@ class DrawSelectResultAdapter(
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
         holder.bind(restaurants[position])
             holder.imageView.background = null
-
-        holder.itemView.setOnClickListener {
-            Log.d("어댑터", "클릭됨: ${restaurants[position].restaurantName}")
-
-            itemClickListener?.onItemClick(restaurants[position])
-        }
     }
 
     override fun getItemCount() = restaurants.size

@@ -1,5 +1,6 @@
 package com.kust.kustaurant.domain.usecase.community
 
+import com.kust.kustaurant.domain.model.community.PostCategory
 import com.kust.kustaurant.domain.repository.CommunityRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -9,7 +10,7 @@ import javax.inject.Singleton
 class PatchPostModifyUseCase @Inject constructor(
     private val communityRepository: CommunityRepository
 ){
-    suspend operator fun invoke(postId: String, title : String, postCategory : String, content : String,) {
+    suspend operator fun invoke(postId: String, title : String, postCategory : PostCategory, content : String,) {
         return communityRepository.patchPostModify(postId, title, postCategory, content)
     }
 }

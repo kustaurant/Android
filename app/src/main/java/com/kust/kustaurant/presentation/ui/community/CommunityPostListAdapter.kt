@@ -10,15 +10,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.databinding.ItemCommunityPostBinding
-import com.kust.kustaurant.domain.model.CommunityPost
+import com.kust.kustaurant.domain.model.community.CommunityPostListItem
 import com.kust.kustaurant.presentation.common.communityRegex
 
 class CommunityPostListAdapter() :
-    ListAdapter<CommunityPost, CommunityPostListAdapter.ViewHolder>(communityPostListDiffUtil) {
+    ListAdapter<CommunityPostListItem, CommunityPostListAdapter.ViewHolder>(
+        communityPostListDiffUtil
+    ) {
     lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener{
-        fun onItemClicked(data : CommunityPost)
+        fun onItemClicked(data : CommunityPostListItem)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
@@ -40,13 +42,10 @@ class CommunityPostListAdapter() :
         }
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: CommunityPost) {
-            viewBinding.communityTvCategory.text = item.postCategory
+        fun bind(item: CommunityPostListItem) {
+            viewBinding.communityTvCategory.text = item.category
+            val imageUrl = item.photoUrl
 
-            // 이미지 URL 추출 및 제거
-            val imageUrl = communityRegex().find(item.postBody)?.groups?.get(1)?.value
-
-            // 이미지가 있을 경우 Glide를 사용해 로드
             if (imageUrl != null) {
                 viewBinding.communityIvPostImg.visibility = View.VISIBLE
                 Glide.with(viewBinding.communityIvPostImg.context)
@@ -57,14 +56,14 @@ class CommunityPostListAdapter() :
             }
 
             // <img> 태그 제거 후 나머지 텍스트를 TextView에 적용
-            val postBodyWithoutImg = item.postBody.replace(communityRegex(), "")
+            val postBodyWithoutImg = item.body.replace(communityRegex(), "")
             viewBinding.communityTvBoardContent.text = Html.fromHtml(postBodyWithoutImg, Html.FROM_HTML_MODE_LEGACY)
 
             // 나머지 UI 요소 설정
-            viewBinding.communityTvLikeCnt.text = item.likeCount.toString()
+            viewBinding.communityTvLikeCnt.text = item.totalLikes.toString()
             viewBinding.communityTvCommentCnt.text = item.commentCount.toString()
-            viewBinding.communityTvUserNickname.text = item.user.userNickname
-            viewBinding.communityTvPostTitle.text = item.postTitle
+            viewBinding.communityTvUserNickname.text = item.writernickname
+            viewBinding.communityTvPostTitle.text = item.title
             viewBinding.communityTvTimeAgo.text = item.timeAgo
         }
     }
@@ -84,14 +83,14 @@ class CommunityPostListAdapter() :
     }
 
     companion object {
-        val communityPostListDiffUtil = object : DiffUtil.ItemCallback<CommunityPost>() {
-            override fun areItemsTheSame(oldItem: CommunityPost, newItem: CommunityPost): Boolean {
+        val communityPostListDiffUtil = object : DiffUtil.ItemCallback<CommunityPostListItem>() {
+            override fun areItemsTheSame(oldItem: CommunityPostListItem, newItem: CommunityPostListItem): Boolean {
                 return oldItem.postId == newItem.postId
             }
 
             override fun areContentsTheSame(
-                oldItem: CommunityPost,
-                newItem: CommunityPost
+                oldItem: CommunityPostListItem,
+                newItem: CommunityPostListItem
             ): Boolean {
                 return oldItem == newItem
             }

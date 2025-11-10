@@ -1,4 +1,4 @@
-package com.kust.kustaurant.presentation.ui.community
+package com.kust.kustaurant.presentation.ui.community.detail
 
 import android.app.AlertDialog
 import android.content.Context
@@ -13,21 +13,25 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
-import com.kust.kustaurant.domain.model.CommunityPostComment
+import com.kust.kustaurant.domain.model.community.CommunityPostComment
+import com.kust.kustaurant.domain.model.community.LikeEvent
+import com.kust.kustaurant.domain.model.community.PostCommentStatus
 
 class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapter<CommunityPostComment, CommunityPostDetailCommentReplyAdapter.ViewHolder>(
-    CommunityPostDetailCommentAdapter.diffUtil) {
+    CommunityPostDetailCommentAdapter.diffUtil
+) {
 
     private lateinit var itemClickListener : OnItemClickListener
 
     interface OnItemClickListener {
-        fun onReportClicked(commentId: Int)
-        fun onDeleteClicked(commentId: Int)
-        fun onLikeClicked(commentId: Int, position: Int)
-        fun onDisLikeClicked(commentId: Int, position: Int)
+        fun onReportClicked(commentId: Long)
+        fun onDeleteClicked(commentId: Long, status : PostCommentStatus)
+        fun onLikeClicked(commentId: Long, position: Int)
+        fun onDisLikeClicked(commentId: Long, position: Int)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -59,7 +63,8 @@ class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapte
                 }
             } else {
                 popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
-                    itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).commentId)
+                    val item = getItem(absoluteAdapterPosition)
+                    itemClickListener.onDeleteClicked(item.commentId, PostCommentStatus.from(item.status))
                     popupWindow.dismiss()
                 }
             }
@@ -96,31 +101,35 @@ class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapte
             }
         }
 
-        fun getLikeIconResource(likeStatus: Boolean): Int {
-            return when(likeStatus) {
-                true -> R.drawable.ic_like_true
-                false -> R.drawable.ic_like_false
-            }
+        private fun getLikeIconResource(reaction: LikeEvent?): Int = when (reaction) {
+            LikeEvent.LIKE -> R.drawable.ic_like_true
+            LikeEvent.DISLIKE, null -> R.drawable.ic_like_false
         }
 
-        fun getDislikeIconResource(likeStatus: Boolean): Int {
-            return when(likeStatus) {
-                true -> R.drawable.ic_dislike_true
-                false -> R.drawable.ic_dislike_false
-            }
+        private fun getDislikeIconResource(reaction: LikeEvent?): Int = when (reaction) {
+            LikeEvent.DISLIKE-> R.drawable.ic_dislike_true
+            LikeEvent.LIKE, null  -> R.drawable.ic_dislike_false
         }
 
         fun bind(item: CommunityPostComment) {
-            binding.ivLike.setImageResource(getLikeIconResource(item.isLiked))
-            binding.ivHate.setImageResource(getDislikeIconResource(item.isDisliked))
-            binding.tvUserName.text = item.user.userNickname
-            binding.tvReview.text = item.commentBody
+            val reaction = LikeEvent.from(item.reactionType)
+            binding.ivLike.setImageResource(getLikeIconResource(reaction))
+            binding.ivHate.setImageResource(getDislikeIconResource(reaction))
+            binding.tvUserName.text = item.writernickname
+            binding.tvReview.text = item.body
             binding.tvLike.text = if(item.likeCount < 0) "0" else item.likeCount.toString()
             binding.tvHate.text = if(item.dislikeCount < 0) "0" else item.dislikeCount.toString()
             binding.tvReviewTime.text = item.timeAgo
-            Glide.with(context)
-                .load(item.user.rankImg)
-                .into(binding.ivUserImage)
+
+            binding.ivUserImage.load(item.writericonUrl) {
+                crossfade(true)
+                placeholder(R.drawable.ic_baby_cow)
+                error(R.drawable.ic_baby_cow)
+
+                if (item.writericonUrl?.endsWith(".svg", true) == true) {
+                    decoderFactory(SvgDecoder.Factory())
+                }
+            }
 
             binding.flLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
@@ -131,12 +140,12 @@ class CommunityPostDetailCommentReplyAdapter(val context : Context) : ListAdapte
 
         }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityPostDetailCommentReplyAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemDetailReviewReplyBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CommunityPostDetailCommentReplyAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 }

@@ -13,7 +13,7 @@ file("../local.properties").inputStream().use{ properties.load(it) }
 
 android {
     namespace = "com.kust.kustaurant"
-    compileSdk = 35
+    compileSdk = 34
 
     buildFeatures {
         viewBinding = true
@@ -24,9 +24,9 @@ android {
     defaultConfig {
         applicationId = "com.kust.kustaurant"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 25
-        versionName = "1.2.4"
+        targetSdk = 34
+        versionCode = 19
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -41,7 +41,6 @@ android {
         buildConfigField("String", "KAKAO_REST_API_KEY", "\"${properties["kakao_rest_api_key"]}\"")
 
         manifestPlaceholders["KAKAO_NATIVE_KEY"] = properties["kakao_manifest_native_key"].toString()
-        manifestPlaceholders["NAVER_MAP_ID"] = properties["naver_map_id"].toString()
     }
 
     buildTypes {
@@ -94,9 +93,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.oauth) // 네이버 로그인
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.v2.user)
+    implementation(libs.v2.user) // 카카오 로그인
     implementation(libs.richeditor.android)
-    implementation(libs.richeditor.android) // 카카오 로그인
     kapt(libs.hilt.android.compiler)
 
     // Retrofit
@@ -105,6 +103,10 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.okhttp.urlconnection)
+
+    //Coil
+    implementation(libs.coil)
+    implementation(libs.coil.svg)
 
     implementation(libs.androidx.databinding.compiler)
 
@@ -131,4 +133,6 @@ dependencies {
 
     implementation ("com.airbnb.android:lottie:6.5.2")
     implementation(kotlin("script-runtime"))
+
+
 }

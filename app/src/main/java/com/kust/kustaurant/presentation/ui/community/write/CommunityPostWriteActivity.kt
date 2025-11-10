@@ -1,11 +1,13 @@
-package com.kust.kustaurant.presentation.ui.community
+package com.kust.kustaurant.presentation.ui.community.write
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.inputmethod.InputMethodManager
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -17,11 +19,15 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ActivityCommunityPostWriteBinding
 import com.kust.kustaurant.databinding.PopupCommuPostWriteSortBinding
+import com.kust.kustaurant.domain.model.community.PostCategory
+import com.kust.kustaurant.domain.model.community.toPostCategory
 import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.model.CommunityPostIntent
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +40,7 @@ class CommunityPostWriteActivity : BaseActivity() {
     private lateinit var binding: ActivityCommunityPostWriteBinding
     private val viewModel: CommunityPostWriteViewModel by viewModels()
     private var textChangeJob: Job? = null
-    private var postId : Int? = null
+    private var postId : Long? = null
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var docPickerLauncher: ActivityResultLauncher<Intent>
 
@@ -64,7 +70,7 @@ class CommunityPostWriteActivity : BaseActivity() {
 
                     viewModel.updateContentFromHtml(it.postBody)
                     viewModel.updateTitle(it.postTitle)
-                    viewModel.updatePostSort(it.postCategory)
+                    viewModel.updatePostSort(it.postCategory.toPostCategory())
 
                     postId = it.postId
                     binding.etPostContent.evaluateJavascript("javascript:setHtmlContent('$escapedHtmlContent');", null)
@@ -80,8 +86,8 @@ class CommunityPostWriteActivity : BaseActivity() {
             }
         }
 
-        viewModel.postSort.observe(this) { sort ->
-            binding.tvSelectPostSort.text = sort
+        viewModel.postCategory.observe(this) { category ->
+            binding.tvSelectPostSort.text = category?.displayName
         }
 
         viewModel.postSendReady.observe(this) { isReady ->
@@ -189,8 +195,21 @@ class CommunityPostWriteActivity : BaseActivity() {
     }
 
     private fun insertImageAtCursor(imageUrl: String) {
-        // JavaScript를 호출하여 이미지를 현재 커서 위치에 삽입
         binding.etPostContent.evaluateJavascript("javascript:insertImage('$imageUrl');", null)
+
+        binding.etPostContent.postDelayed({ showImeNow() }, 16)
+    }
+
+    private fun showImeNow() {
+        binding.etPostContent.isFocusable = true
+        binding.etPostContent.isFocusableInTouchMode = true
+        binding.etPostContent.requestFocus()
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.etPostContent, InputMethodManager.SHOW_IMPLICIT)
+
+        WindowInsetsControllerCompat(window, binding.etPostContent)
+            .show(WindowInsetsCompat.Type.ime())
     }
 
     private fun selectGallery() {
@@ -221,20 +240,20 @@ class CommunityPostWriteActivity : BaseActivity() {
         popupWindow.showAsDropDown(binding.llSelectPostSort, 0, -binding.llSelectPostSort.height)
 
         popupBinding.tvFree.setOnClickListener {
-            updateSelectedPostSort(popupBinding.tvFree.text.toString(), popupWindow)
+            updateSelectedPostSort(PostCategory.FREE, popupWindow)
         }
 
         popupBinding.tvSuggest.setOnClickListener {
-            updateSelectedPostSort(popupBinding.tvSuggest.text.toString(), popupWindow)
+            updateSelectedPostSort(PostCategory.SUGGESTION, popupWindow)
         }
 
         popupBinding.tvColumn.setOnClickListener {
-            updateSelectedPostSort(popupBinding.tvColumn.text.toString(), popupWindow)
+            updateSelectedPostSort(PostCategory.COLUMN, popupWindow)
         }
     }
 
-    private fun updateSelectedPostSort(selectedText: String, popupWindow: PopupWindow) {
-        viewModel.updatePostSort(selectedText)
+    private fun updateSelectedPostSort(category: PostCategory, popupWindow: PopupWindow) {
+        viewModel.updatePostSort(category)
         popupWindow.dismiss()
     }
 

@@ -21,7 +21,6 @@ import com.kust.kustaurant.databinding.ActivityEvaluateBinding
 import com.kust.kustaurant.presentation.common.BaseActivity
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
-import android.os.Build
 
 @AndroidEntryPoint
 class EvaluateActivity : BaseActivity() {
@@ -117,17 +116,10 @@ class EvaluateActivity : BaseActivity() {
     }
 
     private fun selectGallery() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13 이상부터 Photo Picker
-            val intent = Intent(android.provider.MediaStore.ACTION_PICK_IMAGES)
-            photoPickerLauncher.launch(intent)
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), REQ_GALLERY)
         } else {
-            // Android 13 미만은 기존 갤러리 + 권한 체크
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), REQ_GALLERY)
-            } else {
-                openGallery()
-            }
+            openGallery()
         }
     }
 
