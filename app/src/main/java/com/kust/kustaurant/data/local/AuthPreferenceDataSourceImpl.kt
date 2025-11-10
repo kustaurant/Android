@@ -43,11 +43,12 @@ class AuthPreferenceDataSourceImpl @Inject constructor(
     override fun getDeviceId(): String? =
         prefs.getString("device_id", null)
 
-    override fun clearUserTokens() {
+    override fun clearUserInfo() {
         prefs.edit()
             .remove("access_token")
             .remove("refresh_token")
             .remove("userId")
+            .remove("device_id")
             .apply()
     }
 }

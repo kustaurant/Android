@@ -13,6 +13,6 @@ interface AuthPreferenceDataSource {
     fun setDeviceId(deviceId: String)
     fun getDeviceId(): String?
 
-    fun clearUserTokens()
+    fun clearUserInfo()
 }
 
