@@ -1,6 +1,5 @@
 package com.kust.kustaurant.di.network
 
-import android.content.Context
 import com.kust.kustaurant.BuildConfig
 import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import com.kust.kustaurant.data.network.ServiceUnavailableNotifyInterceptor
@@ -13,10 +12,10 @@ import com.kust.kustaurant.data.remote.HomeApi
 import com.kust.kustaurant.data.remote.MyPageApi
 import com.kust.kustaurant.data.remote.SearchApi
 import com.kust.kustaurant.data.remote.TierApi
+import com.kust.kustaurant.domain.common.session.SessionController
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -40,9 +39,9 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        @ApplicationContext context: Context,
         prefs : AuthPreferenceDataSource,
-        notify503: ServiceUnavailableNotifyInterceptor
+        notify503: ServiceUnavailableNotifyInterceptor,
+        sessionController: SessionController,
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .readTimeout(30000, TimeUnit.MILLISECONDS)
@@ -50,7 +49,7 @@ object NetworkModule {
             .addInterceptor(notify503)
             .addInterceptor(loggingInterceptor)
             .addInterceptor(XAccessTokenInterceptor(prefs))
-            .authenticator(TokenAuthenticator(prefs, context))
+            .authenticator(TokenAuthenticator(prefs,sessionController))
             .build()
     }
 

@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class StartActivity : BaseActivity() {
     override fun shouldHandleGlobal503() = false
+    override fun shouldHandleSessionEvents() = false
     lateinit var binding: ActivityStartBinding
     private val naverloginviewModel: NaverLoginViewModel by viewModels()
 
@@ -82,10 +83,10 @@ class StartActivity : BaseActivity() {
 
     private fun startNaverLogin(){
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {
-            override fun onSuccess(response: NidProfileResponse) {
+            override fun onSuccess(result: NidProfileResponse) {
                 // provider, providerId, naveraccesstoken 설정
                 val provider = "NAVER"
-                val providerId = response.profile?.id
+                val providerId = result.profile?.id
                 val naverAccessToken = NaverIdLoginSDK.getAccessToken()
                 Log.d("Naver Login", "${
                     providerId}, ${naverAccessToken}")

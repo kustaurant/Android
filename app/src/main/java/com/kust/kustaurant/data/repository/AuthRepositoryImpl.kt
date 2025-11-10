@@ -5,6 +5,7 @@ import com.kust.kustaurant.data.model.toDomain
 import com.kust.kustaurant.data.remote.AuthApi
 import com.kust.kustaurant.domain.model.auth.AuthToken
 import com.kust.kustaurant.domain.repository.AuthRepository
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -15,8 +16,10 @@ class AuthRepositoryImpl @Inject constructor(
         return authApi.postNaverLogin(request).toDomain()
     }
 
-    override suspend fun postLogout():String{
-        return authApi.postLogout().string()
+    override suspend fun postLogout(): Result<Unit> = runCatching {
+        val response = authApi.postLogout()
+        if (!response.isSuccessful) throw HttpException(response)
+        Unit
     }
 
     override suspend fun deleteUser() {

@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.domain.common.session.SessionController
+import com.kust.kustaurant.domain.model.appEvent.LogoutReason
 import com.kust.kustaurant.domain.usecase.auth.DeleteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GoodByeViewModel @Inject constructor(
-    private val deleteUserUseCase: DeleteUserUseCase
+    private val deleteUserUseCase: DeleteUserUseCase,
+    private val session : SessionController
 ) : ViewModel() {
 
     private val _response = MutableLiveData<String>()
@@ -22,8 +25,8 @@ class GoodByeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 deleteUserUseCase()
-
                 _response.value = "success"
+                session.logout(LogoutReason.Manual)
             } catch (e: Exception) {
                 val errorMsg = when (e) {
                     is retrofit2.HttpException -> when (e.code()) {

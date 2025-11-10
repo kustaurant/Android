@@ -5,7 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ServiceDownDialogStateViewModel @Inject constructor() : ViewModel() {
+class StateVM @Inject constructor() : ViewModel() {
     private var lastHandledSeq: Long = 0L
     fun shouldHandle(seq: Long): Boolean {
         if (seq == lastHandledSeq) return false

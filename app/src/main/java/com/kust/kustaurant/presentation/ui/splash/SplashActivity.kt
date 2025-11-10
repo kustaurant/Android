@@ -30,7 +30,7 @@ class SplashActivity : BaseActivity() {
             if (!isFirstLaunch) {
                 val intent = Intent(this, OnboardingActivity::class.java)
                 startActivity(intent)
-            } else if (viewModel.hasLoginInfo()) {
+            } else if (!viewModel.hasLoginInfo()) {
                 val intent = Intent(this, StartActivity::class.java)
                 startActivity(intent)
             } else {

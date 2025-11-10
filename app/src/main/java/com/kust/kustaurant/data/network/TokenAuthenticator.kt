@@ -1,12 +1,10 @@
 package com.kust.kustaurant.data.network
 
-import android.content.Context
-import android.content.Intent
 import android.util.Log
 import com.kust.kustaurant.BuildConfig
 import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
-import com.kust.kustaurant.presentation.ui.splash.StartActivity
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.kust.kustaurant.domain.common.session.SessionController
+import com.kust.kustaurant.domain.model.appEvent.LogoutReason
 import okhttp3.Authenticator
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -21,7 +19,7 @@ import javax.inject.Inject
 class TokenAuthenticator
 @Inject constructor(
     private val prefs: AuthPreferenceDataSource,
-    @ApplicationContext private val context: Context
+    private val sessionController : SessionController
 ) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         if (response.code == 401) {
@@ -33,7 +31,7 @@ class TokenAuthenticator
                     .header("Authorization", "Bearer $newToken")
                     .build()
             } else {
-                handleLogout()
+                sessionController.logout(LogoutReason.RefreshFailed)
                 null
             }
         }
@@ -65,17 +63,5 @@ class TokenAuthenticator
             Log.e("TokenAuthenticator", "refresh 실패 코드: ${e.localizedMessage}")
         }
         return null
-    }
-
-    private fun handleLogout() {
-        context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE).edit().clear().apply()
-
-        val intent = Intent(context, StartActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
-
-        context.startActivity(intent)
     }
 }

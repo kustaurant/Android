@@ -73,7 +73,6 @@ class OnboardingActivity : BaseActivity() {
             finish()
         }
 
-
         // naver 로그인
         val naverClientId = BuildConfig.NAVER_CLIENT_ID
         val naverClientSecret = BuildConfig.NAVER_CLIENT_SECRET
