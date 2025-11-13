@@ -1,6 +1,6 @@
 package com.kust.kustaurant.domain.usecase.community
 
-import com.kust.kustaurant.data.model.commnity.CommunityPostUploadImageResponse
+import com.kust.kustaurant.data.model.community.CommunityPostUploadImageResponse
 import com.kust.kustaurant.domain.repository.CommunityRepository
 import okhttp3.MultipartBody
 import javax.inject.Inject

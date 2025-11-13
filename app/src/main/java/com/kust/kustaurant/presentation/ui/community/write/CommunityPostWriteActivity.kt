@@ -1,13 +1,13 @@
 package com.kust.kustaurant.presentation.ui.community.write
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.inputmethod.InputMethodManager
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -19,6 +19,8 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.kust.kustaurant.R
@@ -50,7 +52,6 @@ class CommunityPostWriteActivity : BaseActivity() {
 
         initWebView()
         initPhotoPicker()
-        initFallback()
         setupUI()
         observers()
 
@@ -77,6 +78,7 @@ class CommunityPostWriteActivity : BaseActivity() {
             }
         }
     }
+
     private fun observers() {
         viewModel.postTitle.observe(this) { title ->
             if (binding.etPostTitle.text.toString() != title) {
@@ -175,45 +177,45 @@ class CommunityPostWriteActivity : BaseActivity() {
     // Fragment에서 ViewModel에서 반환된 HTML 값을 직접 설정하고 커서 위치 재확인
     private fun initPhotoPicker() {
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                lifecycleScope.launch {
-                    val imageUrl = viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))
-                    imageUrl?.let {
-                        insertImageAtCursor(it)
-                    }
-                }
+            uri ?: return@registerForActivityResult
+            lifecycleScope.launch {
+                viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))?.let { insertImageAtCursor(it) }
             }
         }
-    }
 
-    private fun initFallback() {
-        docPickerLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val uri = result.data?.data
-                if (uri != null) {
-                    lifecycleScope.launch {
-                        val url = viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))
-                        url?.let { insertImageAtCursor(it) }
-                    }
-                }
+        docPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+            val uri = res.data?.data ?: return@registerForActivityResult
+            try {
+                contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            } catch (_: SecurityException) { /* 공급자 미지원 or 이미 보유 */ }
+            lifecycleScope.launch {
+                viewModel.uploadImageAndGetUrl(uri, getFileNameFromUri(uri))?.let { insertImageAtCursor(it) }
             }
         }
     }
 
     private fun insertImageAtCursor(imageUrl: String) {
-        // JavaScript를 호출하여 이미지를 현재 커서 위치에 삽입
         binding.etPostContent.evaluateJavascript("javascript:insertImage('$imageUrl');", null)
+
+        binding.etPostContent.postDelayed({ showImeNow() }, 16)
+    }
+
+    private fun showImeNow() {
+        binding.etPostContent.isFocusable = true
+        binding.etPostContent.isFocusableInTouchMode = true
+        binding.etPostContent.requestFocus()
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.etPostContent, InputMethodManager.SHOW_IMPLICIT)
+
+        WindowInsetsControllerCompat(window, binding.etPostContent)
+            .show(WindowInsetsCompat.Type.ime())
     }
 
     private fun selectGallery() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            pickMedia.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
+        if (ActivityResultContracts.PickVisualMedia.isPhotoPickerAvailable(this)) {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         } else {
-            // Android 8~10(API 26~29)
             openDocumentFallback()
         }
     }

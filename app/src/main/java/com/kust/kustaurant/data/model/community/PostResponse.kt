@@ -1,10 +1,10 @@
-package com.kust.kustaurant.data.model.commnity
+package com.kust.kustaurant.data.model.community
 
 import com.kust.kustaurant.domain.model.community.PostModification
 
 data class PostResponse(
     val postId: Long,
-    val category: String,
+    val category: PostCategoryDto,
     val title: String,
     val body: String,
     val photoUrls: List<String>
@@ -13,7 +13,7 @@ data class PostResponse(
 fun PostResponse.toDomain() : PostModification {
     return PostModification(
         postId = postId,
-        category = category,
+        category = category.toDomain(),
         title = title,
         body = body,
         photoUrls = photoUrls

@@ -55,7 +55,8 @@
             android:exported="false" />
         <activity
             android:name=".presentation.ui.community.write.CommunityPostWriteActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateUnchanged|adjustResize" />
         <activity android:name=".presentation.ui.community.detail.CommunityPostDetailActivity"
             android:exported="false"/>
         <activity
