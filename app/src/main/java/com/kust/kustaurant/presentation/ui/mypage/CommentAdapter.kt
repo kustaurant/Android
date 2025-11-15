@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.MyCommentResponse
-import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.databinding.ItemMyCommentBinding
 
 class CommentAdapter(val context: Context) : ListAdapter<MyCommentResponse, CommentAdapter.ViewHolder>(
@@ -26,7 +24,7 @@ class CommentAdapter(val context: Context) : ListAdapter<MyCommentResponse, Comm
 
     inner class ViewHolder(val binding : ItemMyCommentBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : MyCommentResponse){
-            binding.tvComment.text = item.postcommentBody
+            binding.tvComment.text = item.body
             binding.tvCommentTitle.text = item.postTitle
 
             binding.clComment.setOnClickListener {
@@ -50,10 +48,10 @@ class CommentAdapter(val context: Context) : ListAdapter<MyCommentResponse, Comm
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<MyCommentResponse>() {
             override fun areItemsTheSame(oldItem: MyCommentResponse, newItem: MyCommentResponse): Boolean =
-                oldItem.postcommentBody == newItem.postcommentBody
+                oldItem.postId == newItem.postId
 
             override fun areContentsTheSame(oldItem: MyCommentResponse, newItem: MyCommentResponse): Boolean =
-                oldItem.postcommentBody == newItem.postcommentBody
+                oldItem.body == newItem.body
         }
     }
 }

@@ -10,7 +10,6 @@ import com.kust.kustaurant.data.model.MyProfileResponse
 import com.kust.kustaurant.data.model.MyScrapResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 
@@ -46,7 +45,7 @@ interface MyPageApi {
     suspend fun getMyCommunityData(
     ) : List<MyCommunityListResponse>
 
-    @GET("/api/v1/auth/mypage/community-comment-list")
+    @GET("/api/v2/auth/mypage/community/comments")
     suspend fun getMyCommunityCommentData(
     ) : List<MyCommentResponse>
 
