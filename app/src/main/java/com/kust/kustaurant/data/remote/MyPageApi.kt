@@ -37,7 +37,7 @@ interface MyPageApi {
     suspend fun getEvaluateData(
     ) : List<MyEvaluateResponse>
 
-    @GET("/api/v1/auth/mypage/community-scrap-list")
+    @GET("/api/v2/auth/mypage/community/scraps")
     suspend fun getCommunityScrapData(
     ) : List<MyScrapResponse>
 
