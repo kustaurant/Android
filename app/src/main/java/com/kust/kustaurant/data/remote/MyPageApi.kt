@@ -29,7 +29,7 @@ interface MyPageApi {
         @Body request : MyProfileRequest
     )
 
-    @GET("/api/v1/auth/mypage/favorite-restaurant-list")
+    @GET("/api/v2/auth/mypage/restaurants/favorite")
     suspend fun getFavoriteData(
     ) : List<MyFavoriteResponse>
 
