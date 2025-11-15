@@ -86,7 +86,11 @@ class MyPageViewModel @Inject constructor(
             try {
                 val myProfileData = getMyProfileDataUseCase()
                 originalProfileData = myProfileData
-                _myProfileData.value = myProfileData ?: MyProfileResponse("", "", "")
+                _myProfileData.value = myProfileData ?: MyProfileResponse(
+                    nickname = "",
+                    email = "",
+                    phoneNumber = ""
+                )
             } catch (e: Exception) {
                 Log.e("마이페이지 뷰모델", "loadMyProfileData Error", e)
             }
