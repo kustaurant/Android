@@ -24,7 +24,7 @@ interface MyPageApi {
     ) : MyProfileResponse
 
     // 사진 미구현
-    @PATCH("/api/v1/auth/mypage/profile")
+    @PATCH("/api/v2/auth/mypage/profile")
     suspend fun patchProfileData(
         @Body request : MyProfileRequest
     )
