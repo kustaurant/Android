@@ -19,7 +19,7 @@ interface MyPageApi {
     suspend fun postFeedBackData(
         @Body feedBack : String
     )
-    @GET("/api/v2/mypage")
+    @GET("/api/v2/mypage/profile")
     suspend fun getProfileData(
     ) : MyProfileResponse
 
@@ -49,7 +49,7 @@ interface MyPageApi {
     suspend fun getMyCommunityCommentData(
     ) : List<MyCommentResponse>
 
-    @GET("/api/v1/auth/mypage")
+    @GET("/api/v2/mypage")
     suspend fun getMyPageData(
     ) : MyPageResponse
 }
