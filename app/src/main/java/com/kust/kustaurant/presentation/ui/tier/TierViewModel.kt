@@ -64,7 +64,7 @@ class TierViewModel @Inject constructor(
         val menus = selectedMenus.value ?: setOf("전체")
         val situations = selectedSituations.value ?: setOf("전체")
         val locations = selectedLocations.value ?: setOf("전체")
-        val isPartnership = selectedMenus.value?.firstOrNull() == "제휴업체"
+        val isPartnership = menus.contains("제휴업체")
 
         viewModelScope.launch {
             try {
@@ -169,7 +169,7 @@ class TierViewModel @Inject constructor(
         screenType: TierScreenType,
     ) {
         if (screenType == TierScreenType.LIST) {
-            loadRestaurantList(1)
+            fetchFirstRestaurants()
         } else if (screenType == TierScreenType.MAP) {
             loadRestaurantMap()
         }

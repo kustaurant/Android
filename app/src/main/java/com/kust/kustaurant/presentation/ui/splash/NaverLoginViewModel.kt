@@ -22,7 +22,7 @@ class NaverLoginViewModel @Inject constructor(
                 val response = postNaverLoginDataUseCase(provider, providerId, naverAccessToken)
                 prefs.setUserId(providerId)
                 prefs.setAccessToken(response.accessToken)
-                prefs.setRefreshToken(response.accessToken)
+                prefs.setRefreshToken(response.refreshToken)
                 isLoginSuccessful.postValue(true)
             }catch (e: Exception){ 
                 Log.e("NaverLoginViewModel", "Error posting Naver login", e) 

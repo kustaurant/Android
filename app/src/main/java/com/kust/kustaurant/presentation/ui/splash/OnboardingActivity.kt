@@ -133,7 +133,6 @@ class OnboardingActivity : BaseActivity() {
                 val provider = "NAVER"
                 val providerId = response.profile?.id
                 val naverAccessToken = NaverIdLoginSDK.getAccessToken()
-                Log.d("Naver Login", "${providerId}, ${naverAccessToken}")
 
                 naverloginviewModel.loginWithNaver(provider, providerId ?: "", naverAccessToken?:"")
             }
