@@ -41,7 +41,7 @@ interface MyPageApi {
     suspend fun getCommunityScrapData(
     ) : List<MyScrapResponse>
 
-    @GET("/api/v1/auth/mypage/community-list")
+    @GET("/api/v2/auth/mypage/community/posts")
     suspend fun getMyCommunityData(
     ) : List<MyCommunityListResponse>
 
