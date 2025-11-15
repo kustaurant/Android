@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import com.kust.kustaurant.domain.model.community.CategorySort
 import com.kust.kustaurant.domain.model.community.CommunityPostListItem
 import com.kust.kustaurant.domain.model.community.CommunityRanking
@@ -18,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CommunityViewModel @Inject constructor(
+    private val prefs : AuthPreferenceDataSource,
     private val getCommunityPostListUseCase: GetCommunityPostListUseCase,
     private val getCommunityRankingListUseCase: GetCommunityRankingListUseCase,
     ) : ViewModel() {
@@ -90,6 +92,13 @@ class CommunityViewModel @Inject constructor(
         if (_sort.value != newSort) {
             getCommunityPostList(CommunityPostListFragment.Companion.PostLoadState.POST_FIRST_PAGE, newSort)
         }
+    }
+
+    fun hasLoginInfo(): Boolean {
+        prefs.getAccessToken()?.let {
+            return true
+        }
+        return false
     }
 
     fun onPostCategoryChanged(newCategory: PostCategory) {

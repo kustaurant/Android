@@ -8,9 +8,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.model.DrawRestaurantData
+import com.kust.kustaurant.data.model.DrawRestaurant
 
-class DrawSelectResultAdapter(val restaurants: MutableList<DrawRestaurantData>) :
+class DrawSelectResultAdapter(private val restaurants: MutableList<DrawRestaurant>) :
     RecyclerView.Adapter<DrawSelectResultAdapter.RestaurantViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder {
@@ -30,7 +30,7 @@ class DrawSelectResultAdapter(val restaurants: MutableList<DrawRestaurantData>) 
         RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.draw_iv_image_Restaurant)
 
-        fun bind(restaurant: DrawRestaurantData) {
+        fun bind(restaurant: DrawRestaurant) {
             Glide.with(context)
                 .load(restaurant.restaurantImgUrl)
                 .into(imageView)

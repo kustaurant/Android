@@ -1,11 +1,11 @@
 package com.kust.kustaurant.presentation.ui.mypage
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import com.kust.kustaurant.data.model.MyCommentResponse
 import com.kust.kustaurant.data.model.MyCommunityListResponse
 import com.kust.kustaurant.data.model.MyEvaluateResponse
@@ -22,7 +22,6 @@ import com.kust.kustaurant.domain.usecase.mypage.GetMyProfileDataUseCase
 import com.kust.kustaurant.domain.usecase.mypage.GetMyScrapUseCase
 import com.kust.kustaurant.domain.usecase.mypage.PatchMyProfileDataUseCase
 import com.kust.kustaurant.domain.usecase.mypage.PostMyFeedBackUseCase
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -40,6 +39,7 @@ class MyPageViewModel @Inject constructor(
     private val getMyScrapUseCase: GetMyScrapUseCase,
     private val getMyEvaluateDataUseCase: GetMyEvaluateDataUseCase,
     private val postMyFeedBackUseCase: PostMyFeedBackUseCase,
+    private val prefs: AuthPreferenceDataSource
 ) : ViewModel() {
     private var originalProfileData: MyProfileResponse?= null
 
@@ -212,5 +212,11 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    fun hasLoginInfo(): Boolean {
+        prefs.getAccessToken()?.let {
+            return true
+        }
+        return false
+    }
 }
 

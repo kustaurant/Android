@@ -18,7 +18,6 @@ import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.FragmentTierBinding
 import com.google.android.material.tabs.TabLayout
 import com.kust.kustaurant.MainActivity
-import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.presentation.ui.home.HomeFragment
 import com.kust.kustaurant.presentation.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -172,11 +171,7 @@ class TierFragment : Fragment() {
 
         viewModel.setCategory(selectedMenus, selectedSituations, selectedLocations)
 
-        if (getAccessToken(requireContext()) == null) {
-            viewModel.loadRestaurant(screenType, false)
-        } else {
-            viewModel.loadRestaurant(screenType, true)
-        }
+        viewModel.loadRestaurant(screenType)
     }
 
     private fun setupBackButton() {

@@ -20,7 +20,6 @@ import coil.decode.SvgDecoder
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.ActivityCommunityPostDetailBinding
 import com.kust.kustaurant.databinding.BottomSheetCommentBinding
 import com.kust.kustaurant.databinding.PopupCommuPostDetailDotsBinding
@@ -254,17 +253,17 @@ class CommunityPostDetailActivity : BaseActivity() {
         commentAdapter.setOnItemClickListener(object :
             CommunityPostDetailCommentAdapter.OnItemClickListener {
             override fun onReportClicked(commentId: Long) {
-                checkToken {
+                if(viewModel.hasLoginInfo()) {
                     //viewModel.postCommentReport(restaurantId, commentId)
                     Toast.makeText(this@CommunityPostDetailActivity, "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onDeleteClicked(commentId: Long, status: PostCommentStatus) {
-                checkToken {
+                if(viewModel.hasLoginInfo()) {
                     if(status != PostCommentStatus.ACTIVE) {
                         Toast.makeText(this@CommunityPostDetailActivity, "이미 삭제된 댓글입니다.", Toast.LENGTH_SHORT).show()
-                        return@checkToken
+                        return
                     }
                     viewModel.deleteComment(postId, commentId)
                     Toast.makeText(this@CommunityPostDetailActivity, "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
@@ -272,19 +271,19 @@ class CommunityPostDetailActivity : BaseActivity() {
             }
 
             override fun onCommentClicked(commentId: Long) {
-                checkToken {
+                if(viewModel.hasLoginInfo()) {
                     showBottomSheetInput(commentId)
                 }
             }
 
             override fun onLikeClicked(commentId: Long, position: Int) {
-                checkToken {
+                if(viewModel.hasLoginInfo()) {
                     viewModel.postCommentReact(commentId, "LIKE")
                 }
             }
 
             override fun onDisLikeClicked(commentId: Long, position: Int) {
-                checkToken {
+                if(viewModel.hasLoginInfo()) {
                     viewModel.postCommentReact(commentId, "DISLIKE")
                 }
             }
@@ -293,17 +292,17 @@ class CommunityPostDetailActivity : BaseActivity() {
         commentAdapter.interactionListener =
             object : CommunityPostDetailCommentReplyAdapter.OnItemClickListener {
                 override fun onReportClicked(commentId: Long) {
-                    checkToken {
+                    if(viewModel.hasLoginInfo()) {
                         //viewModel.postCommentReport(restaurantId, commentId)
                         Toast.makeText(this@CommunityPostDetailActivity, "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onDeleteClicked(commentId: Long, status: PostCommentStatus) {
-                    checkToken {
+                    if(viewModel.hasLoginInfo()) {
                         if(status != PostCommentStatus.ACTIVE) {
                             Toast.makeText(this@CommunityPostDetailActivity, "이미 삭제된 댓글입니다.", Toast.LENGTH_SHORT).show()
-                            return@checkToken
+                            return
                         }
 
                         viewModel.deleteComment(postId, commentId)
@@ -313,27 +312,17 @@ class CommunityPostDetailActivity : BaseActivity() {
                 }
 
                 override fun onLikeClicked(commentId: Long, position: Int) {
-                    checkToken {
+                    if(viewModel.hasLoginInfo()) {
                         viewModel.postCommentReact(commentId, "LIKE")
                     }
                 }
 
                 override fun onDisLikeClicked(commentId: Long, position: Int) {
-                    checkToken {
+                    if(viewModel.hasLoginInfo()) {
                         viewModel.postCommentReact(commentId, "DISLIKE")
                     }
                 }
             }
-    }
-
-    fun checkToken(action: () -> Unit) {
-        val accessToken = getAccessToken(this)
-        if (accessToken == null) {
-            val intent = Intent(this, StartActivity::class.java)
-            startActivity(intent)
-        } else {
-            action()
-        }
     }
 
     private fun showBottomSheetInput(commentId: Long) {

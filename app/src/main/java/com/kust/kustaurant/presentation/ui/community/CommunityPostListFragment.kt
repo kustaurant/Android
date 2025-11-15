@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentCommunityPostListBinding
 import com.kust.kustaurant.databinding.PopupCommuPostListSortBinding
 import com.kust.kustaurant.domain.model.community.CategorySort
@@ -81,7 +81,13 @@ class CommunityPostListFragment : Fragment() {
         }
 
         binding.commuBtnWritePost.setOnClickListener {
-            checkToken {
+            if(!viewModel.hasLoginInfo()) {
+                return@setOnClickListener run {
+                    val intent = Intent(requireActivity(), StartActivity::class.java)
+                    startActivity(intent)
+                    Toast.makeText(requireContext(), "로그인 후 이용해 주세요.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
                 val intent = Intent(requireActivity(), CommunityPostWriteActivity::class.java)
                 startActivity(intent)
             }
@@ -198,16 +204,6 @@ class CommunityPostListFragment : Fragment() {
                 }
             }
         })
-    }
-
-    fun checkToken(action: () -> Unit) {
-        val accessToken = getAccessToken(requireContext())
-        if (accessToken == null) {
-            val intent = Intent(requireContext(), StartActivity::class.java)
-            startActivity(intent)
-        } else {
-            action()
-        }
     }
 
     private fun setupObservers() {

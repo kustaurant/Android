@@ -1,14 +1,16 @@
 package com.kust.kustaurant.presentation.common
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.kust.kustaurant.data.network.bus.ServiceDownBus
+import com.kust.kustaurant.domain.common.appEvent.AppEvents
 import com.kust.kustaurant.presentation.common.notify503.GlobalServiceDownDialog
-import com.kust.kustaurant.presentation.common.notify503.ServiceDownDialogStateViewModel
+import com.kust.kustaurant.presentation.common.notify503.StateVM
+import com.kust.kustaurant.presentation.ui.splash.StartActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,15 +19,16 @@ const val DIALOG_TAG = "ServiceDownDialog"
 
 @AndroidEntryPoint
 abstract class BaseActivity : AppCompatActivity(), GlobalServiceDownDialog.Listener {
-    @Inject lateinit var serviceDownBus: ServiceDownBus
-    private val stateVM: ServiceDownDialogStateViewModel by viewModels()
+    @Inject lateinit var appEvents: AppEvents
+    private val stateVM: StateVM by viewModels()
     private var serviceDialogShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                serviceDownBus.events.collect { event ->
+                appEvents.serviceDown.collect { event ->
                     if (!shouldHandleGlobal503() || isFinishing || isDestroyed) return@collect
                     if (!stateVM.shouldHandle(event.seq)) return@collect
 
@@ -42,6 +45,24 @@ abstract class BaseActivity : AppCompatActivity(), GlobalServiceDownDialog.Liste
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                appEvents.session.collect { event ->
+                    if (!shouldHandleSessionEvents()) return@collect
+                    if (isFinishing || isDestroyed) return@collect
+                    if (!stateVM.shouldHandle(event.seq)) return@collect
+                    navigateToLoginAndClearTask()
+                }
+            }
+        }
+    }
+
+    private fun navigateToLoginAndClearTask() {
+        if (isFinishing || isDestroyed) return
+        startActivity(Intent(this, StartActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
     }
 
     override fun onServiceDownDialogDismissed() {
@@ -49,4 +70,6 @@ abstract class BaseActivity : AppCompatActivity(), GlobalServiceDownDialog.Liste
     }
 
     protected open fun shouldHandleGlobal503(): Boolean = true
+
+    protected open fun shouldHandleSessionEvents(): Boolean = true
 }

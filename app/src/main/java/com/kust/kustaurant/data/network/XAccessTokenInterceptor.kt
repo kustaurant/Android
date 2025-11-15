@@ -1,28 +1,32 @@
 package com.kust.kustaurant.data.network
 
-import android.content.Context
-import com.kust.kustaurant.data.getAccessToken
-import com.kust.kustaurant.data.getDeviceId
-import com.kust.kustaurant.data.saveDeviceId
+import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
 
-class XAccessTokenInterceptor(val context: Context) : Interceptor {
+class XAccessTokenInterceptor @Inject constructor(
+    private val authPreferenceDataSource: AuthPreferenceDataSource
+) : Interceptor {
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val builder = original.newBuilder()
 
-        val access = getAccessToken(context)
-        if (!access.isNullOrBlank()) {
-            builder.header("Authorization", ensureBearer(access))
+        val accessToken = authPreferenceDataSource.getAccessToken()
+        if (!accessToken.isNullOrBlank()) {
+            builder.header("Authorization", ensureBearer(accessToken))
         } else {
-            getDeviceId(context)?.let { builder.header("X-Device-Id", it) }
+            authPreferenceDataSource.getDeviceId()?.let { deviceId ->
+                builder.header("X-Device-Id", deviceId)
+            }
         }
 
         val response = chain.proceed(builder.build())
+
         response.header("X-Anonymous-Id")?.let { anon ->
-            if (anon.isNotBlank() && anon != getDeviceId(context)) {
-                saveDeviceId(context, anon)
+            if (anon.isNotBlank() && anon != authPreferenceDataSource.getDeviceId()) {
+                authPreferenceDataSource.setDeviceId(anon)
             }
         }
 
@@ -32,3 +36,4 @@ class XAccessTokenInterceptor(val context: Context) : Interceptor {
     private fun ensureBearer(token: String): String =
         if (token.startsWith("Bearer ")) token else "Bearer $token"
 }
+

@@ -1,10 +1,10 @@
 package com.kust.kustaurant.data.mapper
 
 import android.util.Log
-import com.kust.kustaurant.data.model.NonTieredRestaurantGroup
+import com.kust.kustaurant.data.model.tier.NonTieredRestaurantGroup
 import com.kust.kustaurant.domain.model.TierRestaurant
-import com.kust.kustaurant.data.model.TierMapData
-import com.kust.kustaurant.data.model.TierMapDataResponse
+import com.kust.kustaurant.data.model.tier.TierMapData
+import com.kust.kustaurant.data.model.tier.TierMapDataResponse
 import com.naver.maps.geometry.LatLng
 
 
@@ -28,7 +28,7 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
     val favoriteTierRestaurants = this.favoriteTierRestaurants?.map {
         TierRestaurant(
             restaurantId = it.restaurantId,
-            restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
+            restaurantRanking = it.restaurantRanking?: 0,
             restaurantName = it.restaurantName ?: "Unknown",
             restaurantCuisine = it.restaurantCuisine ?: "Unknown",
             restaurantPosition = it.restaurantPosition ?: "Unknown",
@@ -36,10 +36,10 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
             mainTier = it.mainTier,
             isEvaluated = it.isEvaluated,
             isFavorite = it.isFavorite,
-            x = it.x.toDoubleOrNull() ?: 0.0,
-            y = it.y.toDoubleOrNull() ?: 0.0,
+            x = it.longitude,
+            y = it.latitude,
             partnershipInfo = it.partnershipInfo ?: "",
-            restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
+            restaurantScore = it.restaurantScore?.takeIf { !it.isNaN() } ?: 0.0
         )
     } ?: emptyList()
 
@@ -47,7 +47,7 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
     val tieredTierRestaurants = this.tieredRestaurants.map {
         TierRestaurant(
             restaurantId = it.restaurantId,
-            restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
+            restaurantRanking = it.restaurantRanking?: 0,
             restaurantName = it.restaurantName,
             restaurantCuisine = it.restaurantCuisine,
             restaurantPosition = it.restaurantPosition,
@@ -55,10 +55,10 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
             mainTier = it.mainTier,
             isEvaluated = it.isEvaluated,
             isFavorite = it.isFavorite,
-            x = it.x.toDouble(),
-            y = it.y.toDouble(),
+            x = it.longitude,
+            y = it.latitude,
             partnershipInfo = it.partnershipInfo ?: "",
-            restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
+            restaurantScore = it.restaurantScore?.takeIf { !it.isNaN() } ?: 0.0
         )
     }
 
@@ -68,7 +68,7 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
             tierRestaurants = group.restaurants.map {
                 TierRestaurant(
                     restaurantId = it.restaurantId,
-                    restaurantRanking = it.restaurantRanking?.toIntOrNull() ?: 0,
+                    restaurantRanking = it.restaurantRanking ?: 0,
                     restaurantName = it.restaurantName,
                     restaurantCuisine = it.restaurantCuisine,
                     restaurantPosition = it.restaurantPosition,
@@ -76,10 +76,10 @@ fun TierMapDataResponse.toTierMapData(): TierMapData {
                     mainTier = -1, // Non-tiered restaurants have mainTier as -1
                     isEvaluated = it.isEvaluated,
                     isFavorite = it.isFavorite,
-                    x = it.x.toDouble(),
-                    y = it.y.toDouble(),
+                    x = it.longitude,
+                    y = it.latitude,
                     partnershipInfo = it.partnershipInfo ?: "",
-                    restaurantScore = it.restaurantScore?.toDoubleOrNull()?.takeIf { !it.isNaN() } ?: 0.0
+                    restaurantScore = it.restaurantScore?.takeIf { !it.isNaN() } ?: 0.0
                 )
             }
         )
