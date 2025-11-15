@@ -29,7 +29,7 @@ class EvaluateRestaurantAdapter(val context: Context) : ListAdapter<MyEvaluateRe
     inner class ViewHolder(val binding : ItemMyEvaluateBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : MyEvaluateResponse){
             binding.myTvEvaluateRestaurant.text = item.restaurantName
-            binding.myTvEvaluateBody.text = item.restaurantComment
+            binding.myTvEvaluateBody.text = item.evaluationBody
             Glide.with(context)
                 .load(item.restaurantImgURL)
                 .into(binding.myIvEvaluateRestaurant)
@@ -65,10 +65,10 @@ class EvaluateRestaurantAdapter(val context: Context) : ListAdapter<MyEvaluateRe
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<MyEvaluateResponse>() {
             override fun areItemsTheSame(oldItem: MyEvaluateResponse, newItem: MyEvaluateResponse): Boolean =
-                oldItem.restaurantName == newItem.restaurantName
+                oldItem.restaurantId == newItem.restaurantId
 
             override fun areContentsTheSame(oldItem: MyEvaluateResponse, newItem: MyEvaluateResponse): Boolean =
-                oldItem.restaurantName == newItem.restaurantName
+                oldItem.restaurantId == newItem.restaurantId
         }
     }
 

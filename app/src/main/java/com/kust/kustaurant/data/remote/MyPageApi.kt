@@ -33,7 +33,7 @@ interface MyPageApi {
     suspend fun getFavoriteData(
     ) : List<MyFavoriteResponse>
 
-    @GET("/api/v1/auth/mypage/evaluate-restaurant-list")
+    @GET("/api/v2/auth/mypage/restaurants/evaluated")
     suspend fun getEvaluateData(
     ) : List<MyEvaluateResponse>
 
