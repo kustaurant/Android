@@ -14,7 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.ReplyDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
@@ -124,9 +125,12 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
             binding.tvLike.text = item.commentLikeCount.toString()
             binding.tvHate.text = item.commentDislikeCount.toString()
             binding.tvReviewTime.text = item.timeAgo
-            Glide.with(context)
-                .load(item.writerIconImgUrl)
-                .into(binding.ivUserImage)
+            binding.ivUserImage.load(item.writerIconImgUrl) {
+                crossfade(true)
+                if (item.writerIconImgUrl.endsWith(".svg", ignoreCase = true)) {
+                    decoderFactory(SvgDecoder.Factory())
+                }
+            }
             binding.flLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
             }

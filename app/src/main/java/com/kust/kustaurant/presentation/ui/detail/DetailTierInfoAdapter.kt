@@ -8,7 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ItemDetailTierKeywordBinding
 import com.kust.kustaurant.databinding.ItemDetailTierTierBinding
@@ -48,9 +49,12 @@ class DetailTierInfoAdapter(val context : Context, private val tierData : TierIn
                     3 -> binding.clTierBackground.background.setTint(ContextCompat.getColor(context, R.color.tier_3))
                     4 -> binding.clTierBackground.background.setTint(ContextCompat.getColor(context, R.color.tier_4))
                 }
-                Glide.with(context)
-                    .load(item.tierImage)
-                    .into(binding.ivTier)
+                binding.ivTier.load(item.tierImage) {
+                    crossfade(true)
+                    if (item.tierImage.endsWith(".svg", ignoreCase = true)) {
+                        decoderFactory(SvgDecoder.Factory())
+                    }
+                }
                 binding.tvTierName.text = item.tierName
                 binding.tvTierNumber.text = item.tierNumber.toString()
             }

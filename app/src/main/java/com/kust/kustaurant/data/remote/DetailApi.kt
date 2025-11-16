@@ -49,7 +49,7 @@ interface DetailApi {
         @Path("restaurantId") restaurantId: Int
     ) : FavoriteResponse
 
-    @GET("/api/v1/auth/restaurants/{restaurantId}/evaluation")
+    @GET("/api/v2/auth/restaurants/{restaurantId}/evaluation")
     suspend fun getEvaluationData(
         @Path("restaurantId") restaurantId: Int
     ) : EvaluationDataResponse

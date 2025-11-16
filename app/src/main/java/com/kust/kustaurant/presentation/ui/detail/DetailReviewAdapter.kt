@@ -16,7 +16,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewBinding
@@ -159,18 +160,21 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             binding.tvReview.text = item.evalBody ?: ""
             binding.tvLike.text = item.evalLikeCount.toString()
             binding.tvHate.text = item.evalDislikeCount.toString()
-            Glide.with(context)
-                .load(item.writerIconImgUrl)
-                .into(binding.ivUserImage)
-            if (item.evalImgUrl != null){
+            binding.ivUserImage.load(item.writerIconImgUrl) {
+                crossfade(true)
+                if (item.writerIconImgUrl.endsWith(".svg", ignoreCase = true)) {
+                    decoderFactory(SvgDecoder.Factory())
+                }
+            }
+            if (item.evalImgUrl != null && item.evalImgUrl.isNotEmpty()){
                 binding.detailCvPhoto.visibility = View.VISIBLE
-                Glide.with(context)
-                    .load(item.evalImgUrl)
-                    .into(binding.detailIvPhoto)
+                binding.detailIvPhoto.load(item.evalImgUrl) {
+                    if (item.evalImgUrl.endsWith(".svg", ignoreCase = true)) {
+                        decoderFactory(SvgDecoder.Factory())
+                    }
+                }
             } else {
                 binding.detailCvPhoto.visibility = View.GONE
-                Glide.with(context)
-                    .clear(binding.detailIvPhoto)
                 binding.detailIvPhoto.setImageDrawable(null)
             }
 
