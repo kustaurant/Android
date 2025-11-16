@@ -8,21 +8,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.data.model.CommentDataResponse
-import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.ErrorResponse
+import com.kust.kustaurant.data.model.EvalCommentReactionResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
+import com.kust.kustaurant.data.model.EvaluationReactionResponse
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.HttpException
 import com.kust.kustaurant.domain.usecase.detail.DeleteCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetEvaluationDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentReplyDataUseCase
-import com.kust.kustaurant.domain.usecase.detail.PostCommentDisLikeUseCase
-import com.kust.kustaurant.domain.usecase.detail.PostCommentLikeUseCase
+import com.kust.kustaurant.domain.usecase.detail.PutEvalCommentReactionUseCase
+import com.kust.kustaurant.domain.usecase.detail.PutEvaluationReactionUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentReportUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostEvaluationDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostFavoriteToggleUseCase
@@ -38,6 +41,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val getDetailDataUseCase: GetDetailDataUseCase,
     private val getCommentDataUseCase: GetCommentDataUseCase,
     private val postCommentReplyDataUseCase: PostCommentReplyDataUseCase,
@@ -45,8 +49,8 @@ class DetailViewModel @Inject constructor(
     private val getEvaluationDataUseCase: GetEvaluationDataUseCase,
     private val postEvaluationDataUseCase: PostEvaluationDataUseCase,
     private val deleteCommentDataUseCase: DeleteCommentDataUseCase,
-    private val postCommentLikeUseCase: PostCommentLikeUseCase,
-    private val postCommentDisLikeUseCase: PostCommentDisLikeUseCase,
+    private val putEvalCommentReactionUseCase: PutEvalCommentReactionUseCase,
+    private val putEvaluationReactionUseCase: PutEvaluationReactionUseCase,
     private val postCommentReportUseCase : PostCommentReportUseCase
 ): ViewModel() {
     val tabList = MutableLiveData(listOf("메뉴", "리뷰"))
@@ -244,72 +248,111 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun postCommentLike(restaurantId: Int, commentId: Int) {
+    fun putEvalCommentReaction(evalCommentId: Int, reaction: String?) {
         viewModelScope.launch {
             try {
-                val response = postCommentLikeUseCase(restaurantId, commentId)
-                updateCommentData(response, commentId)
+                val response = putEvalCommentReactionUseCase(evalCommentId, reaction)
+                updateReplyData(response, evalCommentId)
             } catch (e: Exception) {
-                Log.e("디테일 뷰모델", "postCommentLike Error", e)
+                Log.e("디테일 뷰모델", "putEvalCommentReaction Error", e)
             }
         }
     }
 
-    fun postCommentDisLike(restaurantId: Int, commentId: Int) {
+    fun putEvaluationReaction(evaluationId: Int, reaction: String?) {
         viewModelScope.launch {
             try {
-                val response = postCommentDisLikeUseCase(restaurantId, commentId)
-                updateCommentData(response, commentId)
+                val accessToken = getAccessToken(context)
+                val role = if (accessToken != null) "USER" else "GUEST"
+                val userId = 0 // 사용자가 요청한 대로 id는 0으로 설정
+                val response = putEvaluationReactionUseCase(evaluationId, reaction, userId, role)
+                updateEvaluationData(response, evaluationId)
             } catch (e: Exception) {
-                Log.e("디테일 뷰모델", "postCommentDisLike Error", e)
+                Log.e("디테일 뷰모델", "putEvaluationReaction Error", e)
             }
         }
     }
 
-    private fun updateCommentData(response: CommentLikeResponse, commentId: Int) {
+    fun toggleEvalCommentLike(evaluationId: Int) {
+        val currentReview = _reviewData.value?.find { it.evalId == evaluationId }
+        val currentReaction = currentReview?.reactionType
+        val newReaction = when (currentReaction) {
+            "LIKE" -> null // 좋아요 해제
+            else -> "LIKE" // 좋아요 설정 또는 변경
+        }
+        putEvaluationReaction(evaluationId, newReaction)
+    }
+
+    fun toggleEvalCommentDislike(evaluationId: Int) {
+        val currentReview = _reviewData.value?.find { it.evalId == evaluationId }
+        val currentReaction = currentReview?.reactionType
+        val newReaction = when (currentReaction) {
+            "DISLIKE" -> null // 싫어요 해제
+            else -> "DISLIKE" // 싫어요 설정 또는 변경
+        }
+        putEvaluationReaction(evaluationId, newReaction)
+    }
+
+    fun toggleEvalCommentReplyLike(commentId: Int) {
+        val currentReview = _reviewData.value?.find { review ->
+            review.evalCommentList?.any { it.commentId == commentId } == true
+        }
+        val currentReply = currentReview?.evalCommentList?.find { it.commentId == commentId }
+        val currentReaction = currentReply?.reactionType
+        val newReaction = when (currentReaction) {
+            "LIKE" -> null // 좋아요 해제
+            else -> "LIKE" // 좋아요 설정 또는 변경
+        }
+        putEvalCommentReaction(commentId, newReaction)
+    }
+
+    fun toggleEvalCommentReplyDislike(commentId: Int) {
+        val currentReview = _reviewData.value?.find { review ->
+            review.evalCommentList?.any { it.commentId == commentId } == true
+        }
+        val currentReply = currentReview?.evalCommentList?.find { it.commentId == commentId }
+        val currentReaction = currentReply?.reactionType
+        val newReaction = when (currentReaction) {
+            "DISLIKE" -> null // 싫어요 해제
+            else -> "DISLIKE" // 싫어요 설정 또는 변경
+        }
+        putEvalCommentReaction(commentId, newReaction)
+    }
+
+    private fun updateEvaluationData(response: EvaluationReactionResponse, evaluationId: Int) {
         _reviewData.value?.let { currentReviews ->
-            // 기존 reviewData를 MutableList로 나열
             val updatedReviews = currentReviews.map { review ->
-
-                // evalId가 일치하면 review 데이터를 업데이트
-                val updatedComment = if (review.evalId == commentId) {
+                if (review.evalId == evaluationId) {
                     review.copy(
-                        reactionType = convertLikeStatusToString(response.commentLikeStatus),
-                        evalLikeCount = response.commentLikeCount,
-                        evalDislikeCount = response.commentDislikeCount
+                        reactionType = response.reaction,
+                        evalLikeCount = response.likeCount,
+                        evalDislikeCount = response.dislikeCount
                     )
                 } else {
-                    // evalId가 일치하지 않으면 대댓글을 업데이트
-                    val updatedReplies = review.evalCommentList?.map { reply ->
-
-                        if (reply.commentId == commentId) {
-                            reply.copy(
-                                reactionType = convertLikeStatusToString(response.commentLikeStatus),
-                                commentLikeCount = response.commentLikeCount,
-                                commentDislikeCount = response.commentDislikeCount
-                            )
-                        } else {
-                            // 대댓글 까지 일치하지 않으면 그대로 반환
-                            reply
-                        }
-                    }
-                    // 업데이트한 reply Data 를 reviewData로 복사
-                    review.copy(evalCommentList = updatedReplies)
+                    review
                 }
-
-                // 업데이트된 댓글, 대댓글 반환
-                updatedComment
             }
-            // 변경된 reviewData를 LiveData에 업데이트
             _reviewData.postValue(updatedReviews)
         }
     }
 
-    private fun convertLikeStatusToString(likeStatus: Int): String {
-        return when(likeStatus) {
-            1 -> "LIKE"
-            -1 -> "DISLIKE"
-            else -> "NONE"
+    private fun updateReplyData(response: EvalCommentReactionResponse, evalCommentId: Int) {
+        _reviewData.value?.let { currentReviews ->
+            val updatedReviews = currentReviews.map { review ->
+                val updatedReplies = review.evalCommentList?.map { reply ->
+                    if (reply.commentId == evalCommentId) {
+                        reply.copy(
+                            reactionType = response.reaction,
+                            commentLikeCount = response.likeCount,
+                            commentDislikeCount = response.dislikeCount
+                        )
+                    } else {
+                        reply
+                    }
+                }
+                review.copy(evalCommentList = updatedReplies)
+            }
+            _reviewData.postValue(updatedReviews)
         }
     }
 

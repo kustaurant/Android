@@ -156,7 +156,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             binding.tvGrade.text = item.evalScore.toString()
             binding.tvReviewTime.text = item.timeAgo
             binding.tvUserName.text = item.writerNickname
-            binding.tvReview.text = item.evalBody
+            binding.tvReview.text = item.evalBody ?: ""
             binding.tvLike.text = item.evalLikeCount.toString()
             binding.tvHate.text = item.evalDislikeCount.toString()
             Glide.with(context)

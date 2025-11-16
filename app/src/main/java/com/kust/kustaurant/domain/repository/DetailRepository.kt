@@ -1,10 +1,11 @@
 package com.kust.kustaurant.domain.repository
 
 import com.kust.kustaurant.data.model.CommentDataResponse
-import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.CommentReplyResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
+import com.kust.kustaurant.data.model.EvalCommentReactionResponse
 import com.kust.kustaurant.data.model.EvaluationDataResponse
+import com.kust.kustaurant.data.model.EvaluationReactionResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -46,13 +47,15 @@ interface DetailRepository {
         restaurantId: Int,
         commentId: Int
     )
-    suspend fun postCommentLike(
-        restaurantId: Int,
-        commentId: Int
-    ) : CommentLikeResponse
+    suspend fun putEvalCommentReaction(
+        evalCommentId: Int,
+        reaction: String?
+    ) : EvalCommentReactionResponse
 
-    suspend fun postCommentDiskLike(
-        restaurantId: Int,
-        commentId: Int
-    ) : CommentLikeResponse
+    suspend fun putEvaluationReaction(
+        evaluationId: Int,
+        reaction: String?,
+        userId: Int,
+        role: String
+    ) : EvaluationReactionResponse
 }

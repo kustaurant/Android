@@ -2,15 +2,14 @@ package com.kust.kustaurant.data.repository
 
 
 import com.kust.kustaurant.data.model.CommentDataResponse
-import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.CommentReplyRequest
 import com.kust.kustaurant.data.model.CommentReplyResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
-import com.kust.kustaurant.data.model.EvaluationDataRequest
+import com.kust.kustaurant.data.model.EvalCommentReactionResponse
 import com.kust.kustaurant.data.model.EvaluationDataResponse
+import com.kust.kustaurant.data.model.EvaluationReactionResponse
 import com.kust.kustaurant.data.remote.DetailApi
 import com.kust.kustaurant.domain.repository.DetailRepository
-import com.kust.kustaurant.presentation.ui.mypage.CommentData
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
@@ -63,11 +62,16 @@ class DetailRepositoryImpl @Inject constructor(
         return detailApi.postCommentReport(restaurantId, commentId)
     }
 
-    override suspend fun postCommentLike(restaurantId: Int, commentId: Int) : CommentLikeResponse {
-        return detailApi.postCommentLike(restaurantId, commentId)
+    override suspend fun putEvalCommentReaction(evalCommentId: Int, reaction: String?) : EvalCommentReactionResponse {
+        return detailApi.putEvalCommentReaction(evalCommentId, reaction)
     }
 
-    override suspend fun postCommentDiskLike(restaurantId: Int, commentId: Int) : CommentLikeResponse{
-        return detailApi.postCommentDisLike(restaurantId, commentId)
+    override suspend fun putEvaluationReaction(
+        evaluationId: Int,
+        reaction: String?,
+        userId: Int,
+        role: String
+    ) : EvaluationReactionResponse {
+        return detailApi.putEvaluationReaction(evaluationId, reaction, userId, role)
     }
 }

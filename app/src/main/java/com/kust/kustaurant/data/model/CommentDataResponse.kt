@@ -7,7 +7,7 @@ data class CommentDataResponse(
     val writerNickname: String,
     val timeAgo: String,
     val evalImgUrl: String?,
-    val evalBody: String,
+    val evalBody: String?,
     val reactionType: String?,
     val evalLikeCount: Int,
     val evalDislikeCount: Int,

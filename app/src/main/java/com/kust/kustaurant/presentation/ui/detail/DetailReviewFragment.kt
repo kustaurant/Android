@@ -152,13 +152,13 @@ class DetailReviewFragment : Fragment() {
 
             override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId)
+                    viewModel.toggleEvalCommentLike(commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentDisLike(restaurantId, commentId)
+                    viewModel.toggleEvalCommentDislike(commentId)
                 }
             }
         })
@@ -181,13 +181,13 @@ class DetailReviewFragment : Fragment() {
 
             override fun onLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentLike(restaurantId, commentId)
+                    viewModel.toggleEvalCommentReplyLike(commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
                 checkToken{
-                    viewModel.postCommentDisLike(restaurantId, commentId)
+                    viewModel.toggleEvalCommentReplyDislike(commentId)
                 }
             }
         }

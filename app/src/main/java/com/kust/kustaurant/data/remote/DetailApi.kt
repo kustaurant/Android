@@ -1,12 +1,12 @@
 package com.kust.kustaurant.data.remote
 
 import com.kust.kustaurant.data.model.CommentDataResponse
-import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.CommentReplyRequest
 import com.kust.kustaurant.data.model.CommentReplyResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
-import com.kust.kustaurant.data.model.EvaluationDataRequest
+import com.kust.kustaurant.data.model.EvalCommentReactionResponse
 import com.kust.kustaurant.data.model.EvaluationDataResponse
+import com.kust.kustaurant.data.model.EvaluationReactionResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -14,6 +14,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -69,15 +70,17 @@ interface DetailApi {
         @Path("commentId") commentId: Int
     )
 
-    @POST("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}/like")
-    suspend fun postCommentLike(
-        @Path("restaurantId") restaurantId: Int,
-        @Path("commentId") commentId: Int
-    ) : CommentLikeResponse
+    @PUT("/api/v2/auth/eval-comments/{evalCommentId}")
+    suspend fun putEvalCommentReaction(
+        @Path("evalCommentId") evalCommentId: Int,
+        @Query("reaction") reaction: String?
+    ) : EvalCommentReactionResponse
 
-    @POST("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}/dislike")
-    suspend fun postCommentDisLike(
-        @Path("restaurantId") restaurantId: Int,
-        @Path("commentId") commentId: Int
-    ) : CommentLikeResponse
+    @PUT("/api/v2/auth/restaurants/evaluations/{evaluationId}/reaction")
+    suspend fun putEvaluationReaction(
+        @Path("evaluationId") evaluationId: Int,
+        @Query("reaction") reaction: String?,
+        @Query("id") userId: Int,
+        @Query("role") role: String
+    ) : EvaluationReactionResponse
 }
