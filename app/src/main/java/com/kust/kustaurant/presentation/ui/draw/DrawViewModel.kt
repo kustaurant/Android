@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.data.model.DrawRestaurantData
+import com.kust.kustaurant.data.model.DrawRestaurant
 import com.kust.kustaurant.domain.usecase.draw.GetDrawRestaurantUseCase
 import com.kust.kustaurant.presentation.common.CategoryIdMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +16,8 @@ import javax.inject.Inject
 class DrawViewModel @Inject constructor(
     private val getDrawRestaurantUseCase: GetDrawRestaurantUseCase
 ) : ViewModel() {
-    private val _drawList = MutableLiveData<List<DrawRestaurantData>>()
-    val drawList: LiveData<List<DrawRestaurantData>> = _drawList
+    private val _drawList = MutableLiveData<List<DrawRestaurant>>()
+    val drawList: LiveData<List<DrawRestaurant>> = _drawList
     private var _sameDrawList = 0 // limit 3 times + manage first draw
 
     private val _selectedMenus = MutableLiveData(setOf("전체"))
@@ -29,8 +29,8 @@ class DrawViewModel @Inject constructor(
     private var _previousSelectedMenus = setOf("")
     private var _previousSelectedLocations = setOf("")
 
-    private val _selectedRestaurant = MutableLiveData<DrawRestaurantData>()
-    val selectedRestaurant: LiveData<DrawRestaurantData> = _selectedRestaurant
+    private val _selectedRestaurant = MutableLiveData<DrawRestaurant>()
+    val selectedRestaurant: LiveData<DrawRestaurant> = _selectedRestaurant
 
     private var _selectedIndex = MutableLiveData<Int>()
 
@@ -70,11 +70,11 @@ class DrawViewModel @Inject constructor(
         }
     }
 
-    private fun updateSelectedIndex(restaurants: List<DrawRestaurantData>, selected: DrawRestaurantData) {
+    private fun updateSelectedIndex(restaurants: List<DrawRestaurant>, selected: DrawRestaurant) {
         _selectedIndex.value = restaurants.indexOf(selected)
     }
 
-    private fun getRandomRestaurants(restaurants: List<DrawRestaurantData>): DrawRestaurantData {
+    private fun getRandomRestaurants(restaurants: List<DrawRestaurant>): DrawRestaurant {
         return restaurants.shuffled().first()
     }
 

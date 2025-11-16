@@ -3,15 +3,14 @@ package com.kust.kustaurant.presentation.ui.detail
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
-import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.domain.usecase.detail.DeleteCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetAnonDetailDataUseCase
@@ -30,7 +29,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.w3c.dom.Text
 import java.io.File
 import javax.inject.Inject
 
@@ -46,7 +44,8 @@ class DetailViewModel @Inject constructor(
     private val deleteCommentDataUseCase: DeleteCommentDataUseCase,
     private val postCommentLikeUseCase: PostCommentLikeUseCase,
     private val postCommentDisLikeUseCase: PostCommentDisLikeUseCase,
-    private val postCommentReportUseCase : PostCommentReportUseCase
+    private val postCommentReportUseCase : PostCommentReportUseCase,
+    private val prefs: AuthPreferenceDataSource,
 ): ViewModel() {
     val tabList = MutableLiveData(listOf("메뉴", "리뷰"))
 
@@ -301,4 +300,11 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+
+    fun hasLoginInfo(): Boolean {
+        prefs.getAccessToken()?.let {
+            return true
+        }
+        return false
+    }
 }
