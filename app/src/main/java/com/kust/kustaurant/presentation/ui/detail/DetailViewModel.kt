@@ -17,7 +17,6 @@ import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.google.gson.Gson
 import retrofit2.HttpException
 import com.kust.kustaurant.domain.usecase.detail.DeleteCommentDataUseCase
-import com.kust.kustaurant.domain.usecase.detail.GetAnonDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetEvaluationDataUseCase
@@ -40,7 +39,6 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getDetailDataUseCase: GetDetailDataUseCase,
-    private val getAnonDetailDataUseCase: GetAnonDetailDataUseCase,
     private val getCommentDataUseCase: GetCommentDataUseCase,
     private val postCommentReplyDataUseCase: PostCommentReplyDataUseCase,
     private val postFavoriteToggleUseCase: PostFavoriteToggleUseCase,
@@ -79,24 +77,6 @@ class DetailViewModel @Inject constructor(
 
     val evaluationComplete = MutableLiveData<Boolean>()
     private var currentSort = "popularity"
-
-    fun loadAnonDetailData(restaurantId : Int) {
-        viewModelScope.launch {
-            try {
-                val getDetailData = getAnonDetailDataUseCase(restaurantId)
-                _detailData.value = getDetailData
-                _menuData.value = getDetailData.restaurantMenuList?.map {
-                    MenuData(it.menuId, it.menuName, it.menuPrice, it.naverType, it.menuImgUrl)
-                } ?: emptyList()
-                _tierData.value = TierInfoData(
-                    getDetailData.restaurantCuisineImgUrl, getDetailData.restaurantCuisine,
-                    getDetailData.mainTier, getDetailData.situationList ?: emptyList()
-                )
-            } catch (e : Exception) {
-                Log.e("디테일 뷰모델", "loadAnonDetailData Error", e)
-            }
-        }
-    }
 
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {

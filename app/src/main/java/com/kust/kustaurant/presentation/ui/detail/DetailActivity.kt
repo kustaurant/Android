@@ -41,12 +41,7 @@ class DetailActivity : BaseActivity() {
         binding.lifecycleOwner = this
         restaurantId = intent.getIntExtra("restaurantId", 346)
 
-        val accessToken = getAccessToken(this)
-        if (accessToken == null) {
-            viewModel.loadAnonDetailData(restaurantId)
-        } else {
-            viewModel.loadDetailData(restaurantId)
-        }
+        viewModel.loadDetailData(restaurantId)
 
         initTierRecyclerView()
         initNaverLink()
