@@ -2,6 +2,8 @@ package com.kust.kustaurant.data.remote
 
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.CommentLikeResponse
+import com.kust.kustaurant.data.model.CommentReplyRequest
+import com.kust.kustaurant.data.model.CommentReplyResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
@@ -33,12 +35,12 @@ interface DetailApi {
         @Query("sort") sort : String
     ) : List<CommentDataResponse>
 
-    @POST("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}")
-    suspend fun postCommentData(
+    @POST("/api/v2/auth/restaurants/{restaurantId}/comments/{evalCommentId}")
+    suspend fun postCommentReplyData(
         @Path("restaurantId") restaurantId: Int,
-        @Path("commentId") commentId : Int,
-        @Body inputText : String
-    ) : CommentDataResponse
+        @Path("evalCommentId") evalCommentId: Int,
+        @Body request: CommentReplyRequest
+    ) : CommentReplyResponse
 
     @POST("/api/v1/auth/restaurants/{restaurantId}/favorite-toggle")
     suspend fun postFavoriteToggle(

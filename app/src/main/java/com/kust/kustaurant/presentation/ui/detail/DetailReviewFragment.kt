@@ -214,7 +214,7 @@ class DetailReviewFragment : Fragment() {
         btnSubmit.setOnClickListener {
             val inputText = etInput.text.toString()
             if (inputText.isNotBlank()) {
-                viewModel.postCommentData(restaurantId, commentId, inputText)
+                viewModel.postCommentReplyData(restaurantId, commentId, inputText)
                 bottomSheetDialog.dismiss()
                 Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
                 setRecyclerViewHeight()

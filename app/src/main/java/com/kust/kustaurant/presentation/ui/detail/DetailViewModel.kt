@@ -11,14 +11,17 @@ import androidx.lifecycle.viewModelScope
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.CommentLikeResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
+import com.kust.kustaurant.data.model.ErrorResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
+import com.google.gson.Gson
+import retrofit2.HttpException
 import com.kust.kustaurant.domain.usecase.detail.DeleteCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetAnonDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetCommentDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetDetailDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.GetEvaluationDataUseCase
-import com.kust.kustaurant.domain.usecase.detail.PostCommentDataUseCase
+import com.kust.kustaurant.domain.usecase.detail.PostCommentReplyDataUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentDisLikeUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentLikeUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentReportUseCase
@@ -39,7 +42,7 @@ class DetailViewModel @Inject constructor(
     private val getDetailDataUseCase: GetDetailDataUseCase,
     private val getAnonDetailDataUseCase: GetAnonDetailDataUseCase,
     private val getCommentDataUseCase: GetCommentDataUseCase,
-    private val postCommentDataUseCase: PostCommentDataUseCase,
+    private val postCommentReplyDataUseCase: PostCommentReplyDataUseCase,
     private val postFavoriteToggleUseCase: PostFavoriteToggleUseCase,
     private val getEvaluationDataUseCase: GetEvaluationDataUseCase,
     private val postEvaluationDataUseCase: PostEvaluationDataUseCase,
@@ -136,13 +139,34 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun postCommentData(restaurantId: Int, commentId: Int, inputText: String) {
+    fun postCommentReplyData(restaurantId: Int, evalCommentId: Int, body: String) {
         viewModelScope.launch {
             try {
-                postCommentDataUseCase(restaurantId, commentId, inputText)
+                postCommentReplyDataUseCase(restaurantId, evalCommentId, body)
                 loadCommentData(restaurantId, currentSort)
+            } catch (e: HttpException) {
+                if (e.code() == 400 || e.code() == 404) {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    handleErrorResponse(errorBody)
+                } else {
+                    Log.e("디테일 뷰모델", "postCommentReplyData Error", e)
+                }
             } catch (e: Exception) {
-                Log.e("디테일 뷰모델", "postCommentData Error", e)
+                Log.e("디테일 뷰모델", "postCommentReplyData Error", e)
+            }
+        }
+    }
+
+    private fun handleErrorResponse(errorString: String?) {
+        errorString?.let {
+            try {
+                val gson = Gson()
+                val errorResponse = gson.fromJson(it, ErrorResponse::class.java)
+                val errorMessage = errorResponse.message
+                Log.e("디테일 뷰모델", "Error: $errorMessage")
+                // 필요시 Toast 메시지나 LiveData로 에러 전달
+            } catch (e: Exception) {
+                Log.e("디테일 뷰모델", "handleErrorResponse 파싱 에러", e)
             }
         }
     }

@@ -3,6 +3,8 @@ package com.kust.kustaurant.data.repository
 
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.CommentLikeResponse
+import com.kust.kustaurant.data.model.CommentReplyRequest
+import com.kust.kustaurant.data.model.CommentReplyResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
@@ -28,8 +30,9 @@ class DetailRepositoryImpl @Inject constructor(
         return detailApi.getCommentData(restaurantId, sort)
     }
 
-    override suspend fun postCommentData(restaurantId: Int, commentId : Int, inputText : String) : CommentDataResponse{
-        return detailApi.postCommentData(restaurantId, commentId, inputText)
+    override suspend fun postCommentReplyData(restaurantId: Int, evalCommentId: Int, body: String) : CommentReplyResponse{
+        val request = CommentReplyRequest(body)
+        return detailApi.postCommentReplyData(restaurantId, evalCommentId, request)
     }
 
     override suspend fun postFavoriteToggle(restaurantId: Int) : Boolean{

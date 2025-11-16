@@ -2,13 +2,11 @@ package com.kust.kustaurant.domain.repository
 
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.CommentLikeResponse
+import com.kust.kustaurant.data.model.CommentReplyResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
-import com.kust.kustaurant.data.model.EvaluationDataRequest
 import com.kust.kustaurant.data.model.EvaluationDataResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.Part
-import retrofit2.http.Path
 
 interface DetailRepository {
     suspend fun getDetailData(
@@ -23,9 +21,9 @@ interface DetailRepository {
         restaurantId: Int, sort: String
     ) : List<CommentDataResponse>
 
-    suspend fun postCommentData(
-        restaurantId: Int, commentId: Int, inputText : String
-    ) : CommentDataResponse
+    suspend fun postCommentReplyData(
+        restaurantId: Int, evalCommentId: Int, body: String
+    ) : CommentReplyResponse
 
     suspend fun postFavoriteToggle(
         restaurantId: Int
