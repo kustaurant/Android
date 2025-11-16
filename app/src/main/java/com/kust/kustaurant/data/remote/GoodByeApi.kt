@@ -1,9 +1,9 @@
 package com.kust.kustaurant.data.remote
 
-import okhttp3.ResponseBody
-import retrofit2.http.POST
+import retrofit2.Response
+import retrofit2.http.DELETE
 
 interface GoodByeApi {
-    @POST("/api/v1/auth/goodbye-user")
-    suspend fun postGoodBye():ResponseBody
+    @DELETE("/api/v2/auth/user")
+    suspend fun deleteUser(): Response<String>
 }

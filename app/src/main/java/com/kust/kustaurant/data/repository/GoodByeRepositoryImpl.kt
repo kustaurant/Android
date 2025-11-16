@@ -8,6 +8,15 @@ class GoodByeRepositoryImpl @Inject constructor(
     private val goodByeApi: GoodByeApi
 ):GoodByeRepository{
     override suspend fun postGoodBye(): String {
-        return goodByeApi.postGoodBye().string()
+        return try {
+            val response = goodByeApi.deleteUser()
+            if (response.isSuccessful) {
+                response.body() ?: ""
+            } else {
+                response.errorBody()?.string() ?: ""
+            }
+        } catch (e: Exception) {
+            ""
+        }
     }
 }
