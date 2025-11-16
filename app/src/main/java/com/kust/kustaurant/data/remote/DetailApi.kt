@@ -7,6 +7,7 @@ import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvalCommentReactionResponse
 import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.data.model.EvaluationReactionResponse
+import com.kust.kustaurant.data.model.FavoriteResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -38,10 +39,15 @@ interface DetailApi {
         @Body request: CommentReplyRequest
     ) : CommentReplyResponse
 
-    @POST("/api/v1/auth/restaurants/{restaurantId}/favorite-toggle")
-    suspend fun postFavoriteToggle(
-        @Path("restaurantId") restaurantId: Int,
-    ) : Boolean
+    @PUT("/api/v2/auth/restaurants/{restaurantId}/favorite")
+    suspend fun putFavorite(
+        @Path("restaurantId") restaurantId: Int
+    ) : FavoriteResponse
+
+    @DELETE("/api/v2/auth/restaurants/{restaurantId}/favorite")
+    suspend fun deleteFavorite(
+        @Path("restaurantId") restaurantId: Int
+    ) : FavoriteResponse
 
     @GET("/api/v1/auth/restaurants/{restaurantId}/evaluation")
     suspend fun getEvaluationData(

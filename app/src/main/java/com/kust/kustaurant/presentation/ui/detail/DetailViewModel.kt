@@ -28,7 +28,8 @@ import com.kust.kustaurant.domain.usecase.detail.PutEvalCommentReactionUseCase
 import com.kust.kustaurant.domain.usecase.detail.PutEvaluationReactionUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostCommentReportUseCase
 import com.kust.kustaurant.domain.usecase.detail.PostEvaluationDataUseCase
-import com.kust.kustaurant.domain.usecase.detail.PostFavoriteToggleUseCase
+import com.kust.kustaurant.domain.usecase.detail.PutFavoriteUseCase
+import com.kust.kustaurant.domain.usecase.detail.DeleteFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -45,7 +46,8 @@ class DetailViewModel @Inject constructor(
     private val getDetailDataUseCase: GetDetailDataUseCase,
     private val getCommentDataUseCase: GetCommentDataUseCase,
     private val postCommentReplyDataUseCase: PostCommentReplyDataUseCase,
-    private val postFavoriteToggleUseCase: PostFavoriteToggleUseCase,
+    private val putFavoriteUseCase: PutFavoriteUseCase,
+    private val deleteFavoriteUseCase: DeleteFavoriteUseCase,
     private val getEvaluationDataUseCase: GetEvaluationDataUseCase,
     private val postEvaluationDataUseCase: PostEvaluationDataUseCase,
     private val deleteCommentDataUseCase: DeleteCommentDataUseCase,
@@ -155,29 +157,28 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun postFavoriteToggle(restaurantId: Int) {
+    fun toggleFavorite(restaurantId: Int) {
         viewModelScope.launch {
             try {
-                val newFavoriteState = postFavoriteToggleUseCase(restaurantId)
+                val currentFavoriteState = _detailData.value?.isFavorite ?: false
+                val response = if (currentFavoriteState) {
+                    // 현재 즐겨찾기 상태면 제거
+                    deleteFavoriteUseCase(restaurantId)
+                } else {
+                    // 현재 즐겨찾기 상태가 아니면 추가
+                    putFavoriteUseCase(restaurantId)
+                }
 
                 _detailData.value?.let { currentDetailData ->
                     val updatedDetailData = currentDetailData.copy(
-                        isFavorite = newFavoriteState,
-                        favoriteCount = calculateFavoriteCount(currentDetailData, newFavoriteState)
+                        isFavorite = response.isFavorite,
+                        favoriteCount = response.count.toInt()
                     )
                     _detailData.postValue(updatedDetailData)
                 }
             } catch (e: Exception) {
-                Log.e("디테일 뷰모델", "postFavoriteToggle Error", e)
+                Log.e("디테일 뷰모델", "toggleFavorite Error", e)
             }
-        }
-    }
-
-    private fun calculateFavoriteCount(currentDetailData: DetailDataResponse, newFavoriteState: Boolean): Int {
-        return if (newFavoriteState) {
-            currentDetailData.favoriteCount + 1
-        } else {
-            currentDetailData.favoriteCount - 1
         }
     }
 

@@ -8,6 +8,7 @@ import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvalCommentReactionResponse
 import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.data.model.EvaluationReactionResponse
+import com.kust.kustaurant.data.model.FavoriteResponse
 import com.kust.kustaurant.data.remote.DetailApi
 import com.kust.kustaurant.domain.repository.DetailRepository
 import okhttp3.MultipartBody
@@ -30,8 +31,12 @@ class DetailRepositoryImpl @Inject constructor(
         return detailApi.postCommentReplyData(restaurantId, evalCommentId, request)
     }
 
-    override suspend fun postFavoriteToggle(restaurantId: Int) : Boolean{
-        return detailApi.postFavoriteToggle(restaurantId)
+    override suspend fun putFavorite(restaurantId: Int) : FavoriteResponse {
+        return detailApi.putFavorite(restaurantId)
+    }
+
+    override suspend fun deleteFavorite(restaurantId: Int) : FavoriteResponse {
+        return detailApi.deleteFavorite(restaurantId)
     }
 
     override suspend fun getEvaluationData(restaurantId: Int): EvaluationDataResponse {

@@ -95,7 +95,7 @@ class DetailActivity : BaseActivity() {
     private fun initFavorite() {
         binding.detailFlFavorite.setOnClickListener {
             checkToken {
-                viewModel.postFavoriteToggle(restaurantId)
+                viewModel.toggleFavorite(restaurantId)
             }
         }
     }

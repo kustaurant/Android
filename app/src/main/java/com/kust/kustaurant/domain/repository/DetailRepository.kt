@@ -6,6 +6,7 @@ import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.EvalCommentReactionResponse
 import com.kust.kustaurant.data.model.EvaluationDataResponse
 import com.kust.kustaurant.data.model.EvaluationReactionResponse
+import com.kust.kustaurant.data.model.FavoriteResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -22,9 +23,13 @@ interface DetailRepository {
         restaurantId: Int, evalCommentId: Int, body: String
     ) : CommentReplyResponse
 
-    suspend fun postFavoriteToggle(
+    suspend fun putFavorite(
         restaurantId: Int
-    ) : Boolean
+    ) : FavoriteResponse
+
+    suspend fun deleteFavorite(
+        restaurantId: Int
+    ) : FavoriteResponse
 
     suspend fun getEvaluationData(
         restaurantId: Int
