@@ -24,10 +24,10 @@ interface DetailApi {
         @Path("restaurantId") restaurantId : Int
     ) : DetailDataResponse
 
-    @GET("/api/v1/restaurants/{restaurantId}/comments")
+    @GET("/api/v2/restaurants/{restaurantId}/comments")
     suspend fun getCommentData(
         @Path("restaurantId") restaurantId: Int,
-        @Query("sort") sort : String
+        @Query("sort") sort: String
     ) : List<CommentDataResponse>
 
     @POST("/api/v2/auth/restaurants/{restaurantId}/comments/{evalCommentId}")

@@ -98,36 +98,34 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
             }
         }
 
-        fun getLikeIconResource(likeStatus: Int): Int {
-            return when(likeStatus) {
-                1 -> R.drawable.ic_like_true
-                0 -> R.drawable.ic_like_false
-                -1 -> R.drawable.ic_like_false
+        fun getLikeIconResource(reactionType: String?): Int {
+            return when(reactionType) {
+                "LIKE" -> R.drawable.ic_like_true
+                "DISLIKE" -> R.drawable.ic_like_false
                 else -> R.drawable.ic_like_false
             }
         }
 
-        fun getDislikeIconResource(likeStatus: Int): Int {
-            return when(likeStatus) {
-                1 -> R.drawable.ic_dislike_false
-                0 -> R.drawable.ic_dislike_false
-                -1 -> R.drawable.ic_dislike_true
+        fun getDislikeIconResource(reactionType: String?): Int {
+            return when(reactionType) {
+                "LIKE" -> R.drawable.ic_dislike_false
+                "DISLIKE" -> R.drawable.ic_dislike_true
                 else -> R.drawable.ic_dislike_false
             }
         }
 
 
         fun bind(item : ReplyDataResponse){
-            binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
-            binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
+            binding.ivLike.setImageResource(getLikeIconResource(item.reactionType))
+            binding.ivHate.setImageResource(getDislikeIconResource(item.reactionType))
 
-            binding.tvUserName.text = item.commentNickname
+            binding.tvUserName.text = item.writerNickname
             binding.tvReview.text = item.commentBody
             binding.tvLike.text = item.commentLikeCount.toString()
             binding.tvHate.text = item.commentDislikeCount.toString()
-            binding.tvReviewTime.text = item.commentTime
+            binding.tvReviewTime.text = item.timeAgo
             Glide.with(context)
-                .load(item.commentIconImgUrl)
+                .load(item.writerIconImgUrl)
                 .into(binding.ivUserImage)
             binding.flLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)

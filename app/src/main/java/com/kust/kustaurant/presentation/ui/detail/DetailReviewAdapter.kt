@@ -71,7 +71,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             }
 
             btnConfirm.setOnClickListener {
-                itemClickListener.onCommentClicked(getItem(absoluteAdapterPosition).commentId)
+                itemClickListener.onCommentClicked(getItem(absoluteAdapterPosition).evalId)
                 dialog.dismiss()
             }
             btnCancel.setOnClickListener {
@@ -81,7 +81,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
 
         private fun showPopupWindow(anchorView: View) {
             val inflater = LayoutInflater.from(context)
-            val layoutRes = if (getItem(absoluteAdapterPosition).isCommentMine) {
+            val layoutRes = if (getItem(absoluteAdapterPosition).isEvaluationMine) {
                 R.layout.popup_review_only_delete
             } else {
                 R.layout.popup_review_only_report
@@ -96,7 +96,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
                 }
             } else {
                 popupView.findViewById<ConstraintLayout>(R.id.cl_delete)?.setOnClickListener {
-                    itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).commentId)
+                    itemClickListener.onDeleteClicked(getItem(absoluteAdapterPosition).evalId)
                     popupWindow.dismiss()
                 }
             }
@@ -125,7 +125,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             }
 
             btnConfirm.setOnClickListener {
-                itemClickListener.onReportClicked(getItem(absoluteAdapterPosition).commentId)
+                itemClickListener.onReportClicked(getItem(absoluteAdapterPosition).evalId)
                 dialog.dismiss()
             }
             btnCancel.setOnClickListener {
@@ -133,41 +133,39 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             }
         }
 
-        fun getLikeIconResource(likeStatus: Int): Int {
-            return when(likeStatus) {
-                1 -> R.drawable.ic_like_true
-                0 -> R.drawable.ic_like_false
-                -1 -> R.drawable.ic_like_false
+        fun getLikeIconResource(reactionType: String?): Int {
+            return when(reactionType) {
+                "LIKE" -> R.drawable.ic_like_true
+                "DISLIKE" -> R.drawable.ic_like_false
                 else -> R.drawable.ic_like_false
             }
         }
 
-        fun getDislikeIconResource(likeStatus: Int): Int {
-            return when(likeStatus) {
-                1 -> R.drawable.ic_dislike_false
-                0 -> R.drawable.ic_dislike_false
-                -1 -> R.drawable.ic_dislike_true
+        fun getDislikeIconResource(reactionType: String?): Int {
+            return when(reactionType) {
+                "LIKE" -> R.drawable.ic_dislike_false
+                "DISLIKE" -> R.drawable.ic_dislike_true
                 else -> R.drawable.ic_dislike_false
             }
         }
 
         fun bind(item: CommentDataResponse) {
-            binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
-            binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
+            binding.ivLike.setImageResource(getLikeIconResource(item.reactionType))
+            binding.ivHate.setImageResource(getDislikeIconResource(item.reactionType))
 
-            binding.tvGrade.text = item.commentScore.toString()
-            binding.tvReviewTime.text = item.commentTime
-            binding.tvUserName.text = item.commentNickname
-            binding.tvReview.text = item.commentBody
-            binding.tvLike.text = item.commentLikeCount.toString()
-            binding.tvHate.text = item.commentDislikeCount.toString()
+            binding.tvGrade.text = item.evalScore.toString()
+            binding.tvReviewTime.text = item.timeAgo
+            binding.tvUserName.text = item.writerNickname
+            binding.tvReview.text = item.evalBody
+            binding.tvLike.text = item.evalLikeCount.toString()
+            binding.tvHate.text = item.evalDislikeCount.toString()
             Glide.with(context)
-                .load(item.commentIconImgUrl)
+                .load(item.writerIconImgUrl)
                 .into(binding.ivUserImage)
-            if (item.commentImgUrl != null){
+            if (item.evalImgUrl != null){
                 binding.detailCvPhoto.visibility = View.VISIBLE
                 Glide.with(context)
-                    .load(item.commentImgUrl)
+                    .load(item.evalImgUrl)
                     .into(binding.detailIvPhoto)
             } else {
                 binding.detailCvPhoto.visibility = View.GONE
@@ -177,13 +175,13 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             }
 
             binding.flLike.setOnClickListener {
-                itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
+                itemClickListener.onLikeClicked(item.evalId, absoluteAdapterPosition)
             }
             binding.flHate.setOnClickListener {
-                itemClickListener.onDisLikeClicked(item.commentId, absoluteAdapterPosition)
+                itemClickListener.onDisLikeClicked(item.evalId, absoluteAdapterPosition)
             }
 
-            val gradeAdapter = DetailGradeAdapter(item.commentScore)
+            val gradeAdapter = DetailGradeAdapter(item.evalScore)
             binding.rvGrade.adapter = gradeAdapter
             binding.rvGrade.layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
 
@@ -209,7 +207,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
             }
             binding.detailRvReply.adapter = replyAdapter
             binding.detailRvReply.layoutManager = LinearLayoutManager(binding.root.context)
-            replyAdapter.submitList(item.commentReplies)
+            replyAdapter.submitList(item.evalCommentList)
             replyAdapter.notifyItemChanged(absoluteAdapterPosition)
         }
     }
@@ -228,7 +226,7 @@ class DetailReviewAdapter(private val context: Context): ListAdapter<CommentData
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<CommentDataResponse>() {
             override fun areItemsTheSame(oldItem: CommentDataResponse, newItem: CommentDataResponse): Boolean =
-                oldItem.commentId == newItem.commentId
+                oldItem.evalId == newItem.evalId
 
             override fun areContentsTheSame(oldItem: CommentDataResponse, newItem: CommentDataResponse): Boolean =
                 oldItem == newItem

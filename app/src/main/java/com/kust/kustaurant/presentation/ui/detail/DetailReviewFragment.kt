@@ -26,8 +26,8 @@ class DetailReviewFragment : Fragment() {
     lateinit var reviewAdapter: DetailReviewAdapter
     private val viewModel: DetailViewModel by activityViewModels()
     private var restaurantId = 0
-    private val popularity = "popularity"
-    private val latest = "latest"
+    private val popularity = "POPULARITY"
+    private val latest = "LATEST"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +61,7 @@ class DetailReviewFragment : Fragment() {
         }
 
         observeViewModel()
+        // 초기 로딩은 onViewCreated에서만 수행
         viewModel.loadCommentData(restaurantId, popularity)
     }
 
@@ -116,7 +117,8 @@ class DetailReviewFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadCommentData(restaurantId, popularity)
+        // onViewCreated에서 이미 로딩하므로 중복 호출 제거
+        // 필요시에만 여기서 갱신 (예: 다른 화면에서 돌아왔을 때)
     }
 
     private fun initRecyclerView() {

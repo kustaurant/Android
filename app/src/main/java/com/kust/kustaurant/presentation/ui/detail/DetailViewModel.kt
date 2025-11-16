@@ -76,7 +76,7 @@ class DetailViewModel @Inject constructor(
     val itemUpdateIndex: LiveData<Int> = _itemUpdateIndex
 
     val evaluationComplete = MutableLiveData<Boolean>()
-    private var currentSort = "popularity"
+    private var currentSort = "POPULARITY"
 
     fun loadDetailData(restaurantId : Int) {
         viewModelScope.launch {
@@ -271,20 +271,20 @@ class DetailViewModel @Inject constructor(
             // 기존 reviewData를 MutableList로 나열
             val updatedReviews = currentReviews.map { review ->
 
-                // commentId가 일치하면 review 데이터를 업데이트
-                val updatedComment = if (review.commentId == commentId) {
+                // evalId가 일치하면 review 데이터를 업데이트
+                val updatedComment = if (review.evalId == commentId) {
                     review.copy(
-                        commentLikeStatus = response.commentLikeStatus,
-                        commentLikeCount = response.commentLikeCount,
-                        commentDislikeCount = response.commentDislikeCount
+                        reactionType = convertLikeStatusToString(response.commentLikeStatus),
+                        evalLikeCount = response.commentLikeCount,
+                        evalDislikeCount = response.commentDislikeCount
                     )
                 } else {
-                    // commentId가 일치하지 않으면 대댓글을 업데이트
-                    val updatedReplies = review.commentReplies?.map { reply ->
+                    // evalId가 일치하지 않으면 대댓글을 업데이트
+                    val updatedReplies = review.evalCommentList?.map { reply ->
 
                         if (reply.commentId == commentId) {
                             reply.copy(
-                                commentLikeStatus = response.commentLikeStatus,
+                                reactionType = convertLikeStatusToString(response.commentLikeStatus),
                                 commentLikeCount = response.commentLikeCount,
                                 commentDislikeCount = response.commentDislikeCount
                             )
@@ -294,7 +294,7 @@ class DetailViewModel @Inject constructor(
                         }
                     }
                     // 업데이트한 reply Data 를 reviewData로 복사
-                    review.copy(commentReplies = updatedReplies)
+                    review.copy(evalCommentList = updatedReplies)
                 }
 
                 // 업데이트된 댓글, 대댓글 반환
@@ -302,6 +302,14 @@ class DetailViewModel @Inject constructor(
             }
             // 변경된 reviewData를 LiveData에 업데이트
             _reviewData.postValue(updatedReviews)
+        }
+    }
+
+    private fun convertLikeStatusToString(likeStatus: Int): String {
+        return when(likeStatus) {
+            1 -> "LIKE"
+            -1 -> "DISLIKE"
+            else -> "NONE"
         }
     }
 
