@@ -19,7 +19,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface DetailApi {
-    @GET("/api/v1/auth/restaurants/{restaurantId}")
+    @GET("/api/v2/restaurants/{restaurantId}")
     suspend fun getDetailData(
         @Path("restaurantId") restaurantId : Int
     ) : DetailDataResponse

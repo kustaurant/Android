@@ -85,12 +85,12 @@ class DetailViewModel @Inject constructor(
             try {
                 val getDetailData = getAnonDetailDataUseCase(restaurantId)
                 _detailData.value = getDetailData
-                _menuData.value = getDetailData.restaurantMenuList.map {
+                _menuData.value = getDetailData.restaurantMenuList?.map {
                     MenuData(it.menuId, it.menuName, it.menuPrice, it.naverType, it.menuImgUrl)
-                }
+                } ?: emptyList()
                 _tierData.value = TierInfoData(
                     getDetailData.restaurantCuisineImgUrl, getDetailData.restaurantCuisine,
-                    getDetailData.mainTier, getDetailData.situationList
+                    getDetailData.mainTier, getDetailData.situationList ?: emptyList()
                 )
             } catch (e : Exception) {
                 Log.e("디테일 뷰모델", "loadAnonDetailData Error", e)
@@ -103,12 +103,12 @@ class DetailViewModel @Inject constructor(
             try {
                 val getDetailData = getDetailDataUseCase(restaurantId)
                 _detailData.value = getDetailData
-                _menuData.value = getDetailData.restaurantMenuList.map {
+                _menuData.value = getDetailData.restaurantMenuList?.map {
                     MenuData(it.menuId, it.menuName, it.menuPrice, it.naverType, it.menuImgUrl)
-                }
+                } ?: emptyList()
                 _tierData.value = TierInfoData(
                     getDetailData.restaurantCuisineImgUrl, getDetailData.restaurantCuisine,
-                    getDetailData.mainTier, getDetailData.situationList
+                    getDetailData.mainTier, getDetailData.situationList ?: emptyList()
                 )
             } catch (e : Exception) {
                 Log.e("디테일 뷰모델", "loadDetailData Error", e)
