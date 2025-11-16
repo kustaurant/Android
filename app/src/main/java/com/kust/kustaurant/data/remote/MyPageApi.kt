@@ -5,6 +5,7 @@ import com.kust.kustaurant.data.model.MyCommunityListResponse
 import com.kust.kustaurant.data.model.MyEvaluateResponse
 import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.data.model.MyPageResponse
+import com.kust.kustaurant.data.model.FeedbackRequest
 import com.kust.kustaurant.data.model.MyProfileRequest
 import com.kust.kustaurant.data.model.MyProfileResponse
 import com.kust.kustaurant.data.model.MyScrapResponse
@@ -15,9 +16,9 @@ import retrofit2.http.POST
 
 interface MyPageApi {
     // 피드백 Body 질문
-    @POST("/api/v1/auth/mypage/feedback")
+    @POST("/api/v2/auth/mypage/feedback")
     suspend fun postFeedBackData(
-        @Body feedBack : String
+        @Body request: FeedbackRequest
     )
     @GET("/api/v2/mypage/profile")
     suspend fun getProfileData(
