@@ -264,7 +264,7 @@ class DetailViewModel @Inject constructor(
             try {
                 val accessToken = getAccessToken(context)
                 val role = if (accessToken != null) "USER" else "GUEST"
-                val userId = 0 // 사용자가 요청한 대로 id는 0으로 설정
+                val userId = 0
                 val response = putEvaluationReactionUseCase(evaluationId, reaction, userId, role)
                 updateEvaluationData(response, evaluationId)
             } catch (e: Exception) {
