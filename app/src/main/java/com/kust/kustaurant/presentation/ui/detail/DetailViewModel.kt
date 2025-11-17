@@ -227,10 +227,10 @@ class DetailViewModel @Inject constructor(
         return tempFile
     }
 
-    fun deleteCommentData(restaurantId: Int, commentId: Int) {
+    fun deleteCommentData(restaurantId: Int, evalCommentId: Int) {
         viewModelScope.launch {
             try {
-                deleteCommentDataUseCase(restaurantId, commentId)
+                deleteCommentDataUseCase(restaurantId, evalCommentId)
                 loadCommentData(restaurantId, currentSort)
             } catch (e: Exception) {
                 Log.e("디테일 뷰모델", "getFileFromUri Error", e)

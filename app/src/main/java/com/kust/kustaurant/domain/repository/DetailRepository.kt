@@ -45,7 +45,7 @@ interface DetailRepository {
 
     suspend fun deleteCommentData(
         restaurantId: Int,
-        commentId: Int
+        evalCommentId: Int
     )
 
     suspend fun postCommentReport(

@@ -64,10 +64,10 @@ interface DetailApi {
         @Part newImage: MultipartBody.Part?
     ) : List<CommentDataResponse>
 
-    @DELETE("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}")
+    @DELETE("/api/v2/auth/restaurants/{restaurantId}/comments/{evalCommentId}")
     suspend fun deleteCommentData(
         @Path("restaurantId") restaurantId: Int,
-        @Path("commentId") commentId: Int
+        @Path("evalCommentId") evalCommentId: Int
     )
 
     @POST("api/v1/auth/restaurants/{restaurantId}/comments/{commentId}/report")
