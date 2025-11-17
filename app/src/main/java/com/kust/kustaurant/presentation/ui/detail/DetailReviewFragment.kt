@@ -61,7 +61,7 @@ class DetailReviewFragment : Fragment() {
         }
 
         observeViewModel()
-        // 초기 로딩은 onViewCreated에서만 수행
+
         viewModel.loadCommentData(restaurantId, popularity)
     }
 
@@ -117,8 +117,6 @@ class DetailReviewFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // onViewCreated에서 이미 로딩하므로 중복 호출 제거
-        // 필요시에만 여기서 갱신 (예: 다른 화면에서 돌아왔을 때)
     }
 
     private fun initRecyclerView() {
@@ -131,8 +129,8 @@ class DetailReviewFragment : Fragment() {
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
             override fun onReportClicked(commentId: Int) {
                 checkToken{
-                    viewModel.postCommentReport(restaurantId, commentId)
-                    Toast.makeText(requireContext(), "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
+//                    viewModel.postCommentReport(restaurantId, commentId)
+                    Toast.makeText(requireContext(), "현재 점검 중입니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -166,8 +164,8 @@ class DetailReviewFragment : Fragment() {
         reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener{
             override fun onReportClicked(commentId: Int) {
                 checkToken{
-                    viewModel.postCommentReport(restaurantId, commentId)
-                    Toast.makeText(requireContext(), "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
+//                    viewModel.postCommentReport(restaurantId, commentId)
+                    Toast.makeText(requireContext(), "현재 점검 중입니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
