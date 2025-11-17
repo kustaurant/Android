@@ -55,7 +55,7 @@ interface DetailApi {
     ) : EvaluationDataResponse
 
     @Multipart
-    @POST("/api/v1/auth/restaurants/{restaurantId}/evaluation")
+    @POST("/api/v2/auth/restaurants/{restaurantId}/evaluation")
     suspend fun postEvaluationData(
         @Path("restaurantId") restaurantId: Int,
         @Part("evaluationScore") evaluationScore: RequestBody,
