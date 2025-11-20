@@ -158,7 +158,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initWithdrawal() {
-        goodByeViewModel.postGoodBye()
+        goodByeViewModel.deleteUser()
 
         goodByeViewModel.response.observe(viewLifecycleOwner) { result ->
             when (result) {

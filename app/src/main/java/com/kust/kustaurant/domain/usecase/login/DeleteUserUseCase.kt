@@ -5,10 +5,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PostGoodByeDataUseCase @Inject constructor(
+class DeleteUserUseCase @Inject constructor(
     private val goodByeRepository: GoodByeRepository
-){
-    suspend fun invoke():String{
-        return goodByeRepository.postGoodBye()
+) {
+    suspend operator fun invoke(): String {
+        return goodByeRepository.deleteUser()
     }
 }
+

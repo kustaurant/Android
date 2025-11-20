@@ -5,22 +5,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.domain.usecase.login.PostGoodByeDataUseCase
+import com.kust.kustaurant.domain.usecase.login.DeleteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GoodByeViewModel @Inject constructor(
-    private val postGoodByeDataUseCase: PostGoodByeDataUseCase
-):ViewModel(){
+    private val deleteUserUseCase: DeleteUserUseCase
+): ViewModel(){
     private val _response = MutableLiveData<String>()
     val response: LiveData<String> get() = _response
 
-    fun postGoodBye(){
+    fun deleteUser(){
         viewModelScope.launch {
             try {
-                val responseString = postGoodByeDataUseCase.invoke()
+                val responseString = deleteUserUseCase()
                 
                 // 빈 값이면 성공, 값이 있으면 실패
                 if (responseString.isBlank()) {

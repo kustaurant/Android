@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class GoodByeRepositoryImpl @Inject constructor(
     private val goodByeApi: GoodByeApi
-):GoodByeRepository{
-    override suspend fun postGoodBye(): String {
+): GoodByeRepository {
+    override suspend fun deleteUser(): String {
         return try {
             val response = goodByeApi.deleteUser()
             if (response.isSuccessful) {
