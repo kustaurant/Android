@@ -1,6 +1,6 @@
 package com.kust.kustaurant.domain.usecase.tier
 
-import com.kust.kustaurant.data.model.TierMapData
+import com.kust.kustaurant.data.model.tier.TierMapData
 import com.kust.kustaurant.domain.repository.TierRepository
 import javax.inject.Inject
 import javax.inject.Singleton

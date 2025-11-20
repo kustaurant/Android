@@ -3,12 +3,11 @@ package com.kust.kustaurant.presentation.ui.detail
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kust.kustaurant.data.getAccessToken
+import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import com.kust.kustaurant.data.model.CommentDataResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
 import com.kust.kustaurant.data.model.ErrorResponse
@@ -36,7 +35,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.w3c.dom.Text
 import java.io.File
 import javax.inject.Inject
 
@@ -51,9 +49,10 @@ class DetailViewModel @Inject constructor(
     private val getEvaluationDataUseCase: GetEvaluationDataUseCase,
     private val postEvaluationDataUseCase: PostEvaluationDataUseCase,
     private val deleteCommentDataUseCase: DeleteCommentDataUseCase,
+    private val postCommentReportUseCase : PostCommentReportUseCase,
+    private val prefs: AuthPreferenceDataSource,
     private val putEvalCommentReactionUseCase: PutEvalCommentReactionUseCase,
     private val putEvaluationReactionUseCase: PutEvaluationReactionUseCase,
-    private val postCommentReportUseCase : PostCommentReportUseCase
 ): ViewModel() {
     val tabList = MutableLiveData(listOf("메뉴", "리뷰"))
 
@@ -263,7 +262,7 @@ class DetailViewModel @Inject constructor(
     fun putEvaluationReaction(evaluationId: Int, reaction: String?) {
         viewModelScope.launch {
             try {
-                val accessToken = getAccessToken(context)
+                val accessToken = prefs.getAccessToken()
                 val role = if (accessToken != null) "USER" else "GUEST"
                 val userId = 0
                 val response = putEvaluationReactionUseCase(evaluationId, reaction, userId, role)
@@ -357,4 +356,11 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+
+    fun hasLoginInfo(): Boolean {
+        prefs.getAccessToken()?.let {
+            return true
+        }
+        return false
+    }
 }

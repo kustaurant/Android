@@ -15,7 +15,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentTierListBinding
 import com.kust.kustaurant.domain.model.TierRestaurant
 import com.kust.kustaurant.presentation.ui.detail.DetailActivity
@@ -91,26 +90,27 @@ class TierListFragment : Fragment() {
 
     private fun setupRefreshListener() {
         binding.tierSrl.setOnRefreshListener {
-            tierAdapter.submitList(emptyList())
-            if (getAccessToken(requireContext()) == null) {
-                viewModel.fetchFirstRestaurants(false)
-            } else {
-                viewModel.fetchFirstRestaurants(true)
-            }
-            binding.tierSrl.isRefreshing = false
+            viewModel.fetchFirstRestaurants()
+        }
+        viewModel.pageState.observe(viewLifecycleOwner) { s ->
+            binding.tierSrl.isRefreshing = s.phase == TierPhase.Refreshing
         }
     }
 
     private fun setupScrollListener() {
         binding.tierRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1)) {
-                    if (getAccessToken(requireContext()) == null) {
-                        viewModel.fetchNextRestaurants(false)
-                    } else {
-                        viewModel.fetchNextRestaurants(true)
-                    }
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(rv, dx, dy)
+                val lm = rv.layoutManager as LinearLayoutManager
+                val itemCount = tierAdapter.itemCount
+                if (dy <= 0 || itemCount == 0) return
+
+                val s = viewModel.pageState.value ?: return
+                if (s.phase != TierPhase.Idle || s.isLastPage) return
+
+                val lastVisible = lm.findLastVisibleItemPosition()
+                if (lastVisible >= itemCount - 5) {
+                    viewModel.fetchNextRestaurants()
                 }
             }
         })
@@ -120,18 +120,12 @@ class TierListFragment : Fragment() {
         viewModel.categoryChangeList.observe(viewLifecycleOwner) { changed ->
             if (changed && recyclerViewState == null) {
                 tierAdapter.submitList(emptyList())
-                if (getAccessToken(requireContext()) == null) {
-                    viewModel.fetchFirstRestaurants(false)
-                } else {
-                    viewModel.fetchFirstRestaurants(true)
-                }
+                    viewModel.fetchFirstRestaurants()
             }
         }
 
-        viewModel.fetchedRestaurants.observe(viewLifecycleOwner) { tierList ->
-            val currentList = tierAdapter.getCurrentList().toMutableList()
-            currentList.addAll(tierList)
-            tierAdapter.submitList(currentList)
+        viewModel.allRestaurants.observe(viewLifecycleOwner) { all ->
+            tierAdapter.submitList(all)
         }
 
         viewModel.isExpanded.observe(viewLifecycleOwner) { isExpanded ->
@@ -147,24 +141,12 @@ class TierListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val lastPosition = viewModel.getTierListLastPosition()
-        binding.tierRecyclerView.visibility = View.INVISIBLE
-
-        viewModel.allRestaurants.value?.let { restaurants ->
-            tierAdapter.submitList(restaurants) {
-                binding.tierRecyclerView.post {
-                    (binding.tierRecyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-                        lastPosition,
-                        0
-                    )
-                    binding.tierRecyclerView.postDelayed({
-                        binding.tierRecyclerView.visibility = View.VISIBLE
-                    }, 50)
-                }
-            }
+        val last = viewModel.getTierListLastPosition()
+        binding.tierRecyclerView.post {
+            (binding.tierRecyclerView.layoutManager as LinearLayoutManager)
+                .scrollToPositionWithOffset(last, 0)
         }
     }
-
 
     override fun onStop() {
         super.onStop()

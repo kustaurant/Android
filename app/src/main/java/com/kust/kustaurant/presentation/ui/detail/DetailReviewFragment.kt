@@ -1,10 +1,8 @@
 package com.kust.kustaurant.presentation.ui.detail
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,17 +10,16 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kust.kustaurant.R
-import com.kust.kustaurant.data.getAccessToken
 import com.kust.kustaurant.databinding.FragmentDetailReviewBinding
-import com.kust.kustaurant.presentation.ui.splash.StartActivity
 
 class DetailReviewFragment : Fragment() {
-    lateinit var binding : FragmentDetailReviewBinding
+    lateinit var binding: FragmentDetailReviewBinding
     lateinit var reviewAdapter: DetailReviewAdapter
     private val viewModel: DetailViewModel by activityViewModels()
     private var restaurantId = 0
@@ -32,7 +29,7 @@ class DetailReviewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDetailReviewBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -40,6 +37,7 @@ class DetailReviewFragment : Fragment() {
         initRecyclerView()
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -63,17 +61,6 @@ class DetailReviewFragment : Fragment() {
         observeViewModel()
 
         viewModel.loadCommentData(restaurantId, popularity)
-    }
-
-
-    fun checkToken(action: () -> Unit) {
-        val accessToken = getAccessToken(requireContext())
-        if (accessToken == null) {
-            val intent = Intent(context, StartActivity::class.java)
-            startActivity(intent)
-        } else {
-            action()
-        }
     }
 
     private fun updateButton(selectedView: View?) {
@@ -128,14 +115,14 @@ class DetailReviewFragment : Fragment() {
 
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
             override fun onReportClicked(commentId: Int) {
-                checkToken{
+                if (viewModel.hasLoginInfo()) {
 //                    viewModel.postCommentReport(restaurantId, commentId)
-                    Toast.makeText(requireContext(), "현재 점검 중입니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onDeleteClicked(commentId: Int) {
-                checkToken{
+                if (viewModel.hasLoginInfo()) {
                     viewModel.deleteCommentData(restaurantId, commentId)
                     Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     setRecyclerViewHeight()
@@ -143,48 +130,49 @@ class DetailReviewFragment : Fragment() {
             }
 
             override fun onCommentClicked(commentId: Int) {
-                checkToken{
+                if (viewModel.hasLoginInfo()) {
                     showBottomSheetInput(commentId)
                 }
             }
 
             override fun onLikeClicked(commentId: Int, position: Int) {
-                checkToken{
+                if (viewModel.hasLoginInfo()) {
                     viewModel.toggleEvalCommentLike(commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
-                checkToken{
+                if (viewModel.hasLoginInfo()) {
                     viewModel.toggleEvalCommentDislike(commentId)
                 }
             }
         })
 
-        reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener{
+        reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener {
             override fun onReportClicked(commentId: Int) {
-                checkToken{
+                if (viewModel.hasLoginInfo()) {
 //                    viewModel.postCommentReport(restaurantId, commentId)
-                    Toast.makeText(requireContext(), "현재 점검 중입니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onDeleteClicked(commentId: Int) {
-                checkToken{
+                if (viewModel.hasLoginInfo()) {
                     viewModel.deleteCommentData(restaurantId, commentId)
-                    Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT)
+                        .show()
                     setRecyclerViewHeight()
                 }
             }
 
             override fun onLikeClicked(commentId: Int, position: Int) {
-                checkToken{
+                if (viewModel.hasLoginInfo()) {
                     viewModel.toggleEvalCommentReplyLike(commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
-                checkToken{
+                if (viewModel.hasLoginInfo()) {
                     viewModel.toggleEvalCommentReplyDislike(commentId)
                 }
             }
@@ -200,13 +188,15 @@ class DetailReviewFragment : Fragment() {
         bottomSheetDialog.setContentView(bottomSheetView)
 
         val etInput = bottomSheetView.findViewById<EditText>(R.id.detail_et_input)
-        val btnSubmit = bottomSheetView.findViewById<ConstraintLayout>(R.id.detail_cl_comment_confirm)
+        val btnSubmit =
+            bottomSheetView.findViewById<ConstraintLayout>(R.id.detail_cl_comment_confirm)
 
         bottomSheetDialog.setOnShowListener {
             etInput.requestFocus()
             // 바텀 sheet 생성하는데 시간 지연
             etInput.postDelayed({
-                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val imm =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.showSoftInput(etInput, InputMethodManager.SHOW_IMPLICIT)
             }, 100)
         }

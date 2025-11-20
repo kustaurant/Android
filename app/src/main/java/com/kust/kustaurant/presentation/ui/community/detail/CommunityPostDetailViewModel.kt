@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kust.kustaurant.data.datasource.AuthPreferenceDataSource
 import com.kust.kustaurant.data.model.community.CommunityPostLikeResponse
 import com.kust.kustaurant.data.model.community.CommunityPostScrapResponse
 import com.kust.kustaurant.domain.model.community.CommunityPost
@@ -32,6 +33,7 @@ class CommunityPostDetailViewModel @Inject constructor(
     private val postCommentReactUseCase: PostCommunityPostCommentReactUseCase,
     private val deletePostUseCase: DeleteCommunityPostUseCase,
     private val deleteCommentUseCase: DeleteCommunityCommentUseCase,
+    private val prefs : AuthPreferenceDataSource
 ) : ViewModel() {
     private val _postDetail = MutableLiveData<CommunityPost>()
     val postDetail: LiveData<CommunityPost> = _postDetail
@@ -287,5 +289,12 @@ class CommunityPostDetailViewModel @Inject constructor(
 
     fun resetUiState() {
         _uiState.value = UiState.Idle
+    }
+
+    fun hasLoginInfo(): Boolean {
+        prefs.getAccessToken()?.let {
+            return true
+        }
+        return false
     }
 }
