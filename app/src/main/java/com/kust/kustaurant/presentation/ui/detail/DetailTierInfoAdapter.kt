@@ -78,20 +78,24 @@ class DetailTierInfoAdapter(val context : Context, private val tierData : TierIn
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val keywords = tierData.situationList.orEmpty()
             if (tierData.tierNumber == -1) {
-                (holder as KeyWordViewHolder).bind(tierData.situationList[position])
+                if (holder is KeyWordViewHolder) {
+                    holder.bind(keywords.getOrNull(position).orEmpty())
+                }
             } else {
                 if (holder is TierViewHolder && position == 0) {
                     holder.bind(tierData)
                 } else if (holder is KeyWordViewHolder) {
-                    holder.bind(tierData.situationList[position - 1])
+                    holder.bind(keywords.getOrNull(position - 1).orEmpty())
                 }
             }
         }
 
         override fun getItemCount(): Int {
+            val keywordCount = tierData.situationList?.size ?: 0
             return if (tierData.tierNumber == -1)
-                tierData.situationList.size
-            else 1 + tierData.situationList.size
+                keywordCount
+            else 1 + keywordCount
         }
 }

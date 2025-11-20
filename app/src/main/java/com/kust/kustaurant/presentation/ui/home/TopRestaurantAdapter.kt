@@ -29,11 +29,12 @@ class TopRestaurantAdapter(var topRestaurantList: ArrayList<RestaurantModel>): R
             binding.homeName.text = restaurant.restaurantName
             binding.homeBenefit.text = restaurant.partnershipInfo
 
-            if (restaurant.restaurantScore == 0.0) {
+            val score = restaurant.restaurantScore
+            if (score == null || score == 0.0) {
                 binding.homeIvStar.visibility = View.INVISIBLE
                 binding.homeStar.text = "평가없음"
             } else {
-                binding.homeStar.text = restaurant.restaurantScore.toString()
+                binding.homeStar.text = score.toString()
                 binding.homeIvStar.setColorFilter(
                     ContextCompat.getColor(binding.root.context, R.color.tier_3),
                     PorterDuff.Mode.SRC_IN
