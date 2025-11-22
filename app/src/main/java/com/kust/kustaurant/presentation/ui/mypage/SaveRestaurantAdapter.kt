@@ -62,10 +62,10 @@ class SaveRestaurantAdapter(val context: Context) : ListAdapter<MyFavoriteRespon
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<MyFavoriteResponse>() {
             override fun areItemsTheSame(oldItem: MyFavoriteResponse, newItem: MyFavoriteResponse): Boolean =
-                oldItem.restaurantName == newItem.restaurantName
+                oldItem.restaurantId == newItem.restaurantId
 
             override fun areContentsTheSame(oldItem: MyFavoriteResponse, newItem: MyFavoriteResponse): Boolean =
-                oldItem.restaurantName == newItem.restaurantName
+                oldItem.restaurantId == newItem.restaurantId
         }
     }
 

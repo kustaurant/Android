@@ -86,7 +86,11 @@ class MyPageViewModel @Inject constructor(
             try {
                 val myProfileData = getMyProfileDataUseCase()
                 originalProfileData = myProfileData
-                _myProfileData.value = myProfileData ?: MyProfileResponse("", "", "")
+                _myProfileData.value = myProfileData ?: MyProfileResponse(
+                    nickname = "",
+                    email = "",
+                    phoneNumber = ""
+                )
             } catch (e: Exception) {
                 Log.e("마이페이지 뷰모델", "loadMyProfileData Error", e)
             }
@@ -110,18 +114,32 @@ class MyPageViewModel @Inject constructor(
 
     private fun handleErrorResponse(errorString: String?) {
         errorString?.let {
-            val jsonObject = JSONObject(it)
-            val errorMessage = jsonObject.getString("error")
-            when {
-                errorMessage.contains("전화번호는 숫자로 11자로만 입력되어야 합니다") -> postToast("전화번호는 숫자로 11자로만 입력되어야 합니다.")
-                errorMessage.contains("닉네임을 변경한 지 30일이 지나지 않아 변경할 수 없습니다.") -> postToast("닉네임을 변경한 지 30일이 지나지 않아 변경할 수 없습니다.")
-                errorMessage.contains("해당 닉네임이 이미 존재합니다.") -> postToast("해당 닉네임이 이미 존재합니다.")
-                errorMessage.contains("이전과 동일한 닉네임입니다.") -> postToast("이전과 동일한 닉네임입니다.")
-                errorMessage.contains("닉네임은 2자 이상이어야 합니다.") -> postToast("닉네임은 2자 이상이어야 합니다.")
-                errorMessage.contains("닉네임은 10자 이하여야 합니다.") -> postToast("닉네임은 10자 이하여야 합니다.")
+            try {
+                val jsonObject = JSONObject(it)
+                // v2 API는 "message" 필드를 사용하고, v1은 "error" 필드를 사용할 수 있음
+                val errorMessage = jsonObject.optString("message", jsonObject.optString("error", ""))
+                
+                if (errorMessage.isNotEmpty()) {
+                    when {
+                        errorMessage.contains("전화번호는 숫자로 11자로만 입력되어야 합니다") -> postToast("전화번호는 숫자로 11자로만 입력되어야 합니다.")
+                        errorMessage.contains("닉네임을 변경한 지 30일이 지나지 않아 변경할 수 없습니다.") -> postToast("닉네임을 변경한 지 30일이 지나지 않아 변경할 수 없습니다.")
+                        errorMessage.contains("해당 닉네임이 이미 존재합니다.") -> postToast("해당 닉네임이 이미 존재합니다.")
+                        errorMessage.contains("이전과 동일한 닉네임입니다.") -> postToast("이전과 동일한 닉네임입니다.")
+                        errorMessage.contains("닉네임은 2자 이상이어야 합니다.") -> postToast("닉네임은 2자 이상이어야 합니다.")
+                        errorMessage.contains("닉네임은 10자 이하여야 합니다.") -> postToast("닉네임은 10자 이하여야 합니다.")
+                        errorMessage.contains("이미 사용 중인 전화번호") -> postToast("이미 사용 중인 전화번호 입니다.")
 
-                else -> postToast("알 수 없는 에러가 발생했습니다: $errorMessage")
+                        else -> postToast(errorMessage)
+                    }
+                } else {
+                    postToast("알 수 없는 에러가 발생했습니다.")
+                }
+            } catch (e: Exception) {
+                Log.e("마이페이지 뷰모델", "handleErrorResponse 파싱 에러", e)
+                postToast("에러 응답을 처리하는 중 오류가 발생했습니다.")
             }
+        } ?: run {
+            postToast("네트워크 에러가 발생했습니다.")
         }
     }
 

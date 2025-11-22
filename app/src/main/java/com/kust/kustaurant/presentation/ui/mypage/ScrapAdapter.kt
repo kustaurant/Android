@@ -27,10 +27,10 @@ class ScrapAdapter(val context: Context) : ListAdapter<MyScrapResponse, ScrapAda
 
     inner class ViewHolder(val binding : ItemMyScrapBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : MyScrapResponse){
-            val postBodyWithoutImg = if (item.postBody.trim().startsWith("<p><img")) {
+            val postBodyWithoutImg = if (item.body.trim().startsWith("<p><img")) {
                 ""
             } else {
-                item.postBody.replace(communityRegex(), "")
+                item.body.replace(communityRegex(), "")
             }
             binding.myTvScrapBody.text = Html.fromHtml(postBodyWithoutImg, Html.FROM_HTML_MODE_LEGACY)
 
@@ -40,7 +40,7 @@ class ScrapAdapter(val context: Context) : ListAdapter<MyScrapResponse, ScrapAda
             binding.myTvScrapLike.text = item.likeCount.toString()
             binding.myTvScrapComment.text = item.commentCount.toString()
 
-            if (item.postImgUrl != null) {
+            if (item.postImgUrl != null && item.postImgUrl.isNotEmpty()) {
                 binding.myCvEvaluateRestaurant.visibility = View.VISIBLE
                 Glide.with(context)
                     .load(item.postImgUrl)
@@ -76,10 +76,10 @@ class ScrapAdapter(val context: Context) : ListAdapter<MyScrapResponse, ScrapAda
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<MyScrapResponse>() {
             override fun areItemsTheSame(oldItem: MyScrapResponse, newItem: MyScrapResponse): Boolean =
-                oldItem.postTitle == newItem.postTitle
+                oldItem.postId == newItem.postId
 
             override fun areContentsTheSame(oldItem: MyScrapResponse, newItem: MyScrapResponse): Boolean =
-                oldItem.postTitle == newItem.postTitle
+                oldItem.body == newItem.body
         }
     }
 

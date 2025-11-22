@@ -57,7 +57,7 @@
                     android:id="@+id/my_iv_user"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    imageUrl="@{viewModel.myPageData.iconImgUrl}"
+                    imageUrl="@{viewModel.myPageData.iconUrl}"
                     android:scaleType="centerCrop"/>
 
             </androidx.cardview.widget.CardView>
@@ -152,7 +152,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:text='@{viewModel.myPageData.evaluationCount != 0 ? String.valueOf(viewModel.myPageData.evaluationCount) : "-"}' />
+                        android:text='@{viewModel.myPageData.evalCnt != 0 ? String.valueOf(viewModel.myPageData.evalCnt) : "-"}' />
 
 
 
@@ -200,7 +200,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:text='@{viewModel.myPageData.postCount != 0 ? String.valueOf(viewModel.myPageData.postCount) : "-"}' />
+                        android:text='@{viewModel.myPageData.postCnt != 0 ? String.valueOf(viewModel.myPageData.postCnt) : "-"}' />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

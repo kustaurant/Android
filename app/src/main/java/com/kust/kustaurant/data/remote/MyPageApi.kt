@@ -5,52 +5,52 @@ import com.kust.kustaurant.data.model.MyCommunityListResponse
 import com.kust.kustaurant.data.model.MyEvaluateResponse
 import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.data.model.MyPageResponse
+import com.kust.kustaurant.data.model.FeedbackRequest
 import com.kust.kustaurant.data.model.MyProfileRequest
 import com.kust.kustaurant.data.model.MyProfileResponse
 import com.kust.kustaurant.data.model.MyScrapResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface MyPageApi {
     // 피드백 Body 질문
-    @POST("/api/v1/auth/mypage/feedback")
+    @POST("/api/v2/auth/mypage/feedback")
     suspend fun postFeedBackData(
-        @Body feedBack : String
+        @Body request: FeedbackRequest
     )
-    @GET("/api/v1/auth/mypage/profile")
+    @GET("/api/v2/mypage/profile")
     suspend fun getProfileData(
     ) : MyProfileResponse
 
     // 사진 미구현
-    @PATCH("/api/v1/auth/mypage/profile")
+    @PATCH("/api/v2/auth/mypage/profile")
     suspend fun patchProfileData(
         @Body request : MyProfileRequest
     )
 
-    @GET("/api/v1/auth/mypage/favorite-restaurant-list")
+    @GET("/api/v2/auth/mypage/restaurants/favorite")
     suspend fun getFavoriteData(
     ) : List<MyFavoriteResponse>
 
-    @GET("/api/v1/auth/mypage/evaluate-restaurant-list")
+    @GET("/api/v2/auth/mypage/restaurants/evaluated")
     suspend fun getEvaluateData(
     ) : List<MyEvaluateResponse>
 
-    @GET("/api/v1/auth/mypage/community-scrap-list")
+    @GET("/api/v2/auth/mypage/community/scraps")
     suspend fun getCommunityScrapData(
     ) : List<MyScrapResponse>
 
-    @GET("/api/v1/auth/mypage/community-list")
+    @GET("/api/v2/auth/mypage/community/posts")
     suspend fun getMyCommunityData(
     ) : List<MyCommunityListResponse>
 
-    @GET("/api/v1/auth/mypage/community-comment-list")
+    @GET("/api/v2/auth/mypage/community/comments")
     suspend fun getMyCommunityCommentData(
     ) : List<MyCommentResponse>
 
-    @GET("/api/v1/auth/mypage")
+    @GET("/api/v2/mypage")
     suspend fun getMyPageData(
     ) : MyPageResponse
 }

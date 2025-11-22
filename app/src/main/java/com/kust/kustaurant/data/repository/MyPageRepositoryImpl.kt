@@ -5,6 +5,7 @@ import com.kust.kustaurant.data.model.MyCommunityListResponse
 import com.kust.kustaurant.data.model.MyEvaluateResponse
 import com.kust.kustaurant.data.model.MyFavoriteResponse
 import com.kust.kustaurant.data.model.MyPageResponse
+import com.kust.kustaurant.data.model.FeedbackRequest
 import com.kust.kustaurant.data.model.MyProfileRequest
 import com.kust.kustaurant.data.model.MyProfileResponse
 import com.kust.kustaurant.data.model.MyScrapResponse
@@ -29,8 +30,9 @@ class MyPageRepositoryImpl @Inject constructor(
         return myPageApi.patchProfileData(request)
     }
 
-    override suspend fun postFeedBackData(feedback: String) {
-        return myPageApi.postFeedBackData(feedback)
+    override suspend fun postFeedBackData(comment: String) {
+        val request = FeedbackRequest(comment)
+        return myPageApi.postFeedBackData(request)
     }
 
     override suspend fun getFavoriteData(): List<MyFavoriteResponse> {

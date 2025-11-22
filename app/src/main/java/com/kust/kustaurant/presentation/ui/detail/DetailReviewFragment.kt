@@ -23,8 +23,8 @@ class DetailReviewFragment : Fragment() {
     lateinit var reviewAdapter: DetailReviewAdapter
     private val viewModel: DetailViewModel by activityViewModels()
     private var restaurantId = 0
-    private val popularity = "popularity"
-    private val latest = "latest"
+    private val popularity = "POPULARITY"
+    private val latest = "LATEST"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +59,7 @@ class DetailReviewFragment : Fragment() {
         }
 
         observeViewModel()
+
         viewModel.loadCommentData(restaurantId, popularity)
     }
 
@@ -103,7 +104,6 @@ class DetailReviewFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadCommentData(restaurantId, popularity)
     }
 
     private fun initRecyclerView() {
@@ -116,7 +116,7 @@ class DetailReviewFragment : Fragment() {
         reviewAdapter.setOnItemClickListener(object : DetailReviewAdapter.OnItemClickListener {
             override fun onReportClicked(commentId: Int) {
                 if (viewModel.hasLoginInfo()) {
-                    viewModel.postCommentReport(restaurantId, commentId)
+//                    viewModel.postCommentReport(restaurantId, commentId)
                     Toast.makeText(requireContext(), "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -137,13 +137,13 @@ class DetailReviewFragment : Fragment() {
 
             override fun onLikeClicked(commentId: Int, position: Int) {
                 if (viewModel.hasLoginInfo()) {
-                    viewModel.postCommentLike(restaurantId, commentId)
+                    viewModel.toggleEvalCommentLike(commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
                 if (viewModel.hasLoginInfo()) {
-                    viewModel.postCommentDisLike(restaurantId, commentId)
+                    viewModel.toggleEvalCommentDislike(commentId)
                 }
             }
         })
@@ -151,29 +151,29 @@ class DetailReviewFragment : Fragment() {
         reviewAdapter.interactionListener = object : DetailRelyAdapter.OnItemClickListener {
             override fun onReportClicked(commentId: Int) {
                 if (viewModel.hasLoginInfo()) {
-                    viewModel.deleteCommentData(restaurantId, commentId)
+//                    viewModel.postCommentReport(restaurantId, commentId)
                     Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    setRecyclerViewHeight()
                 }
             }
 
             override fun onDeleteClicked(commentId: Int) {
                 if (viewModel.hasLoginInfo()) {
                     viewModel.deleteCommentData(restaurantId, commentId)
-                    Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "댓글 삭제가 완료되었습니다.", Toast.LENGTH_SHORT)
+                        .show()
                     setRecyclerViewHeight()
                 }
             }
 
             override fun onLikeClicked(commentId: Int, position: Int) {
                 if (viewModel.hasLoginInfo()) {
-                    viewModel.postCommentLike(restaurantId, commentId)
+                    viewModel.toggleEvalCommentReplyLike(commentId)
                 }
             }
 
             override fun onDisLikeClicked(commentId: Int, position: Int) {
                 if (viewModel.hasLoginInfo()) {
-                    viewModel.postCommentDisLike(restaurantId, commentId)
+                    viewModel.toggleEvalCommentReplyDislike(commentId)
                 }
             }
         }
@@ -204,7 +204,7 @@ class DetailReviewFragment : Fragment() {
         btnSubmit.setOnClickListener {
             val inputText = etInput.text.toString()
             if (inputText.isNotBlank()) {
-                viewModel.postCommentData(restaurantId, commentId, inputText)
+                viewModel.postCommentReplyData(restaurantId, commentId, inputText)
                 bottomSheetDialog.dismiss()
                 Toast.makeText(requireContext(), "대댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show()
                 setRecyclerViewHeight()

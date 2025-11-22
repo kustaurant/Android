@@ -1,10 +1,15 @@
 package com.kust.kustaurant.data.model
 
 data class MyProfileResponse (
-    var iconImageUrl : String = "",
-    var nickname: String = "",
-    var email: String = "",
-    var phoneNumber: String = ""
+    val nickname: String,
+    val savedRestaurantCnt: Int = 0,
+    val evalCnt: Int = 0,
+    val postCnt: Int = 0,
+    val postCommentCnt: Int = 0,
+    val savedPostCnt: Int = 0,
+    val email: String,
+    val phoneNumber: String,
+    val iconUrl: String = ""
 )
 
 data class MyProfileRequest (

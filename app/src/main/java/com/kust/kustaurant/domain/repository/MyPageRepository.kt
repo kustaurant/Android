@@ -20,7 +20,7 @@ interface MyPageRepository {
     )
 
     suspend fun postFeedBackData(
-        feedback : String
+        comment: String
     )
 
     suspend fun getFavoriteData(

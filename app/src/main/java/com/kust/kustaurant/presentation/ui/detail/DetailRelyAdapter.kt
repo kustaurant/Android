@@ -14,7 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
 import com.kust.kustaurant.R
 import com.kust.kustaurant.data.model.ReplyDataResponse
 import com.kust.kustaurant.databinding.ItemDetailReviewReplyBinding
@@ -98,37 +99,38 @@ class DetailRelyAdapter(val context : Context) : ListAdapter<ReplyDataResponse, 
             }
         }
 
-        fun getLikeIconResource(likeStatus: Int): Int {
-            return when(likeStatus) {
-                1 -> R.drawable.ic_like_true
-                0 -> R.drawable.ic_like_false
-                -1 -> R.drawable.ic_like_false
+        fun getLikeIconResource(reactionType: String?): Int {
+            return when(reactionType) {
+                "LIKE" -> R.drawable.ic_like_true
+                "DISLIKE" -> R.drawable.ic_like_false
                 else -> R.drawable.ic_like_false
             }
         }
 
-        fun getDislikeIconResource(likeStatus: Int): Int {
-            return when(likeStatus) {
-                1 -> R.drawable.ic_dislike_false
-                0 -> R.drawable.ic_dislike_false
-                -1 -> R.drawable.ic_dislike_true
+        fun getDislikeIconResource(reactionType: String?): Int {
+            return when(reactionType) {
+                "LIKE" -> R.drawable.ic_dislike_false
+                "DISLIKE" -> R.drawable.ic_dislike_true
                 else -> R.drawable.ic_dislike_false
             }
         }
 
 
         fun bind(item : ReplyDataResponse){
-            binding.ivLike.setImageResource(getLikeIconResource(item.commentLikeStatus))
-            binding.ivHate.setImageResource(getDislikeIconResource(item.commentLikeStatus))
+            binding.ivLike.setImageResource(getLikeIconResource(item.reactionType))
+            binding.ivHate.setImageResource(getDislikeIconResource(item.reactionType))
 
-            binding.tvUserName.text = item.commentNickname
+            binding.tvUserName.text = item.writerNickname
             binding.tvReview.text = item.commentBody
             binding.tvLike.text = item.commentLikeCount.toString()
             binding.tvHate.text = item.commentDislikeCount.toString()
-            binding.tvReviewTime.text = item.commentTime
-            Glide.with(context)
-                .load(item.commentIconImgUrl)
-                .into(binding.ivUserImage)
+            binding.tvReviewTime.text = item.timeAgo
+            binding.ivUserImage.load(item.writerIconImgUrl) {
+                crossfade(true)
+                if (item.writerIconImgUrl.endsWith(".svg", ignoreCase = true)) {
+                    decoderFactory(SvgDecoder.Factory())
+                }
+            }
             binding.flLike.setOnClickListener {
                 itemClickListener.onLikeClicked(item.commentId, absoluteAdapterPosition)
             }

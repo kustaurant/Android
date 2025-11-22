@@ -8,7 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.decode.SvgDecoder
+import coil.load
 import com.kust.kustaurant.R
 import com.kust.kustaurant.databinding.ItemDetailTierKeywordBinding
 import com.kust.kustaurant.databinding.ItemDetailTierTierBinding
@@ -48,9 +49,12 @@ class DetailTierInfoAdapter(val context : Context, private val tierData : TierIn
                     3 -> binding.clTierBackground.background.setTint(ContextCompat.getColor(context, R.color.tier_3))
                     4 -> binding.clTierBackground.background.setTint(ContextCompat.getColor(context, R.color.tier_4))
                 }
-                Glide.with(context)
-                    .load(item.tierImage)
-                    .into(binding.ivTier)
+                binding.ivTier.load(item.tierImage) {
+                    crossfade(true)
+                    if (item.tierImage.endsWith(".svg", ignoreCase = true)) {
+                        decoderFactory(SvgDecoder.Factory())
+                    }
+                }
                 binding.tvTierName.text = item.tierName
                 binding.tvTierNumber.text = item.tierNumber.toString()
             }
@@ -74,20 +78,24 @@ class DetailTierInfoAdapter(val context : Context, private val tierData : TierIn
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val keywords = tierData.situationList.orEmpty()
             if (tierData.tierNumber == -1) {
-                (holder as KeyWordViewHolder).bind(tierData.situationList[position])
+                if (holder is KeyWordViewHolder) {
+                    holder.bind(keywords.getOrNull(position).orEmpty())
+                }
             } else {
                 if (holder is TierViewHolder && position == 0) {
                     holder.bind(tierData)
                 } else if (holder is KeyWordViewHolder) {
-                    holder.bind(tierData.situationList[position - 1])
+                    holder.bind(keywords.getOrNull(position - 1).orEmpty())
                 }
             }
         }
 
         override fun getItemCount(): Int {
+            val keywordCount = tierData.situationList?.size ?: 0
             return if (tierData.tierNumber == -1)
-                tierData.situationList.size
-            else 1 + tierData.situationList.size
+                keywordCount
+            else 1 + keywordCount
         }
 }

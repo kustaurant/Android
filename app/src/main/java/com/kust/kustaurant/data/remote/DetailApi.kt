@@ -1,10 +1,13 @@
 package com.kust.kustaurant.data.remote
 
 import com.kust.kustaurant.data.model.CommentDataResponse
-import com.kust.kustaurant.data.model.CommentLikeResponse
+import com.kust.kustaurant.data.model.CommentReplyRequest
+import com.kust.kustaurant.data.model.CommentReplyResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
-import com.kust.kustaurant.data.model.EvaluationDataRequest
+import com.kust.kustaurant.data.model.EvalCommentReactionResponse
 import com.kust.kustaurant.data.model.EvaluationDataResponse
+import com.kust.kustaurant.data.model.EvaluationReactionResponse
+import com.kust.kustaurant.data.model.FavoriteResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -12,46 +15,47 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface DetailApi {
-    @GET("/api/v1/auth/restaurants/{restaurantId}")
+    @GET("/api/v2/restaurants/{restaurantId}")
     suspend fun getDetailData(
         @Path("restaurantId") restaurantId : Int
     ) : DetailDataResponse
 
-    @GET("/api/v1/restaurants/{restaurantId}")
-    suspend fun getAnonDetailData(
-        @Path("restaurantId") restaurantId : Int
-    ) : DetailDataResponse
-
-    @GET("/api/v1/restaurants/{restaurantId}/comments")
+    @GET("/api/v2/restaurants/{restaurantId}/comments")
     suspend fun getCommentData(
         @Path("restaurantId") restaurantId: Int,
-        @Query("sort") sort : String
+        @Query("sort") sort: String
     ) : List<CommentDataResponse>
 
-    @POST("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}")
-    suspend fun postCommentData(
+    @POST("/api/v2/auth/restaurants/{restaurantId}/comments/{evalCommentId}")
+    suspend fun postCommentReplyData(
         @Path("restaurantId") restaurantId: Int,
-        @Path("commentId") commentId : Int,
-        @Body inputText : String
-    ) : CommentDataResponse
+        @Path("evalCommentId") evalCommentId: Int,
+        @Body request: CommentReplyRequest
+    ) : CommentReplyResponse
 
-    @POST("/api/v1/auth/restaurants/{restaurantId}/favorite-toggle")
-    suspend fun postFavoriteToggle(
-        @Path("restaurantId") restaurantId: Int,
-    ) : Boolean
+    @PUT("/api/v2/auth/restaurants/{restaurantId}/favorite")
+    suspend fun putFavorite(
+        @Path("restaurantId") restaurantId: Int
+    ) : FavoriteResponse
 
-    @GET("/api/v1/auth/restaurants/{restaurantId}/evaluation")
+    @DELETE("/api/v2/auth/restaurants/{restaurantId}/favorite")
+    suspend fun deleteFavorite(
+        @Path("restaurantId") restaurantId: Int
+    ) : FavoriteResponse
+
+    @GET("/api/v2/auth/restaurants/{restaurantId}/evaluation")
     suspend fun getEvaluationData(
         @Path("restaurantId") restaurantId: Int
     ) : EvaluationDataResponse
 
     @Multipart
-    @POST("/api/v1/auth/restaurants/{restaurantId}/evaluation")
+    @POST("/api/v2/auth/restaurants/{restaurantId}/evaluation")
     suspend fun postEvaluationData(
         @Path("restaurantId") restaurantId: Int,
         @Part("evaluationScore") evaluationScore: RequestBody,
@@ -60,10 +64,10 @@ interface DetailApi {
         @Part newImage: MultipartBody.Part?
     ) : List<CommentDataResponse>
 
-    @DELETE("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}")
+    @DELETE("/api/v2/auth/restaurants/{restaurantId}/comments/{evalCommentId}")
     suspend fun deleteCommentData(
         @Path("restaurantId") restaurantId: Int,
-        @Path("commentId") commentId: Int
+        @Path("evalCommentId") evalCommentId: Int
     )
 
     @POST("api/v1/auth/restaurants/{restaurantId}/comments/{commentId}/report")
@@ -72,15 +76,17 @@ interface DetailApi {
         @Path("commentId") commentId: Int
     )
 
-    @POST("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}/like")
-    suspend fun postCommentLike(
-        @Path("restaurantId") restaurantId: Int,
-        @Path("commentId") commentId: Int
-    ) : CommentLikeResponse
+    @PUT("/api/v2/auth/eval-comments/{evalCommentId}")
+    suspend fun putEvalCommentReaction(
+        @Path("evalCommentId") evalCommentId: Int,
+        @Query("reaction") reaction: String?
+    ) : EvalCommentReactionResponse
 
-    @POST("/api/v1/auth/restaurants/{restaurantId}/comments/{commentId}/dislike")
-    suspend fun postCommentDisLike(
-        @Path("restaurantId") restaurantId: Int,
-        @Path("commentId") commentId: Int
-    ) : CommentLikeResponse
+    @PUT("/api/v2/auth/restaurants/evaluations/{evaluationId}/reaction")
+    suspend fun putEvaluationReaction(
+        @Path("evaluationId") evaluationId: Int,
+        @Query("reaction") reaction: String?,
+        @Query("id") userId: Int,
+        @Query("role") role: String
+    ) : EvaluationReactionResponse
 }

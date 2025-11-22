@@ -40,11 +40,7 @@ class DetailActivity : BaseActivity() {
         binding.lifecycleOwner = this
         restaurantId = intent.getIntExtra("restaurantId", 346)
 
-        if (viewModel.hasLoginInfo()) {
-            viewModel.loadAnonDetailData(restaurantId)
-        } else {
-            viewModel.loadDetailData(restaurantId)
-        }
+        viewModel.loadDetailData(restaurantId)
 
         initTierRecyclerView()
         initNaverLink()
@@ -58,10 +54,10 @@ class DetailActivity : BaseActivity() {
     private fun loadData() {
         viewModel.detailData.observe(this) { detailData ->
             binding.tvToNaver.visibility = View.VISIBLE
-            if (detailData.partnershipInfo == null) {
+            if (detailData.partnershipInfo == null){
                 binding.detailClAlliance.visibility = View.GONE
             }
-            if (detailData.isEvaluated) {
+            if (detailData.isEvaluated){
                 binding.detailIvEvaluateCheck.visibility = View.VISIBLE
                 binding.detailTvEvaluate.text = "다시 평가하기"
             }
@@ -102,7 +98,7 @@ class DetailActivity : BaseActivity() {
                     Toast.makeText(this, "로그인 후 이용해 주세요.", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                viewModel.postFavoriteToggle(restaurantId)
+                viewModel.toggleFavorite(restaurantId)
             }
         }
     }

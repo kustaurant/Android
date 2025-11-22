@@ -1,21 +1,17 @@
 package com.kust.kustaurant.domain.repository
 
 import com.kust.kustaurant.data.model.CommentDataResponse
-import com.kust.kustaurant.data.model.CommentLikeResponse
+import com.kust.kustaurant.data.model.CommentReplyResponse
 import com.kust.kustaurant.data.model.DetailDataResponse
-import com.kust.kustaurant.data.model.EvaluationDataRequest
+import com.kust.kustaurant.data.model.EvalCommentReactionResponse
 import com.kust.kustaurant.data.model.EvaluationDataResponse
+import com.kust.kustaurant.data.model.EvaluationReactionResponse
+import com.kust.kustaurant.data.model.FavoriteResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.Part
-import retrofit2.http.Path
 
 interface DetailRepository {
     suspend fun getDetailData(
-        restaurantId : Int
-    ): DetailDataResponse
-
-    suspend fun getAnonDetailData(
         restaurantId : Int
     ): DetailDataResponse
 
@@ -23,13 +19,17 @@ interface DetailRepository {
         restaurantId: Int, sort: String
     ) : List<CommentDataResponse>
 
-    suspend fun postCommentData(
-        restaurantId: Int, commentId: Int, inputText : String
-    ) : CommentDataResponse
+    suspend fun postCommentReplyData(
+        restaurantId: Int, evalCommentId: Int, body: String
+    ) : CommentReplyResponse
 
-    suspend fun postFavoriteToggle(
+    suspend fun putFavorite(
         restaurantId: Int
-    ) : Boolean
+    ) : FavoriteResponse
+
+    suspend fun deleteFavorite(
+        restaurantId: Int
+    ) : FavoriteResponse
 
     suspend fun getEvaluationData(
         restaurantId: Int
@@ -45,20 +45,22 @@ interface DetailRepository {
 
     suspend fun deleteCommentData(
         restaurantId: Int,
-        commentId: Int
+        evalCommentId: Int
     )
 
     suspend fun postCommentReport(
         restaurantId: Int,
         commentId: Int
     )
-    suspend fun postCommentLike(
-        restaurantId: Int,
-        commentId: Int
-    ) : CommentLikeResponse
+    suspend fun putEvalCommentReaction(
+        evalCommentId: Int,
+        reaction: String?
+    ) : EvalCommentReactionResponse
 
-    suspend fun postCommentDiskLike(
-        restaurantId: Int,
-        commentId: Int
-    ) : CommentLikeResponse
+    suspend fun putEvaluationReaction(
+        evaluationId: Int,
+        reaction: String?,
+        userId: Int,
+        role: String
+    ) : EvaluationReactionResponse
 }

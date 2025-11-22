@@ -4,6 +4,7 @@ data class MyCommentResponse (
     val postId: Int,
     val postCategory: String,
     val postTitle: String,
-    val postcommentBody: String,
-    val commentlikeCount: Int,
+    val body: String,
+    val likeCount: Int,
+    val timeAgo: String
 )

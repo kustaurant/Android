@@ -5,8 +5,8 @@ data class MyScrapResponse (
     val postCategory: String,
     val postTitle: String,
     val postImgUrl: String?,
-    val postBody: String,
     val likeCount: Int,
     val commentCount: Int,
-    val timeAgo: String
+    val timeAgo: String,
+    val body: String
 )

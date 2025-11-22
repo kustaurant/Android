@@ -33,10 +33,10 @@ class PostAdapter(val context: Context) : ListAdapter<MyCommunityListResponse, P
 
     inner class ViewHolder(val binding : ItemMyPostBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : MyCommunityListResponse){
-            val postBodyWithoutImg = if (item.postBody.trim().startsWith("<p><img")) {
+            val postBodyWithoutImg = if (item.body.trim().startsWith("<p><img")) {
                 ""
             } else {
-                item.postBody.replace(communityRegex(), "")
+                item.body.replace(communityRegex(), "")
             }
             binding.myTvPostBody.text = Html.fromHtml(postBodyWithoutImg, Html.FROM_HTML_MODE_LEGACY)
 
@@ -46,7 +46,7 @@ class PostAdapter(val context: Context) : ListAdapter<MyCommunityListResponse, P
             binding.myTvPostLike.text = item.likeCount.toString()
             binding.myTvPostComment.text = item.commentCount.toString()
 
-            if (item.postImgUrl != null) {
+            if (item.postImgUrl != null && item.postImgUrl.isNotEmpty()) {
                 binding.myCvEvaluateRestaurant.visibility = View.VISIBLE
                 Glide.with(context)
                     .load(item.postImgUrl)
@@ -82,10 +82,10 @@ class PostAdapter(val context: Context) : ListAdapter<MyCommunityListResponse, P
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<MyCommunityListResponse>() {
             override fun areItemsTheSame(oldItem: MyCommunityListResponse, newItem: MyCommunityListResponse): Boolean =
-                oldItem.postTitle == newItem.postTitle
+                oldItem.postId == newItem.postId
 
             override fun areContentsTheSame(oldItem: MyCommunityListResponse, newItem: MyCommunityListResponse): Boolean =
-                oldItem.postTitle == newItem.postTitle
+                oldItem.body == newItem.body
         }
     }
 
