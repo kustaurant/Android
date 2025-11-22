@@ -232,7 +232,7 @@ class DetailViewModel @Inject constructor(
                 deleteCommentDataUseCase(restaurantId, evalCommentId)
                 loadCommentData(restaurantId, currentSort)
             } catch (e: Exception) {
-                Log.e("디테일 뷰모델", "getFileFromUri Error", e)
+                Log.e("디테일 뷰모델", "deleteCommentData Error", e)
             }
         }
     }
