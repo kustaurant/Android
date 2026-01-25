@@ -17,3 +17,12 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# 키 파일 및 인증서 파일
+*.jks
+*.keystore
+*.pem
+*.key
+*.p12
+*.pfx
+KustaurantKey.jks
